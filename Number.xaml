@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="iRacingTVController.Number"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:iRacingTVController"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="NumberTextBox" PreviewTextInput="TextBox_PreviewTextInput" DataObject.Pasting="Pasting" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="6,0,6,0" TextChanged="NumberTextBox_TextChanged"/>
+        <Button Content="🞖" Grid.Column="1" Padding="6,0,6,0" PreviewMouseDown="Button_PreviewMouseDown" PreviewMouseUp="Button_PreviewMouseUp" PreviewMouseMove="Button_PreviewMouseMove" Margin="-1,0,0,0"/>
+    </Grid>
+</UserControl>

@@ -13,6 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\irsdkSharp\src\irsdkSharp.Serialization\irsdkSharp.Serialization.csproj" />
+    <ProjectReference Include="..\irsdkSharp\src\irsdkSharp\irsdkSharp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Decimal.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

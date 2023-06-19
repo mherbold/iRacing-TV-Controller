@@ -11,8 +11,6 @@ namespace iRacingTVController
 			public float x;
 			public float y;
 
-			private static readonly Vector2 zeroVector = new Vector2( 0f, 0f );
-
 			public Vector2()
 			{
 				x = 0;
@@ -29,7 +27,7 @@ namespace iRacingTVController
 			{
 				get
 				{
-					return zeroVector;
+					return new Vector2( 0, 0 );
 				}
 			}
 		}

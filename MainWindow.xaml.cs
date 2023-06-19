@@ -1,6 +1,8 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
@@ -18,8 +20,7 @@ namespace iRacingTVController
 
 		public int initializing = 0;
 
-		public RenameOverlay? renameOverlay;
-		public ColorPicker? colorPicker;
+		public SortedDictionary<string, string> fontPaths;
 
 		static MainWindow()
 		{
@@ -55,17 +56,19 @@ namespace iRacingTVController
 				Image_ImageType.Items.Add( imageType );
 			}
 
-			foreach ( var item in Fonts.SystemFontFamilies )
+			fontPaths = FontPaths.FindAll();
+
+			foreach ( var installedFont in fontPaths )
 			{
-				Font_FontA_Name.Items.Add( item.ToString() );
-				Font_FontB_Name.Items.Add( item.ToString() );
-				Font_FontC_Name.Items.Add( item.ToString() );
-				Font_FontD_Name.Items.Add( item.ToString() );
+				Font_FontA_Name.Items.Add( installedFont.Key );
+				Font_FontB_Name.Items.Add( installedFont.Key );
+				Font_FontC_Name.Items.Add( installedFont.Key );
+				Font_FontD_Name.Items.Add( installedFont.Key );
 			}
 
-			foreach ( var items in Settings.overlay.textSettingsDataDictionary )
+			foreach ( var item in Settings.overlay.textSettingsDataDictionary )
 			{
-				Text_ID.Items.Add( items.Key );
+				Text_ID.Items.Add( item.Key );
 			}
 
 			foreach ( var fontIndex in Enum.GetValues( typeof( SettingsText.FontIndex ) ) )
@@ -110,41 +113,10 @@ namespace iRacingTVController
 			General_Position_Override.IsChecked = combined.overlayPosition_Overridden;
 			General_Size_Override.IsChecked = combined.overlaySize_Overridden;
 
-			foreach ( var item in Font_FontA_Name.Items )
-			{
-				if ( item.ToString() == combined.fontNames[ 0 ] )
-				{
-					Font_FontA_Name.SelectedItem = item;
-					break;
-				}
-			}
-
-			foreach ( var item in Font_FontB_Name.Items )
-			{
-				if ( item.ToString() == combined.fontNames[ 1 ] )
-				{
-					Font_FontB_Name.SelectedItem = item;
-					break;
-				}
-			}
-
-			foreach ( var item in Font_FontC_Name.Items )
-			{
-				if ( item.ToString() == combined.fontNames[ 2 ] )
-				{
-					Font_FontC_Name.SelectedItem = item;
-					break;
-				}
-			}
-
-			foreach ( var item in Font_FontD_Name.Items )
-			{
-				if ( item.ToString() == combined.fontNames[ 3 ] )
-				{
-					Font_FontD_Name.SelectedItem = item;
-					break;
-				}
-			}
+			Font_FontA_Name.SelectedItem = fontPaths.FirstOrDefault( x => x.Value == combined.fontPaths[ 0 ] ).Key;
+			Font_FontB_Name.SelectedItem = fontPaths.FirstOrDefault( x => x.Value == combined.fontPaths[ 1 ] ).Key;
+			Font_FontC_Name.SelectedItem = fontPaths.FirstOrDefault( x => x.Value == combined.fontPaths[ 2 ] ).Key;
+			Font_FontD_Name.SelectedItem = fontPaths.FirstOrDefault( x => x.Value == combined.fontPaths[ 3 ] ).Key;
 
 			Font_FontA_Name_Override.IsChecked = combined.fontNames_Overridden[ 0 ];
 			Font_FontB_Name_Override.IsChecked = combined.fontNames_Overridden[ 1 ];
@@ -168,6 +140,23 @@ namespace iRacingTVController
 			Editor_Mouse_Position_Normal.SetValue( Settings.editor.positioningSpeedNormal );
 			Editor_Mouse_Position_Fast.SetValue( Settings.editor.positioningSpeedFast );
 			Editor_Mouse_Position_Slow.SetValue( Settings.editor.positioningSpeedSlow );
+
+			InitializeTranslation();
+
+			Leaderboard_Overlay_Enable.IsChecked = combined.leaderboardOverlayEnabled;
+			Leaderboard_OverlayPosition_X.SetValue( (int) combined.leaderboardOverlayPosition.x );
+			Leaderboard_OverlayPosition_Y.SetValue( (int) combined.leaderboardOverlayPosition.y );
+			Leaderboard_FirstPlacePosition_X.SetValue( (int) combined.leaderboardFirstPlacePosition.x );
+			Leaderboard_FirstPlacePosition_Y.SetValue( (int) combined.leaderboardFirstPlacePosition.y );
+			Leaderboard_PlaceCount.Value = combined.leaderboardPlaceCount;
+			Leaderboard_PlaceSpacing_X.SetValue( (int) combined.leaderboardPlaceSpacing.x );
+			Leaderboard_PlaceSpacing_Y.SetValue( (int) combined.leaderboardPlaceSpacing.y );
+
+			Leaderboard_OverlayEnable_Override.IsChecked = combined.leaderboardOverlayEnabled_Overridden;
+			Leaderboard_OverlayPosition_Override.IsChecked = combined.leaderboardOverlayPosition_Overridden;
+			Leaderboard_FirstPlacePosition_Override.IsChecked = combined.leaderboardFirstPlacePosition_Overridden;
+			Leaderboard_PlaceCount_Override.IsChecked = combined.leaderboardPlaceCount_Overridden;
+			Leaderboard_PlaceSpacing_Override.IsChecked = combined.leaderboardPlaceSpacing_Overridden;
 
 			initializing--;
 		}
@@ -240,6 +229,22 @@ namespace iRacingTVController
 			}
 		}
 
+		public void InitializeTranslation()
+		{
+			initializing++;
+
+			var combined = Settings.GetCombinedOverlay();
+
+			L18N_ListView.Items.Clear();
+
+			foreach ( var item in combined.translationDictionary )
+			{
+				L18N_ListView.Items.Add( item );
+			}
+
+			initializing--;
+		}
+
 		private void Window_Closed( object sender, EventArgs e )
 		{
 			Program.keepRunning = false;
@@ -256,12 +261,14 @@ namespace iRacingTVController
 				Settings.SaveEditor();
 
 				Initialize();
+
+				IPC.readyToSendSettings = true;
 			}
 		}
 
 		private void OverlayFile_Rename_Click( object sender, EventArgs e )
 		{
-			renameOverlay = new( Settings.overlay.ToString() )
+			var renameOverlay = new RenameOverlay( Settings.overlay.ToString() )
 			{
 				Owner = this
 			};
@@ -361,7 +368,7 @@ namespace iRacingTVController
 					overlay.overlaySize.y = General_Size_H.GetValue();
 				}
 
-				IPC.readyToSend = true;
+				IPC.readyToSendSettings = true;
 
 				Settings.SaveOverlay();
 			}
@@ -383,7 +390,16 @@ namespace iRacingTVController
 				{
 					var overlay = Settings.overlay.fontNames_Overridden[ 0 ] ? Settings.overlay : Settings.global;
 
-					overlay.fontNames[ 0 ] = Font_FontA_Name.SelectedItem?.ToString() ?? string.Empty;
+					if ( Font_FontA_Name.SelectedItem == null )
+					{
+						overlay.fontPaths[ 0 ] = string.Empty;
+					}
+					else
+					{
+						var fontName = (string) Font_FontA_Name.SelectedItem;
+
+						overlay.fontPaths[ 0 ] = fontPaths[ fontName ];
+					}
 				}
 
 				overridden = Font_FontB_Name_Override.IsChecked ?? false;
@@ -398,7 +414,16 @@ namespace iRacingTVController
 				{
 					var overlay = Settings.overlay.fontNames_Overridden[ 1 ] ? Settings.overlay : Settings.global;
 
-					overlay.fontNames[ 1 ] = Font_FontB_Name.SelectedItem?.ToString() ?? string.Empty;
+					if ( Font_FontB_Name.SelectedItem == null )
+					{
+						overlay.fontPaths[ 1 ] = string.Empty;
+					}
+					else
+					{
+						var fontName = (string) Font_FontB_Name.SelectedItem;
+
+						overlay.fontPaths[ 1 ] = fontPaths[ fontName ] ?? string.Empty;
+					}
 				}
 
 				overridden = Font_FontC_Name_Override.IsChecked ?? false;
@@ -413,7 +438,16 @@ namespace iRacingTVController
 				{
 					var overlay = Settings.overlay.fontNames_Overridden[ 2 ] ? Settings.overlay : Settings.global;
 
-					overlay.fontNames[ 2 ] = Font_FontC_Name.SelectedItem?.ToString() ?? string.Empty;
+					if ( Font_FontC_Name.SelectedItem == null )
+					{
+						overlay.fontPaths[ 2 ] = string.Empty;
+					}
+					else
+					{
+						var fontName = (string) Font_FontC_Name.SelectedItem;
+
+						overlay.fontPaths[ 2 ] = fontPaths[ fontName ];
+					}
 				}
 
 				overridden = Font_FontD_Name_Override.IsChecked ?? false;
@@ -428,10 +462,19 @@ namespace iRacingTVController
 				{
 					var overlay = Settings.overlay.fontNames_Overridden[ 3 ] ? Settings.overlay : Settings.global;
 
-					overlay.fontNames[ 3 ] = Font_FontD_Name.SelectedItem?.ToString() ?? string.Empty;
+					if ( Font_FontD_Name.SelectedItem == null )
+					{
+						overlay.fontPaths[ 3 ] = string.Empty;
+					}
+					else
+					{
+						var fontName = (string) Font_FontD_Name.SelectedItem;
+
+						overlay.fontPaths[ 3 ] = fontPaths[ fontName ];
+					}
 				}
 
-				IPC.readyToSend = true;
+				IPC.readyToSendSettings = true;
 
 				Settings.SaveOverlay();
 			}
@@ -574,7 +617,7 @@ namespace iRacingTVController
 					settings.tintColor = new Unity.Color( Image_TintColor_R.GetValue(), Image_TintColor_G.GetValue(), Image_TintColor_B.GetValue(), Image_TintColor_A.GetValue() );
 				}
 
-				IPC.readyToSend = true;
+				IPC.readyToSendSettings = true;
 
 				Settings.SaveOverlay();
 			}
@@ -711,7 +754,92 @@ namespace iRacingTVController
 					settings.tintColor = new Unity.Color( Text_TintColor_R.GetValue(), Text_TintColor_G.GetValue(), Text_TintColor_B.GetValue(), Text_TintColor_A.GetValue() );
 				}
 
-				IPC.readyToSend = true;
+				IPC.readyToSendSettings = true;
+
+				Settings.SaveOverlay();
+			}
+		}
+
+		private void Leaderboard_Update( object sender, EventArgs e )
+		{
+			if ( initializing == 0 )
+			{
+				var overridden = Leaderboard_OverlayEnable_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.leaderboardOverlayEnabled_Overridden != overridden )
+				{
+					Settings.overlay.leaderboardOverlayEnabled_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.leaderboardOverlayEnabled_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.leaderboardOverlayEnabled = Leaderboard_Overlay_Enable.IsChecked ?? false;
+				}
+
+				overridden = Leaderboard_OverlayPosition_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.leaderboardOverlayPosition_Overridden != overridden )
+				{
+					Settings.overlay.leaderboardOverlayPosition_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.leaderboardOverlayPosition_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.leaderboardOverlayPosition = new Vector2( Leaderboard_OverlayPosition_X.GetValue(), Leaderboard_OverlayPosition_Y.GetValue() );
+				}
+
+				overridden = Leaderboard_FirstPlacePosition_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.leaderboardFirstPlacePosition_Overridden != overridden )
+				{
+					Settings.overlay.leaderboardFirstPlacePosition_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.leaderboardFirstPlacePosition_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.leaderboardFirstPlacePosition = new Vector2( Leaderboard_FirstPlacePosition_X.GetValue(), Leaderboard_FirstPlacePosition_Y.GetValue() );
+				}
+
+				overridden = Leaderboard_PlaceCount_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.leaderboardPlaceCount_Overridden != overridden )
+				{
+					Settings.overlay.leaderboardPlaceCount_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.leaderboardPlaceCount_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.leaderboardPlaceCount = (int) Leaderboard_PlaceCount.Value;
+				}
+
+				overridden = Leaderboard_PlaceSpacing_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.leaderboardPlaceSpacing_Overridden != overridden )
+				{
+					Settings.overlay.leaderboardPlaceSpacing_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.leaderboardPlaceSpacing_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.leaderboardPlaceSpacing = new Vector2( Leaderboard_PlaceSpacing_X.GetValue(), Leaderboard_PlaceSpacing_Y.GetValue() );
+				}
+
+				IPC.readyToSendSettings = true;
 
 				Settings.SaveOverlay();
 			}

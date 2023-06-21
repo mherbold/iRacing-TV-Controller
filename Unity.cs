@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Text.RegularExpressions;
 
 namespace iRacingTVController
 {
@@ -28,6 +29,70 @@ namespace iRacingTVController
 				get
 				{
 					return new Vector2( 0, 0 );
+				}
+			}
+
+			public static Vector2 operator +( Vector2 a, Vector2 b )
+			{
+				return new Vector2( a.x + b.x, a.y + b.y );
+			}
+
+			public static Vector2 operator -( Vector2 a, Vector2 b )
+			{
+				return new Vector2( a.x - b.x, a.y - b.y );
+			}
+
+			public static Vector2 operator *( Vector2 a, float d )
+			{
+				return new Vector2( a.x * d, a.y * d );
+			}
+
+			public static Vector2 operator /( Vector2 a, float d )
+			{
+				return new Vector2( a.x / d, a.y / d );
+			}
+
+			public static float Distance( Vector2 a, Vector2 b )
+			{
+				float dx = a.x - b.x;
+				float dy = a.y - b.y;
+
+				return (float) Math.Sqrt( dx * dx + dy * dy );
+			}
+
+			public Vector2 normalized
+			{
+				get
+				{
+					Vector2 result = new Vector2( x, y );
+
+					result.Normalize();
+
+					return result;
+				}
+			}
+
+			public float magnitude
+			{
+				get
+				{
+					return (float) Math.Sqrt( x * x + y * y );
+				}
+			}
+
+			public void Normalize()
+			{
+				float num = magnitude;
+
+				if ( num > 1E-05f )
+				{
+					x /= num;
+					y /= num;
+				}
+				else
+				{
+					x = 0;
+					y = 0;
 				}
 			}
 		}
@@ -75,12 +140,44 @@ namespace iRacingTVController
 				this.a = a;
 			}
 
+			public Color( string hex )
+			{
+				var match = Regex.Match( hex, "([\\da-f]{2})([\\da-f]{2})([\\da-f]{2})", RegexOptions.IgnoreCase );
+
+				if ( match.Success )
+				{
+					r = int.Parse( match.Groups[ 1 ].Value, System.Globalization.NumberStyles.HexNumber );
+					g = int.Parse( match.Groups[ 2 ].Value, System.Globalization.NumberStyles.HexNumber );
+					b = int.Parse( match.Groups[ 3 ].Value, System.Globalization.NumberStyles.HexNumber );
+					a = 1;
+				}
+				else
+				{
+					r = 0;
+					g = 0;
+					b = 0;
+					a = 0;
+				}
+			}
+
+			public override string ToString()
+			{
+				return $"{r:2x}{g:2x}{b:2x}";
+			}
+
 			public static Color white
 			{
 				get
 				{
 					return new Color( 1f, 1f, 1f, 1f );
 				}
+			}
+
+			public static Color Lerp( Color a, Color b, float t )
+			{
+				t = Math.Clamp( t, 0, 1 );
+
+				return new Color( a.r + ( b.r - a.r ) * t, a.g + ( b.g - a.g ) * t, a.b + ( b.b - a.b ) * t, a.a + ( b.a - a.a ) * t );
 			}
 		}
 

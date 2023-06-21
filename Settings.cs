@@ -5,6 +5,8 @@ using System.IO;
 using System.Windows;
 using System.Xml.Serialization;
 
+using static iRacingTVController.Unity;
+
 namespace iRacingTVController
 {
 	public static class Settings
@@ -23,6 +25,7 @@ namespace iRacingTVController
 		public static SettingsEditor editor = new();
 		public static SettingsOverlay global = new();
 		public static SettingsOverlay overlay = new();
+		public static SettingsOverlay combined = new();
 
 		public static List<SettingsOverlay> overlayList = new();
 
@@ -148,14 +151,14 @@ namespace iRacingTVController
 
 			var defaultTextSettings = new Dictionary<string, SettingsText>()
 			{
-				{ "CurrentLap", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 27, alignment = Unity.TextAlignmentOptions.TopRight, position = { x = 298, y = 175 }, tintColor = { r = 0.737f, g = 0.741f, b = 0.725f } } },
+				{ "CurrentLap", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 27, alignment = TextAlignmentOptions.TopRight, position = { x = 298, y = 175 }, tintColor = { r = 0.737f, g = 0.741f, b = 0.725f } } },
 				{ "DriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 21, position = { x = 108, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
-				{ "LapsRemaining", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, alignment = Unity.TextAlignmentOptions.TopRight, position = { x = 269, y = 125 }, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
-				{ "Place", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = Unity.TextAlignmentOptions.TopRight, position = { x = 43, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
+				{ "LapsRemaining", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, alignment = TextAlignmentOptions.TopRight, position = { x = 269, y = 125 }, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
+				{ "Place", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 43, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "SessionName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, position = { x = 18, y = 125 }, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
-				{ "Speed", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = Unity.TextAlignmentOptions.TopRight, position = { x = 397, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
-				{ "Subtitles", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 39, alignment = Unity.TextAlignmentOptions.Center, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
-				{ "Telemetry", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = Unity.TextAlignmentOptions.TopRight, position = { x = 298, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
+				{ "Speed", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 397, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
+				{ "Subtitles", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 39, alignment = TextAlignmentOptions.Center, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
+				{ "Telemetry", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 298, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "Units", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, position = { x = 18, y = 175 }, tintColor = { r = 0.737f, g = 0.741f, b = 0.725f } } },
 				{ "VoiceOf", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 30, position = { x = 30, y = 10 }, tintColor = { r = 0.737f, g = 0.741f, b = 0.725f } } },
 				{ "VoiceOfDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 30, position = { x = 30, y = 41 }, tintColor = { r = 0.137f, g = 0.122f, b = 0.125f } } },
@@ -235,9 +238,9 @@ namespace iRacingTVController
 			streamWriter.Close();
 		}
 
-		public static SettingsOverlay GetCombinedOverlay()
+		public static void UpdateCombinedOverlay()
 		{
-			var combined = new SettingsOverlay
+			combined = new SettingsOverlay
 			{
 				overlayPosition = overlay.overlayPosition_Overridden ? overlay.overlayPosition : global.overlayPosition,
 				overlaySize = overlay.overlaySize_Overridden ? overlay.overlaySize : global.overlaySize,
@@ -260,17 +263,81 @@ namespace iRacingTVController
 					overlay.fontNames_Overridden[ 3 ]
 				},
 
+				raceStatusOverlayEnabled = overlay.raceStatusOverlayEnabled_Overridden ? overlay.raceStatusOverlayEnabled : global.raceStatusOverlayEnabled,
+				raceStatusOverlayPosition = overlay.raceStatusOverlayPosition_Overridden ? overlay.raceStatusOverlayPosition : global.raceStatusOverlayPosition,
+
+				raceStatusOverlayEnabled_Overridden = overlay.raceStatusOverlayEnabled_Overridden,
+				raceStatusOverlayPosition_Overridden = overlay.raceStatusOverlayPosition_Overridden,
+
 				leaderboardOverlayEnabled = overlay.leaderboardOverlayEnabled_Overridden ? overlay.leaderboardOverlayEnabled : global.leaderboardOverlayEnabled,
 				leaderboardOverlayPosition = overlay.leaderboardOverlayPosition_Overridden ? overlay.leaderboardOverlayPosition : global.leaderboardOverlayPosition,
 				leaderboardFirstPlacePosition = overlay.leaderboardFirstPlacePosition_Overridden ? overlay.leaderboardFirstPlacePosition : global.leaderboardFirstPlacePosition,
 				leaderboardPlaceCount = overlay.leaderboardPlaceCount_Overridden ? overlay.leaderboardPlaceCount : global.leaderboardPlaceCount,
 				leaderboardPlaceSpacing = overlay.leaderboardPlaceSpacing_Overridden ? overlay.leaderboardPlaceSpacing : global.leaderboardPlaceSpacing,
+				leaderboardUseClassColors = overlay.leaderboardUseClassColors_Overridden ? overlay.leaderboardUseClassColors : global.leaderboardUseClassColors,
+				leaderboardClassColorStrength = overlay.leaderboardClassColorStrength_Overridden ? overlay.leaderboardClassColorStrength : global.leaderboardClassColorStrength,
+				leaderboardTelemetryPitColor = overlay.leaderboardTelemetryPitColor_Overridden ? overlay.leaderboardTelemetryPitColor : global.leaderboardTelemetryPitColor,
+				leaderboardTelemetryOutColor = overlay.leaderboardTelemetryOutColor_Overridden ? overlay.leaderboardTelemetryOutColor : global.leaderboardTelemetryOutColor,
+				leaderboardTelemetryIsBetweenCars = overlay.leaderboardTelemetryIsBetweenCars_Overridden ? overlay.leaderboardTelemetryIsBetweenCars : global.leaderboardTelemetryIsBetweenCars,
+				leaderboardTelemetryMode = overlay.leaderboardTelemetryMode_Overridden ? overlay.leaderboardTelemetryMode : global.leaderboardTelemetryMode,
+				leaderboardTelemetryNumberOfCheckpoints = overlay.leaderboardTelemetryNumberOfCheckpoints_Overridden ? overlay.leaderboardTelemetryNumberOfCheckpoints : global.leaderboardTelemetryNumberOfCheckpoints,
 
 				leaderboardOverlayEnabled_Overridden = overlay.leaderboardOverlayEnabled_Overridden,
 				leaderboardOverlayPosition_Overridden = overlay.leaderboardOverlayPosition_Overridden,
 				leaderboardFirstPlacePosition_Overridden = overlay.leaderboardFirstPlacePosition_Overridden,
 				leaderboardPlaceCount_Overridden = overlay.leaderboardPlaceCount_Overridden,
-				leaderboardPlaceSpacing_Overridden = overlay.leaderboardPlaceSpacing_Overridden
+				leaderboardPlaceSpacing_Overridden = overlay.leaderboardPlaceSpacing_Overridden,
+				leaderboardUseClassColors_Overridden = overlay.leaderboardUseClassColors_Overridden,
+				leaderboardClassColorStrength_Overridden = overlay.leaderboardClassColorStrength_Overridden,
+				leaderboardTelemetryPitColor_Overridden = overlay.leaderboardTelemetryPitColor_Overridden,
+				leaderboardTelemetryOutColor_Overridden = overlay.leaderboardTelemetryOutColor_Overridden,
+				leaderboardTelemetryIsBetweenCars_Overridden = overlay.leaderboardTelemetryIsBetweenCars_Overridden,
+				leaderboardTelemetryMode_Overridden = overlay.leaderboardTelemetryMode_Overridden,
+				leaderboardTelemetryNumberOfCheckpoints_Overridden = overlay.leaderboardTelemetryNumberOfCheckpoints_Overridden,
+
+				voiceOfOverlayEnabled = overlay.voiceOfOverlayEnabled_Overridden ? overlay.voiceOfOverlayEnabled : global.voiceOfOverlayEnabled,
+				voiceOfOverlayPosition = overlay.voiceOfOverlayPosition_Overridden ? overlay.voiceOfOverlayPosition : global.voiceOfOverlayPosition,
+
+				voiceOfOverlayEnabled_Overridden = overlay.voiceOfOverlayEnabled_Overridden,
+				voiceOfOverlayPosition_Overridden = overlay.voiceOfOverlayPosition_Overridden,
+
+				subtitleOverlayEnabled = overlay.subtitleOverlayEnabled_Overridden ? overlay.subtitleOverlayEnabled : global.subtitleOverlayEnabled,
+				subtitleOverlayPosition = overlay.subtitleOverlayPosition_Overridden ? overlay.subtitleOverlayPosition : global.subtitleOverlayPosition,
+				subtitleOverlayMaxSize = overlay.subtitleOverlayMaxSize_Overridden ? overlay.subtitleOverlayMaxSize : global.subtitleOverlayMaxSize,
+				subtitleOverlayBackgroundColor = overlay.subtitleOverlayBackgroundColor_Overridden ? overlay.subtitleOverlayBackgroundColor : global.subtitleOverlayBackgroundColor,
+				subtitleTextPadding = overlay.subtitleTextPadding_Overridden ? overlay.subtitleTextPadding : global.subtitleTextPadding,
+
+				subtitleOverlayEnabled_Overridden = overlay.subtitleOverlayEnabled_Overridden,
+				subtitleOverlayPosition_Overridden = overlay.subtitleOverlayPosition_Overridden,
+				subtitleOverlayMaxSize_Overridden = overlay.subtitleOverlayMaxSize_Overridden,
+				subtitleOverlayBackgroundColor_Overridden = overlay.subtitleOverlayBackgroundColor_Overridden,
+				subtitleTextPadding_Overridden = overlay.subtitleTextPadding_Overridden,
+
+				carNumberOverrideEnabled = overlay.carNumberOverrideEnabled_Overridden ? overlay.carNumberOverrideEnabled : global.carNumberOverrideEnabled,
+				carNumberColorOverrideA = overlay.carNumberColorOverrideA_Overridden ? overlay.carNumberColorOverrideA : global.carNumberColorOverrideA,
+				carNumberColorOverrideB = overlay.carNumberColorOverrideB_Overridden ? overlay.carNumberColorOverrideB : global.carNumberColorOverrideB,
+				carNumberColorOverrideC = overlay.carNumberColorOverrideC_Overridden ? overlay.carNumberColorOverrideC : global.carNumberColorOverrideC,
+				carNumberPatternOverride = overlay.carNumberPatternOverride_Overridden ? overlay.carNumberPatternOverride : global.carNumberPatternOverride,
+				carNumberSlantOverride = overlay.carNumberSlantOverride_Overridden ? overlay.carNumberSlantOverride : global.carNumberSlantOverride,
+
+				carNumberOverrideEnabled_Overridden = overlay.carNumberOverrideEnabled_Overridden,
+				carNumberColorOverrideA_Overridden = overlay.carNumberColorOverrideA_Overridden,
+				carNumberColorOverrideB_Overridden = overlay.carNumberColorOverrideB_Overridden,
+				carNumberColorOverrideC_Overridden = overlay.carNumberColorOverrideC_Overridden,
+				carNumberPatternOverride_Overridden = overlay.carNumberPatternOverride_Overridden,
+				carNumberSlantOverride_Overridden = overlay.carNumberSlantOverride_Overridden,
+
+				directorCarLength = overlay.directorCarLength_Overridden ? overlay.directorCarLength : global.directorCarLength,
+				directorHeatFalloff = overlay.directorHeatFalloff_Overridden ? overlay.directorHeatFalloff : global.directorHeatFalloff,
+				directorHeatBias = overlay.directorHeatBias_Overridden ? overlay.directorHeatBias : global.directorHeatBias,
+
+				directorCarLength_Overridden = overlay.directorCarLength_Overridden,
+				directorHeatFalloff_Overridden = overlay.directorHeatFalloff_Overridden,
+				directorHeatBias_Overridden = overlay.directorHeatBias_Overridden,
+
+				iracingCustomPaintsDirectory = overlay.iracingCustomPaintsDirectory_Overridden ? overlay.iracingCustomPaintsDirectory : global.iracingCustomPaintsDirectory,
+
+				iracingCustomPaintsDirectory_Overridden = overlay.iracingCustomPaintsDirectory_Overridden
 			};
 
 			foreach ( var item in overlay.imageSettingsDataDictionary )
@@ -328,8 +395,6 @@ namespace iRacingTVController
 					translation_Overridden = item.Value.translation_Overridden
 				};
 			}
-
-			return combined;
 		}
 	}
 }

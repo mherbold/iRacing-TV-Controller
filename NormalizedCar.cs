@@ -1,69 +1,73 @@
 ﻿
 using System;
+using System.IO;
 using System.Text.RegularExpressions;
 
+using irsdkSharp.Serialization.Enums.Fastest;
 using irsdkSharp.Serialization.Models.Session.DriverInfo;
+
+using static iRacingTVController.Unity;
 
 namespace iRacingTVController
 {
 	public class NormalizedCar
 	{
-		public int carIdx;
-		public int driverIdx;
+		public const int MAX_NUM_CHECKPOINTS = 300;
 
-		public string userName;
-		public string abbrevName;
+		public int carIdx = 0;
+		public int driverIdx = 0;
 
-		public string carNumber;
-		public int carNumberRaw;
+		public string userName = string.Empty;
+		public string abbrevName = string.Empty;
 
-		public Color classColor;
+		public string carNumber = string.Empty;
+		public int carNumberRaw = 0;
 
-		public bool includeInLeaderboard;
-		public bool visibleOnLeaderboard;
-		public bool hasCrossedStartLine;
-		public bool isOnPitRoad;
-		public bool isOutOfCar;
+		public Color classColor = Color.white;
 
-		public int officialPosition;
-		public int leaderboardPosition;
+		public bool includeInLeaderboard = false;
+		public bool hasCrossedStartLine = false;
+		public bool isOnPitRoad = false;
+		public bool isOutOfCar = false;
 
-		public float lapDistPctDelta;
-		public float lapDistPct;
+		public int officialPosition = 0;
+		public int leaderboardPosition = 0;
 
-		public int lapPositionErrorCount;
-		public float lapPosition;
-		public float lapPositionRelativeToLeader;
+		public float lapDistPctDelta = 0;
+		public float lapDistPct = 0;
 
-		public int checkpointIdx;
-		public double[] checkpoints;
+		public int lapPositionErrorCount = 0;
+		public float lapPosition = 0;
+		public float lapPositionRelativeToLeader = 0;
 
-		public float f2Time;
+		public int checkpointIdx = 0;
+		public double[] checkpoints = new double[ MAX_NUM_CHECKPOINTS ];
 
-		public int qualifyingPosition;
-		public float qualifyingTime;
+		public float f2Time = 0;
+		public float checkpointTime = 0;
 
-		public float attackingHeat;
-		public float defendingHeat;
+		public int qualifyingPosition = 0;
+		public float qualifyingTime = 0;
 
-		public float distanceToCarInFrontInMeters;
-		public float distanceToCarBehindInMeters;
+		public float attackingHeat = 0;
+		public float defendingHeat = 0;
 
-		public float distanceMovedInMeters;
-		public float speedInMetersPerSecond;
+		public float distanceToCarInFrontInMeters = 0;
+		public float distanceToCarBehindInMeters = 0;
 
-		public bool leaderboardPlacePositionOffsetIsValid;
-		public Vector2 leaderboardPlacePositionOffset;
-		public float leaderboardPlacePositionVelocity;
+		public float distanceMovedInMeters = 0;
+		public float speedInMetersPerSecond = 0;
 
-		public Texture2D carNumberTexture;
-		public Texture2D carTexture;
+		public string carNumberTextureUrl = string.Empty;
+		public string carTextureUrl = string.Empty;
+		public string helmetTextureUrl = string.Empty;
+
+		public bool wasVisibleOnLeaderboard = false;
+		public Vector2 placePosition = Vector2.zero;
 
 		public NormalizedCar( int carIdx )
 		{
 			this.carIdx = carIdx;
-
-			checkpoints = new double[ Settings.overlay.numberOfCheckpoints ];
 
 			Reset();
 		}
@@ -81,7 +85,6 @@ namespace iRacingTVController
 			classColor = Color.white;
 
 			includeInLeaderboard = false;
-			visibleOnLeaderboard = false;
 			hasCrossedStartLine = false;
 			isOnPitRoad = false;
 			isOutOfCar = false;
@@ -99,6 +102,7 @@ namespace iRacingTVController
 			checkpointIdx = -1;
 
 			f2Time = 0;
+			checkpointTime = 0;
 
 			qualifyingPosition = int.MaxValue;
 			qualifyingTime = 0;
@@ -112,16 +116,25 @@ namespace iRacingTVController
 			distanceMovedInMeters = 0;
 			speedInMetersPerSecond = 0;
 
-			leaderboardPlacePositionOffsetIsValid = false;
-			leaderboardPlacePositionOffset = Vector2.zero;
-			leaderboardPlacePositionVelocity = 0;
+			carNumberTextureUrl = string.Empty;
+			carTextureUrl = string.Empty;
 
-			carNumberTexture = null;
-			carTexture = null;
+			placePosition = Vector2.zero;
+			wasVisibleOnLeaderboard = false;
+
+			for ( var i = 0; i < checkpoints.Length; i++ )
+			{
+				checkpoints[ i ] = 0;
+			}
 		}
 
 		public void SessionChange()
 		{
+			if ( IRSDK.data == null )
+			{
+				return;
+			}
+
 			var car = IRSDK.data.Cars[ carIdx ];
 
 			hasCrossedStartLine = false;
@@ -133,18 +146,24 @@ namespace iRacingTVController
 
 			checkpointIdx = -1;
 
-			leaderboardPlacePositionOffsetIsValid = false;
-			leaderboardPlacePositionOffset = Vector2.zero;
-			leaderboardPlacePositionVelocity = 0;
+			for ( var i = 0; i < checkpoints.Length; i++ )
+			{
+				checkpoints[ i ] = 0;
+			}
 		}
 
-		public async void SessionUpdate()
+		public void SessionUpdate()
 		{
+			if ( IRSDK.session == null )
+			{
+				return;
+			}
+
 			if ( driverIdx == -1 )
 			{
 				includeInLeaderboard = false;
 
-				DriverModel driver = null;
+				DriverModel? driver = null;
 
 				for ( var driverIdx = 0; driverIdx < IRSDK.session.DriverInfo.Drivers.Count; driverIdx++ )
 				{
@@ -157,7 +176,7 @@ namespace iRacingTVController
 					}
 				}
 
-				if ( driverIdx != -1 )
+				if ( ( driver != null ) && ( driverIdx != -1 ) )
 				{
 					userName = Regex.Replace( driver.UserName, @"[\d]", string.Empty );
 
@@ -166,7 +185,7 @@ namespace iRacingTVController
 					carNumber = driver.CarNumber;
 					carNumberRaw = driver.CarNumberRaw;
 
-					ColorUtility.TryParseHtmlString( $"#{driver.CarClassColor[ 2.. ]}", out classColor );
+					classColor = new Color( driver.CarClassColor[ 2.. ] );
 
 					includeInLeaderboard = ( driver.IsSpectator == 0 ) && ( driver.CarIsPaceCar == 0 );
 
@@ -192,18 +211,26 @@ namespace iRacingTVController
 
 						if ( numberDesignMatch.Success )
 						{
-							var settings = Settings.overlay.GetImageSettings( "CarNumber" );
+							var settings = Settings.combined.imageSettingsDataDictionary[ "CarNumber" ];
 
-							var colorA = ( Settings.overlay.carNumberColorOverrideA != string.Empty ) ? Settings.overlay.carNumberColorOverrideA : numberDesignMatch.Groups[ 3 ].Value;
-							var colorB = ( Settings.overlay.carNumberColorOverrideB != string.Empty ) ? Settings.overlay.carNumberColorOverrideB : numberDesignMatch.Groups[ 4 ].Value;
-							var colorC = ( Settings.overlay.carNumberColorOverrideC != string.Empty ) ? Settings.overlay.carNumberColorOverrideC : numberDesignMatch.Groups[ 5 ].Value;
+							var colorA = numberDesignMatch.Groups[ 3 ].Value;
+							var colorB = numberDesignMatch.Groups[ 4 ].Value;
+							var colorC = numberDesignMatch.Groups[ 5 ].Value;
 
-							var pattern = ( Settings.overlay.carNumberPatternOverride != string.Empty ) ? Settings.overlay.carNumberPatternOverride : numberDesignMatch.Groups[ 1 ].Value;
-							var slant = ( Settings.overlay.carNumberSlantOverride != string.Empty ) ? Settings.overlay.carNumberSlantOverride : numberDesignMatch.Groups[ 2 ].Value;
+							var pattern = int.Parse( numberDesignMatch.Groups[ 1 ].Value );
+							var slant = int.Parse( numberDesignMatch.Groups[ 2 ].Value );
 
-							var url = $"http://localhost:32034/pk_number.png?size={settings.size.y}&view=0&number={carNumber}&numPat={pattern}&numCol={colorA},{colorB},{colorC}&numSlnt={slant}";
+							if ( Settings.combined.carNumberOverrideEnabled )
+							{
+								colorA = Settings.combined.carNumberColorOverrideA.ToString();
+								colorB = Settings.combined.carNumberColorOverrideB.ToString();
+								colorC = Settings.combined.carNumberColorOverrideC.ToString();
 
-							carNumberTexture = await RemoteTexture.Get( url );
+								pattern = Settings.combined.carNumberPatternOverride;
+								slant = Settings.combined.carNumberSlantOverride;
+							}
+
+							carNumberTextureUrl = $"http://localhost:32034/pk_number.png?size={settings.size.y}&view=0&number={carNumber}&numPat={pattern}&numCol={colorA},{colorB},{colorC}&numSlnt={slant}";
 						}
 
 						var carDesignMatch = Regex.Match( driver.CarDesignStr, "(\\d+),(.{6}),(.{6}),(.{6}),?(.{6})?" );
@@ -212,16 +239,30 @@ namespace iRacingTVController
 						{
 							var licColor = driver.LicColor[ 2.. ];
 							var carPath = driver.CarPath.Replace( " ", "%5C" );
-							var customCarTgaFilePath = $"{Settings.overlay.customPaintsDirectory}\\{driver.CarPath}\\car_{driver.UserID}.tga".Replace( " ", "%5C" );
+							var customCarTgaFilePath = $"{Settings.combined.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_{driver.UserID}.tga".Replace( " ", "%5C" );
 
 							if ( !File.Exists( customCarTgaFilePath ) )
 							{
 								customCarTgaFilePath = string.Empty;
 							}
 
-							var url = $"http://localhost:32034/pk_car.png?size=2&view=1&licCol={licColor}&club={driver.ClubID}&sponsors={driver.CarSponsor_1},{driver.CarSponsor_2}&numPat={numberDesignMatch.Groups[ 1 ].Value}&numCol={numberDesignMatch.Groups[ 3 ].Value},{numberDesignMatch.Groups[ 4 ].Value},{numberDesignMatch.Groups[ 5 ].Value}&numSlnt={numberDesignMatch.Groups[ 2 ].Value}&number={carNumber}&carPath={carPath}&carPat={carDesignMatch.Groups[ 1 ].Value}&carCol={carDesignMatch.Groups[ 2 ].Value},{carDesignMatch.Groups[ 3 ].Value},{carDesignMatch.Groups[ 4 ].Value}&carRimType=2&carRimCol={carDesignMatch.Groups[ 5 ].Value}&carCustPaint={customCarTgaFilePath}";
+							carTextureUrl = $"http://localhost:32034/pk_car.png?size=2&view=1&licCol={licColor}&club={driver.ClubID}&sponsors={driver.CarSponsor_1},{driver.CarSponsor_2}&numPat={numberDesignMatch.Groups[ 1 ].Value}&numCol={numberDesignMatch.Groups[ 3 ].Value},{numberDesignMatch.Groups[ 4 ].Value},{numberDesignMatch.Groups[ 5 ].Value}&numSlnt={numberDesignMatch.Groups[ 2 ].Value}&number={carNumber}&carPath={carPath}&carPat={carDesignMatch.Groups[ 1 ].Value}&carCol={carDesignMatch.Groups[ 2 ].Value},{carDesignMatch.Groups[ 3 ].Value},{carDesignMatch.Groups[ 4 ].Value}&carRimType=2&carRimCol={carDesignMatch.Groups[ 5 ].Value}&carCustPaint={customCarTgaFilePath}";
+						}
 
-							carTexture = await RemoteTexture.Get( url );
+						var helmetDesignMatch = Regex.Match( driver.HelmetDesignStr, "(\\d+),(.{6}),(.{6}),(.{6})" );
+
+						if ( helmetDesignMatch.Success )
+						{
+							var licColor = driver.LicColor[ 2.. ];
+							var helmetType = driver.HelmetType;
+							var customHelmetTgaFileName = $"{Settings.combined.iracingCustomPaintsDirectory}\\helmet_{driver.UserID}.tga".Replace( " ", "%5C" );
+
+							if ( !File.Exists( customHelmetTgaFileName ) )
+							{
+								customHelmetTgaFileName = string.Empty;
+							}
+
+							helmetTextureUrl = $"http://localhost:32034/pk_helmet.png?size=7&hlmtPat={helmetDesignMatch.Groups[ 1 ].Value}&licCol={licColor}&hlmtCol={helmetDesignMatch.Groups[ 2 ].Value},{helmetDesignMatch.Groups[ 3 ].Value},{helmetDesignMatch.Groups[ 4 ].Value}&view=1&hlmtType={helmetType}&hlmtCustPaint={customHelmetTgaFileName}";
 						}
 					}
 				}
@@ -230,7 +271,7 @@ namespace iRacingTVController
 
 		public void Update()
 		{
-			if ( !includeInLeaderboard )
+			if ( ( IRSDK.data == null ) || !includeInLeaderboard )
 			{
 				return;
 			}
@@ -240,10 +281,11 @@ namespace iRacingTVController
 			isOnPitRoad = car.CarIdxOnPitRoad;
 			isOutOfCar = car.CarIdxLapDistPct == -1;
 
+			officialPosition = car.CarIdxPosition;
+			f2Time = Math.Max( 0, car.CarIdxF2Time );
+
 			if ( !isOutOfCar )
 			{
-				f2Time = Math.Max( 0, car.CarIdxF2Time );
-
 				var newCarIdxLapDistPct = Math.Max( 0, car.CarIdxLapDistPct );
 
 				lapDistPctDelta = newCarIdxLapDistPct - lapDistPct;
@@ -258,7 +300,14 @@ namespace iRacingTVController
 					lapDistPctDelta += 1.0f;
 				}
 
-				if ( !hasCrossedStartLine )
+				if ( hasCrossedStartLine )
+				{
+					if ( IRSDK.normalizedData.sessionState <= SessionState.StateParadeLaps )
+					{
+						hasCrossedStartLine = false;
+					}
+				}
+				else
 				{
 					if ( ( car.CarIdxLap >= 2 ) || ( ( car.CarIdxLap >= 1 ) && ( newCarIdxLapDistPct > 0 ) && ( newCarIdxLapDistPct < 0.5f ) ) )
 					{
@@ -282,7 +331,7 @@ namespace iRacingTVController
 						lapPosition += lapDistPctDelta;
 					}
 
-					var checkpointIdx = (int) Math.Floor( lapDistPct * Settings.overlay.numberOfCheckpoints ) % Settings.overlay.numberOfCheckpoints;
+					var checkpointIdx = (int) Math.Floor( lapDistPct * Settings.combined.leaderboardTelemetryNumberOfCheckpoints ) % Settings.combined.leaderboardTelemetryNumberOfCheckpoints;
 
 					if ( checkpointIdx != this.checkpointIdx )
 					{
@@ -295,8 +344,6 @@ namespace iRacingTVController
 				{
 					lapPosition = 0;
 				}
-
-				officialPosition = car.CarIdxPosition;
 
 				distanceMovedInMeters = lapDistPctDelta * IRSDK.normalizedSession.trackLengthInMeters;
 				speedInMetersPerSecond = distanceMovedInMeters / (float) IRSDK.normalizedData.sessionTimeDelta;

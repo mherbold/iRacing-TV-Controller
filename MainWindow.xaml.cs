@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Media;
 
 using Dsafa.WpfColorPicker;
 
@@ -31,6 +30,8 @@ namespace iRacingTVController
 		{
 			Instance = this;
 
+			initializing++;
+
 			try
 			{
 				InitializeComponent();
@@ -43,8 +44,6 @@ namespace iRacingTVController
 
 				throw;
 			}
-
-			initializing++;
 
 			foreach ( var item in Settings.overlay.imageSettingsDataDictionary )
 			{
@@ -102,26 +101,26 @@ namespace iRacingTVController
 				}
 			}
 
-			var combined = Settings.GetCombinedOverlay();
+			Settings.UpdateCombinedOverlay();
 
-			General_Position_X.SetValue( combined.overlayPosition.x );
-			General_Position_Y.SetValue( combined.overlayPosition.y );
+			General_Position_X.SetValue( Settings.combined.overlayPosition.x );
+			General_Position_Y.SetValue( Settings.combined.overlayPosition.y );
 
-			General_Size_W.SetValue( combined.overlaySize.x );
-			General_Size_H.SetValue( combined.overlaySize.y );
+			General_Size_W.SetValue( Settings.combined.overlaySize.x );
+			General_Size_H.SetValue( Settings.combined.overlaySize.y );
 
-			General_Position_Override.IsChecked = combined.overlayPosition_Overridden;
-			General_Size_Override.IsChecked = combined.overlaySize_Overridden;
+			General_Position_Override.IsChecked = Settings.combined.overlayPosition_Overridden;
+			General_Size_Override.IsChecked = Settings.combined.overlaySize_Overridden;
 
-			Font_FontA_Name.SelectedItem = fontPaths.FirstOrDefault( x => x.Value == combined.fontPaths[ 0 ] ).Key;
-			Font_FontB_Name.SelectedItem = fontPaths.FirstOrDefault( x => x.Value == combined.fontPaths[ 1 ] ).Key;
-			Font_FontC_Name.SelectedItem = fontPaths.FirstOrDefault( x => x.Value == combined.fontPaths[ 2 ] ).Key;
-			Font_FontD_Name.SelectedItem = fontPaths.FirstOrDefault( x => x.Value == combined.fontPaths[ 3 ] ).Key;
+			Font_FontA_Name.SelectedItem = fontPaths.FirstOrDefault( x => x.Value == Settings.combined.fontPaths[ 0 ] ).Key;
+			Font_FontB_Name.SelectedItem = fontPaths.FirstOrDefault( x => x.Value == Settings.combined.fontPaths[ 1 ] ).Key;
+			Font_FontC_Name.SelectedItem = fontPaths.FirstOrDefault( x => x.Value == Settings.combined.fontPaths[ 2 ] ).Key;
+			Font_FontD_Name.SelectedItem = fontPaths.FirstOrDefault( x => x.Value == Settings.combined.fontPaths[ 3 ] ).Key;
 
-			Font_FontA_Name_Override.IsChecked = combined.fontNames_Overridden[ 0 ];
-			Font_FontB_Name_Override.IsChecked = combined.fontNames_Overridden[ 1 ];
-			Font_FontC_Name_Override.IsChecked = combined.fontNames_Overridden[ 2 ];
-			Font_FontD_Name_Override.IsChecked = combined.fontNames_Overridden[ 3 ];
+			Font_FontA_Name_Override.IsChecked = Settings.combined.fontNames_Overridden[ 0 ];
+			Font_FontB_Name_Override.IsChecked = Settings.combined.fontNames_Overridden[ 1 ];
+			Font_FontC_Name_Override.IsChecked = Settings.combined.fontNames_Overridden[ 2 ];
+			Font_FontD_Name_Override.IsChecked = Settings.combined.fontNames_Overridden[ 3 ];
 
 			if ( Image_ID.SelectedIndex == -1 )
 			{
@@ -143,20 +142,74 @@ namespace iRacingTVController
 
 			InitializeTranslation();
 
-			Leaderboard_Overlay_Enable.IsChecked = combined.leaderboardOverlayEnabled;
-			Leaderboard_OverlayPosition_X.SetValue( (int) combined.leaderboardOverlayPosition.x );
-			Leaderboard_OverlayPosition_Y.SetValue( (int) combined.leaderboardOverlayPosition.y );
-			Leaderboard_FirstPlacePosition_X.SetValue( (int) combined.leaderboardFirstPlacePosition.x );
-			Leaderboard_FirstPlacePosition_Y.SetValue( (int) combined.leaderboardFirstPlacePosition.y );
-			Leaderboard_PlaceCount.Value = combined.leaderboardPlaceCount;
-			Leaderboard_PlaceSpacing_X.SetValue( (int) combined.leaderboardPlaceSpacing.x );
-			Leaderboard_PlaceSpacing_Y.SetValue( (int) combined.leaderboardPlaceSpacing.y );
+			RaceStatus_Overlay_Enable.IsChecked = Settings.combined.raceStatusOverlayEnabled;
+			RaceStatus_OverlayPosition_X.SetValue( (int) Settings.combined.raceStatusOverlayPosition.x );
+			RaceStatus_OverlayPosition_Y.SetValue( (int) Settings.combined.raceStatusOverlayPosition.y );
 
-			Leaderboard_OverlayEnable_Override.IsChecked = combined.leaderboardOverlayEnabled_Overridden;
-			Leaderboard_OverlayPosition_Override.IsChecked = combined.leaderboardOverlayPosition_Overridden;
-			Leaderboard_FirstPlacePosition_Override.IsChecked = combined.leaderboardFirstPlacePosition_Overridden;
-			Leaderboard_PlaceCount_Override.IsChecked = combined.leaderboardPlaceCount_Overridden;
-			Leaderboard_PlaceSpacing_Override.IsChecked = combined.leaderboardPlaceSpacing_Overridden;
+			RaceStatus_OverlayEnable_Override.IsChecked = Settings.combined.raceStatusOverlayEnabled_Overridden;
+			RaceStatus_OverlayPosition_Override.IsChecked = Settings.combined.raceStatusOverlayPosition_Overridden;
+
+			Leaderboard_Overlay_Enable.IsChecked = Settings.combined.leaderboardOverlayEnabled;
+			Leaderboard_OverlayPosition_X.SetValue( (int) Settings.combined.leaderboardOverlayPosition.x );
+			Leaderboard_OverlayPosition_Y.SetValue( (int) Settings.combined.leaderboardOverlayPosition.y );
+			Leaderboard_FirstPlacePosition_X.SetValue( (int) Settings.combined.leaderboardFirstPlacePosition.x );
+			Leaderboard_FirstPlacePosition_Y.SetValue( (int) Settings.combined.leaderboardFirstPlacePosition.y );
+			Leaderboard_PlaceCount.Value = Settings.combined.leaderboardPlaceCount;
+			Leaderboard_PlaceSpacing_X.SetValue( (int) Settings.combined.leaderboardPlaceSpacing.x );
+			Leaderboard_PlaceSpacing_Y.SetValue( (int) Settings.combined.leaderboardPlaceSpacing.y );
+			Leaderboard_UseClassColors_Enable.IsChecked = Settings.combined.leaderboardUseClassColors;
+			Leaderboard_ClassColorStrength.Value = Settings.combined.leaderboardClassColorStrength * 255;
+			Leaderboard_TelemetryPitColor_R.SetValue( Settings.combined.leaderboardTelemetryPitColor.r );
+			Leaderboard_TelemetryPitColor_G.SetValue( Settings.combined.leaderboardTelemetryPitColor.g );
+			Leaderboard_TelemetryPitColor_B.SetValue( Settings.combined.leaderboardTelemetryPitColor.b );
+			Leaderboard_TelemetryPitColor_A.SetValue( Settings.combined.leaderboardTelemetryPitColor.a );
+			Leaderboard_TelemetryOutColor_R.SetValue( Settings.combined.leaderboardTelemetryOutColor.r );
+			Leaderboard_TelemetryOutColor_G.SetValue( Settings.combined.leaderboardTelemetryOutColor.g );
+			Leaderboard_TelemetryOutColor_B.SetValue( Settings.combined.leaderboardTelemetryOutColor.b );
+			Leaderboard_TelemetryOutColor_A.SetValue( Settings.combined.leaderboardTelemetryOutColor.a );
+			Leaderboard_TelemetryIsInBetweenCars.IsChecked = Settings.combined.leaderboardTelemetryIsBetweenCars;
+			Leaderboard_TelemetryMode_ShowLaps.IsChecked = ( Settings.combined.leaderboardTelemetryMode == 0 );
+			Leaderboard_TelemetryMode_ShowDistance.IsChecked = ( Settings.combined.leaderboardTelemetryMode == 1 );
+			Leaderboard_TelemetryMode_ShowTime.IsChecked = ( Settings.combined.leaderboardTelemetryMode == 2 );
+			Leaderboard_TelemetryNumberOfCheckpoints.Value = Settings.combined.leaderboardTelemetryNumberOfCheckpoints;
+
+			Leaderboard_OverlayEnable_Override.IsChecked = Settings.combined.leaderboardOverlayEnabled_Overridden;
+			Leaderboard_OverlayPosition_Override.IsChecked = Settings.combined.leaderboardOverlayPosition_Overridden;
+			Leaderboard_FirstPlacePosition_Override.IsChecked = Settings.combined.leaderboardFirstPlacePosition_Overridden;
+			Leaderboard_PlaceCount_Override.IsChecked = Settings.combined.leaderboardPlaceCount_Overridden;
+			Leaderboard_PlaceSpacing_Override.IsChecked = Settings.combined.leaderboardPlaceSpacing_Overridden;
+			Leaderboard_UseClassColors_Override.IsChecked = Settings.combined.leaderboardUseClassColors_Overridden;
+			Leaderboard_ClassColorStrength_Override.IsChecked = Settings.combined.leaderboardClassColorStrength_Overridden;
+			Leaderboard_TelemetryPitColor_Override.IsChecked = Settings.combined.leaderboardTelemetryPitColor_Overridden;
+			Leaderboard_TelemetryOutColor_Override.IsChecked = Settings.combined.leaderboardTelemetryOutColor_Overridden;
+			Leaderboard_TelemetryIsInBetweenCars_Override.IsChecked = Settings.combined.leaderboardTelemetryIsBetweenCars_Overridden;
+			Leaderboard_TelemetryMode_Override.IsChecked = Settings.combined.leaderboardTelemetryMode_Overridden;
+			Leaderboard_TelemetryNumberOfCheckpoints_Override.IsChecked = Settings.combined.leaderboardTelemetryNumberOfCheckpoints_Overridden;
+
+			VoiceOf_Overlay_Enable.IsChecked = Settings.combined.voiceOfOverlayEnabled;
+			VoiceOf_OverlayPosition_X.SetValue( (int) Settings.combined.voiceOfOverlayPosition.x );
+			VoiceOf_OverlayPosition_Y.SetValue( (int) Settings.combined.voiceOfOverlayPosition.y );
+
+			VoiceOf_OverlayEnable_Override.IsChecked = Settings.combined.voiceOfOverlayEnabled_Overridden;
+			VoiceOf_OverlayPosition_Override.IsChecked = Settings.combined.voiceOfOverlayPosition_Overridden;
+
+			Subtitle_Overlay_Enable.IsChecked = Settings.combined.subtitleOverlayEnabled;
+			Subtitle_OverlayPosition_X.SetValue( (int) Settings.combined.subtitleOverlayPosition.x );
+			Subtitle_OverlayPosition_Y.SetValue( (int) Settings.combined.subtitleOverlayPosition.y );
+			Subtitle_OverlayMaxSize_W.SetValue( (int) Settings.combined.subtitleOverlayMaxSize.x );
+			Subtitle_OverlayMaxSize_H.SetValue( (int) Settings.combined.subtitleOverlayMaxSize.y );
+			Subtitle_OverlayBackgroundColor_R.SetValue( Settings.combined.subtitleOverlayBackgroundColor.r );
+			Subtitle_OverlayBackgroundColor_G.SetValue( Settings.combined.subtitleOverlayBackgroundColor.g );
+			Subtitle_OverlayBackgroundColor_B.SetValue( Settings.combined.subtitleOverlayBackgroundColor.b );
+			Subtitle_OverlayBackgroundColor_A.SetValue( Settings.combined.subtitleOverlayBackgroundColor.a );
+			Subtitle_TextPadding_X.SetValue( Settings.combined.subtitleTextPadding.x );
+			Subtitle_TextPadding_Y.SetValue( Settings.combined.subtitleTextPadding.y );
+
+			Subtitle_OverlayEnable_Override.IsChecked = Settings.combined.subtitleOverlayEnabled_Overridden;
+			Subtitle_OverlayPosition_Override.IsChecked = Settings.combined.subtitleOverlayPosition_Overridden;
+			Subtitle_OverlayMaxSize_Override.IsChecked = Settings.combined.subtitleOverlayMaxSize_Overridden;
+			Subtitle_OverlayBackgroundColor_Override.IsChecked = Settings.combined.subtitleOverlayBackgroundColor_Overridden;
+			Subtitle_TextPadding_Override.IsChecked = Settings.combined.subtitleTextPadding_Overridden;
 
 			initializing--;
 		}
@@ -169,9 +222,9 @@ namespace iRacingTVController
 
 				var id = (string) Image_ID.Items.GetItemAt( Image_ID.SelectedIndex );
 
-				var combined = Settings.GetCombinedOverlay();
+				Settings.UpdateCombinedOverlay();
 
-				var settings = combined.imageSettingsDataDictionary[ id ];
+				var settings = Settings.combined.imageSettingsDataDictionary[ id ];
 
 				Image_ImageType.SelectedItem = settings.imageType;
 				Image_FilePath.Text = settings.filePath;
@@ -202,9 +255,9 @@ namespace iRacingTVController
 
 				var id = (string) Text_ID.Items.GetItemAt( Text_ID.SelectedIndex );
 
-				var combined = Settings.GetCombinedOverlay();
+				Settings.UpdateCombinedOverlay();
 
-				var settings = combined.textSettingsDataDictionary[ id ];
+				var settings = Settings.combined.textSettingsDataDictionary[ id ];
 
 				Text_FontIndex.SelectedItem = settings.fontIndex;
 				Text_FontSize.SetValue( settings.fontSize );
@@ -233,11 +286,11 @@ namespace iRacingTVController
 		{
 			initializing++;
 
-			var combined = Settings.GetCombinedOverlay();
+			Settings.UpdateCombinedOverlay();
 
 			L18N_ListView.Items.Clear();
 
-			foreach ( var item in combined.translationDictionary )
+			foreach ( var item in Settings.combined.translationDictionary )
 			{
 				L18N_ListView.Items.Add( item );
 			}
@@ -614,7 +667,7 @@ namespace iRacingTVController
 				{
 					var settings = overlaySettings.tintColor_Overridden ? overlaySettings : globalSettings;
 
-					settings.tintColor = new Unity.Color( Image_TintColor_R.GetValue(), Image_TintColor_G.GetValue(), Image_TintColor_B.GetValue(), Image_TintColor_A.GetValue() );
+					settings.tintColor = new Color( Image_TintColor_R.GetValue(), Image_TintColor_G.GetValue(), Image_TintColor_B.GetValue(), Image_TintColor_A.GetValue() );
 				}
 
 				IPC.readyToSendSettings = true;
@@ -751,12 +804,104 @@ namespace iRacingTVController
 				{
 					var settings = overlaySettings.tintColor_Overridden ? overlaySettings : globalSettings;
 
-					settings.tintColor = new Unity.Color( Text_TintColor_R.GetValue(), Text_TintColor_G.GetValue(), Text_TintColor_B.GetValue(), Text_TintColor_A.GetValue() );
+					settings.tintColor = new Color( Text_TintColor_R.GetValue(), Text_TintColor_G.GetValue(), Text_TintColor_B.GetValue(), Text_TintColor_A.GetValue() );
 				}
 
 				IPC.readyToSendSettings = true;
 
 				Settings.SaveOverlay();
+			}
+		}
+
+		private void RaceStatus_Update( object sender, EventArgs e )
+		{
+			if ( initializing == 0 )
+			{
+				var overridden = RaceStatus_OverlayEnable_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.raceStatusOverlayEnabled_Overridden != overridden )
+				{
+					Settings.overlay.raceStatusOverlayEnabled_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.raceStatusOverlayEnabled_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.raceStatusOverlayEnabled = RaceStatus_Overlay_Enable.IsChecked ?? false;
+				}
+
+				overridden = RaceStatus_OverlayPosition_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.raceStatusOverlayPosition_Overridden != overridden )
+				{
+					Settings.overlay.raceStatusOverlayPosition_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.raceStatusOverlayPosition_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.raceStatusOverlayPosition = new Vector2( RaceStatus_OverlayPosition_X.GetValue(), RaceStatus_OverlayPosition_Y.GetValue() );
+				}
+
+				IPC.readyToSendSettings = true;
+
+				Settings.SaveOverlay();
+			}
+		}
+
+		private void Leaderboard_TelemetryPitColor_Palette_Click( object sender, EventArgs e )
+		{
+			var color = new System.Windows.Media.Color()
+			{
+				ScR = Leaderboard_TelemetryPitColor_R.GetValue(),
+				ScG = Leaderboard_TelemetryPitColor_G.GetValue(),
+				ScB = Leaderboard_TelemetryPitColor_B.GetValue(),
+				ScA = Leaderboard_TelemetryPitColor_A.GetValue()
+			};
+
+			var colorPickerDialog = new ColorPickerDialog( color )
+			{
+				Owner = this
+			};
+
+			var result = colorPickerDialog.ShowDialog();
+
+			if ( result.HasValue && result.Value )
+			{
+				Leaderboard_TelemetryPitColor_R.SetValue( colorPickerDialog.Color.ScR );
+				Leaderboard_TelemetryPitColor_G.SetValue( colorPickerDialog.Color.ScG );
+				Leaderboard_TelemetryPitColor_B.SetValue( colorPickerDialog.Color.ScB );
+				Leaderboard_TelemetryPitColor_A.SetValue( colorPickerDialog.Color.ScA );
+			}
+		}
+
+		private void Leaderboard_TelemetryOutColor_Palette_Click( object sender, EventArgs e )
+		{
+			var color = new System.Windows.Media.Color()
+			{
+				ScR = Leaderboard_TelemetryOutColor_R.GetValue(),
+				ScG = Leaderboard_TelemetryOutColor_G.GetValue(),
+				ScB = Leaderboard_TelemetryOutColor_B.GetValue(),
+				ScA = Leaderboard_TelemetryOutColor_A.GetValue()
+			};
+
+			var colorPickerDialog = new ColorPickerDialog( color )
+			{
+				Owner = this
+			};
+
+			var result = colorPickerDialog.ShowDialog();
+
+			if ( result.HasValue && result.Value )
+			{
+				Leaderboard_TelemetryOutColor_R.SetValue( colorPickerDialog.Color.ScR );
+				Leaderboard_TelemetryOutColor_G.SetValue( colorPickerDialog.Color.ScG );
+				Leaderboard_TelemetryOutColor_B.SetValue( colorPickerDialog.Color.ScB );
+				Leaderboard_TelemetryOutColor_A.SetValue( colorPickerDialog.Color.ScA );
 			}
 		}
 
@@ -837,6 +982,271 @@ namespace iRacingTVController
 					var overlay = Settings.overlay.leaderboardPlaceSpacing_Overridden ? Settings.overlay : Settings.global;
 
 					overlay.leaderboardPlaceSpacing = new Vector2( Leaderboard_PlaceSpacing_X.GetValue(), Leaderboard_PlaceSpacing_Y.GetValue() );
+				}
+
+				overridden = Leaderboard_UseClassColors_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.leaderboardUseClassColors_Overridden != overridden )
+				{
+					Settings.overlay.leaderboardUseClassColors_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.leaderboardUseClassColors_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.leaderboardUseClassColors = Leaderboard_UseClassColors_Enable.IsChecked ?? false;
+				}
+
+				overridden = Leaderboard_ClassColorStrength_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.leaderboardClassColorStrength_Overridden != overridden )
+				{
+					Settings.overlay.leaderboardClassColorStrength_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.leaderboardClassColorStrength_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.leaderboardClassColorStrength = (int) ( Leaderboard_ClassColorStrength.Value / 255.0f );
+				}
+
+				overridden = Leaderboard_TelemetryPitColor_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.leaderboardTelemetryPitColor_Overridden != overridden )
+				{
+					Settings.overlay.leaderboardTelemetryPitColor_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.leaderboardTelemetryPitColor_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.leaderboardTelemetryPitColor = new Color( Leaderboard_TelemetryPitColor_R.GetValue(), Leaderboard_TelemetryPitColor_G.GetValue(), Leaderboard_TelemetryPitColor_B.GetValue(), Leaderboard_TelemetryPitColor_A.GetValue() );
+				}
+
+				overridden = Leaderboard_TelemetryOutColor_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.leaderboardTelemetryOutColor_Overridden != overridden )
+				{
+					Settings.overlay.leaderboardTelemetryOutColor_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.leaderboardTelemetryOutColor_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.leaderboardTelemetryOutColor = new Color( Leaderboard_TelemetryOutColor_R.GetValue(), Leaderboard_TelemetryOutColor_G.GetValue(), Leaderboard_TelemetryOutColor_B.GetValue(), Leaderboard_TelemetryOutColor_A.GetValue() );
+				}
+
+				overridden = Leaderboard_TelemetryIsInBetweenCars_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.leaderboardTelemetryIsBetweenCars_Overridden != overridden )
+				{
+					Settings.overlay.leaderboardTelemetryIsBetweenCars_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.leaderboardTelemetryIsBetweenCars_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.leaderboardTelemetryIsBetweenCars = Leaderboard_TelemetryIsInBetweenCars.IsChecked ?? false;
+				}
+
+				overridden = Leaderboard_TelemetryMode_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.leaderboardTelemetryMode_Overridden != overridden )
+				{
+					Settings.overlay.leaderboardTelemetryMode_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.leaderboardTelemetryMode_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.leaderboardTelemetryMode = 0;
+					
+					if ( Leaderboard_TelemetryMode_ShowDistance.IsChecked == true )
+					{
+						overlay.leaderboardTelemetryMode = 1;
+					}
+					else if ( Leaderboard_TelemetryMode_ShowTime.IsChecked == true )
+					{
+						overlay.leaderboardTelemetryMode = 2;
+					}
+				}
+
+				overridden = Leaderboard_TelemetryNumberOfCheckpoints_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.leaderboardTelemetryNumberOfCheckpoints_Overridden != overridden )
+				{
+					Settings.overlay.leaderboardTelemetryNumberOfCheckpoints_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.leaderboardTelemetryNumberOfCheckpoints_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.leaderboardTelemetryNumberOfCheckpoints = (int) Leaderboard_TelemetryNumberOfCheckpoints.Value;
+				}
+
+				IPC.readyToSendSettings = true;
+
+				Settings.SaveOverlay();
+			}
+		}
+
+		private void VoiceOf_Update( object sender, EventArgs e )
+		{
+			if ( initializing == 0 )
+			{
+				var overridden = VoiceOf_OverlayEnable_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.voiceOfOverlayEnabled_Overridden != overridden )
+				{
+					Settings.overlay.voiceOfOverlayEnabled_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.voiceOfOverlayEnabled_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.voiceOfOverlayEnabled = VoiceOf_Overlay_Enable.IsChecked ?? false;
+				}
+
+				overridden = VoiceOf_OverlayPosition_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.voiceOfOverlayPosition_Overridden != overridden )
+				{
+					Settings.overlay.voiceOfOverlayPosition_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.voiceOfOverlayPosition_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.voiceOfOverlayPosition = new Vector2( VoiceOf_OverlayPosition_X.GetValue(), VoiceOf_OverlayPosition_Y.GetValue() );
+				}
+
+				IPC.readyToSendSettings = true;
+
+				Settings.SaveOverlay();
+			}
+		}
+
+		private void Subtitle_OverlayBackgroundColor_Palette_Click( object sender, EventArgs e )
+		{
+			var color = new System.Windows.Media.Color()
+			{
+				ScR = Subtitle_OverlayBackgroundColor_R.GetValue(),
+				ScG = Subtitle_OverlayBackgroundColor_G.GetValue(),
+				ScB = Subtitle_OverlayBackgroundColor_B.GetValue(),
+				ScA = Subtitle_OverlayBackgroundColor_A.GetValue()
+			};
+
+			var colorPickerDialog = new ColorPickerDialog( color )
+			{
+				Owner = this
+			};
+
+			var result = colorPickerDialog.ShowDialog();
+
+			if ( result.HasValue && result.Value )
+			{
+				Subtitle_OverlayBackgroundColor_R.SetValue( colorPickerDialog.Color.ScR );
+				Subtitle_OverlayBackgroundColor_G.SetValue( colorPickerDialog.Color.ScG );
+				Subtitle_OverlayBackgroundColor_B.SetValue( colorPickerDialog.Color.ScB );
+				Subtitle_OverlayBackgroundColor_A.SetValue( colorPickerDialog.Color.ScA );
+			}
+		}
+
+		private void Subtitle_Update( object sender, EventArgs e )
+		{
+			if ( initializing == 0 )
+			{
+				var overridden = Subtitle_OverlayEnable_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.subtitleOverlayEnabled_Overridden != overridden )
+				{
+					Settings.overlay.subtitleOverlayEnabled_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.subtitleOverlayEnabled_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.subtitleOverlayEnabled = Subtitle_Overlay_Enable.IsChecked ?? false;
+				}
+
+				overridden = Subtitle_OverlayPosition_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.subtitleOverlayPosition_Overridden != overridden )
+				{
+					Settings.overlay.subtitleOverlayPosition_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.subtitleOverlayPosition_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.subtitleOverlayPosition = new Vector2( Subtitle_OverlayPosition_X.GetValue(), Subtitle_OverlayPosition_Y.GetValue() );
+				}
+
+				overridden = Subtitle_OverlayMaxSize_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.subtitleOverlayMaxSize_Overridden != overridden )
+				{
+					Settings.overlay.subtitleOverlayMaxSize_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.subtitleOverlayMaxSize_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.subtitleOverlayMaxSize = new Vector2( Subtitle_OverlayMaxSize_W.GetValue(), Subtitle_OverlayMaxSize_H.GetValue() );
+				}
+
+				overridden = Subtitle_OverlayBackgroundColor_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.subtitleOverlayBackgroundColor_Overridden != overridden )
+				{
+					Settings.overlay.subtitleOverlayBackgroundColor_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.subtitleOverlayBackgroundColor_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.subtitleOverlayBackgroundColor = new Color( Subtitle_OverlayBackgroundColor_R.GetValue(), Subtitle_OverlayBackgroundColor_G.GetValue(), Subtitle_OverlayBackgroundColor_B.GetValue(), Subtitle_OverlayBackgroundColor_A.GetValue() );
+				}
+
+				overridden = Subtitle_TextPadding_Override.IsChecked ?? false;
+
+				if ( Settings.overlay.subtitleTextPadding_Overridden != overridden )
+				{
+					Settings.overlay.subtitleTextPadding_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlay.subtitleTextPadding_Overridden ? Settings.overlay : Settings.global;
+
+					overlay.subtitleTextPadding = new Vector2Int( Subtitle_TextPadding_X.GetValue(), Subtitle_TextPadding_Y.GetValue() );
 				}
 
 				IPC.readyToSendSettings = true;

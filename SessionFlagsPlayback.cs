@@ -12,7 +12,7 @@ namespace iRacingTVController
 		public static List<SessionFlagsData> sessionFlagsDataList = new();
 
 		public static string sessionFlagsFilePath = string.Empty;
-		public static StreamWriter streamWriter = null;
+		public static StreamWriter? streamWriter = null;
 
 		public static string GetSessionFlagsFilePath()
 		{

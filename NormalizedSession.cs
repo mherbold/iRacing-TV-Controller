@@ -6,20 +6,20 @@ namespace iRacingTVController
 {
 	public class NormalizedSession
 	{
-		public int sessionId;
-		public int subSessionId;
+		public int sessionId = 0;
+		public int subSessionId = 0;
 
-		public int sessionNumber;
-		public string sessionName;
+		public int sessionNumber = -1;
+		public string sessionName = string.Empty;
 
-		public bool isReplay;
-		public bool isInRaceSession;
-		public bool isInQualifyingSession;
+		public bool isReplay = false;
+		public bool isInPracticeSession = false;
+		public bool isInQualifyingSession = false;
+		public bool isInRaceSession = false;
 
-		public float trackLengthInMeters;
+		public float trackLengthInMeters = 0;
 
-		public int seriesId;
-		public Texture2D seriesTexture;
+		public string seriesLogoTextureUrl = string.Empty;
 
 		public NormalizedSession()
 		{
@@ -31,17 +31,17 @@ namespace iRacingTVController
 			sessionId = 0;
 			subSessionId = 0;
 
-			sessionNumber = 0;
+			sessionNumber = -1;
 			sessionName = string.Empty;
 
 			isReplay = false;
-			isInRaceSession = false;
+			isInPracticeSession = false;
 			isInQualifyingSession = false;
+			isInRaceSession = false;
 
 			trackLengthInMeters = 0;
 
-			seriesId = 0;
-			seriesTexture = null;
+			seriesLogoTextureUrl = string.Empty;
 
 			SessionFlagsPlayback.Close();
 			ChatLogPlayback.Close();
@@ -49,26 +49,38 @@ namespace iRacingTVController
 
 		public void SessionChange()
 		{
+			if ( ( IRSDK.session == null ) || ( IRSDK.data == null ) )
+			{
+				return;
+			}
+
 			sessionNumber = IRSDK.data.SessionNum;
 
 			if ( sessionNumber >= 0 )
 			{
 				sessionName = IRSDK.session.SessionInfo.Sessions[ sessionNumber ].SessionName;
 
-				isInRaceSession = sessionName == "RACE";
-				isInQualifyingSession = sessionName == "QUALIFY";
+				isInPracticeSession = ( sessionName == "PRACTICE" );
+				isInQualifyingSession = ( sessionName == "QUALIFY" );
+				isInRaceSession = ( sessionName == "RACE" );
 			}
 			else
 			{
 				sessionName = string.Empty;
 
-				isInRaceSession = false;
+				isInPracticeSession = false;
 				isInQualifyingSession = false;
+				isInRaceSession = false;
 			}
 		}
 
-		public async void SessionUpdate()
+		public void SessionUpdate()
 		{
+			if ( IRSDK.session == null )
+			{
+				return;
+			}
+
 			sessionId = IRSDK.session.WeekendInfo.SessionID;
 			subSessionId = IRSDK.session.WeekendInfo.SubSessionID;
 
@@ -83,8 +95,6 @@ namespace iRacingTVController
 				trackLengthInMeters = trackLengthInKilometers * 1000;
 			}
 
-			seriesId = IRSDK.session.WeekendInfo.SeriesID;
-
 			if ( isReplay )
 			{
 				SessionFlagsPlayback.LoadRecording();
@@ -95,12 +105,7 @@ namespace iRacingTVController
 				SessionFlagsPlayback.OpenForRecording();
 			}
 
-			if ( seriesTexture == null )
-			{
-				var url = $"https://ir-core-sites.iracing.com/members/member_images/series/seriesid_{seriesId}/logo.jpg";
-
-				seriesTexture = await RemoteTexture.Get( url );
-			}
+			seriesLogoTextureUrl = $"https://ir-core-sites.iracing.com/members/member_images/series/seriesid_{IRSDK.session.WeekendInfo.SeriesID}/logo.jpg";
 		}
 	}
 }

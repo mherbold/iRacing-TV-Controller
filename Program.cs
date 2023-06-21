@@ -74,6 +74,8 @@ namespace iRacingTVController
 			{
 				IRSDK.Update();
 
+				LiveData.Instance.Update();
+
 				IPC.UpdateSettings();
 				IPC.UpdateLiveData();
 			}

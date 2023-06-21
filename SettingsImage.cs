@@ -14,7 +14,8 @@ namespace iRacingTVController
 			ImageFile,
 			SeriesLogo,
 			CarNumber,
-			Car
+			Car,
+			Helmet
 		}
 
 		public ImageType imageType = ImageType.None;

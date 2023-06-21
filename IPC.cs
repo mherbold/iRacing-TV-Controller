@@ -30,13 +30,11 @@ namespace iRacingTVController
 		{
 			if ( readyToSendSettings && ( memoryMappedFileSettings != null ) )
 			{
-				var combined = Settings.GetCombinedOverlay();
-
 				var xmlSerializer = new XmlSerializer( typeof( SettingsOverlay ) );
 
 				var memoryStream = new MemoryStream();
 
-				xmlSerializer.Serialize( memoryStream, combined );
+				xmlSerializer.Serialize( memoryStream, Settings.combined );
 
 				var buffer = memoryStream.ToArray();
 

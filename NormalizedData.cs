@@ -136,14 +136,7 @@ namespace iRacingTVController
 			isInTimedRace = IRSDK.data.SessionLapsTotal == 32767;
 			isUnderCaution = ( sessionFlags & ( (uint) SessionFlags.CautionWaving | (uint) SessionFlags.Caution | (uint) SessionFlags.YellowWaving | (uint) SessionFlags.Yellow ) ) != 0;
 
-			if ( IRSDK.normalizedSession.isInRaceSession )
-			{
-				sessionState = (SessionState) IRSDK.data.SessionState;
-			}
-			else
-			{
-				sessionState = SessionState.StateInvalid;
-			}
+			sessionState = (SessionState) IRSDK.data.SessionState;
 
 			sessionTimeTotal = IRSDK.data.SessionTimeTotal;
 			sessionTimeRemaining = Math.Max( 0, IRSDK.data.SessionTimeRemain );

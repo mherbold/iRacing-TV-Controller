@@ -1,6 +1,8 @@
 ﻿
 using System;
 
+using static iRacingTVController.Unity;
+
 namespace iRacingTVController
 {
 	[Serializable]
@@ -10,6 +12,9 @@ namespace iRacingTVController
 
 		public bool show = false;
 		public bool showSplitter = false;
+
+		public Vector2 backgroundSize = Vector2.zero;
+		public Vector2 splitterPosition = Vector2.zero;
 
 		public LiveDataPlace[] liveDataPlaces = new LiveDataPlace[ MaxNumPlaces ];
 

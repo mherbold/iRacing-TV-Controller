@@ -117,6 +117,39 @@ namespace iRacingTVController
 		}
 
 		[Serializable]
+		public class Vector4
+		{
+			public float x;
+			public float y;
+			public float z;
+			public float w;
+
+			public Vector4()
+			{
+				x = 0;
+				y = 0;
+				z = 0;
+				w = 0;
+			}
+
+			public Vector4( float x, float y, float z, float w )
+			{
+				this.x = x;
+				this.y = y;
+				this.z = z;
+				this.w = w;
+			}
+
+			public static Vector4 zero
+			{
+				get
+				{
+					return new Vector4( 0, 0, 0, 0 );
+				}
+			}
+		}
+
+		[Serializable]
 		public class Color
 		{
 			public float r;
@@ -146,9 +179,9 @@ namespace iRacingTVController
 
 				if ( match.Success )
 				{
-					r = int.Parse( match.Groups[ 1 ].Value, System.Globalization.NumberStyles.HexNumber );
-					g = int.Parse( match.Groups[ 2 ].Value, System.Globalization.NumberStyles.HexNumber );
-					b = int.Parse( match.Groups[ 3 ].Value, System.Globalization.NumberStyles.HexNumber );
+					r = int.Parse( match.Groups[ 1 ].Value, System.Globalization.NumberStyles.HexNumber ) / 255.0f;
+					g = int.Parse( match.Groups[ 2 ].Value, System.Globalization.NumberStyles.HexNumber ) / 255.0f;
+					b = int.Parse( match.Groups[ 3 ].Value, System.Globalization.NumberStyles.HexNumber ) / 255.0f;
 					a = 1;
 				}
 				else

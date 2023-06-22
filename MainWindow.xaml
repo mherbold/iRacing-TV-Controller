@@ -259,6 +259,30 @@
                                             <Button x:Name="Image_TintColor_Palette" Padding="6,0,6,0" Content="🎨" Grid.Column="9" Margin="6,0,0,0" Click="Image_Tint_Palette_Click" />
                                             <CheckBox x:Name="Image_TintColor_Override" VerticalAlignment="Center" Content="Override" Click="Image_Update" Grid.Column="10" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
+                                        <Grid Margin="0,6,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="25"/>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="25"/>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="25"/>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="25"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="9-Slice Border"/>
+                                            <local:Decimal x:Name="Image_Border_L" ValueChanged="Image_Update" Grid.Column="1" />
+                                            <Label Content="L" HorizontalContentAlignment="Center" Grid.Column="2"/>
+                                            <local:Decimal x:Name="Image_Border_T" ValueChanged="Image_Update" Grid.Column="3" />
+                                            <Label Content="T" HorizontalContentAlignment="Center" Grid.Column="4"/>
+                                            <local:Decimal x:Name="Image_Border_R" ValueChanged="Image_Update" Grid.Column="5" />
+                                            <Label Content="R" HorizontalContentAlignment="Center" Grid.Column="6"/>
+                                            <local:Decimal x:Name="Image_Border_B" ValueChanged="Image_Update" Grid.Column="7" />
+                                            <Label Content="B" HorizontalContentAlignment="Center" Grid.Column="8"/>
+                                            <CheckBox x:Name="Image_Border_Override" VerticalAlignment="Center" Content="Override" Click="Image_Update" Grid.Column="9" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
                                     </StackPanel>
                                 </Grid>
                             </TabItem>
@@ -489,7 +513,7 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="80"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label Content="Count"/>
+                                            <Label Content="Max Count"/>
                                             <Slider x:Name="Leaderboard_PlaceCount" Grid.Column="1" VerticalAlignment="Center" SmallChange="1" LargeChange="4" Maximum="63" Minimum="1" ValueChanged="Leaderboard_Update" TickPlacement="TopLeft"/>
                                             <CheckBox x:Name="Leaderboard_PlaceCount_Override" VerticalAlignment="Center" Content="Override" Click="Leaderboard_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -723,7 +747,7 @@
                                             <RadioButton x:Name="Leaderboard_TelemetryMode_ShowTime" Content="Show Time" Click="Leaderboard_Update" GroupName="TelemetryMode" VerticalAlignment="Center" Grid.Column="3" Margin="12,0,0,0"/>
                                             <CheckBox x:Name="Leaderboard_TelemetryMode_Override" VerticalAlignment="Center" Content="Override" Click="Leaderboard_Update" Grid.Column="4" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
-                                        <Grid Margin="0,6,0,0">
+                                        <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="100"/>
                                                 <ColumnDefinition Width="Auto"/>

@@ -124,20 +124,23 @@ namespace iRacingTVController
 		{
 			var defaultImageSettings = new Dictionary<string, SettingsImage>() {
 				{ "BlackLight", new SettingsImage(){ imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\light-black.png", position = { x = 280, y = 130 } } },
+				{ "CarNumber", new SettingsImage() { imageType = SettingsImage.ImageType.CarNumber, position = { x = 48, y = 10 }, size = { x = 56, y = 28 } } },
+				{ "CheckeredFlag", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\flag-checkered.png" } },
 				{ "Custom1", new SettingsImage() },
 				{ "Custom2", new SettingsImage() },
 				{ "Custom3", new SettingsImage() },
 				{ "Custom4", new SettingsImage() },
-				{ "CarNumber", new SettingsImage() { imageType = SettingsImage.ImageType.CarNumber, position = { x = 48, y = 10 }, size = { x = 56, y = 28 } } },
+				{ "GreenFlag", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\flag-green.png" } },
 				{ "GreenLight", new SettingsImage(){ imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\light-green.png", position = { x = 280, y = 130 } } },
-				{ "Highlight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\current-target.png", tintColor = { a = 0.9f } } },
-				{ "LeaderboardBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\leaderboard.png", tintColor = { a = 0.9f } } },
-				{ "PositionSplitter", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\position-splitter.png", position = { x = 0, y = 412 }, tintColor = { a = 0.9f } } },
-				{ "RaceStatusBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\race-status.png", tintColor = { a = 0.9f } } },
+				{ "Highlight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\current-target.png" } },
+				{ "LeaderboardBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\leaderboard.png", size = { x = 319, y = 8 }, border = { x = 32, y = 32, z = 32, w = 32 } } },
+				{ "PositionSplitter", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\position-splitter.png" } },
+				{ "RaceStatusBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\race-status.png" } },
 				{ "SeriesLogo", new SettingsImage() { imageType = SettingsImage.ImageType.SeriesLogo, position = { x = 7, y = 7 }, size = { x = 305, y = 103 } } },
-				{ "VoiceOfBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\voice-of.png", tintColor = { a = 0.9f } } },
+				{ "VoiceOfBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\voice-of.png" } },
 				{ "VoiceOfCar", new SettingsImage() { imageType = SettingsImage.ImageType.Car, position = { x = 155, y = -37 }, size = { x = 320, y = 160 } } },
 				{ "WhiteLight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\light-white.png", position = { x = 280, y = 130 } } },
+				{ "YellowFlag", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\flag-yellow.png" } },
 				{ "YellowLight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\light-yellow.png", position = { x = 280, y = 130 } } },
 			};
 
@@ -351,12 +354,14 @@ namespace iRacingTVController
 					position = item.Value.position_Overridden ? item.Value.position : globalItem.position,
 					size = item.Value.size_Overridden ? item.Value.size : globalItem.size,
 					tintColor = item.Value.tintColor_Overridden ? item.Value.tintColor : globalItem.tintColor,
+					border = item.Value.border_Overridden ? item.Value.border : globalItem.border,
 
 					imageType_Overridden = item.Value.imageType_Overridden,
 					filePath_Overridden = item.Value.filePath_Overridden,
 					position_Overridden = item.Value.position_Overridden,
 					size_Overridden = item.Value.size_Overridden,
-					tintColor_Overridden = item.Value.tintColor_Overridden
+					tintColor_Overridden = item.Value.tintColor_Overridden,
+					border_Overridden = item.Value.border_Overridden
 				};
 			}
 

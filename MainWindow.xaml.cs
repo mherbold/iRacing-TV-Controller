@@ -158,7 +158,7 @@ namespace iRacingTVController
 			Leaderboard_PlaceSpacing_X.SetValue( (int) Settings.combined.leaderboardPlaceSpacing.x );
 			Leaderboard_PlaceSpacing_Y.SetValue( (int) Settings.combined.leaderboardPlaceSpacing.y );
 			Leaderboard_UseClassColors_Enable.IsChecked = Settings.combined.leaderboardUseClassColors;
-			Leaderboard_ClassColorStrength.Value = Settings.combined.leaderboardClassColorStrength * 255;
+			Leaderboard_ClassColorStrength.Value = Settings.combined.leaderboardClassColorStrength * 255.0f;
 			Leaderboard_TelemetryPitColor_R.SetValue( Settings.combined.leaderboardTelemetryPitColor.r );
 			Leaderboard_TelemetryPitColor_G.SetValue( Settings.combined.leaderboardTelemetryPitColor.g );
 			Leaderboard_TelemetryPitColor_B.SetValue( Settings.combined.leaderboardTelemetryPitColor.b );
@@ -236,12 +236,17 @@ namespace iRacingTVController
 				Image_TintColor_G.SetValue( settings.tintColor.g );
 				Image_TintColor_B.SetValue( settings.tintColor.b );
 				Image_TintColor_A.SetValue( settings.tintColor.a );
+				Image_Border_L.SetValue( settings.border.x );
+				Image_Border_T.SetValue( settings.border.y );
+				Image_Border_R.SetValue( settings.border.z );
+				Image_Border_B.SetValue( settings.border.w );
 
 				Image_ImageType_Override.IsChecked = settings.imageType_Overridden;
 				Image_FilePath_Override.IsChecked = settings.filePath_Overridden;
 				Image_Position_Override.IsChecked = settings.position_Overridden;
 				Image_Size_Override.IsChecked = settings.size_Overridden;
 				Image_TintColor_Override.IsChecked = settings.tintColor_Overridden;
+				Image_Border_Override.IsChecked = settings.border_Overridden;
 
 				initializing--;
 			}
@@ -670,6 +675,21 @@ namespace iRacingTVController
 					settings.tintColor = new Color( Image_TintColor_R.GetValue(), Image_TintColor_G.GetValue(), Image_TintColor_B.GetValue(), Image_TintColor_A.GetValue() );
 				}
 
+				overridden = Image_Border_Override.IsChecked ?? false;
+
+				if ( overlaySettings.border_Overridden != overridden )
+				{
+					overlaySettings.border_Overridden = overridden;
+
+					InitializeImage();
+				}
+				else
+				{
+					var settings = overlaySettings.border_Overridden? overlaySettings : globalSettings;
+
+					settings.border = new Vector4( Image_Border_L.GetValue(), Image_Border_T.GetValue(), Image_Border_R.GetValue(), Image_Border_B.GetValue() );
+				}
+
 				IPC.readyToSendSettings = true;
 
 				Settings.SaveOverlay();
@@ -1011,7 +1031,7 @@ namespace iRacingTVController
 				{
 					var overlay = Settings.overlay.leaderboardClassColorStrength_Overridden ? Settings.overlay : Settings.global;
 
-					overlay.leaderboardClassColorStrength = (int) ( Leaderboard_ClassColorStrength.Value / 255.0f );
+					overlay.leaderboardClassColorStrength = (float) ( Leaderboard_ClassColorStrength.Value / 255.0f );
 				}
 
 				overridden = Leaderboard_TelemetryPitColor_Override.IsChecked ?? false;

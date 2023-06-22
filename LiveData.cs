@@ -116,6 +116,28 @@ namespace iRacingTVController
 			{
 				liveDataRaceStatus.currentLapText = IRSDK.normalizedData.currentLap.ToString() + " | " + IRSDK.normalizedData.sessionLapsTotal.ToString();
 			}
+
+			// flags
+
+			liveDataRaceStatus.showGreenFlag = false;
+			liveDataRaceStatus.showYellowFlag = false;
+			liveDataRaceStatus.showCheckeredFlag = false;
+
+			if ( IRSDK.normalizedSession.isInRaceSession )
+			{
+				if ( IRSDK.normalizedData.sessionState >= SessionState.StateCheckered )
+				{
+					liveDataRaceStatus.showCheckeredFlag = true;
+				}
+				else if ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.CautionWaving | (uint) SessionFlags.YellowWaving ) ) != 0 )
+				{
+					liveDataRaceStatus.showYellowFlag = true;
+				}
+				else if ( ( IRSDK.normalizedData.sessionFlags & (uint) SessionFlags.StartGo ) != 0 )
+				{
+					liveDataRaceStatus.showGreenFlag = true;
+				}
+			}
 		}
 
 		public void UpdateLeaderboard()
@@ -125,30 +147,33 @@ namespace iRacingTVController
 			var bottomSplitCount = Settings.combined.leaderboardPlaceCount / 2;
 			var bottomSplitLastPosition = Settings.combined.leaderboardPlaceCount;
 
-			if ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateRacing ) )
+			if ( bottomSplitCount > 0 )
 			{
-				foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardSortedNormalizedCars )
+				if ( !IRSDK.normalizedSession.isInQualifyingSession )
 				{
-					if ( !normalizedCar.includeInLeaderboard )
+					foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardSortedNormalizedCars )
 					{
-						break;
-					}
-
-					if ( normalizedCar.carIdx == IRSDK.normalizedData.camCarIdx )
-					{
-						if ( normalizedCar.leaderboardPosition > bottomSplitLastPosition )
+						if ( !normalizedCar.includeInLeaderboard )
 						{
-							while ( bottomSplitLastPosition < normalizedCar.leaderboardPosition )
-							{
-								bottomSplitLastPosition += bottomSplitCount;
-							}
-
-							if ( bottomSplitLastPosition > IRSDK.normalizedData.numLeaderboardCars )
-							{
-								bottomSplitLastPosition = IRSDK.normalizedData.numLeaderboardCars;
-							}
-
 							break;
+						}
+
+						if ( normalizedCar.carIdx == IRSDK.normalizedData.camCarIdx )
+						{
+							if ( normalizedCar.leaderboardPosition > bottomSplitLastPosition )
+							{
+								while ( bottomSplitLastPosition < normalizedCar.leaderboardPosition )
+								{
+									bottomSplitLastPosition += bottomSplitCount;
+								}
+
+								if ( bottomSplitLastPosition > IRSDK.normalizedData.numLeaderboardCars )
+								{
+									bottomSplitLastPosition = IRSDK.normalizedData.numLeaderboardCars;
+								}
+
+								break;
+							}
 						}
 					}
 				}
@@ -166,6 +191,7 @@ namespace iRacingTVController
 
 			var carInFrontLapPosition = 0.0f;
 			var leadCarF2Time = 0.0f;
+			var carsShown = 0;
 
 			foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardSortedNormalizedCars )
 			{
@@ -209,6 +235,8 @@ namespace iRacingTVController
 				// at least one car is visible so we want to show the leaderboard
 
 				liveDataLeaderboard.show = true;
+
+				carsShown++;
 
 				// place index
 
@@ -260,6 +288,10 @@ namespace iRacingTVController
 					var tintColor = Settings.combined.textSettingsDataDictionary[ "DriverName" ].tintColor;
 
 					liveDataPlace.driverNameColor = Color.Lerp( tintColor, normalizedCar.classColor, Settings.combined.leaderboardClassColorStrength );
+				}
+				else
+				{
+					liveDataPlace.driverNameColor = Settings.combined.textSettingsDataDictionary[ "DriverName" ].tintColor;
 				}
 
 				// telemetry
@@ -364,11 +396,15 @@ namespace iRacingTVController
 
 				// current target and speed
 
-				if ( !IRSDK.normalizedSession.isInQualifyingSession && ( IRSDK.normalizedData.sessionState == SessionState.StateRacing ) )
+				if ( !IRSDK.normalizedSession.isInQualifyingSession )
 				{
 					liveDataPlace.showHighlight = ( normalizedCar.carIdx == IRSDK.normalizedData.camCarIdx );
 
 					liveDataPlace.speedText = $"{normalizedCar.speedInMetersPerSecond * ( IRSDK.normalizedData.displayIsMetric ? 3.6f : 2.23694f ):0} {( IRSDK.normalizedData.displayIsMetric ? Settings.combined.translationDictionary[ "KPH" ].translation : Settings.combined.translationDictionary[ "MPH" ].translation )}";
+				}
+				else
+				{
+					liveDataPlace.showHighlight = false;
 				}
 
 				//
@@ -381,9 +417,11 @@ namespace iRacingTVController
 				}
 			}
 
-			// leaderboard background
+			// leaderboard background and splitter
 
+			liveDataLeaderboard.backgroundSize = Settings.combined.leaderboardPlaceSpacing * Math.Min( carsShown, Settings.combined.leaderboardPlaceCount );
 			liveDataLeaderboard.showSplitter = ( ( topSplitLastPosition + 1 ) != bottomSplitFirstPosition );
+			liveDataLeaderboard.splitterPosition = Settings.combined.leaderboardPlaceSpacing * topSplitLastPosition;
 		}
 
 		public void UpdateVoiceOf()

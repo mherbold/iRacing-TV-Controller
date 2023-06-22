@@ -43,7 +43,7 @@ namespace iRacingTVController
 		public Color leaderboardTelemetryPitColor = new( 0.875f, 0.816f, 0.137f, 1 );
 		public Color leaderboardTelemetryOutColor = new( 0.875f, 0.125f, 0.125f, 1 );
 		public bool leaderboardTelemetryIsBetweenCars = true;
-		public int leaderboardTelemetryMode = 0;
+		public int leaderboardTelemetryMode = 2;
 		public int leaderboardTelemetryNumberOfCheckpoints = 150;
 
 		public bool leaderboardOverlayEnabled_Overridden = false;

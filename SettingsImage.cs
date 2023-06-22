@@ -23,11 +23,13 @@ namespace iRacingTVController
 		public Vector2 position = Vector2.zero;
 		public Vector2 size = Vector2.zero;
 		public Color tintColor = Color.white;
+		public Vector4 border = Vector4.zero;
 
 		public bool imageType_Overridden = false;
 		public bool filePath_Overridden = false;
 		public bool position_Overridden = false;
 		public bool size_Overridden = false;
 		public bool tintColor_Overridden = false;
+		public bool border_Overridden = false;
 	}
 }

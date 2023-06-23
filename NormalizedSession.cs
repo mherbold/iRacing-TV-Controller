@@ -9,6 +9,7 @@ namespace iRacingTVController
 		public int sessionId = 0;
 		public int subSessionId = 0;
 
+		public int sessionCount = 0;
 		public int sessionNumber = -1;
 		public string sessionName = string.Empty;
 
@@ -31,6 +32,7 @@ namespace iRacingTVController
 			sessionId = 0;
 			subSessionId = 0;
 
+			sessionCount = 0;
 			sessionNumber = -1;
 			sessionName = string.Empty;
 
@@ -83,6 +85,8 @@ namespace iRacingTVController
 
 			sessionId = IRSDK.session.WeekendInfo.SessionID;
 			subSessionId = IRSDK.session.WeekendInfo.SubSessionID;
+
+			sessionCount = IRSDK.session.SessionInfo.Sessions.Count;
 
 			isReplay = IRSDK.session.WeekendInfo.SimMode == "replay";
 

@@ -14,6 +14,8 @@ namespace iRacingTVController
 		public double sessionTime;
 		public uint sessionFlags;
 
+		public int replayFrameNum;
+
 		public bool displayIsMetric;
 
 		public bool isInTimedRace;
@@ -59,6 +61,8 @@ namespace iRacingTVController
 			sessionTime = 0;
 			sessionFlags = 0;
 
+			replayFrameNum = 0;
+
 			displayIsMetric = false;
 
 			isInTimedRace = false;
@@ -95,13 +99,13 @@ namespace iRacingTVController
 			}
 		}
 
-		public void SessionUpdate()
+		public void SessionUpdate( bool forceUpdate = false )
 		{
 			numLeaderboardCars = 0;
 
 			foreach ( var normalizedCar in normalizedCars )
 			{
-				normalizedCar.SessionUpdate();
+				normalizedCar.SessionUpdate( forceUpdate );
 
 				if ( normalizedCar.includeInLeaderboard )
 				{
@@ -130,6 +134,8 @@ namespace iRacingTVController
 
 				SessionFlagsPlayback.Record( IRSDK.normalizedSession.sessionNumber, IRSDK.normalizedData.sessionTime, sessionFlags );
 			}
+
+			replayFrameNum = IRSDK.data.ReplayFrameNum;
 
 			displayIsMetric = IRSDK.data.DisplayUnits == 1;
 

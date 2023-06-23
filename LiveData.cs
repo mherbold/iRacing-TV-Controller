@@ -315,18 +315,18 @@ namespace iRacingTVController
 				else if ( normalizedCar.isOnPitRoad )
 				{
 					liveDataPlace.telemetryText = Settings.combined.translationDictionary[ "Pit" ].translation;
-					liveDataPlace.telemetryColor = Settings.combined.leaderboardTelemetryPitColor;
+					liveDataPlace.telemetryColor = Settings.combined.telemetryPitColor;
 				}
 				else if ( normalizedCar.isOutOfCar )
 				{
 					liveDataPlace.telemetryText = Settings.combined.translationDictionary[ "Out" ].translation;
-					liveDataPlace.telemetryColor = Settings.combined.leaderboardTelemetryOutColor;
+					liveDataPlace.telemetryColor = Settings.combined.telemetryOutColor;
 				}
 				else if ( IRSDK.normalizedSession.isInRaceSession )
 				{
 					if ( ( IRSDK.normalizedData.sessionState == SessionState.StateRacing ) && normalizedCar.hasCrossedStartLine )
 					{
-						if ( !Settings.combined.leaderboardTelemetryIsBetweenCars && normalizedCar.lapPositionRelativeToLeader >= 1.0f )
+						if ( !Settings.combined.telemetryIsBetweenCars && normalizedCar.lapPositionRelativeToLeader >= 1.0f )
 						{
 							var wholeLapsDown = Math.Floor( normalizedCar.lapPositionRelativeToLeader );
 
@@ -334,15 +334,15 @@ namespace iRacingTVController
 						}
 						else if ( !IRSDK.normalizedData.isUnderCaution )
 						{
-							var lapPosition = Settings.combined.leaderboardTelemetryIsBetweenCars ? carInFrontLapPosition - normalizedCar.lapPosition : normalizedCar.lapPositionRelativeToLeader;
+							var lapPosition = Settings.combined.telemetryIsBetweenCars ? carInFrontLapPosition - normalizedCar.lapPosition : normalizedCar.lapPositionRelativeToLeader;
 
 							if ( lapPosition > 0 )
 							{
-								if ( Settings.combined.leaderboardTelemetryMode == 0 )
+								if ( Settings.combined.telemetryMode == 0 )
 								{
 									liveDataPlace.telemetryText = $"-{lapPosition:0.000} {Settings.combined.translationDictionary[ "LapsAbbreviation" ].translation}";
 								}
-								else if ( Settings.combined.leaderboardTelemetryMode == 1 )
+								else if ( Settings.combined.telemetryMode == 1 )
 								{
 									var distance = lapPosition * IRSDK.normalizedSession.trackLengthInMeters;
 
@@ -411,7 +411,7 @@ namespace iRacingTVController
 
 				normalizedCar.wasVisibleOnLeaderboard = true;
 
-				if ( normalizedCarInFront == null || Settings.combined.leaderboardTelemetryIsBetweenCars )
+				if ( normalizedCarInFront == null || Settings.combined.telemetryIsBetweenCars )
 				{
 					normalizedCarInFront = normalizedCar;
 				}

@@ -78,6 +78,10 @@ namespace iRacingTVController
 
 				IPC.UpdateSettings();
 				IPC.UpdateLiveData();
+
+				IncidentScan.Update();
+
+				IRSDK.SendMessages();
 			}
 
 			Interlocked.Decrement( ref Program.tickMutex );

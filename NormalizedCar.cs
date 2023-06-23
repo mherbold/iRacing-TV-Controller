@@ -152,14 +152,14 @@ namespace iRacingTVController
 			}
 		}
 
-		public void SessionUpdate()
+		public void SessionUpdate( bool forceUpdate = false )
 		{
 			if ( IRSDK.session == null )
 			{
 				return;
 			}
 
-			if ( driverIdx == -1 )
+			if ( ( driverIdx == -1 ) || forceUpdate )
 			{
 				includeInLeaderboard = false;
 
@@ -222,12 +222,12 @@ namespace iRacingTVController
 
 							if ( Settings.combined.carNumberOverrideEnabled )
 							{
-								colorA = Settings.combined.carNumberColorOverrideA.ToString();
-								colorB = Settings.combined.carNumberColorOverrideB.ToString();
-								colorC = Settings.combined.carNumberColorOverrideC.ToString();
+								colorA = Settings.combined.carNumberColorA.ToString();
+								colorB = Settings.combined.carNumberColorB.ToString();
+								colorC = Settings.combined.carNumberColorC.ToString();
 
-								pattern = Settings.combined.carNumberPatternOverride;
-								slant = Settings.combined.carNumberSlantOverride;
+								pattern = Settings.combined.carNumberPattern;
+								slant = Settings.combined.carNumberSlant;
 							}
 
 							carNumberTextureUrl = $"http://localhost:32034/pk_number.png?size={settings.size.y}&view=0&number={carNumber}&numPat={pattern}&numCol={colorA},{colorB},{colorC}&numSlnt={slant}";
@@ -239,7 +239,7 @@ namespace iRacingTVController
 						{
 							var licColor = driver.LicColor[ 2.. ];
 							var carPath = driver.CarPath.Replace( " ", "%5C" );
-							var customCarTgaFilePath = $"{Settings.combined.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_{driver.UserID}.tga".Replace( " ", "%5C" );
+							var customCarTgaFilePath = $"{Settings.editor.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_{driver.UserID}.tga".Replace( " ", "%5C" );
 
 							if ( !File.Exists( customCarTgaFilePath ) )
 							{
@@ -255,7 +255,7 @@ namespace iRacingTVController
 						{
 							var licColor = driver.LicColor[ 2.. ];
 							var helmetType = driver.HelmetType;
-							var customHelmetTgaFileName = $"{Settings.combined.iracingCustomPaintsDirectory}\\helmet_{driver.UserID}.tga".Replace( " ", "%5C" );
+							var customHelmetTgaFileName = $"{Settings.editor.iracingCustomPaintsDirectory}\\helmet_{driver.UserID}.tga".Replace( " ", "%5C" );
 
 							if ( !File.Exists( customHelmetTgaFileName ) )
 							{
@@ -331,7 +331,7 @@ namespace iRacingTVController
 						lapPosition += lapDistPctDelta;
 					}
 
-					var checkpointIdx = (int) Math.Floor( lapDistPct * Settings.combined.leaderboardTelemetryNumberOfCheckpoints ) % Settings.combined.leaderboardTelemetryNumberOfCheckpoints;
+					var checkpointIdx = (int) Math.Floor( lapDistPct * Settings.combined.telemetryNumberOfCheckpoints ) % Settings.combined.telemetryNumberOfCheckpoints;
 
 					if ( checkpointIdx != this.checkpointIdx )
 					{

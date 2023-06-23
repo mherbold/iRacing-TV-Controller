@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,24 +16,36 @@ namespace iRacingTVController
 
 		private static readonly Regex regex = new( @"^[-\d]*$" );
 
+		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register( "Value", typeof( int ), typeof( Number ), new PropertyMetadata( 0, OnValueChanged ) );
+
+		public int Value
+		{
+			get
+			{
+				if ( !int.TryParse( NumberTextBox.Text, out var value ) )
+				{
+					return 0;
+				}
+
+				return value;
+			}
+
+			set
+			{
+				NumberTextBox.Text = value.ToString();
+			}
+		}
+
 		public Number()
 		{
 			InitializeComponent();
 		}
 
-		public int GetValue()
+		private static void OnValueChanged( DependencyObject obj, DependencyPropertyChangedEventArgs e )
 		{
-			if ( !int.TryParse( NumberTextBox.Text, out var value ) )
-			{
-				return 0;
-			}
+			var number = (Number) obj;
 
-			return value;
-		}
-
-		public void SetValue( int value )
-		{
-			NumberTextBox.Text = value.ToString();
+			number.Value = (int) number.GetValue( ValueProperty );
 		}
 
 		private void TextBox_PreviewTextInput( object sender, TextCompositionEventArgs e )
@@ -100,7 +111,7 @@ namespace iRacingTVController
 
 					var deltaNumber = (int) Math.Round( scale * ( deltaPosition.Value.X + deltaPosition.Value.Y ) );
 
-					SetValue( startingNumber + deltaNumber );
+					Value = startingNumber + deltaNumber;
 				}
 			}
 		}

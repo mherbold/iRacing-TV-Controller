@@ -228,6 +228,8 @@ namespace iRacingTVController
 		{
 			Save( global.filePath, global );
 			Save( overlay.filePath, overlay );
+
+			UpdateCombinedOverlay();
 		}
 
 		public static void Save( string filePath, object settingsData )
@@ -279,11 +281,11 @@ namespace iRacingTVController
 				leaderboardPlaceSpacing = overlay.leaderboardPlaceSpacing_Overridden ? overlay.leaderboardPlaceSpacing : global.leaderboardPlaceSpacing,
 				leaderboardUseClassColors = overlay.leaderboardUseClassColors_Overridden ? overlay.leaderboardUseClassColors : global.leaderboardUseClassColors,
 				leaderboardClassColorStrength = overlay.leaderboardClassColorStrength_Overridden ? overlay.leaderboardClassColorStrength : global.leaderboardClassColorStrength,
-				leaderboardTelemetryPitColor = overlay.leaderboardTelemetryPitColor_Overridden ? overlay.leaderboardTelemetryPitColor : global.leaderboardTelemetryPitColor,
-				leaderboardTelemetryOutColor = overlay.leaderboardTelemetryOutColor_Overridden ? overlay.leaderboardTelemetryOutColor : global.leaderboardTelemetryOutColor,
-				leaderboardTelemetryIsBetweenCars = overlay.leaderboardTelemetryIsBetweenCars_Overridden ? overlay.leaderboardTelemetryIsBetweenCars : global.leaderboardTelemetryIsBetweenCars,
-				leaderboardTelemetryMode = overlay.leaderboardTelemetryMode_Overridden ? overlay.leaderboardTelemetryMode : global.leaderboardTelemetryMode,
-				leaderboardTelemetryNumberOfCheckpoints = overlay.leaderboardTelemetryNumberOfCheckpoints_Overridden ? overlay.leaderboardTelemetryNumberOfCheckpoints : global.leaderboardTelemetryNumberOfCheckpoints,
+				telemetryPitColor = overlay.telemetryPitColor_Overridden ? overlay.telemetryPitColor : global.telemetryPitColor,
+				telemetryOutColor = overlay.telemetryOutColor_Overridden ? overlay.telemetryOutColor : global.telemetryOutColor,
+				telemetryIsBetweenCars = overlay.telemetryIsBetweenCars_Overridden ? overlay.telemetryIsBetweenCars : global.telemetryIsBetweenCars,
+				telemetryMode = overlay.telemetryMode_Overridden ? overlay.telemetryMode : global.telemetryMode,
+				telemetryNumberOfCheckpoints = overlay.telemetryNumberOfCheckpoints_Overridden ? overlay.telemetryNumberOfCheckpoints : global.telemetryNumberOfCheckpoints,
 
 				leaderboardOverlayEnabled_Overridden = overlay.leaderboardOverlayEnabled_Overridden,
 				leaderboardOverlayPosition_Overridden = overlay.leaderboardOverlayPosition_Overridden,
@@ -292,11 +294,11 @@ namespace iRacingTVController
 				leaderboardPlaceSpacing_Overridden = overlay.leaderboardPlaceSpacing_Overridden,
 				leaderboardUseClassColors_Overridden = overlay.leaderboardUseClassColors_Overridden,
 				leaderboardClassColorStrength_Overridden = overlay.leaderboardClassColorStrength_Overridden,
-				leaderboardTelemetryPitColor_Overridden = overlay.leaderboardTelemetryPitColor_Overridden,
-				leaderboardTelemetryOutColor_Overridden = overlay.leaderboardTelemetryOutColor_Overridden,
-				leaderboardTelemetryIsBetweenCars_Overridden = overlay.leaderboardTelemetryIsBetweenCars_Overridden,
-				leaderboardTelemetryMode_Overridden = overlay.leaderboardTelemetryMode_Overridden,
-				leaderboardTelemetryNumberOfCheckpoints_Overridden = overlay.leaderboardTelemetryNumberOfCheckpoints_Overridden,
+				telemetryPitColor_Overridden = overlay.telemetryPitColor_Overridden,
+				telemetryOutColor_Overridden = overlay.telemetryOutColor_Overridden,
+				telemetryIsBetweenCars_Overridden = overlay.telemetryIsBetweenCars_Overridden,
+				telemetryMode_Overridden = overlay.telemetryMode_Overridden,
+				telemetryNumberOfCheckpoints_Overridden = overlay.telemetryNumberOfCheckpoints_Overridden,
 
 				voiceOfOverlayEnabled = overlay.voiceOfOverlayEnabled_Overridden ? overlay.voiceOfOverlayEnabled : global.voiceOfOverlayEnabled,
 				voiceOfOverlayPosition = overlay.voiceOfOverlayPosition_Overridden ? overlay.voiceOfOverlayPosition : global.voiceOfOverlayPosition,
@@ -317,18 +319,18 @@ namespace iRacingTVController
 				subtitleTextPadding_Overridden = overlay.subtitleTextPadding_Overridden,
 
 				carNumberOverrideEnabled = overlay.carNumberOverrideEnabled_Overridden ? overlay.carNumberOverrideEnabled : global.carNumberOverrideEnabled,
-				carNumberColorOverrideA = overlay.carNumberColorOverrideA_Overridden ? overlay.carNumberColorOverrideA : global.carNumberColorOverrideA,
-				carNumberColorOverrideB = overlay.carNumberColorOverrideB_Overridden ? overlay.carNumberColorOverrideB : global.carNumberColorOverrideB,
-				carNumberColorOverrideC = overlay.carNumberColorOverrideC_Overridden ? overlay.carNumberColorOverrideC : global.carNumberColorOverrideC,
-				carNumberPatternOverride = overlay.carNumberPatternOverride_Overridden ? overlay.carNumberPatternOverride : global.carNumberPatternOverride,
-				carNumberSlantOverride = overlay.carNumberSlantOverride_Overridden ? overlay.carNumberSlantOverride : global.carNumberSlantOverride,
+				carNumberColorA = overlay.carNumberColorA_Overridden ? overlay.carNumberColorA : global.carNumberColorA,
+				carNumberColorB = overlay.carNumberColorB_Overridden ? overlay.carNumberColorB : global.carNumberColorB,
+				carNumberColorC = overlay.carNumberColorC_Overridden ? overlay.carNumberColorC : global.carNumberColorC,
+				carNumberPattern = overlay.carNumberPattern_Overridden ? overlay.carNumberPattern : global.carNumberPattern,
+				carNumberSlant = overlay.carNumberSlant_Overridden ? overlay.carNumberSlant : global.carNumberSlant,
 
 				carNumberOverrideEnabled_Overridden = overlay.carNumberOverrideEnabled_Overridden,
-				carNumberColorOverrideA_Overridden = overlay.carNumberColorOverrideA_Overridden,
-				carNumberColorOverrideB_Overridden = overlay.carNumberColorOverrideB_Overridden,
-				carNumberColorOverrideC_Overridden = overlay.carNumberColorOverrideC_Overridden,
-				carNumberPatternOverride_Overridden = overlay.carNumberPatternOverride_Overridden,
-				carNumberSlantOverride_Overridden = overlay.carNumberSlantOverride_Overridden,
+				carNumberColorA_Overridden = overlay.carNumberColorA_Overridden,
+				carNumberColorB_Overridden = overlay.carNumberColorB_Overridden,
+				carNumberColorC_Overridden = overlay.carNumberColorC_Overridden,
+				carNumberPattern_Overridden = overlay.carNumberPattern_Overridden,
+				carNumberSlant_Overridden = overlay.carNumberSlant_Overridden,
 
 				directorCarLength = overlay.directorCarLength_Overridden ? overlay.directorCarLength : global.directorCarLength,
 				directorHeatFalloff = overlay.directorHeatFalloff_Overridden ? overlay.directorHeatFalloff : global.directorHeatFalloff,
@@ -337,10 +339,6 @@ namespace iRacingTVController
 				directorCarLength_Overridden = overlay.directorCarLength_Overridden,
 				directorHeatFalloff_Overridden = overlay.directorHeatFalloff_Overridden,
 				directorHeatBias_Overridden = overlay.directorHeatBias_Overridden,
-
-				iracingCustomPaintsDirectory = overlay.iracingCustomPaintsDirectory_Overridden ? overlay.iracingCustomPaintsDirectory : global.iracingCustomPaintsDirectory,
-
-				iracingCustomPaintsDirectory_Overridden = overlay.iracingCustomPaintsDirectory_Overridden
 			};
 
 			foreach ( var item in overlay.imageSettingsDataDictionary )

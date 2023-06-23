@@ -40,11 +40,6 @@ namespace iRacingTVController
 		public Vector2 leaderboardPlaceSpacing = new( 0, 41 );
 		public bool leaderboardUseClassColors = true;
 		public float leaderboardClassColorStrength = 0.5f;
-		public Color leaderboardTelemetryPitColor = new( 0.875f, 0.816f, 0.137f, 1 );
-		public Color leaderboardTelemetryOutColor = new( 0.875f, 0.125f, 0.125f, 1 );
-		public bool leaderboardTelemetryIsBetweenCars = true;
-		public int leaderboardTelemetryMode = 2;
-		public int leaderboardTelemetryNumberOfCheckpoints = 150;
 
 		public bool leaderboardOverlayEnabled_Overridden = false;
 		public bool leaderboardOverlayPosition_Overridden = false;
@@ -53,11 +48,6 @@ namespace iRacingTVController
 		public bool leaderboardPlaceSpacing_Overridden = false;
 		public bool leaderboardUseClassColors_Overridden = false;
 		public bool leaderboardClassColorStrength_Overridden = false;
-		public bool leaderboardTelemetryPitColor_Overridden = false;
-		public bool leaderboardTelemetryOutColor_Overridden = false;
-		public bool leaderboardTelemetryIsBetweenCars_Overridden = false;
-		public bool leaderboardTelemetryMode_Overridden = false;
-		public bool leaderboardTelemetryNumberOfCheckpoints_Overridden = false;
 
 		public bool voiceOfOverlayEnabled = true;
 		public Vector2 voiceOfOverlayPosition = new( 1920, 41 );
@@ -78,18 +68,30 @@ namespace iRacingTVController
 		public bool subtitleTextPadding_Overridden = false;
 
 		public bool carNumberOverrideEnabled = false;
-		public Color carNumberColorOverrideA = Color.white;
-		public Color carNumberColorOverrideB = Color.white;
-		public Color carNumberColorOverrideC = Color.white;
-		public int carNumberPatternOverride = 0;
-		public int carNumberSlantOverride = 0;
+		public Color carNumberColorA = Color.white;
+		public Color carNumberColorB = Color.black;
+		public Color carNumberColorC = Color.black;
+		public int carNumberPattern = 0;
+		public int carNumberSlant = 0;
 
 		public bool carNumberOverrideEnabled_Overridden = false;
-		public bool carNumberColorOverrideA_Overridden = false;
-		public bool carNumberColorOverrideB_Overridden = false;
-		public bool carNumberColorOverrideC_Overridden = false;
-		public bool carNumberPatternOverride_Overridden = false;
-		public bool carNumberSlantOverride_Overridden = false;
+		public bool carNumberColorA_Overridden = false;
+		public bool carNumberColorB_Overridden = false;
+		public bool carNumberColorC_Overridden = false;
+		public bool carNumberPattern_Overridden = false;
+		public bool carNumberSlant_Overridden = false;
+
+		public Color telemetryPitColor = new( 0.875f, 0.816f, 0.137f, 1 );
+		public Color telemetryOutColor = new( 0.875f, 0.125f, 0.125f, 1 );
+		public bool telemetryIsBetweenCars = true;
+		public int telemetryMode = 2;
+		public int telemetryNumberOfCheckpoints = 150;
+
+		public bool telemetryPitColor_Overridden = false;
+		public bool telemetryOutColor_Overridden = false;
+		public bool telemetryIsBetweenCars_Overridden = false;
+		public bool telemetryMode_Overridden = false;
+		public bool telemetryNumberOfCheckpoints_Overridden = false;
 
 		public float directorCarLength = 4.91f;
 		public float directorHeatFalloff = 20.0f;
@@ -98,10 +100,6 @@ namespace iRacingTVController
 		public bool directorCarLength_Overridden = false;
 		public bool directorHeatFalloff_Overridden = false;
 		public bool directorHeatBias_Overridden = false;
-
-		public string iracingCustomPaintsDirectory = string.Empty;
-
-		public bool iracingCustomPaintsDirectory_Overridden = false;
 
 		public SerializableDictionary<string, SettingsText> textSettingsDataDictionary = new();
 		public SerializableDictionary<string, SettingsImage> imageSettingsDataDictionary = new();

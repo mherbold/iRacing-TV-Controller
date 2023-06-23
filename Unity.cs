@@ -195,7 +195,11 @@ namespace iRacingTVController
 
 			public override string ToString()
 			{
-				return $"{r:2x}{g:2x}{b:2x}";
+				var r = (int) ( this.r * 255 );
+				var g = (int) ( this.g * 255 );
+				var b = (int) ( this.b * 255 );
+
+				return $"{r:X2}{g:X2}{b:X2}";
 			}
 
 			public static Color white
@@ -203,6 +207,14 @@ namespace iRacingTVController
 				get
 				{
 					return new Color( 1f, 1f, 1f, 1f );
+				}
+			}
+
+			public static Color black
+			{
+				get
+				{
+					return new Color( 0f, 0f, 0f, 1f );
 				}
 			}
 

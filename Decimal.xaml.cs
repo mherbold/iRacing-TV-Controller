@@ -18,24 +18,27 @@ namespace iRacingTVController
 
 		private static readonly Regex regex = new( @"^[-\d.]*$" );
 
+		public float Value
+		{
+			get
+			{
+				if ( !float.TryParse( DecimalTextBox.Text, out var value ) )
+				{
+					return 0;
+				}
+
+				return value;
+			}
+
+			set
+			{
+				DecimalTextBox.Text = $"{value:0.000}";
+			}
+		}
+
 		public Decimal()
 		{
 			InitializeComponent();
-		}
-
-		public float GetValue()
-		{
-			if ( !float.TryParse( DecimalTextBox.Text, out var value ) )
-			{
-				return 0;
-			}
-
-			return value;
-		}
-
-		public void SetValue( float value )
-		{
-			DecimalTextBox.Text = $"{value:0.000}";
 		}
 
 		private void TextBox_PreviewTextInput( object sender, TextCompositionEventArgs e )
@@ -103,7 +106,7 @@ namespace iRacingTVController
 
 					var deltaDecimal = scale * (float) ( deltaPosition.X + deltaPosition.Y );
 
-					SetValue( startingDecimal + deltaDecimal );
+					Value = startingDecimal + deltaDecimal;
 				}
 			}
 		}

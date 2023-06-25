@@ -128,7 +128,7 @@ namespace iRacingTVController
 			}
 		}
 
-		public void SessionChange()
+		public void SessionNumberChange()
 		{
 			if ( IRSDK.data == null )
 			{
@@ -211,7 +211,7 @@ namespace iRacingTVController
 
 						if ( numberDesignMatch.Success )
 						{
-							var settings = Settings.combined.imageSettingsDataDictionary[ "CarNumber" ];
+							var settings = Settings.overlay.imageSettingsDataDictionary[ "CarNumber" ];
 
 							var colorA = numberDesignMatch.Groups[ 3 ].Value;
 							var colorB = numberDesignMatch.Groups[ 4 ].Value;
@@ -220,14 +220,14 @@ namespace iRacingTVController
 							var pattern = int.Parse( numberDesignMatch.Groups[ 1 ].Value );
 							var slant = int.Parse( numberDesignMatch.Groups[ 2 ].Value );
 
-							if ( Settings.combined.carNumberOverrideEnabled )
+							if ( Settings.overlay.carNumberOverrideEnabled )
 							{
-								colorA = Settings.combined.carNumberColorA.ToString();
-								colorB = Settings.combined.carNumberColorB.ToString();
-								colorC = Settings.combined.carNumberColorC.ToString();
+								colorA = Settings.overlay.carNumberColorA.ToString();
+								colorB = Settings.overlay.carNumberColorB.ToString();
+								colorC = Settings.overlay.carNumberColorC.ToString();
 
-								pattern = Settings.combined.carNumberPattern;
-								slant = Settings.combined.carNumberSlant;
+								pattern = Settings.overlay.carNumberPattern;
+								slant = Settings.overlay.carNumberSlant;
 							}
 
 							carNumberTextureUrl = $"http://localhost:32034/pk_number.png?size={settings.size.y}&view=0&number={carNumber}&numPat={pattern}&numCol={colorA},{colorB},{colorC}&numSlnt={slant}";
@@ -331,7 +331,7 @@ namespace iRacingTVController
 						lapPosition += lapDistPctDelta;
 					}
 
-					var checkpointIdx = (int) Math.Floor( lapDistPct * Settings.combined.telemetryNumberOfCheckpoints ) % Settings.combined.telemetryNumberOfCheckpoints;
+					var checkpointIdx = (int) Math.Floor( lapDistPct * Settings.overlay.telemetryNumberOfCheckpoints ) % Settings.overlay.telemetryNumberOfCheckpoints;
 
 					if ( checkpointIdx != this.checkpointIdx )
 					{

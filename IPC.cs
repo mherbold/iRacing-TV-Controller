@@ -34,7 +34,7 @@ namespace iRacingTVController
 
 				var memoryStream = new MemoryStream();
 
-				xmlSerializer.Serialize( memoryStream, Settings.combined );
+				xmlSerializer.Serialize( memoryStream, Settings.overlay );
 
 				var buffer = memoryStream.ToArray();
 

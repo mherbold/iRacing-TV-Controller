@@ -1,6 +1,9 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Windows;
+using System.Xml.Serialization;
 
 using irsdkSharp.Enums;
 
@@ -8,10 +11,12 @@ namespace iRacingTVController
 {
 	public static class IncidentScan
 	{
-		public const int IncidentFrameCount = 180;
-		public const int IncidentPrerollFrameCount = 60;
+		public static List<IncidentData> incidentDataList = new();
 
-		public static readonly List<IncidentData> incidentList = new();
+		public static string incidentScanFilePath = string.Empty;
+
+		public static int saveIncidentsTick = 0;
+		public static bool saveIncidentsQueued = false;
 
 		public static int currentSession = 0;
 
@@ -40,35 +45,44 @@ namespace iRacingTVController
 
 		public static IncidentData? GetCurrentIncident()
 		{
-			IncidentData? currentIncident = null;
+			IncidentData? currentIncidentData = null;
 
-			foreach ( var incident in incidentList )
+			foreach ( var incidentData in incidentDataList )
 			{
-				var incidentStartFrame = incident.StartFrame;
-				var incidentEndFrame = incident.EndFrame;
-
-				if ( ( IRSDK.normalizedData.replayFrameNum >= incidentStartFrame ) && ( IRSDK.normalizedData.replayFrameNum < incidentEndFrame ) )
+				if ( !incidentData.Ignore )
 				{
-					currentIncident = incident;
+					if ( ( IRSDK.normalizedData.replayFrameNum >= incidentData.StartFrame ) && ( IRSDK.normalizedData.replayFrameNum <= incidentData.EndFrame ) )
+					{
+						currentIncidentData = incidentData;
 
-					break;
+						break;
+					}
 				}
 			}
 
-			return currentIncident;
+			return currentIncidentData;
 		}
 
 		public static void Start()
 		{
+			IRSDK.targetCamEnabled = false;
+			IRSDK.targetCamFastSwitchEnabled = false;
+
+			incidentDataList.Clear();
+
 			MainWindow.Instance.Incidents_ListView.Items.Clear();
+
+			var incidentScanFilePath = GetIncidentScanFilePath();
+
+			File.Delete( incidentScanFilePath );
 
 			currentIncidentScanState = IncidentScanStateEnum.RewindToStartOfReplay;
 
-			//Director.isEnabled = false;
+			Director.isEnabled = false;
 
 			//if ( Overlay.isVisible )
 			//{
-				//Overlay.ToggleVisibility();
+			//Overlay.ToggleVisibility();
 			//}
 
 			//MainWindow.instance?.Update();
@@ -84,8 +98,6 @@ namespace iRacingTVController
 			switch ( currentIncidentScanState )
 			{
 				case IncidentScanStateEnum.RewindToStartOfReplay:
-
-					incidentList.Clear();
 
 					LogFile.Write( "Rewinding to the start of the replay...\r\n" );
 
@@ -125,7 +137,9 @@ namespace iRacingTVController
 
 				case IncidentScanStateEnum.LookAtPaceCarWithScenicCamera:
 
-					IRSDK.AddMessage( BroadcastMessageTypes.CamSwitchNum, 0, 10, 0 );
+					var scenicCameraGroupNumber = IRSDK.GetCamGroupNumber( Settings.editor.incidentsScenicCameras );
+
+					IRSDK.AddMessage( BroadcastMessageTypes.CamSwitchNum, 0, scenicCameraGroupNumber, 0 );
 
 					currentIncidentScanState = IncidentScanStateEnum.WaitForLookAtPaceCarToComplete;
 
@@ -133,7 +147,9 @@ namespace iRacingTVController
 
 				case IncidentScanStateEnum.WaitForLookAtPaceCarToComplete:
 
-					if ( ( IRSDK.currentCameraCarIdx == 0 ) && ( IRSDK.currentCameraGroupNumber == 10 ) )
+					scenicCameraGroupNumber = IRSDK.GetCamGroupNumber( Settings.editor.incidentsScenicCameras );
+
+					if ( ( IRSDK.camCarIdx == 0 ) && ( IRSDK.camGroupNumber == scenicCameraGroupNumber ) )
 					{
 						currentIncidentScanState = IncidentScanStateEnum.SearchForNextIncident;
 					}
@@ -156,20 +172,54 @@ namespace iRacingTVController
 					{
 						LogFile.Write( $"New incident found at frame {IRSDK.normalizedData.replayFrameNum} involving car #{normalizedCar.carNumber}.\r\n" );
 
-						var incidentData = new IncidentData()
+						var overlapFound = false;
+
+						foreach ( var incidentData in incidentDataList )
 						{
-							CarIdx = normalizedCar.carIdx,
-							FrameNumber = IRSDK.normalizedData.replayFrameNum,
-							CarNumber = normalizedCar.carNumber,
-							DriverName = normalizedCar.userName,
-							StartFrame = IRSDK.normalizedData.replayFrameNum - 60, // TODO convert to setting
-							EndFrame = IRSDK.normalizedData.replayFrameNum + 60, // TODO convert to setting
-							Ignore = false
-						};
+							var incidentOverlapMergeFrames = (int) Math.Ceiling( 60 * Settings.editor.incidentsOverlapMergeTime );
 
-						incidentList.Add( incidentData );
+							if ( ( IRSDK.normalizedData.camCarIdx == incidentData.CarIdx ) && ( IRSDK.normalizedData.replayFrameNum >= ( incidentData.StartFrame - incidentOverlapMergeFrames ) ) && ( IRSDK.normalizedData.replayFrameNum <= ( incidentData.EndFrame + incidentOverlapMergeFrames ) ) )
+							{
+								overlapFound = true;
 
-						MainWindow.Instance.Incidents_ListView.Items.Add( incidentData );
+								if ( IRSDK.normalizedData.replayFrameNum <= incidentData.StartFrame )
+								{
+									incidentData.StartFrame = IRSDK.normalizedData.replayFrameNum;
+								}
+								else
+								{
+									incidentData.EndFrame = IRSDK.normalizedData.replayFrameNum;
+								}
+
+								MainWindow.Instance.Incidents_ListView.Items.Refresh();
+
+								break;
+							}
+						}
+
+						if ( !overlapFound )
+						{
+							var incidentData = new IncidentData()
+							{
+								Index = incidentDataList.Count + 1,
+								CarIdx = normalizedCar.carIdx,
+								FrameNumber = IRSDK.normalizedData.replayFrameNum,
+								CarNumber = normalizedCar.carNumber,
+								DriverName = normalizedCar.userName,
+								StartFrame = IRSDK.normalizedData.replayFrameNum,
+								EndFrame = IRSDK.normalizedData.replayFrameNum,
+								Ignore = false
+							};
+
+							incidentDataList.Add( incidentData );
+
+							MainWindow.Instance.Incidents_ListView.Items.Add( incidentData );
+
+							MainWindow.Instance.Incidents_ListView.ScrollIntoView( incidentData );
+						}
+
+
+						saveIncidentsQueued = true;
 					}
 
 					currentIncidentScanState = IncidentScanStateEnum.SearchForNextIncident;
@@ -217,6 +267,8 @@ namespace iRacingTVController
 
 					currentIncidentScanState = IncidentScanStateEnum.Idle;
 
+					MessageBox.Show( MainWindow.Instance, "Incident scan is complete!", "All Done", MessageBoxButton.OK, MessageBoxImage.Information );
+
 					break;
 
 				case IncidentScanStateEnum.WaitForFrameNumberToSettle:
@@ -251,11 +303,11 @@ namespace iRacingTVController
 						}
 						else
 						{
-							var targetLoopCount = (int) Math.Ceiling( 60.0f / Settings.editor.iracingCommandRateLimit ) * 10;
+							var targetLoopCount = (int) Math.Ceiling( Settings.editor.incidentsTimeout * 60 );
 
 							settleLoopCount++;
 
-							if ( settleLoopCount == targetLoopCount ) // TODO change to setting
+							if ( settleLoopCount == targetLoopCount )
 							{
 								currentIncidentScanState = IncidentScanStateEnum.RewindToStartOfReplayAgain;
 							}
@@ -263,6 +315,16 @@ namespace iRacingTVController
 					}
 
 					break;
+			}
+
+			saveIncidentsTick--;
+
+			if ( saveIncidentsQueued && ( saveIncidentsTick <= 0 ) )
+			{
+				saveIncidentsQueued = false;
+				saveIncidentsTick = 60;
+
+				SaveIncidents();
 			}
 		}
 
@@ -276,6 +338,57 @@ namespace iRacingTVController
 			currentIncidentScanState = IncidentScanStateEnum.WaitForFrameNumberToSettle;
 
 			IncidentScan.nextIncidentScanState = nextIncidentScanState;
+		}
+
+		public static string GetIncidentScanFilePath()
+		{
+			return $"{Program.documentsFolder}IncidentScans\\{IRSDK.normalizedSession.sessionId}-{IRSDK.normalizedSession.subSessionId}.xml";
+		}
+
+		public static void SaveIncidents()
+		{
+			if ( incidentDataList.Count > 0 )
+			{
+				incidentScanFilePath = GetIncidentScanFilePath();
+
+				var xmlSerializer = new XmlSerializer( incidentDataList.GetType() );
+
+				var streamWriter = new StreamWriter( incidentScanFilePath );
+
+				xmlSerializer.Serialize( streamWriter, incidentDataList );
+
+				streamWriter.Close();
+			}
+		}
+
+		public static void LoadIncidents()
+		{
+			var newIncidentsScanFilePath = GetIncidentScanFilePath();
+
+			if ( incidentScanFilePath != newIncidentsScanFilePath )
+			{
+				incidentScanFilePath = newIncidentsScanFilePath;
+
+				incidentDataList.Clear();
+
+				MainWindow.Instance.Incidents_ListView.Items.Clear();
+
+				if ( File.Exists( incidentScanFilePath ) )
+				{
+					var xmlSerializer = new XmlSerializer( incidentDataList.GetType() );
+
+					var fileStream = new FileStream( incidentScanFilePath, FileMode.Open );
+
+					incidentDataList = (List<IncidentData>) ( xmlSerializer.Deserialize( fileStream ) ?? throw new Exception() );
+
+					fileStream.Close();
+
+					foreach ( var incidentData in incidentDataList )
+					{
+						MainWindow.Instance.Incidents_ListView.Items.Add( incidentData );
+					}
+				}
+			}
 		}
 	}
 }

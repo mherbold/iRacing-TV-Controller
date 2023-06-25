@@ -49,7 +49,7 @@ namespace iRacingTVController
 		{
 			try
 			{
-				dispatcherTimer.Tick += async ( sender, e ) => await TickAsync( sender, e );
+				dispatcherTimer.Tick += ( sender, e ) => Tick( sender, e );
 				dispatcherTimer.Interval = TimeSpan.FromSeconds( 1 / 60.0f );
 				dispatcherTimer.Start();
 
@@ -66,7 +66,7 @@ namespace iRacingTVController
 			}
 		}
 
-		private static async Task TickAsync( object? sender, EventArgs e )
+		private static void Tick( object? sender, EventArgs e )
 		{
 			int tickMutex = Interlocked.Increment( ref Program.tickMutex );
 
@@ -79,7 +79,10 @@ namespace iRacingTVController
 				IPC.UpdateSettings();
 				IPC.UpdateLiveData();
 
+				Director.Update();
 				IncidentScan.Update();
+
+				MainWindow.Instance.ControlPanel_Update();
 
 				IRSDK.SendMessages();
 			}

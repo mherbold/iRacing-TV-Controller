@@ -12,14 +12,9 @@ namespace iRacingTVController
 
 		public static string chatLogFilePath = string.Empty;
 
-		public static string GetChatLogFilePath()
-		{
-			return $"{Program.documentsFolderSTT}ChatLogs\\{IRSDK.normalizedSession.sessionId}-{IRSDK.normalizedSession.subSessionId}.csv";
-		}
-
 		public static void LoadRecording()
 		{
-			var newChatLogFilePath = GetChatLogFilePath();
+			var newChatLogFilePath = $"{Program.documentsFolderSTT}ChatLogs\\{IRSDK.normalizedSession.sessionId}-{IRSDK.normalizedSession.subSessionId}.csv";
 
 			if ( newChatLogFilePath != chatLogFilePath )
 			{

@@ -22,37 +22,37 @@ namespace iRacingTVController
 			var overlayName = OverlayName.Text.Trim();
 
 			var lowercaseOverlayName = overlayName.ToLower();
-			var lowercaseGlobalOverlayName = Settings.global.ToString().ToLower();
+			var lowercaseGlobalOverlayName = Settings.overlayGlobal.ToString().ToLower();
 
 			if ( overlayName == string.Empty )
 			{
-				MessageBox.Show( "You need to give the overlay a name.", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
+				MessageBox.Show( this, "You need to give the overlay a name.", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
 			}
 			else if ( lowercaseOverlayName == lowercaseGlobalOverlayName )
 			{
-				MessageBox.Show( "You can't use that name, it is reserved.", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
+				MessageBox.Show( this, "You can't use that name, it is reserved.", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
 			}
 			else
 			{
 				var overlayFilePath = Settings.overlaySettingsFolder + overlayName + ".xml";
 
-				if ( Settings.overlay.filePath == overlayFilePath )
+				if ( Settings.overlayLocal.filePath == overlayFilePath )
 				{
 					Close();
 				}
 				else if ( File.Exists( overlayFilePath ) )
 				{
-					MessageBox.Show( "There is already an existing overlay with that name.", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
+					MessageBox.Show( this, "There is already an existing overlay with that name.", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
 				}
 				else
 				{
-					File.Delete( Settings.overlay.filePath );
+					File.Delete( Settings.overlayLocal.filePath );
 
-					Settings.overlay.filePath = overlayFilePath;
+					Settings.overlayLocal.filePath = overlayFilePath;
 
 					Settings.SaveOverlay();
 
-					Settings.editor.lastActiveOverlayFilePath = Settings.overlay.filePath;
+					Settings.editor.lastActiveOverlayFilePath = Settings.overlayLocal.filePath;
 
 					Settings.SaveEditor();
 

@@ -11,30 +11,39 @@ namespace iRacingTVController
 {
 	public static class Settings
 	{
-		public const string SettingsFolderName = "Settings";
+		public const string OverlaySettingsFolderName = "OverlaySettings";
+		public const string DirectorSettingsFolderName = "DirectorSettings";
 
 		public const string EditorSettingsFileName = "Editor.xml";
 		public const string GlobalSettingsFileName = "Global.xml";
 
 		public static string editorSettingsFolder = Program.documentsFolder;
-		public static string overlaySettingsFolder = Program.documentsFolder + SettingsFolderName + "\\";
+		public static string overlaySettingsFolder = Program.documentsFolder + OverlaySettingsFolderName + "\\";
+		public static string directorSettingsFolder = Program.documentsFolder + DirectorSettingsFolderName + "\\";
 
 		public static string editorSettingsFilePath = editorSettingsFolder + EditorSettingsFileName;
-		public static string globalSettingsFilePath = overlaySettingsFolder + GlobalSettingsFileName;
+		public static string globalOverlaySettingsFilePath = overlaySettingsFolder + GlobalSettingsFileName;
+		public static string globalDirectorSettingsFilePath = directorSettingsFolder + GlobalSettingsFileName;
 
 		public static SettingsEditor editor = new();
-		public static SettingsOverlay global = new();
+
+		public static SettingsOverlay overlayGlobal = new();
+		public static SettingsOverlay overlayLocal = new();
 		public static SettingsOverlay overlay = new();
-		public static SettingsOverlay combined = new();
+
+		public static SettingsDirector directorGlobal = new();
+		public static SettingsDirector directorLocal = new();
+		public static SettingsDirector director = new();
 
 		public static List<SettingsOverlay> overlayList = new();
+		public static List<SettingsDirector> directorList = new();
 
 		public static int loading = 0;
 
 		public static void Initialize()
 		{
-			UpdateOverlay( global );
-			UpdateOverlay( overlay );
+			AddMissingDictionaryItems( overlayGlobal );
+			AddMissingDictionaryItems( overlayLocal );
 
 			if ( !Directory.Exists( Program.documentsFolder ) )
 			{
@@ -46,6 +55,13 @@ namespace iRacingTVController
 				Directory.CreateDirectory( overlaySettingsFolder );
 			}
 
+			if ( !Directory.Exists( directorSettingsFolder ) )
+			{
+				Directory.CreateDirectory( directorSettingsFolder );
+			}
+
+			// editor
+
 			if ( File.Exists( editorSettingsFilePath ) )
 			{
 				try
@@ -54,7 +70,7 @@ namespace iRacingTVController
 				}
 				catch ( Exception exception )
 				{
-					MessageBox.Show( $"We could not load the editor settings file '{editorSettingsFilePath}'.\r\n\r\nThe error message is as follows:\r\n\r\n{exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
+					MessageBox.Show( MainWindow.Instance, $"We could not load the editor settings file '{editorSettingsFilePath}'.\r\n\r\nThe error message is as follows:\r\n\r\n{exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
 				}
 			}
 			else
@@ -62,11 +78,13 @@ namespace iRacingTVController
 				Save( editorSettingsFilePath, editor );
 			}
 
-			if ( !File.Exists( globalSettingsFilePath ) )
-			{
-				global.filePath = globalSettingsFilePath;
+			// overlay
 
-				Save( globalSettingsFilePath, global );
+			if ( !File.Exists( globalOverlaySettingsFilePath ) )
+			{
+				overlayGlobal.filePath = globalOverlaySettingsFilePath;
+
+				Save( globalOverlaySettingsFilePath, overlayGlobal );
 			}
 
 			var overlaySettingsFilePaths = Directory.EnumerateFiles( overlaySettingsFolder );
@@ -79,11 +97,11 @@ namespace iRacingTVController
 
 					settings.filePath = overlaySettingsFilePath;
 
-					UpdateOverlay( settings );
+					AddMissingDictionaryItems( settings );
 
-					if ( overlaySettingsFilePath == globalSettingsFilePath )
+					if ( overlaySettingsFilePath == globalOverlaySettingsFilePath )
 					{
-						global = settings;
+						overlayGlobal = settings;
 					}
 					else
 					{
@@ -91,36 +109,91 @@ namespace iRacingTVController
 
 						if ( settings.filePath == editor.lastActiveOverlayFilePath )
 						{
-							overlay = settings;
+							overlayLocal = settings;
 						}
 					}
 				}
 				catch ( Exception exception )
 				{
-					MessageBox.Show( $"We could not load the overlay settings file '{overlaySettingsFilePath}'.\r\n\r\nThe error message is as follows:\r\n\r\n{exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
+					MessageBox.Show( MainWindow.Instance, $"We could not load the overlay settings file '{overlaySettingsFilePath}'.\r\n\r\nThe error message is as follows:\r\n\r\n{exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
 				}
 			}
 
-			if ( overlay.filePath == string.Empty )
+			if ( overlayLocal.filePath == string.Empty )
 			{
 				if ( overlayList.Count > 0 )
 				{
-					overlay = overlayList[ 0 ];
+					overlayLocal = overlayList[ 0 ];
 				}
 				else
 				{
-					overlay.filePath = overlaySettingsFolder + "My new overlay.xml";
+					overlayLocal.filePath = overlaySettingsFolder + "My new overlay.xml";
 
-					overlayList.Add( overlay );
+					overlayList.Add( overlayLocal );
 
 					SaveOverlay();
+				}
+			}
+
+			// director
+
+			if ( !File.Exists( globalDirectorSettingsFilePath ) )
+			{
+				directorGlobal.filePath = globalDirectorSettingsFilePath;
+
+				Save( globalDirectorSettingsFilePath, directorGlobal );
+			}
+
+			var directorSettingsFilePaths = Directory.EnumerateFiles( directorSettingsFolder );
+
+			foreach ( var directorSettingsFilePath in directorSettingsFilePaths )
+			{
+				try
+				{
+					var settings = (SettingsDirector) Load( directorSettingsFilePath, typeof( SettingsDirector ) );
+
+					settings.filePath = directorSettingsFilePath;
+
+					if ( directorSettingsFilePath == globalDirectorSettingsFilePath )
+					{
+						directorGlobal = settings;
+					}
+					else
+					{
+						directorList.Add( settings );
+
+						if ( settings.filePath == editor.lastActiveDirectorFilePath )
+						{
+							directorLocal = settings;
+						}
+					}
+				}
+				catch ( Exception exception )
+				{
+					MessageBox.Show( MainWindow.Instance, $"We could not load the director settings file '{directorSettingsFilePath}'.\r\n\r\nThe error message is as follows:\r\n\r\n{exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
+				}
+			}
+
+			if ( directorLocal.filePath == string.Empty )
+			{
+				if ( directorList.Count > 0 )
+				{
+					directorLocal = directorList[ 0 ];
+				}
+				else
+				{
+					directorLocal.filePath = directorSettingsFolder + "My new director.xml";
+
+					directorList.Add( directorLocal );
+
+					SaveDirector();
 				}
 			}
 
 			IPC.readyToSendSettings = true;
 		}
 
-		public static void UpdateOverlay( SettingsOverlay settings )
+		public static void AddMissingDictionaryItems( SettingsOverlay settings )
 		{
 			var defaultImageSettings = new Dictionary<string, SettingsImage>() {
 				{ "BlackLight", new SettingsImage(){ imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\light-black.png", position = { x = 280, y = 130 } } },
@@ -226,10 +299,18 @@ namespace iRacingTVController
 
 		public static void SaveOverlay()
 		{
-			Save( global.filePath, global );
-			Save( overlay.filePath, overlay );
+			Save( overlayGlobal.filePath, overlayGlobal );
+			Save( overlayLocal.filePath, overlayLocal );
 
 			UpdateCombinedOverlay();
+		}
+
+		public static void SaveDirector()
+		{
+			Save( directorGlobal.filePath, directorGlobal );
+			Save( directorLocal.filePath, directorLocal );
+
+			UpdateCombinedDirector();
 		}
 
 		public static void Save( string filePath, object settingsData )
@@ -245,107 +326,107 @@ namespace iRacingTVController
 
 		public static void UpdateCombinedOverlay()
 		{
-			combined = new SettingsOverlay
+			overlay = new SettingsOverlay
 			{
-				overlayPosition = overlay.overlayPosition_Overridden ? overlay.overlayPosition : global.overlayPosition,
-				overlaySize = overlay.overlaySize_Overridden ? overlay.overlaySize : global.overlaySize,
+				position = overlayLocal.position_Overridden ? overlayLocal.position : overlayGlobal.position,
+				size = overlayLocal.size_Overridden ? overlayLocal.size : overlayGlobal.size,
 
-				overlayPosition_Overridden = overlay.overlayPosition_Overridden,
-				overlaySize_Overridden = overlay.overlaySize_Overridden,
+				position_Overridden = overlayLocal.position_Overridden,
+				size_Overridden = overlayLocal.size_Overridden,
 
 				fontPaths = new string[ SettingsOverlay.MaxNumFonts ] {
-					overlay.fontNames_Overridden[ 0 ] ? overlay.fontPaths[ 0 ] : global.fontPaths[ 0 ],
-					overlay.fontNames_Overridden[ 1 ] ? overlay.fontPaths[ 1 ] : global.fontPaths[ 1 ],
-					overlay.fontNames_Overridden[ 2 ] ? overlay.fontPaths[ 2 ] : global.fontPaths[ 2 ],
-					overlay.fontNames_Overridden[ 3 ] ? overlay.fontPaths[ 3 ] : global.fontPaths[ 3 ]
+					overlayLocal.fontNames_Overridden[ 0 ] ? overlayLocal.fontPaths[ 0 ] : overlayGlobal.fontPaths[ 0 ],
+					overlayLocal.fontNames_Overridden[ 1 ] ? overlayLocal.fontPaths[ 1 ] : overlayGlobal.fontPaths[ 1 ],
+					overlayLocal.fontNames_Overridden[ 2 ] ? overlayLocal.fontPaths[ 2 ] : overlayGlobal.fontPaths[ 2 ],
+					overlayLocal.fontNames_Overridden[ 3 ] ? overlayLocal.fontPaths[ 3 ] : overlayGlobal.fontPaths[ 3 ]
 				},
 
 				fontNames_Overridden = new bool[ SettingsOverlay.MaxNumFonts ]
 				{
-					overlay.fontNames_Overridden[ 0 ],
-					overlay.fontNames_Overridden[ 1 ],
-					overlay.fontNames_Overridden[ 2 ],
-					overlay.fontNames_Overridden[ 3 ]
+					overlayLocal.fontNames_Overridden[ 0 ],
+					overlayLocal.fontNames_Overridden[ 1 ],
+					overlayLocal.fontNames_Overridden[ 2 ],
+					overlayLocal.fontNames_Overridden[ 3 ]
 				},
 
-				raceStatusOverlayEnabled = overlay.raceStatusOverlayEnabled_Overridden ? overlay.raceStatusOverlayEnabled : global.raceStatusOverlayEnabled,
-				raceStatusOverlayPosition = overlay.raceStatusOverlayPosition_Overridden ? overlay.raceStatusOverlayPosition : global.raceStatusOverlayPosition,
+				raceStatusEnabled = overlayLocal.raceStatusEnabled_Overridden ? overlayLocal.raceStatusEnabled : overlayGlobal.raceStatusEnabled,
+				raceStatusPosition = overlayLocal.raceStatusPosition_Overridden ? overlayLocal.raceStatusPosition : overlayGlobal.raceStatusPosition,
 
-				raceStatusOverlayEnabled_Overridden = overlay.raceStatusOverlayEnabled_Overridden,
-				raceStatusOverlayPosition_Overridden = overlay.raceStatusOverlayPosition_Overridden,
+				raceStatusEnabled_Overridden = overlayLocal.raceStatusEnabled_Overridden,
+				raceStatusPosition_Overridden = overlayLocal.raceStatusPosition_Overridden,
 
-				leaderboardOverlayEnabled = overlay.leaderboardOverlayEnabled_Overridden ? overlay.leaderboardOverlayEnabled : global.leaderboardOverlayEnabled,
-				leaderboardOverlayPosition = overlay.leaderboardOverlayPosition_Overridden ? overlay.leaderboardOverlayPosition : global.leaderboardOverlayPosition,
-				leaderboardFirstPlacePosition = overlay.leaderboardFirstPlacePosition_Overridden ? overlay.leaderboardFirstPlacePosition : global.leaderboardFirstPlacePosition,
-				leaderboardPlaceCount = overlay.leaderboardPlaceCount_Overridden ? overlay.leaderboardPlaceCount : global.leaderboardPlaceCount,
-				leaderboardPlaceSpacing = overlay.leaderboardPlaceSpacing_Overridden ? overlay.leaderboardPlaceSpacing : global.leaderboardPlaceSpacing,
-				leaderboardUseClassColors = overlay.leaderboardUseClassColors_Overridden ? overlay.leaderboardUseClassColors : global.leaderboardUseClassColors,
-				leaderboardClassColorStrength = overlay.leaderboardClassColorStrength_Overridden ? overlay.leaderboardClassColorStrength : global.leaderboardClassColorStrength,
-				telemetryPitColor = overlay.telemetryPitColor_Overridden ? overlay.telemetryPitColor : global.telemetryPitColor,
-				telemetryOutColor = overlay.telemetryOutColor_Overridden ? overlay.telemetryOutColor : global.telemetryOutColor,
-				telemetryIsBetweenCars = overlay.telemetryIsBetweenCars_Overridden ? overlay.telemetryIsBetweenCars : global.telemetryIsBetweenCars,
-				telemetryMode = overlay.telemetryMode_Overridden ? overlay.telemetryMode : global.telemetryMode,
-				telemetryNumberOfCheckpoints = overlay.telemetryNumberOfCheckpoints_Overridden ? overlay.telemetryNumberOfCheckpoints : global.telemetryNumberOfCheckpoints,
+				leaderboardEnabled = overlayLocal.leaderboardEnabled_Overridden ? overlayLocal.leaderboardEnabled : overlayGlobal.leaderboardEnabled,
+				leaderboardPosition = overlayLocal.leaderboardPosition_Overridden ? overlayLocal.leaderboardPosition : overlayGlobal.leaderboardPosition,
+				leaderboardFirstPlacePosition = overlayLocal.leaderboardFirstPlacePosition_Overridden ? overlayLocal.leaderboardFirstPlacePosition : overlayGlobal.leaderboardFirstPlacePosition,
+				leaderboardPlaceCount = overlayLocal.leaderboardPlaceCount_Overridden ? overlayLocal.leaderboardPlaceCount : overlayGlobal.leaderboardPlaceCount,
+				leaderboardPlaceSpacing = overlayLocal.leaderboardPlaceSpacing_Overridden ? overlayLocal.leaderboardPlaceSpacing : overlayGlobal.leaderboardPlaceSpacing,
+				leaderboardUseClassColors = overlayLocal.leaderboardUseClassColors_Overridden ? overlayLocal.leaderboardUseClassColors : overlayGlobal.leaderboardUseClassColors,
+				leaderboardClassColorStrength = overlayLocal.leaderboardClassColorStrength_Overridden ? overlayLocal.leaderboardClassColorStrength : overlayGlobal.leaderboardClassColorStrength,
+				telemetryPitColor = overlayLocal.telemetryPitColor_Overridden ? overlayLocal.telemetryPitColor : overlayGlobal.telemetryPitColor,
+				telemetryOutColor = overlayLocal.telemetryOutColor_Overridden ? overlayLocal.telemetryOutColor : overlayGlobal.telemetryOutColor,
+				telemetryIsBetweenCars = overlayLocal.telemetryIsBetweenCars_Overridden ? overlayLocal.telemetryIsBetweenCars : overlayGlobal.telemetryIsBetweenCars,
+				telemetryMode = overlayLocal.telemetryMode_Overridden ? overlayLocal.telemetryMode : overlayGlobal.telemetryMode,
+				telemetryNumberOfCheckpoints = overlayLocal.telemetryNumberOfCheckpoints_Overridden ? overlayLocal.telemetryNumberOfCheckpoints : overlayGlobal.telemetryNumberOfCheckpoints,
 
-				leaderboardOverlayEnabled_Overridden = overlay.leaderboardOverlayEnabled_Overridden,
-				leaderboardOverlayPosition_Overridden = overlay.leaderboardOverlayPosition_Overridden,
-				leaderboardFirstPlacePosition_Overridden = overlay.leaderboardFirstPlacePosition_Overridden,
-				leaderboardPlaceCount_Overridden = overlay.leaderboardPlaceCount_Overridden,
-				leaderboardPlaceSpacing_Overridden = overlay.leaderboardPlaceSpacing_Overridden,
-				leaderboardUseClassColors_Overridden = overlay.leaderboardUseClassColors_Overridden,
-				leaderboardClassColorStrength_Overridden = overlay.leaderboardClassColorStrength_Overridden,
-				telemetryPitColor_Overridden = overlay.telemetryPitColor_Overridden,
-				telemetryOutColor_Overridden = overlay.telemetryOutColor_Overridden,
-				telemetryIsBetweenCars_Overridden = overlay.telemetryIsBetweenCars_Overridden,
-				telemetryMode_Overridden = overlay.telemetryMode_Overridden,
-				telemetryNumberOfCheckpoints_Overridden = overlay.telemetryNumberOfCheckpoints_Overridden,
+				leaderboardEnabled_Overridden = overlayLocal.leaderboardEnabled_Overridden,
+				leaderboardPosition_Overridden = overlayLocal.leaderboardPosition_Overridden,
+				leaderboardFirstPlacePosition_Overridden = overlayLocal.leaderboardFirstPlacePosition_Overridden,
+				leaderboardPlaceCount_Overridden = overlayLocal.leaderboardPlaceCount_Overridden,
+				leaderboardPlaceSpacing_Overridden = overlayLocal.leaderboardPlaceSpacing_Overridden,
+				leaderboardUseClassColors_Overridden = overlayLocal.leaderboardUseClassColors_Overridden,
+				leaderboardClassColorStrength_Overridden = overlayLocal.leaderboardClassColorStrength_Overridden,
+				telemetryPitColor_Overridden = overlayLocal.telemetryPitColor_Overridden,
+				telemetryOutColor_Overridden = overlayLocal.telemetryOutColor_Overridden,
+				telemetryIsBetweenCars_Overridden = overlayLocal.telemetryIsBetweenCars_Overridden,
+				telemetryMode_Overridden = overlayLocal.telemetryMode_Overridden,
+				telemetryNumberOfCheckpoints_Overridden = overlayLocal.telemetryNumberOfCheckpoints_Overridden,
 
-				voiceOfOverlayEnabled = overlay.voiceOfOverlayEnabled_Overridden ? overlay.voiceOfOverlayEnabled : global.voiceOfOverlayEnabled,
-				voiceOfOverlayPosition = overlay.voiceOfOverlayPosition_Overridden ? overlay.voiceOfOverlayPosition : global.voiceOfOverlayPosition,
+				voiceOfEnabled = overlayLocal.voiceOfEnabled_Overridden ? overlayLocal.voiceOfEnabled : overlayGlobal.voiceOfEnabled,
+				voiceOfPosition = overlayLocal.voiceOfPosition_Overridden ? overlayLocal.voiceOfPosition : overlayGlobal.voiceOfPosition,
 
-				voiceOfOverlayEnabled_Overridden = overlay.voiceOfOverlayEnabled_Overridden,
-				voiceOfOverlayPosition_Overridden = overlay.voiceOfOverlayPosition_Overridden,
+				voiceOfEnabled_Overridden = overlayLocal.voiceOfEnabled_Overridden,
+				voiceOfPosition_Overridden = overlayLocal.voiceOfPosition_Overridden,
 
-				subtitleOverlayEnabled = overlay.subtitleOverlayEnabled_Overridden ? overlay.subtitleOverlayEnabled : global.subtitleOverlayEnabled,
-				subtitleOverlayPosition = overlay.subtitleOverlayPosition_Overridden ? overlay.subtitleOverlayPosition : global.subtitleOverlayPosition,
-				subtitleOverlayMaxSize = overlay.subtitleOverlayMaxSize_Overridden ? overlay.subtitleOverlayMaxSize : global.subtitleOverlayMaxSize,
-				subtitleOverlayBackgroundColor = overlay.subtitleOverlayBackgroundColor_Overridden ? overlay.subtitleOverlayBackgroundColor : global.subtitleOverlayBackgroundColor,
-				subtitleTextPadding = overlay.subtitleTextPadding_Overridden ? overlay.subtitleTextPadding : global.subtitleTextPadding,
+				subtitleEnabled = overlayLocal.subtitleEnabled_Overridden ? overlayLocal.subtitleEnabled : overlayGlobal.subtitleEnabled,
+				subtitlePosition = overlayLocal.subtitlePosition_Overridden ? overlayLocal.subtitlePosition : overlayGlobal.subtitlePosition,
+				subtitleMaxSize = overlayLocal.subtitleMaxSize_Overridden ? overlayLocal.subtitleMaxSize : overlayGlobal.subtitleMaxSize,
+				subtitleBackgroundColor = overlayLocal.subtitleBackgroundColor_Overridden ? overlayLocal.subtitleBackgroundColor : overlayGlobal.subtitleBackgroundColor,
+				subtitleTextPadding = overlayLocal.subtitleTextPadding_Overridden ? overlayLocal.subtitleTextPadding : overlayGlobal.subtitleTextPadding,
 
-				subtitleOverlayEnabled_Overridden = overlay.subtitleOverlayEnabled_Overridden,
-				subtitleOverlayPosition_Overridden = overlay.subtitleOverlayPosition_Overridden,
-				subtitleOverlayMaxSize_Overridden = overlay.subtitleOverlayMaxSize_Overridden,
-				subtitleOverlayBackgroundColor_Overridden = overlay.subtitleOverlayBackgroundColor_Overridden,
-				subtitleTextPadding_Overridden = overlay.subtitleTextPadding_Overridden,
+				subtitleEnabled_Overridden = overlayLocal.subtitleEnabled_Overridden,
+				subtitlePosition_Overridden = overlayLocal.subtitlePosition_Overridden,
+				subtitleMaxSize_Overridden = overlayLocal.subtitleMaxSize_Overridden,
+				subtitleBackgroundColor_Overridden = overlayLocal.subtitleBackgroundColor_Overridden,
+				subtitleTextPadding_Overridden = overlayLocal.subtitleTextPadding_Overridden,
 
-				carNumberOverrideEnabled = overlay.carNumberOverrideEnabled_Overridden ? overlay.carNumberOverrideEnabled : global.carNumberOverrideEnabled,
-				carNumberColorA = overlay.carNumberColorA_Overridden ? overlay.carNumberColorA : global.carNumberColorA,
-				carNumberColorB = overlay.carNumberColorB_Overridden ? overlay.carNumberColorB : global.carNumberColorB,
-				carNumberColorC = overlay.carNumberColorC_Overridden ? overlay.carNumberColorC : global.carNumberColorC,
-				carNumberPattern = overlay.carNumberPattern_Overridden ? overlay.carNumberPattern : global.carNumberPattern,
-				carNumberSlant = overlay.carNumberSlant_Overridden ? overlay.carNumberSlant : global.carNumberSlant,
+				carNumberOverrideEnabled = overlayLocal.carNumberOverrideEnabled_Overridden ? overlayLocal.carNumberOverrideEnabled : overlayGlobal.carNumberOverrideEnabled,
+				carNumberColorA = overlayLocal.carNumberColorA_Overridden ? overlayLocal.carNumberColorA : overlayGlobal.carNumberColorA,
+				carNumberColorB = overlayLocal.carNumberColorB_Overridden ? overlayLocal.carNumberColorB : overlayGlobal.carNumberColorB,
+				carNumberColorC = overlayLocal.carNumberColorC_Overridden ? overlayLocal.carNumberColorC : overlayGlobal.carNumberColorC,
+				carNumberPattern = overlayLocal.carNumberPattern_Overridden ? overlayLocal.carNumberPattern : overlayGlobal.carNumberPattern,
+				carNumberSlant = overlayLocal.carNumberSlant_Overridden ? overlayLocal.carNumberSlant : overlayGlobal.carNumberSlant,
 
-				carNumberOverrideEnabled_Overridden = overlay.carNumberOverrideEnabled_Overridden,
-				carNumberColorA_Overridden = overlay.carNumberColorA_Overridden,
-				carNumberColorB_Overridden = overlay.carNumberColorB_Overridden,
-				carNumberColorC_Overridden = overlay.carNumberColorC_Overridden,
-				carNumberPattern_Overridden = overlay.carNumberPattern_Overridden,
-				carNumberSlant_Overridden = overlay.carNumberSlant_Overridden,
+				carNumberOverrideEnabled_Overridden = overlayLocal.carNumberOverrideEnabled_Overridden,
+				carNumberColorA_Overridden = overlayLocal.carNumberColorA_Overridden,
+				carNumberColorB_Overridden = overlayLocal.carNumberColorB_Overridden,
+				carNumberColorC_Overridden = overlayLocal.carNumberColorC_Overridden,
+				carNumberPattern_Overridden = overlayLocal.carNumberPattern_Overridden,
+				carNumberSlant_Overridden = overlayLocal.carNumberSlant_Overridden,
 
-				directorCarLength = overlay.directorCarLength_Overridden ? overlay.directorCarLength : global.directorCarLength,
-				directorHeatFalloff = overlay.directorHeatFalloff_Overridden ? overlay.directorHeatFalloff : global.directorHeatFalloff,
-				directorHeatBias = overlay.directorHeatBias_Overridden ? overlay.directorHeatBias : global.directorHeatBias,
+				directorCarLength = overlayLocal.directorCarLength_Overridden ? overlayLocal.directorCarLength : overlayGlobal.directorCarLength,
+				directorHeatFalloff = overlayLocal.directorHeatFalloff_Overridden ? overlayLocal.directorHeatFalloff : overlayGlobal.directorHeatFalloff,
+				directorHeatBias = overlayLocal.directorHeatBias_Overridden ? overlayLocal.directorHeatBias : overlayGlobal.directorHeatBias,
 
-				directorCarLength_Overridden = overlay.directorCarLength_Overridden,
-				directorHeatFalloff_Overridden = overlay.directorHeatFalloff_Overridden,
-				directorHeatBias_Overridden = overlay.directorHeatBias_Overridden,
+				directorCarLength_Overridden = overlayLocal.directorCarLength_Overridden,
+				directorHeatFalloff_Overridden = overlayLocal.directorHeatFalloff_Overridden,
+				directorHeatBias_Overridden = overlayLocal.directorHeatBias_Overridden,
 			};
 
-			foreach ( var item in overlay.imageSettingsDataDictionary )
+			foreach ( var item in overlayLocal.imageSettingsDataDictionary )
 			{
-				var globalItem = global.imageSettingsDataDictionary[ item.Key ];
+				var globalItem = overlayGlobal.imageSettingsDataDictionary[ item.Key ];
 
-				combined.imageSettingsDataDictionary[ item.Key ] = new SettingsImage()
+				overlay.imageSettingsDataDictionary[ item.Key ] = new SettingsImage()
 				{
 					imageType = item.Value.imageType_Overridden ? item.Value.imageType : globalItem.imageType,
 					filePath = item.Value.filePath_Overridden ? item.Value.filePath : globalItem.filePath,
@@ -363,11 +444,11 @@ namespace iRacingTVController
 				};
 			}
 
-			foreach ( var item in overlay.textSettingsDataDictionary )
+			foreach ( var item in overlayLocal.textSettingsDataDictionary )
 			{
-				var globalItem = global.textSettingsDataDictionary[ item.Key ];
+				var globalItem = overlayGlobal.textSettingsDataDictionary[ item.Key ];
 
-				combined.textSettingsDataDictionary[ item.Key ] = new SettingsText()
+				overlay.textSettingsDataDictionary[ item.Key ] = new SettingsText()
 				{
 					fontIndex = item.Value.fontIndex_Overridden ? item.Value.fontIndex : globalItem.fontIndex,
 					fontSize = item.Value.fontSize_Overridden ? item.Value.fontSize : globalItem.fontSize,
@@ -385,11 +466,11 @@ namespace iRacingTVController
 				};
 			}
 
-			foreach ( var item in overlay.translationDictionary )
+			foreach ( var item in overlayLocal.translationDictionary )
 			{
-				var globalItem = global.translationDictionary[ item.Key ];
+				var globalItem = overlayGlobal.translationDictionary[ item.Key ];
 
-				combined.translationDictionary[ item.Key ] = new SettingsTranslation()
+				overlay.translationDictionary[ item.Key ] = new SettingsTranslation()
 				{
 					id = item.Value.id,
 
@@ -398,6 +479,13 @@ namespace iRacingTVController
 					translation_Overridden = item.Value.translation_Overridden
 				};
 			}
+		}
+
+		public static void UpdateCombinedDirector()
+		{
+			director = new SettingsDirector()
+			{
+			};
 		}
 	}
 }

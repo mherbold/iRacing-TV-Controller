@@ -15,6 +15,7 @@ namespace iRacingTVController
 		public uint sessionFlags;
 
 		public int replayFrameNum;
+		public int replaySpeed;
 
 		public bool displayIsMetric;
 
@@ -62,6 +63,7 @@ namespace iRacingTVController
 			sessionFlags = 0;
 
 			replayFrameNum = 0;
+			replaySpeed = 0;
 
 			displayIsMetric = false;
 
@@ -91,11 +93,11 @@ namespace iRacingTVController
 			}
 		}
 
-		public void SessionChange()
+		public void SessionNumberChange()
 		{
 			foreach ( var normalizedCar in normalizedCars )
 			{
-				normalizedCar.SessionChange();
+				normalizedCar.SessionNumberChange();
 			}
 		}
 
@@ -136,6 +138,7 @@ namespace iRacingTVController
 			}
 
 			replayFrameNum = IRSDK.data.ReplayFrameNum;
+			replaySpeed = IRSDK.data.ReplayPlaySpeed;
 
 			displayIsMetric = IRSDK.data.DisplayUnits == 1;
 
@@ -152,9 +155,9 @@ namespace iRacingTVController
 
 			currentLap = sessionLapsTotal - sessionLapsRemaining;
 
+			camCarIdx = IRSDK.data.CamCarIdx;
 			camGroupNumber = IRSDK.data.CamGroupNumber;
 			camCameraNumber = IRSDK.data.CamCameraNumber;
-			camCarIdx = IRSDK.data.CamCarIdx;
 
 			radioTransmitCarIdx = IRSDK.data.RadioTransmitCarIdx;
 
@@ -194,7 +197,7 @@ namespace iRacingTVController
 
 									var signedDistanceToOtherCarInMeters = signedDistanceToOtherCar * IRSDK.normalizedSession.trackLengthInMeters;
 
-									var heat = 1 - Math.Max( 0, Math.Abs( signedDistanceToOtherCarInMeters ) - Settings.combined.directorCarLength ) / Math.Max( 1, Settings.combined.directorHeatFalloff );
+									var heat = 1 - Math.Max( 0, Math.Abs( signedDistanceToOtherCarInMeters ) - Settings.overlay.directorCarLength ) / Math.Max( 1, Settings.overlay.directorHeatFalloff );
 
 									if ( heat > 0 )
 									{
@@ -277,7 +280,7 @@ namespace iRacingTVController
 						{
 							var positionAsSignedPct = ( ( numLeaderboardCars / 2.0f ) - normalizedCar.leaderboardPosition ) / ( numLeaderboardCars / 2.0f );
 
-							var heatBias = Settings.combined.directorHeatBias * positionAsSignedPct + Math.Abs( Settings.combined.directorHeatBias );
+							var heatBias = Settings.overlay.directorHeatBias * positionAsSignedPct + Math.Abs( Settings.overlay.directorHeatBias );
 
 							normalizedCar.attackingHeat += heatBias;
 						}

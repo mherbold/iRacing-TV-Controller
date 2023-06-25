@@ -49,7 +49,7 @@ namespace iRacingTVController
 			ChatLogPlayback.Close();
 		}
 
-		public void SessionChange()
+		public void SessionNumberChange()
 		{
 			if ( ( IRSDK.session == null ) || ( IRSDK.data == null ) )
 			{
@@ -103,6 +103,7 @@ namespace iRacingTVController
 			{
 				SessionFlagsPlayback.LoadRecording();
 				ChatLogPlayback.LoadRecording();
+				IncidentScan.LoadIncidents();
 			}
 			else
 			{

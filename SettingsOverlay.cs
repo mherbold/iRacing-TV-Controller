@@ -17,54 +17,54 @@ namespace iRacingTVController
 
 		[NonSerialized] public const int MaxNumFonts = 4;
 
-		public Vector2Int overlayPosition = new( 0, 0 );
-		public Vector2Int overlaySize = new( 1920, 1080 );
+		public Vector2Int position = new( 0, 0 );
+		public Vector2Int size = new( 1920, 1080 );
 
-		public bool overlayPosition_Overridden = false;
-		public bool overlaySize_Overridden = false;
+		public bool position_Overridden = false;
+		public bool size_Overridden = false;
 
 		public string[] fontPaths = new string[ MaxNumFonts ];
 
 		public bool[] fontNames_Overridden = new bool[ MaxNumFonts ];
 
-		public bool raceStatusOverlayEnabled = true;
-		public Vector2 raceStatusOverlayPosition = new( 44, 9 );
+		public bool raceStatusEnabled = true;
+		public Vector2 raceStatusPosition = new( 44, 9 );
 
-		public bool raceStatusOverlayEnabled_Overridden = false;
-		public bool raceStatusOverlayPosition_Overridden = false;
+		public bool raceStatusEnabled_Overridden = false;
+		public bool raceStatusPosition_Overridden = false;
 
-		public bool leaderboardOverlayEnabled = true;
-		public Vector2 leaderboardOverlayPosition = new( 44, 244 );
+		public bool leaderboardEnabled = true;
+		public Vector2 leaderboardPosition = new( 44, 244 );
 		public Vector2 leaderboardFirstPlacePosition = new( 0, 0 );
 		public int leaderboardPlaceCount = 20;
 		public Vector2 leaderboardPlaceSpacing = new( 0, 41 );
 		public bool leaderboardUseClassColors = true;
 		public float leaderboardClassColorStrength = 0.5f;
 
-		public bool leaderboardOverlayEnabled_Overridden = false;
-		public bool leaderboardOverlayPosition_Overridden = false;
+		public bool leaderboardEnabled_Overridden = false;
+		public bool leaderboardPosition_Overridden = false;
 		public bool leaderboardFirstPlacePosition_Overridden = false;
 		public bool leaderboardPlaceCount_Overridden = false;
 		public bool leaderboardPlaceSpacing_Overridden = false;
 		public bool leaderboardUseClassColors_Overridden = false;
 		public bool leaderboardClassColorStrength_Overridden = false;
 
-		public bool voiceOfOverlayEnabled = true;
-		public Vector2 voiceOfOverlayPosition = new( 1920, 41 );
+		public bool voiceOfEnabled = true;
+		public Vector2 voiceOfPosition = new( 1920, 41 );
 
-		public bool voiceOfOverlayEnabled_Overridden = false;
-		public bool voiceOfOverlayPosition_Overridden = false;
+		public bool voiceOfEnabled_Overridden = false;
+		public bool voiceOfPosition_Overridden = false;
 
-		public bool subtitleOverlayEnabled = true;
-		public Vector2 subtitleOverlayPosition = new( 1089, 918 );
-		public Vector2 subtitleOverlayMaxSize = new( 1250, 190 );
-		public Color subtitleOverlayBackgroundColor = new( 0, 0, 0, 0.9f );
+		public bool subtitleEnabled = true;
+		public Vector2 subtitlePosition = new( 1089, 918 );
+		public Vector2 subtitleMaxSize = new( 1250, 190 );
+		public Color subtitleBackgroundColor = new( 0, 0, 0, 0.9f );
 		public Vector2Int subtitleTextPadding = new( 12, 6 );
 
-		public bool subtitleOverlayEnabled_Overridden = false;
-		public bool subtitleOverlayPosition_Overridden = false;
-		public bool subtitleOverlayMaxSize_Overridden = false;
-		public bool subtitleOverlayBackgroundColor_Overridden = false;
+		public bool subtitleEnabled_Overridden = false;
+		public bool subtitlePosition_Overridden = false;
+		public bool subtitleMaxSize_Overridden = false;
+		public bool subtitleBackgroundColor_Overridden = false;
 		public bool subtitleTextPadding_Overridden = false;
 
 		public bool carNumberOverrideEnabled = false;

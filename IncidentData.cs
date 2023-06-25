@@ -8,6 +8,7 @@ namespace iRacingTVController
 	{
 		public int CarIdx = 0;
 
+		public int Index { get; set; } = 0;
 		public int FrameNumber { get; set; } = 0;
 		public string CarNumber { get; set; } = string.Empty;
 		public string DriverName { get; set; } = string.Empty;

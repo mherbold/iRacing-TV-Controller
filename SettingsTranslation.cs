@@ -25,7 +25,7 @@ namespace iRacingTVController
 
 				if ( Settings.loading == 0 )
 				{
-					var settings = ( translation_Overridden ) ? Settings.overlay : Settings.global;
+					var settings = ( translation_Overridden ) ? Settings.overlayLocal : Settings.overlayGlobal;
 
 					settings.translationDictionary[ id ].translation = translation;
 
@@ -49,9 +49,9 @@ namespace iRacingTVController
 
 				if ( Settings.loading == 0 )
 				{
-					Settings.overlay.translationDictionary[ id ].translation_Overridden = value;
+					Settings.overlayLocal.translationDictionary[ id ].translation_Overridden = value;
 
-					MainWindow.Instance.InitializeTranslation();
+					MainWindow.Instance.InitializeOverlayTranslation();
 
 					IPC.readyToSendSettings = true;
 

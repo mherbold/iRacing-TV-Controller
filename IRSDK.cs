@@ -13,9 +13,6 @@ namespace iRacingTVController
 {
 	public static class IRSDK
 	{
-		public const int MinimumCameraSwitchWaitTicks = 150; // TODO change to setting
-		public const int PostChatCameraSwitchWaitTicks = 60; // TODO change to setting
-
 		public static readonly IRacingSDK iRacingSdk = new();
 
 		public static bool isConnected = false;
@@ -32,9 +29,22 @@ namespace iRacingTVController
 		public static int sendMessageWaitTicksRemaining = 0;
 		public static int cameraSwitchWaitTicksRemaining = 0;
 
-		public static int currentCameraGroupNumber = 0;
-		public static int currentCameraNumber = 0;
-		public static int currentCameraCarIdx = 0;
+		public static int camCarIdx = 0;
+		public static int camGroupNumber = 0;
+		public static int camCameraNumber = 0;
+
+		public static bool targetCamEnabled = false;
+		public static bool targetCamFastSwitchEnabled = false;
+		public static int targetCamCarIdx = 0;
+		public static int targetCamGroupNumber = 0;
+		public static string targetCamReason = string.Empty;
+
+		public static bool targetReplayStartFrameNumberEnabled = false;
+		public static int targetReplayStartFrameNumber = 0;
+		public static bool targetReplayStartPlaying = false;
+
+		public static bool targetReplayStopFrameNumberEnabled = false;
+		public static int targetReplayStopFrameNumber = 0;
 
 		public static readonly List<Message> messageBuffer = new();
 
@@ -48,20 +58,20 @@ namespace iRacingTVController
 
 				if ( ( session == null ) || ( iRacingSdk.Header.SessionInfoUpdate != sessionInfoUpdate ) )
 				{
+					sessionInfoUpdate = iRacingSdk.Header.SessionInfoUpdate;
+
 					session = iRacingSdk.GetSerializedSessionInfo();
 
 					normalizedSession.SessionUpdate();
 
 					normalizedData.SessionUpdate();
-
-					sessionInfoUpdate = iRacingSdk.Header.SessionInfoUpdate;
 				}
 
 				if ( data.SessionNum != normalizedSession.sessionNumber )
 				{
-					normalizedSession.SessionChange();
+					normalizedSession.SessionNumberChange();
 
-					normalizedData.SessionChange();
+					normalizedData.SessionNumberChange();
 				}
 
 				if ( data.SessionNum >= 0 )
@@ -71,8 +81,10 @@ namespace iRacingTVController
 			}
 			else if ( wasConnected )
 			{
-				normalizedData.Reset();
+				sessionInfoUpdate = -1;
+
 				normalizedSession.Reset();
+				normalizedData.Reset();
 			}
 
 			wasConnected = isConnected;
@@ -83,20 +95,39 @@ namespace iRacingTVController
 			messageBuffer.Add( new Message( msg, var1, var2, var3 ) );
 		}
 
+		public static void SendMessage( Message message )
+		{
+			LogFile.Write( $"Sending message to iRacing: {message.msg}, {message.var1}, {message.var2}, {message.var3}\r\n" );
+
+			iRacingSdk.BroadcastMessage( message.msg, message.var1, message.var2, message.var3 );
+
+			sendMessageWaitTicksRemaining = (int) Math.Ceiling( 60.0f / Settings.editor.iracingCommandRateLimit );
+
+			if ( message.msg == BroadcastMessageTypes.CamSwitchNum )
+			{
+				cameraSwitchWaitTicksRemaining = (int) Math.Round( Settings.director.switchDelayGeneral * 60 );
+			}
+		}
+
 		public static void SendMessages()
 		{
-			cameraSwitchWaitTicksRemaining--;
-
-			if ( ( normalizedData.camGroupNumber != currentCameraGroupNumber ) || ( normalizedData.camCameraNumber != currentCameraNumber ) || ( normalizedData.camCarIdx != currentCameraCarIdx ) )
-			{
-				currentCameraGroupNumber = normalizedData.camGroupNumber;
-				currentCameraNumber = normalizedData.camCameraNumber;
-				currentCameraCarIdx = normalizedData.camCarIdx;
-
-				cameraSwitchWaitTicksRemaining = MinimumCameraSwitchWaitTicks;
-			}
+			// reduce wait ticks by one
 
 			sendMessageWaitTicksRemaining--;
+			cameraSwitchWaitTicksRemaining--;
+
+			// if iracing has switched the camera then we need to reset the camera switch wait ticks
+
+			if ( ( normalizedData.camCarIdx != camCarIdx ) || ( normalizedData.camGroupNumber != camGroupNumber ) || ( normalizedData.camCameraNumber != camCameraNumber ) )
+			{
+				camCarIdx = normalizedData.camCarIdx;
+				camGroupNumber = normalizedData.camGroupNumber;
+				camCameraNumber = normalizedData.camCameraNumber;
+
+				cameraSwitchWaitTicksRemaining = (int) Math.Round( Settings.director.switchDelayGeneral * 60 );
+			}
+
+			// send the next message in the queue
 
 			if ( sendMessageWaitTicksRemaining <= 0 )
 			{
@@ -106,34 +137,125 @@ namespace iRacingTVController
 
 					messageBuffer.RemoveAt( 0 );
 
-					LogFile.Write( $"Sending message to iRacing: {message.msg}, {message.var1}, {message.var2}, {message.var3}\r\n" );
-
-					iRacingSdk.BroadcastMessage( message.msg, message.var1, message.var2, message.var3 );
-
-					sendMessageWaitTicksRemaining = (int) Math.Ceiling( 60.0f / Settings.editor.iracingCommandRateLimit );
-				}
-				else
-				{
-					/*
-					if ( Director.isEnabled )
-					{
-						if ( ( cameraSwitchWaitTicksRemaining <= 0 ) && ( ( currentCameraCarIdx != targetCameraCarIdx ) || ( currentCameraGroupNumber != targetCameraGroupNumber ) ) )
-						{
-							var normalizedCar = normalizedSession.FindNormalizedCarByCarIdx( targetCameraCarIdx );
-
-							var carNumberRaw = normalizedCar?.carNumberRaw ?? 0;
-
-							iRacingSdk.BroadcastMessage( BroadcastMessageTypes.CamSwitchNum, carNumberRaw, targetCameraGroupNumber, 0 );
-
-							LogFile.Write( $"Sending message to iRacing: {BroadcastMessageTypes.CamSwitchNum}, {carNumberRaw}, {targetCameraGroupNumber}, 0\r\n" );
-
-							sendMessageWaitTicksRemaining = Settings.data.MinimumCommandRate;
-							cameraSwitchWaitTicksRemaining = MinimumCameraSwitchWaitTicks;
-						}
-					}
-					*/
+					SendMessage( message );
 				}
 			}
+
+			// send message to switch the camera if target camera is enabled and the current camera is not the target camera
+
+			if ( sendMessageWaitTicksRemaining <= 0 )
+			{
+				if ( targetCamEnabled )
+				{
+					if ( ( camCarIdx != targetCamCarIdx ) || ( camGroupNumber != targetCamGroupNumber ) )
+					{
+						if ( ( cameraSwitchWaitTicksRemaining <= 0 ) || targetCamFastSwitchEnabled )
+						{
+							var normalizedCar = normalizedData.FindNormalizedCarByCarIdx( targetCamCarIdx );
+
+							if ( normalizedCar != null )
+							{
+								var message = new Message( BroadcastMessageTypes.CamSwitchNum, normalizedCar.carNumberRaw, targetCamGroupNumber, 0 );
+
+								SendMessage( message );
+							}
+						}
+					}
+					else
+					{
+						targetCamEnabled = false;
+						targetCamFastSwitchEnabled = false;
+					}
+				}
+			}
+
+			// send message to pause the replay if target frame number is enabled and we are not paused
+
+			if ( sendMessageWaitTicksRemaining <= 0 )
+			{
+				if ( targetReplayStartFrameNumberEnabled )
+				{
+					if ( normalizedData.replaySpeed != 0 )
+					{
+						var message = new Message( BroadcastMessageTypes.ReplaySetPlaySpeed, 0, 0, 0 );
+
+						SendMessage( message );
+					}
+				}
+			}
+
+			// send message to change the frame number if target frame number is enabled and we are not on it (also auto-start playing if enabled)
+
+			if ( sendMessageWaitTicksRemaining <= 0 )
+			{
+				if ( targetReplayStartFrameNumberEnabled )
+				{
+					if ( normalizedData.replayFrameNum != targetReplayStartFrameNumber )
+					{
+						var message = new Message( BroadcastMessageTypes.ReplaySetPlayPosition, (int) ReplayPositionModeTypes.Begin, IRacingSDK.LoWord( targetReplayStartFrameNumber ), IRacingSDK.HiWord( targetReplayStartFrameNumber ) );
+
+						SendMessage( message );
+					}
+					else
+					{
+						targetReplayStartFrameNumberEnabled = false;
+
+						if ( targetReplayStartPlaying )
+						{
+							targetReplayStartPlaying = false;
+
+							var message = new Message( BroadcastMessageTypes.ReplaySetPlaySpeed, 1, 0, 0 );
+
+							SendMessage( message );
+						}
+					}
+				}
+			}
+
+			// send message to auto-stop replay if enabled
+
+			if ( sendMessageWaitTicksRemaining <= 0 )
+			{
+				if ( targetReplayStopFrameNumberEnabled )
+				{
+					if ( normalizedData.replaySpeed != 0 )
+					{
+						if ( normalizedData.replayFrameNum >= targetReplayStopFrameNumber )
+						{
+							var message = new Message( BroadcastMessageTypes.ReplaySetPlaySpeed, 0, 0, 0 );
+
+							SendMessage( message );
+						}
+					}
+					else
+					{
+						targetReplayStopFrameNumberEnabled = false;
+					}
+				}
+			}
+		}
+
+		public static int GetCamGroupNumber( string cameraGroupNames )
+		{
+			if ( session == null )
+			{
+				return 0;
+			}
+
+			var selectedCameraGroupList = cameraGroupNames.Split( "," ).ToList().Select( s => s.Trim().ToLower() ).ToList();
+
+			foreach ( var selectedCameraGroup in selectedCameraGroupList )
+			{
+				foreach ( var group in session.CameraInfo.Groups )
+				{
+					if ( group.GroupName.ToLower() == selectedCameraGroup )
+					{
+						return group.GroupNum;
+					}
+				}
+			}
+
+			return 0;
 		}
 	}
 }

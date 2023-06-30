@@ -196,25 +196,31 @@ namespace iRacingTVController
 		public static void AddMissingDictionaryItems( SettingsOverlay settings )
 		{
 			var defaultImageSettings = new Dictionary<string, SettingsImage>() {
-				{ "BlackLight", new SettingsImage(){ imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\light-black.png", position = { x = 280, y = 130 } } },
+				{ "BlackLight", new SettingsImage(){ imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\light-black.png", position = { x = 280, y = 130 } } },
 				{ "CarNumber", new SettingsImage() { imageType = SettingsImage.ImageType.CarNumber, position = { x = 48, y = 10 }, size = { x = 56, y = 28 } } },
-				{ "CheckeredFlag", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\flag-checkered.png" } },
+				{ "CheckeredFlag", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\flag-checkered.png" } },
 				{ "Custom1", new SettingsImage() },
 				{ "Custom2", new SettingsImage() },
 				{ "Custom3", new SettingsImage() },
 				{ "Custom4", new SettingsImage() },
-				{ "GreenFlag", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\flag-green.png" } },
-				{ "GreenLight", new SettingsImage(){ imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\light-green.png", position = { x = 280, y = 130 } } },
-				{ "Highlight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\current-target.png" } },
-				{ "LeaderboardBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\leaderboard.png", size = { x = 319, y = 8 }, border = { x = 32, y = 32, z = 32, w = 32 } } },
-				{ "PositionSplitter", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\position-splitter.png" } },
-				{ "RaceStatusBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\race-status.png" } },
+				{ "GreenFlag", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\flag-green.png" } },
+				{ "GreenLight", new SettingsImage(){ imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\light-green.png", position = { x = 280, y = 130 } } },
+				{ "Highlight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\current-target.png" } },
+				{ "IntroDriverBackground", new SettingsImage() { imageType = SettingsImage.ImageType.None, position = { x = -203, y = -177 }, size = { x = 408, y = 336 } } },
+				{ "IntroDriverSuit", new SettingsImage() { imageType = SettingsImage.ImageType.Driver, position = { x = 13, y = -125 }, size = { x = 150, y = 250 } } },
+				{ "IntroDriverCar", new SettingsImage() { imageType = SettingsImage.ImageType.Car, position = { x = -254, y = -113 }, size = { x = 508, y = 272 } } },
+				{ "IntroDriverHelmet", new SettingsImage() { imageType = SettingsImage.ImageType.Helmet, position = { x = -175, y = -159 }, size = { x = 100, y = 100 } } },
+				{ "IntroStatsBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\leaderboard.png", position = { x = -178, y = 53 }, size = { x = 357, y = 90 }, border = { x = 32, y = 32, z = 32, w = 32 } } },
+				{ "IntroDriverCarNumber", new SettingsImage() { imageType = SettingsImage.ImageType.CarNumber, position = { x = 97, y = 73 }, size = { x = 73, y = 52 } } },
+				{ "LeaderboardBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\leaderboard.png", size = { x = 319, y = 8 }, border = { x = 32, y = 32, z = 32, w = 32 } } },
+				{ "PositionSplitter", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\position-splitter.png" } },
+				{ "RaceStatusBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\race-status.png" } },
 				{ "SeriesLogo", new SettingsImage() { imageType = SettingsImage.ImageType.SeriesLogo, position = { x = 7, y = 7 }, size = { x = 305, y = 103 } } },
-				{ "VoiceOfBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\voice-of.png" } },
-				{ "VoiceOfCar", new SettingsImage() { imageType = SettingsImage.ImageType.Car, position = { x = 155, y = -37 }, size = { x = 320, y = 160 } } },
-				{ "WhiteLight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\light-white.png", position = { x = 280, y = 130 } } },
-				{ "YellowFlag", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\flag-yellow.png" } },
-				{ "YellowLight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Images\\light-yellow.png", position = { x = 280, y = 130 } } },
+				{ "VoiceOfBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\voice-of.png" } },
+				{ "VoiceOfCar", new SettingsImage() { imageType = SettingsImage.ImageType.Car, position = { x = 220, y = -48 }, size = { x = 400, y = 200 } } },
+				{ "WhiteLight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\light-white.png", position = { x = 280, y = 130 } } },
+				{ "YellowFlag", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\flag-yellow.png" } },
+				{ "YellowLight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\light-yellow.png", position = { x = 280, y = 130 } } },
 			};
 
 			foreach ( var item in defaultImageSettings )
@@ -229,6 +235,9 @@ namespace iRacingTVController
 			{
 				{ "CurrentLap", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 27, alignment = TextAlignmentOptions.TopRight, position = { x = 298, y = 175 }, tintColor = { r = 0.737f, g = 0.741f, b = 0.725f } } },
 				{ "DriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 21, position = { x = 108, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
+				{ "IntroStatsPosition", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 50, position = { x = -151, y = 68 } } },
+				{ "IntroStatsQualifyingTime", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 27, alignment = TextAlignmentOptions.Top, position = { x = 0, y = 99 }, tintColor = { r = 0.306f, g = 0.832f, b = 1 } } },
+				{ "IntroStatsDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, alignment = TextAlignmentOptions.Top, position = { x = 0, y = 70 } } },
 				{ "LapsRemaining", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, alignment = TextAlignmentOptions.TopRight, position = { x = 269, y = 125 }, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
 				{ "Place", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 43, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "SessionName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, position = { x = 18, y = 125 }, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
@@ -236,8 +245,8 @@ namespace iRacingTVController
 				{ "Subtitles", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 39, alignment = TextAlignmentOptions.Center, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
 				{ "Telemetry", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 298, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "Units", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, position = { x = 18, y = 175 }, tintColor = { r = 0.737f, g = 0.741f, b = 0.725f } } },
-				{ "VoiceOf", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 30, position = { x = 30, y = 10 }, tintColor = { r = 0.737f, g = 0.741f, b = 0.725f } } },
-				{ "VoiceOfDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 30, position = { x = 30, y = 41 }, tintColor = { r = 0.137f, g = 0.122f, b = 0.125f } } },
+				{ "VoiceOf", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 30, position = { x = 30, y = 10 }, tintColor = { r = 0.434f, g = 0.434f, b = 0.434f } } },
+				{ "VoiceOfDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 38, position = { x = 30, y = 41 }, tintColor = { r = 0.137f, g = 0.122f, b = 0.125f } } },
 			};
 
 			foreach ( var item in defaultTextSettings )
@@ -250,18 +259,19 @@ namespace iRacingTVController
 
 			var defaultTranslationSettings = new Dictionary<string, SettingsTranslation>()
 			{
-				{ "Pit", new SettingsTranslation() { translation = "PIT" } },
-				{ "Out", new SettingsTranslation() { translation = "OUT" } },
+				{ "DidNotQualify", new SettingsTranslation() { translation = "DNQ" } },
+				{ "FeetAbbreviation", new SettingsTranslation() { translation = "FT" } },
+				{ "FinalLap", new SettingsTranslation() { translation = "FINAL LAP" } },
+				{ "KPH", new SettingsTranslation() { translation = "KPH" } },
+				{ "Lap", new SettingsTranslation() { translation = "LAP" } },
 				{ "LapsAbbreviation", new SettingsTranslation() { translation = "L" } },
 				{ "MetersAbbreviation", new SettingsTranslation() { translation = "M" } },
-				{ "FeetAbbreviation", new SettingsTranslation() { translation = "FT" } },
-				{ "KPH", new SettingsTranslation() { translation = "KPH" } },
 				{ "MPH", new SettingsTranslation() { translation = "MPH" } },
-				{ "FinalLap", new SettingsTranslation() { translation = "FINAL LAP" } },
-				{ "ToGo", new SettingsTranslation() { translation = "TO GO" } },
+				{ "Out", new SettingsTranslation() { translation = "OUT" } },
+				{ "Pit", new SettingsTranslation() { translation = "PIT" } },
 				{ "Time", new SettingsTranslation() { translation = "TIME" } },
-				{ "Lap", new SettingsTranslation() { translation = "LAP" } },
-				{ "VoiceOf", new SettingsTranslation() { translation = "VOICE OF" } }
+				{ "ToGo", new SettingsTranslation() { translation = "TO GO" } },
+				{ "VoiceOf", new SettingsTranslation() { translation = "VOICE OF" } },
 			};
 
 			foreach ( var item in defaultTranslationSettings )
@@ -362,11 +372,6 @@ namespace iRacingTVController
 				leaderboardPlaceSpacing = overlayLocal.leaderboardPlaceSpacing_Overridden ? overlayLocal.leaderboardPlaceSpacing : overlayGlobal.leaderboardPlaceSpacing,
 				leaderboardUseClassColors = overlayLocal.leaderboardUseClassColors_Overridden ? overlayLocal.leaderboardUseClassColors : overlayGlobal.leaderboardUseClassColors,
 				leaderboardClassColorStrength = overlayLocal.leaderboardClassColorStrength_Overridden ? overlayLocal.leaderboardClassColorStrength : overlayGlobal.leaderboardClassColorStrength,
-				telemetryPitColor = overlayLocal.telemetryPitColor_Overridden ? overlayLocal.telemetryPitColor : overlayGlobal.telemetryPitColor,
-				telemetryOutColor = overlayLocal.telemetryOutColor_Overridden ? overlayLocal.telemetryOutColor : overlayGlobal.telemetryOutColor,
-				telemetryIsBetweenCars = overlayLocal.telemetryIsBetweenCars_Overridden ? overlayLocal.telemetryIsBetweenCars : overlayGlobal.telemetryIsBetweenCars,
-				telemetryMode = overlayLocal.telemetryMode_Overridden ? overlayLocal.telemetryMode : overlayGlobal.telemetryMode,
-				telemetryNumberOfCheckpoints = overlayLocal.telemetryNumberOfCheckpoints_Overridden ? overlayLocal.telemetryNumberOfCheckpoints : overlayGlobal.telemetryNumberOfCheckpoints,
 
 				leaderboardEnabled_Overridden = overlayLocal.leaderboardEnabled_Overridden,
 				leaderboardPosition_Overridden = overlayLocal.leaderboardPosition_Overridden,
@@ -375,11 +380,6 @@ namespace iRacingTVController
 				leaderboardPlaceSpacing_Overridden = overlayLocal.leaderboardPlaceSpacing_Overridden,
 				leaderboardUseClassColors_Overridden = overlayLocal.leaderboardUseClassColors_Overridden,
 				leaderboardClassColorStrength_Overridden = overlayLocal.leaderboardClassColorStrength_Overridden,
-				telemetryPitColor_Overridden = overlayLocal.telemetryPitColor_Overridden,
-				telemetryOutColor_Overridden = overlayLocal.telemetryOutColor_Overridden,
-				telemetryIsBetweenCars_Overridden = overlayLocal.telemetryIsBetweenCars_Overridden,
-				telemetryMode_Overridden = overlayLocal.telemetryMode_Overridden,
-				telemetryNumberOfCheckpoints_Overridden = overlayLocal.telemetryNumberOfCheckpoints_Overridden,
 
 				voiceOfEnabled = overlayLocal.voiceOfEnabled_Overridden ? overlayLocal.voiceOfEnabled : overlayGlobal.voiceOfEnabled,
 				voiceOfPosition = overlayLocal.voiceOfPosition_Overridden ? overlayLocal.voiceOfPosition : overlayGlobal.voiceOfPosition,
@@ -413,13 +413,23 @@ namespace iRacingTVController
 				carNumberPattern_Overridden = overlayLocal.carNumberPattern_Overridden,
 				carNumberSlant_Overridden = overlayLocal.carNumberSlant_Overridden,
 
-				directorCarLength = overlayLocal.directorCarLength_Overridden ? overlayLocal.directorCarLength : overlayGlobal.directorCarLength,
-				directorHeatFalloff = overlayLocal.directorHeatFalloff_Overridden ? overlayLocal.directorHeatFalloff : overlayGlobal.directorHeatFalloff,
-				directorHeatBias = overlayLocal.directorHeatBias_Overridden ? overlayLocal.directorHeatBias : overlayGlobal.directorHeatBias,
+				telemetryPitColor = overlayLocal.telemetryPitColor_Overridden ? overlayLocal.telemetryPitColor : overlayGlobal.telemetryPitColor,
+				telemetryOutColor = overlayLocal.telemetryOutColor_Overridden ? overlayLocal.telemetryOutColor : overlayGlobal.telemetryOutColor,
+				telemetryIsBetweenCars = overlayLocal.telemetryIsBetweenCars_Overridden ? overlayLocal.telemetryIsBetweenCars : overlayGlobal.telemetryIsBetweenCars,
+				telemetryMode = overlayLocal.telemetryMode_Overridden ? overlayLocal.telemetryMode : overlayGlobal.telemetryMode,
+				telemetryNumberOfCheckpoints = overlayLocal.telemetryNumberOfCheckpoints_Overridden ? overlayLocal.telemetryNumberOfCheckpoints : overlayGlobal.telemetryNumberOfCheckpoints,
 
-				directorCarLength_Overridden = overlayLocal.directorCarLength_Overridden,
-				directorHeatFalloff_Overridden = overlayLocal.directorHeatFalloff_Overridden,
-				directorHeatBias_Overridden = overlayLocal.directorHeatBias_Overridden,
+				telemetryPitColor_Overridden = overlayLocal.telemetryPitColor_Overridden,
+				telemetryOutColor_Overridden = overlayLocal.telemetryOutColor_Overridden,
+				telemetryIsBetweenCars_Overridden = overlayLocal.telemetryIsBetweenCars_Overridden,
+				telemetryMode_Overridden = overlayLocal.telemetryMode_Overridden,
+				telemetryNumberOfCheckpoints_Overridden = overlayLocal.telemetryNumberOfCheckpoints_Overridden,
+
+				introEnabled = overlayLocal.introEnabled_Overridden ? overlayLocal.introEnabled : overlayGlobal.introEnabled,
+				introStartTime = overlayLocal.introStartTime_Overridden ? overlayLocal.introStartTime : overlayGlobal.introStartTime,
+
+				introEnabled_Overridden = overlayLocal.introEnabled_Overridden,
+				introStartTime_Overridden = overlayLocal.introStartTime_Overridden,
 			};
 
 			foreach ( var item in overlayLocal.imageSettingsDataDictionary )
@@ -485,6 +495,86 @@ namespace iRacingTVController
 		{
 			director = new SettingsDirector()
 			{
+				camerasPractice = directorLocal.camerasPractice_Overridden ? directorLocal.camerasPractice : directorGlobal.camerasPractice,
+				camerasQualifying = directorLocal.camerasQualifying_Overridden ? directorLocal.camerasQualifying : directorGlobal.camerasQualifying,
+				camerasIntro = directorLocal.camerasIntro_Overridden ? directorLocal.camerasIntro : directorGlobal.camerasIntro,
+				camerasInside = directorLocal.camerasInside_Overridden ? directorLocal.camerasInside : directorGlobal.camerasInside,
+				camerasClose = directorLocal.camerasClose_Overridden ? directorLocal.camerasClose : directorGlobal.camerasClose,
+				camerasMedium = directorLocal.camerasMedium_Overridden ? directorLocal.camerasMedium : directorGlobal.camerasMedium,
+				camerasFar = directorLocal.camerasFar_Overridden ? directorLocal.camerasFar : directorGlobal.camerasFar,
+				camerasVeryFar = directorLocal.camerasVeryFar_Overridden ? directorLocal.camerasVeryFar : directorGlobal.camerasVeryFar,
+
+				camerasPractice_Overridden = directorLocal.camerasPractice_Overridden,
+				camerasQualifying_Overridden = directorLocal.camerasQualifying_Overridden,
+				camerasIntro_Overridden = directorLocal.camerasIntro_Overridden,
+				camerasInside_Overridden = directorLocal.camerasInside_Overridden,
+				camerasClose_Overridden = directorLocal.camerasClose_Overridden,
+				camerasMedium_Overridden = directorLocal.camerasMedium_Overridden,
+				camerasFar_Overridden = directorLocal.camerasFar_Overridden,
+				camerasVeryFar_Overridden = directorLocal.camerasVeryFar_Overridden,
+
+				switchDelayDirector = directorLocal.switchDelayDirector_Overridden ? directorLocal.switchDelayDirector : directorGlobal.switchDelayDirector,
+				switchDelayIracing = directorLocal.switchDelayIracing_Overridden ? directorLocal.switchDelayIracing : directorGlobal.switchDelayIracing,
+				switchDelayRadioChatter = directorLocal.switchDelayRadioChatter_Overridden ? directorLocal.switchDelayRadioChatter : directorGlobal.switchDelayRadioChatter,
+				switchDelayNotInRace = directorLocal.switchDelayNotInRace_Overridden ? directorLocal.switchDelayNotInRace : directorGlobal.switchDelayNotInRace,
+
+				switchDelayDirector_Overridden = directorLocal.switchDelayDirector_Overridden,
+				switchDelayIracing_Overridden = directorLocal.switchDelayIracing_Overridden,
+				switchDelayRadioChatter_Overridden = directorLocal.switchDelayRadioChatter_Overridden,
+				switchDelayNotInRace_Overridden = directorLocal.switchDelayNotInRace_Overridden,
+
+				heatCarLength = directorLocal.heatCarLength_Overridden ? directorLocal.heatCarLength : directorGlobal.heatCarLength,
+				heatFalloff = directorLocal.heatFalloff_Overridden ? directorLocal.heatFalloff : directorGlobal.heatFalloff,
+				heatBias = directorLocal.heatBias_Overridden ? directorLocal.heatBias : directorGlobal.heatBias,
+
+				heatCarLength_Overridden = directorLocal.heatCarLength_Overridden,
+				heatFalloff_Overridden = directorLocal.heatFalloff_Overridden,
+				heatBias_Overridden = directorLocal.heatBias_Overridden,
+
+				preferredCarNumber = directorLocal.preferredCarNumber_Overridden ? directorLocal.preferredCarNumber : directorGlobal.preferredCarNumber,
+				preferredCarLockOnEnabled = directorLocal.preferredCarLockOnEnabled_Overridden ? directorLocal.preferredCarLockOnEnabled : directorGlobal.preferredCarLockOnEnabled,
+				preferredCarLockOnMinimumHeat = directorLocal.preferredCarLockOnMinimumHeat_Overridden ? directorLocal.preferredCarLockOnMinimumHeat : directorGlobal.preferredCarLockOnMinimumHeat,
+
+				preferredCarNumber_Overridden = directorLocal.preferredCarNumber_Overridden,
+				preferredCarLockOnEnabled_Overridden = directorLocal.preferredCarLockOnEnabled_Overridden,
+				preferredCarLockOnMinimumHeat_Overridden = directorLocal.preferredCarLockOnMinimumHeat_Overridden,
+
+				rule1_Enabled = directorLocal.rules_Overridden ? directorLocal.rule1_Enabled : directorGlobal.rule1_Enabled,
+				rule1_Camera = directorLocal.rules_Overridden ? directorLocal.rule1_Camera : directorGlobal.rule1_Camera,
+				rule2_Enabled = directorLocal.rules_Overridden ? directorLocal.rule2_Enabled : directorGlobal.rule2_Enabled,
+				rule2_Camera = directorLocal.rules_Overridden ? directorLocal.rule2_Camera : directorGlobal.rule2_Camera,
+				rule3_Enabled = directorLocal.rules_Overridden ? directorLocal.rule3_Enabled : directorGlobal.rule3_Enabled,
+				rule3_Camera = directorLocal.rules_Overridden ? directorLocal.rule3_Camera : directorGlobal.rule3_Camera,
+				rule4_Enabled = directorLocal.rules_Overridden ? directorLocal.rule4_Enabled : directorGlobal.rule4_Enabled,
+				rule4_Camera = directorLocal.rules_Overridden ? directorLocal.rule4_Camera : directorGlobal.rule4_Camera,
+				rule5_Enabled = directorLocal.rules_Overridden ? directorLocal.rule5_Enabled : directorGlobal.rule5_Enabled,
+				rule5_Camera = directorLocal.rules_Overridden ? directorLocal.rule5_Camera : directorGlobal.rule5_Camera,
+				rule6_Enabled = directorLocal.rules_Overridden ? directorLocal.rule6_Enabled : directorGlobal.rule6_Enabled,
+				rule6_Camera = directorLocal.rules_Overridden ? directorLocal.rule6_Camera : directorGlobal.rule6_Camera,
+				rule7_Enabled = directorLocal.rules_Overridden ? directorLocal.rule7_Enabled : directorGlobal.rule7_Enabled,
+				rule7_Camera = directorLocal.rules_Overridden ? directorLocal.rule7_Camera : directorGlobal.rule7_Camera,
+				rule8_Enabled = directorLocal.rules_Overridden ? directorLocal.rule8_Enabled : directorGlobal.rule8_Enabled,
+				rule8_Camera = directorLocal.rules_Overridden ? directorLocal.rule8_Camera : directorGlobal.rule8_Camera,
+				rule9_Enabled = directorLocal.rules_Overridden ? directorLocal.rule9_Enabled : directorGlobal.rule9_Enabled,
+				rule9_Camera = directorLocal.rules_Overridden ? directorLocal.rule9_Camera : directorGlobal.rule9_Camera,
+				rule10_Enabled = directorLocal.rules_Overridden ? directorLocal.rule10_Enabled : directorGlobal.rule10_Enabled,
+				rule10_Camera = directorLocal.rules_Overridden ? directorLocal.rule10_Camera : directorGlobal.rule10_Camera,
+				rule11_Enabled = directorLocal.rules_Overridden ? directorLocal.rule11_Enabled : directorGlobal.rule11_Enabled,
+				rule11_Camera = directorLocal.rules_Overridden ? directorLocal.rule11_Camera : directorGlobal.rule11_Camera,
+				rule12_Enabled = directorLocal.rules_Overridden ? directorLocal.rule12_Enabled : directorGlobal.rule12_Enabled,
+				rule12_Camera = directorLocal.rules_Overridden ? directorLocal.rule12_Camera : directorGlobal.rule12_Camera,
+				rule13_Enabled = directorLocal.rules_Overridden ? directorLocal.rule13_Enabled : directorGlobal.rule13_Enabled,
+				rule13_Camera = directorLocal.rules_Overridden ? directorLocal.rule13_Camera : directorGlobal.rule13_Camera,
+
+				rules_Overridden = directorLocal.rules_Overridden,
+
+				autoCamInsideMinimum = directorLocal.autoCam_Overridden ? directorLocal.autoCamInsideMinimum : directorGlobal.autoCamInsideMinimum,
+				autoCamInsideMaximum = directorLocal.autoCam_Overridden ? directorLocal.autoCamInsideMaximum : directorGlobal.autoCamInsideMaximum,
+				autoCamCloseMaximum = directorLocal.autoCam_Overridden ? directorLocal.autoCamCloseMaximum : directorGlobal.autoCamCloseMaximum,
+				autoCamMediumMaximum = directorLocal.autoCam_Overridden ? directorLocal.autoCamMediumMaximum : directorGlobal.autoCamMediumMaximum,
+				autoCamFarMaximum = directorLocal.autoCam_Overridden ? directorLocal.autoCamFarMaximum : directorGlobal.autoCamFarMaximum,
+
+				autoCam_Overridden = directorLocal.autoCam_Overridden
 			};
 		}
 	}

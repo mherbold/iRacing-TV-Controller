@@ -16,13 +16,13 @@ namespace iRacingTVController
 		public Vector2 backgroundSize = Vector2.zero;
 		public Vector2 splitterPosition = Vector2.zero;
 
-		public LiveDataPlace[] liveDataPlaces = new LiveDataPlace[ MaxNumPlaces ];
+		public LiveDataLeaderboardPlace[] liveDataLeaderboardPlaces = new LiveDataLeaderboardPlace[ MaxNumPlaces ];
 
 		public LiveDataLeaderboard()
 		{
-			for ( int placeIndex = 0; placeIndex < liveDataPlaces.Length; placeIndex++ )
+			for ( int placeIndex = 0; placeIndex < liveDataLeaderboardPlaces.Length; placeIndex++ )
 			{
-				liveDataPlaces[ placeIndex ] = new LiveDataPlace();
+				liveDataLeaderboardPlaces[ placeIndex ] = new LiveDataLeaderboardPlace();
 			}
 		}
 	}

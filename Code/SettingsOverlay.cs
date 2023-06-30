@@ -93,13 +93,11 @@ namespace iRacingTVController
 		public bool telemetryMode_Overridden = false;
 		public bool telemetryNumberOfCheckpoints_Overridden = false;
 
-		public float directorCarLength = 4.91f;
-		public float directorHeatFalloff = 20.0f;
-		public float directorHeatBias = 0.5f;
+		public bool introEnabled = true;
+		public float introStartTime = 10;
 
-		public bool directorCarLength_Overridden = false;
-		public bool directorHeatFalloff_Overridden = false;
-		public bool directorHeatBias_Overridden = false;
+		public bool introEnabled_Overridden = false;
+		public bool introStartTime_Overridden = false;
 
 		public SerializableDictionary<string, SettingsText> textSettingsDataDictionary = new();
 		public SerializableDictionary<string, SettingsImage> imageSettingsDataDictionary = new();

@@ -12,12 +12,16 @@ namespace iRacingTVController
 	{
 		public static LiveData Instance { get; private set; }
 
+		public bool isConnected = false;
+
 		public LiveDataRaceStatus liveDataRaceStatus = new();
 		public LiveDataLeaderboard liveDataLeaderboard = new();
 		public LiveDataVoiceOf liveDataVoiceOf = new();
 		public LiveDataSubtitle liveDataSubtitle = new();
+		public LiveDataIntro liveDataIntro = new();
 
 		public string seriesLogoTextureUrl = string.Empty;
+		public int lastFrameBottomSplitFirstPosition = 0;
 
 		static LiveData()
 		{
@@ -31,10 +35,7 @@ namespace iRacingTVController
 
 		public void Update()
 		{
-			if ( !IRSDK.isConnected )
-			{
-				return;
-			}
+			isConnected = IRSDK.isConnected;
 
 			Settings.UpdateCombinedOverlay();
 
@@ -42,6 +43,7 @@ namespace iRacingTVController
 			UpdateLeaderboard();
 			UpdateVoiceOf();
 			UpdateSubtitle();
+			UpdateIntro();
 
 			seriesLogoTextureUrl = IRSDK.normalizedSession.seriesLogoTextureUrl;
 
@@ -110,7 +112,7 @@ namespace iRacingTVController
 
 			if ( IRSDK.normalizedData.isInTimedRace || !IRSDK.normalizedSession.isInRaceSession )
 			{
-				liveDataRaceStatus.currentLapText = GetTimeString( IRSDK.normalizedData.sessionTimeTotal - IRSDK.normalizedData.sessionTimeRemaining, false ) + " | " + GetTimeString( IRSDK.normalizedData.sessionTimeTotal, false );
+				liveDataRaceStatus.currentLapText = GetTimeString( Math.Ceiling( IRSDK.normalizedData.sessionTimeTotal - IRSDK.normalizedData.sessionTimeRemaining ), false ) + " | " + GetTimeString( IRSDK.normalizedData.sessionTimeTotal, false );
 			}
 			else
 			{
@@ -151,7 +153,7 @@ namespace iRacingTVController
 			{
 				if ( !IRSDK.normalizedSession.isInQualifyingSession )
 				{
-					foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardSortedNormalizedCars )
+					foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardPositionSortedNormalizedCars )
 					{
 						if ( !normalizedCar.includeInLeaderboard )
 						{
@@ -193,12 +195,14 @@ namespace iRacingTVController
 			var leadCarF2Time = 0.0f;
 			var carsShown = 0;
 
-			foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardSortedNormalizedCars )
+			foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardPositionSortedNormalizedCars )
 			{
 				// stop when we run out of cars to show
 
 				if ( !normalizedCar.includeInLeaderboard )
 				{
+					liveDataLeaderboard.liveDataLeaderboardPlaces[ normalizedCar.carIdx ].show = false;
+
 					break;
 				}
 
@@ -211,7 +215,7 @@ namespace iRacingTVController
 
 				// check if the car is visible on the leaderboard
 
-				liveDataLeaderboard.liveDataPlaces[ normalizedCar.carIdx ].show = ( ( ( normalizedCar.leaderboardPosition >= topSplitFirstPosition ) && ( normalizedCar.leaderboardPosition <= topSplitLastPosition ) ) || ( ( normalizedCar.leaderboardPosition >= bottomSplitFirstPosition ) && ( normalizedCar.leaderboardPosition <= bottomSplitLastPosition ) ) );
+				liveDataLeaderboard.liveDataLeaderboardPlaces[ normalizedCar.carIdx ].show = ( ( ( normalizedCar.leaderboardPosition >= topSplitFirstPosition ) && ( normalizedCar.leaderboardPosition <= topSplitLastPosition ) ) || ( ( normalizedCar.leaderboardPosition >= bottomSplitFirstPosition ) && ( normalizedCar.leaderboardPosition <= bottomSplitLastPosition ) ) );
 
 				// hide cars that have not qualified yet (only during qualifying)
 
@@ -219,13 +223,13 @@ namespace iRacingTVController
 				{
 					if ( normalizedCar.f2Time == 0 )
 					{
-						liveDataLeaderboard.liveDataPlaces[ normalizedCar.carIdx ].show = false;
+						liveDataLeaderboard.liveDataLeaderboardPlaces[ normalizedCar.carIdx ].show = false;
 					}
 				}
 
 				// skip cars not visible on the leaderboard
 
-				if ( !liveDataLeaderboard.liveDataPlaces[ normalizedCar.carIdx ].show )
+				if ( !liveDataLeaderboard.liveDataLeaderboardPlaces[ normalizedCar.carIdx ].show )
 				{
 					normalizedCar.wasVisibleOnLeaderboard = false;
 
@@ -242,15 +246,17 @@ namespace iRacingTVController
 
 				var placeIndex = normalizedCar.leaderboardPosition - ( ( normalizedCar.leaderboardPosition >= bottomSplitFirstPosition ) ? bottomSplitFirstPosition - topSplitLastPosition : topSplitFirstPosition );
 
+				var resetPosition = ( ( lastFrameBottomSplitFirstPosition != bottomSplitFirstPosition ) && ( normalizedCar.leaderboardPosition >= bottomSplitFirstPosition ) );
+
 				// get place
 
-				var liveDataPlace = liveDataLeaderboard.liveDataPlaces[ normalizedCar.carIdx ];
+				var liveDataPlace = liveDataLeaderboard.liveDataLeaderboardPlaces[ normalizedCar.carIdx ];
 
 				// compute place position
 
 				var targetPlacePosition = new Vector2( Settings.overlay.leaderboardPlaceSpacing.x, -Settings.overlay.leaderboardPlaceSpacing.y ) * placeIndex + new Vector2( Settings.overlay.leaderboardFirstPlacePosition.x, -Settings.overlay.leaderboardFirstPlacePosition.y );
 
-				if ( normalizedCar.wasVisibleOnLeaderboard )
+				if ( normalizedCar.wasVisibleOnLeaderboard && !resetPosition )
 				{
 					normalizedCar.placePosition += ( targetPlacePosition - normalizedCar.placePosition ) * 0.15f;
 				}
@@ -276,6 +282,10 @@ namespace iRacingTVController
 				// helmet texture url
 
 				liveDataPlace.helmetTextureUrl = normalizedCar.helmetTextureUrl;
+
+				// driver texture url
+
+				liveDataPlace.driverTextureUrl = normalizedCar.driverTextureUrl;
 
 				// driver name
 
@@ -422,6 +432,10 @@ namespace iRacingTVController
 			liveDataLeaderboard.backgroundSize = Settings.overlay.leaderboardPlaceSpacing * Math.Min( carsShown, Settings.overlay.leaderboardPlaceCount );
 			liveDataLeaderboard.showSplitter = ( ( topSplitLastPosition + 1 ) != bottomSplitFirstPosition );
 			liveDataLeaderboard.splitterPosition = Settings.overlay.leaderboardPlaceSpacing * topSplitLastPosition;
+
+			// remember the bottom split first position
+
+			lastFrameBottomSplitFirstPosition = bottomSplitFirstPosition;
 		}
 
 		public void UpdateVoiceOf()
@@ -446,6 +460,49 @@ namespace iRacingTVController
 		public void UpdateSubtitle()
 		{
 			liveDataSubtitle.text = ChatLogPlayback.Playback( IRSDK.normalizedSession.sessionNumber, IRSDK.normalizedData.sessionTime ) ?? string.Empty;
+		}
+
+		public void UpdateIntro()
+		{
+			liveDataIntro.show = false;
+
+			if ( IRSDK.normalizedSession.isInRaceSession )
+			{
+				if ( IRSDK.normalizedData.sessionTime >= Settings.overlay.introStartTime )
+				{
+					var numRows = (int) Math.Floor( IRSDK.normalizedData.numLeaderboardCars / 2.0 ) + 1;
+
+					var durationPerRow = 10.0;
+					var rowStartInterval = 4.0;
+
+					if ( IRSDK.normalizedData.sessionTime < ( ( numRows - 1 ) * rowStartInterval + durationPerRow + Settings.overlay.introStartTime ) )
+					{
+						liveDataIntro.show = true;
+						liveDataIntro.currentRow = (int) Math.Floor( ( IRSDK.normalizedData.sessionTime - Settings.overlay.introStartTime ) / rowStartInterval ) + 1;
+
+						for ( int driverIndex = 0; driverIndex < liveDataIntro.liveDataIntroDrivers.Length; driverIndex++ )
+						{
+							var liveDataIntroDriver = liveDataIntro.liveDataIntroDrivers[ driverIndex ];
+
+							var normalizedCar = IRSDK.normalizedData.leaderboardPositionSortedNormalizedCars[ driverIndex ];
+
+							liveDataIntroDriver.show = normalizedCar.includeInLeaderboard;
+							liveDataIntroDriver.carIdx = normalizedCar.carIdx;
+							liveDataIntroDriver.placeText = $"P{normalizedCar.qualifyingPosition}";
+							liveDataIntroDriver.driverNameText = normalizedCar.userName;
+
+							if ( normalizedCar.qualifyingTime == -1 )
+							{
+								liveDataIntroDriver.qualifyingTimeText = Settings.overlay.translationDictionary[ "DidNotQualify" ].translation;
+							}
+							else
+							{
+								liveDataIntroDriver.qualifyingTimeText = normalizedCar.qualifyingTime.ToString();
+							}
+						}
+					}
+				}
+			}
 		}
 
 		public static string GetTimeString( double timeInSeconds, bool includeMilliseconds )

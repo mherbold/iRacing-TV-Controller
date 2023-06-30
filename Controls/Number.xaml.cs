@@ -7,22 +7,23 @@ using System.Windows.Input;
 
 namespace iRacingTVController
 {
-	public partial class Decimal : UserControl
+	public partial class Number : UserControl
 	{
 		public event EventHandler? ValueChanged;
 
-		private bool mouseIsDown = false;
+		private float currentScale;
+		private Point? startingPosition;
+		private int startingNumber;
 
-		private Point startingPosition;
-		private float startingDecimal;
+		private static readonly Regex regex = new( @"^[-\d]*$" );
 
-		private static readonly Regex regex = new( @"^[-\d.]*$" );
+		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register( "Value", typeof( int ), typeof( Number ), new PropertyMetadata( 0, OnValueChanged ) );
 
-		public float Value
+		public int Value
 		{
 			get
 			{
-				if ( !float.TryParse( DecimalTextBox.Text, out var value ) )
+				if ( !int.TryParse( NumberTextBox.Text, out var value ) )
 				{
 					return 0;
 				}
@@ -32,13 +33,20 @@ namespace iRacingTVController
 
 			set
 			{
-				DecimalTextBox.Text = $"{value:0.000}";
+				NumberTextBox.Text = value.ToString();
 			}
 		}
 
-		public Decimal()
+		public Number()
 		{
 			InitializeComponent();
+		}
+
+		private static void OnValueChanged( DependencyObject obj, DependencyPropertyChangedEventArgs e )
+		{
+			var number = (Number) obj;
+
+			number.Value = (int) number.GetValue( ValueProperty );
 		}
 
 		private void TextBox_PreviewTextInput( object sender, TextCompositionEventArgs e )
@@ -68,30 +76,25 @@ namespace iRacingTVController
 
 		private void Button_PreviewMouseDown( object sender, MouseButtonEventArgs e )
 		{
+			currentScale = Settings.editor.positioningSpeedNormal;
 			startingPosition = e.GetPosition( this );
-
-			if ( !float.TryParse( DecimalTextBox.Text, out startingDecimal ) )
-			{
-				startingDecimal = 0;
-			}
-
-			mouseIsDown = true;
+			startingNumber = Value;
 		}
 
 		private void Button_PreviewMouseUp( object sender, MouseButtonEventArgs e )
 		{
-			mouseIsDown = false;
+			startingPosition = null;
 		}
 
 		private void Button_PreviewMouseMove( object sender, MouseEventArgs e )
 		{
-			if ( mouseIsDown )
+			if ( startingPosition != null )
 			{
 				var newPosition = e.GetPosition( this );
 
 				var deltaPosition = newPosition - startingPosition;
 
-				if ( ( deltaPosition.X != 0 ) || ( deltaPosition.Y != 0 ) )
+				if ( ( deltaPosition.Value.X != 0 ) || ( deltaPosition.Value.Y != 0 ) )
 				{
 					var scale = Settings.editor.positioningSpeedNormal;
 
@@ -104,14 +107,23 @@ namespace iRacingTVController
 						scale = Settings.editor.positioningSpeedSlow;
 					}
 
-					var deltaDecimal = scale * (float) ( deltaPosition.X + deltaPosition.Y );
+					if ( currentScale != scale )
+					{
+						currentScale = scale;
+						startingNumber = Value;
+						startingPosition = newPosition;
+					}
+					else
+					{
+						var deltaNumber = (int) Math.Round( scale * ( deltaPosition.Value.X + deltaPosition.Value.Y ) );
 
-					Value = startingDecimal + deltaDecimal;
+						Value = startingNumber + deltaNumber;
+					}
 				}
 			}
 		}
 
-		private void DecimalTextBox_TextChanged( object sender, TextChangedEventArgs e )
+		private void NumberTextBox_TextChanged( object sender, TextChangedEventArgs e )
 		{
 			ValueChanged?.Invoke( this, EventArgs.Empty );
 		}

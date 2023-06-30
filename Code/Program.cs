@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,17 +16,20 @@ namespace iRacingTVController
 		public const string MutexNameSettings = "iRacing-TV Mutex Settings";
 		public const string MutexNameLiveData = "iRacing-TV Mutex Live Data";
 
-		public const string AppName = "iRacing-TV";
+		public const string AppName = "iRacing-TV-Unity";
 		public const string AppNameSTT = "iRacing-STT-VR";
 
 		public static readonly string documentsFolder = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ) + $"\\{AppName}\\";
 		public static readonly string documentsFolderSTT = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ) + $"\\{AppNameSTT}\\";
 
 		public static DispatcherTimer dispatcherTimer = new( DispatcherPriority.Render );
+		public static Stopwatch stopwatch = new();
 
 		public static bool keepRunning = true;
 
 		public static int tickMutex = 0;
+		public static long elapsedMilliseconds = 0;
+		public static float deltaTime = 0;
 
 		public static void Initialize()
 		{
@@ -49,6 +53,8 @@ namespace iRacingTVController
 		{
 			try
 			{
+				stopwatch.Start();
+
 				dispatcherTimer.Tick += ( sender, e ) => Tick( sender, e );
 				dispatcherTimer.Interval = TimeSpan.FromSeconds( 1 / 60.0f );
 				dispatcherTimer.Start();
@@ -59,6 +65,8 @@ namespace iRacingTVController
 				}
 
 				dispatcherTimer.Stop();
+
+				stopwatch.Stop();
 			}
 			catch ( Exception exception )
 			{
@@ -72,19 +80,30 @@ namespace iRacingTVController
 
 			if ( tickMutex == 1 )
 			{
-				IRSDK.Update();
+				if ( elapsedMilliseconds == 0 )
+				{
+					elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
+				}
+				else
+				{
+					deltaTime = Math.Min( 0.1f, ( stopwatch.ElapsedMilliseconds - elapsedMilliseconds ) / 1000.0f );
 
-				LiveData.Instance.Update();
+					elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
 
-				IPC.UpdateSettings();
-				IPC.UpdateLiveData();
+					IRSDK.Update();
 
-				Director.Update();
-				IncidentScan.Update();
+					LiveData.Instance.Update();
 
-				MainWindow.Instance.ControlPanel_Update();
+					IPC.UpdateSettings();
+					IPC.UpdateLiveData();
 
-				IRSDK.SendMessages();
+					Director.Update();
+					IncidentScan.Update();
+
+					MainWindow.Instance.ControlPanel_Update();
+
+					IRSDK.SendMessages();
+				}
 			}
 
 			Interlocked.Decrement( ref Program.tickMutex );

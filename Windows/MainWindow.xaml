@@ -5,28 +5,76 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller"
+        Title="iRacing-TV Controller v1.1"
         WindowStartupLocation="CenterScreen"
-        Closed="Window_Closed" ResizeMode="CanMinimize" Width="860" Height="430">
+        Closed="Window_Closed" ResizeMode="CanMinimize" Width="860" Height="550">
     <Grid>
         <TabControl>
             <TabItem Header="Control Panel" Padding="12,6,12,6">
                 <Grid Margin="6,6,6,6">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Target car index" Width="200"/>
-                            <TextBox x:Name="ControlPanel_TargetCamCarIdx" Width="100"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                            <Label Content="Target camera group number" Width="200"/>
-                            <TextBox x:Name="ControlPanel_TargetCamGroupNumber" Width="100"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                            <Label Content="Target reason" Width="200"/>
-                            <TextBox x:Name="ControlPanel_TargetCamReason" Width="500"/>
-                        </StackPanel>
-                        <Button x:Name="ControlPanel_EnableDirector_Button" Content="Enable Director" Click="ControlPanel_EnableDirector_Click" Margin="0,6,0,0"/>
-                    </StackPanel>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Target"/>
+                        <TextBox x:Name="ControlPanel_TargetCamCarNumber" Width="50" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" Grid.Column="1" HorizontalContentAlignment="Center" IsEnabled="False"/>
+                        <TextBox x:Name="ControlPanel_TargetDriverName" Width="150" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" Margin="6,0,0,0" Grid.Column="2" IsEnabled="False"/>
+                        <TextBox x:Name="ControlPanel_TargetCamGroupNumber" Width="50" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" Margin="6,0,0,0" Grid.Column="3" HorizontalContentAlignment="Center" IsEnabled="False"/>
+                        <TextBox x:Name="ControlPanel_TargetCamReason" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" Margin="6,0,0,0" Grid.Column="4" IsEnabled="False"/>
+                        <TextBox x:Name="ControlPanel_CameraSwitchTimer" Width="50" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" Margin="6,0,0,0" Grid.Column="5" HorizontalContentAlignment="Center" IsEnabled="False" FontFamily="Courier New"/>
+                        <Button x:Name="ControlPanel_EnableDirector_Button" Width="130" Height="25.96" Padding="3,0,3,0" Content="🎥 Enable Director" Click="ControlPanel_EnableDirector_Click" Margin="6,0,0,0" Grid.Column="6" BorderThickness="1,1,1,1"/>
+                    </Grid>
+                    <Grid Margin="0,6,0,0" Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="ControlPanel_Camera_Intro_Button" Content="Intro" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Intro_Button_Click" />
+                        <Button x:Name="ControlPanel_Camera_Inside_Button" Content="Inside" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Inside_Button_Click" Grid.Column="1" />
+                        <Button x:Name="ControlPanel_Camera_Close_Button" Content="Close" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Close_Button_Click" Grid.Column="2"/>
+                        <Button x:Name="ControlPanel_Camera_Medium_Button" Content="Medium" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Medium_Button_Click" Grid.Column="3" />
+                        <Button x:Name="ControlPanel_Camera_Far_Button" Content="Far" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Far_Button_Click" Grid.Column="4" />
+                        <Button x:Name="ControlPanel_Camera_VeryFar_Button" Content="Very Far" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_VeryFar_Button_Click" Grid.Column="5" />
+                        <Button x:Name="ControlPanel_Camera_AutoCam_Button" Content="AutoCam" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_AutoCam_Button_Click" Grid.Column="6" />
+                    </Grid>
+                    <Grid x:Name="ControlPanel_ButtonGrid" Margin="0,6,0,0" Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="Incidents" Padding="12,6,12,6">
@@ -101,7 +149,14 @@
                             </ListView.Resources>
                         </ListView>
                     </DockPanel>
-                    <Button Content="Scan Now" Grid.Row="1" Margin="0,6,0,0" Click="Incidents_ScanNow_Button_Click"/>
+                    <Grid Grid.Row="1" Margin="0,6,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="Scan Now" Margin="0,0,3,0" Click="Incidents_ScanNow_Button_Click"/>
+                        <Button Content="Clear All" Grid.Column="1" Margin="3,0,0,0" Click="Incidents_Clear_Button_Click"/>
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="Director" Padding="12,6,12,6">
@@ -133,10 +188,10 @@
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="90"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Practice"/>
-                                        <TextBox x:Name="Director_Cameras_Practice" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Editor_Update" Grid.Column="1"/>
+                                        <TextBox x:Name="Director_Cameras_Practice" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                         <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Practice_Button_Click" Grid.Column="2"/>
                                         <CheckBox x:Name="Director_Cameras_Practice_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
@@ -145,10 +200,10 @@
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="90"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Qualifying"/>
-                                        <TextBox x:Name="Director_Cameras_Qualifying" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Editor_Update" Grid.Column="1"/>
+                                        <TextBox x:Name="Director_Cameras_Qualifying" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                         <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Qualifying_Button_Click" Grid.Column="2"/>
                                         <CheckBox x:Name="Director_Cameras_Qualifying_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
@@ -157,10 +212,10 @@
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="90"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Intro"/>
-                                        <TextBox x:Name="Director_Cameras_Intro" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Editor_Update" Grid.Column="1"/>
+                                        <TextBox x:Name="Director_Cameras_Intro" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                         <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Intro_Button_Click" Grid.Column="2"/>
                                         <CheckBox x:Name="Director_Cameras_Intro_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
@@ -169,10 +224,10 @@
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="90"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Inside"/>
-                                        <TextBox x:Name="Director_Cameras_Inside" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Editor_Update" Grid.Column="1"/>
+                                        <TextBox x:Name="Director_Cameras_Inside" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                         <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Inside_Button_Click" Grid.Column="2"/>
                                         <CheckBox x:Name="Director_Cameras_Inside_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
@@ -181,10 +236,10 @@
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="90"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Close"/>
-                                        <TextBox x:Name="Director_Cameras_Close" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Editor_Update" Grid.Column="1"/>
+                                        <TextBox x:Name="Director_Cameras_Close" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                         <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Close_Button_Click" Grid.Column="2"/>
                                         <CheckBox x:Name="Director_Cameras_Close_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
@@ -193,10 +248,10 @@
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="90"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Medium"/>
-                                        <TextBox x:Name="Director_Cameras_Medium" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Editor_Update" Grid.Column="1"/>
+                                        <TextBox x:Name="Director_Cameras_Medium" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                         <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Medium_Button_Click" Grid.Column="2"/>
                                         <CheckBox x:Name="Director_Cameras_Medium_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
@@ -205,10 +260,10 @@
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="90"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Far"/>
-                                        <TextBox x:Name="Director_Cameras_Far" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Editor_Update" Grid.Column="1"/>
+                                        <TextBox x:Name="Director_Cameras_Far" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                         <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Far_Button_Click" Grid.Column="2"/>
                                         <CheckBox x:Name="Director_Cameras_Far_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
@@ -217,10 +272,10 @@
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="90"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Very Far"/>
-                                        <TextBox x:Name="Director_Cameras_VeryFar" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Editor_Update" Grid.Column="1"/>
+                                        <TextBox x:Name="Director_Cameras_VeryFar" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                         <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_VeryFar_Button_Click" Grid.Column="2" VerticalContentAlignment="Center"/>
                                         <CheckBox x:Name="Director_Cameras_VeryFar_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
@@ -234,9 +289,19 @@
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Label Content="General"/>
-                                        <local:Decimal x:Name="Director_SwitchDelay_General" ValueChanged="Director_Update" Grid.Column="1" />
-                                        <CheckBox x:Name="Director_SwitchDelay_General_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        <Label Content="Director"/>
+                                        <local:Decimal x:Name="Director_SwitchDelay_Director" ValueChanged="Director_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Director_SwitchDelay_Director_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="iRacing"/>
+                                        <local:Decimal x:Name="Director_SwitchDelay_iRacing" ValueChanged="Director_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Director_SwitchDelay_iRacing_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
@@ -245,9 +310,200 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Radio Chatter"/>
-                                        <local:Decimal x:Name="Director_SwitchDelay_RacioChatter" ValueChanged="Director_Update" Grid.Column="1" />
+                                        <local:Decimal x:Name="Director_SwitchDelay_RadioChatter" ValueChanged="Director_Update" Grid.Column="1" />
                                         <CheckBox x:Name="Director_SwitchDelay_RadioChatter_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Not In Race"/>
+                                        <local:Decimal x:Name="Director_SwitchDelay_NotInRace" ValueChanged="Director_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Director_SwitchDelay_NotInRace_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="Heat" Padding="12,6,12,6">
+                                <StackPanel Margin="6,6,6,6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Car Length"/>
+                                        <local:Decimal x:Name="Director_Heat_CarLength" ValueChanged="Director_Update" Grid.Column="1" />
+                                        <Label Content="Meters" Grid.Column="2"/>
+                                        <CheckBox x:Name="Director_Heat_CarLength_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Falloff"/>
+                                        <local:Decimal x:Name="Director_Heat_Falloff" ValueChanged="Director_Update" Grid.Column="1" />
+                                        <Label Content="Meters" Grid.Column="2"/>
+                                        <CheckBox x:Name="Director_Heat_Falloff_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="90"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Bias"/>
+                                        <Label Content="Back" Grid.Column="1"/>
+                                        <Slider x:Name="Director_Heat_Bias" Grid.Column="2" VerticalAlignment="Center" LargeChange="0.2" Maximum="2" Minimum="-2" ValueChanged="Director_Update" TickFrequency="0.1"/>
+                                        <Label Content="Front" Grid.Column="3"/>
+                                        <CheckBox x:Name="Director_Heat_Bias_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="4" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="Preferred Car" Padding="12,6,12,6">
+                                <StackPanel Margin="6,6,6,6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Number"/>
+                                        <TextBox x:Name="Director_PreferredCar_Number" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                        <CheckBox x:Name="Director_PreferredCar_Number_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Lock On Enabled"/>
+                                        <CheckBox x:Name="Director_PreferredCar_LockOnEnabled" VerticalAlignment="Center" Click="Director_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Director_PreferredCar_LockOnEnabled_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Lock On Heat"/>
+                                        <local:Decimal x:Name="Director_PreferredCar_LockOnMinimumHeat" ValueChanged="Director_Update" Grid.Column="1" />
+                                        <Label Content="Minimum" Grid.Column="2"/>
+                                        <CheckBox x:Name="Director_PreferredCar_LockOnMinimumHeat_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="Rules" Padding="12,6,12,6">
+                                <StackPanel Margin="6,6,6,6">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Override" Width="60"/>
+                                        <CheckBox x:Name="Director_Rules_Override" VerticalAlignment="Center" Click="Director_Rules_Update"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Rule 1" Width="60"/>
+                                        <CheckBox x:Name="Director_Rules_Rule1_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Post-race cool down, first place car still connected, look at first place car using"/>
+                                        <ComboBox x:Name="Director_Rules_Rule1_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Rule 2" Width="60"/>
+                                        <CheckBox x:Name="Director_Rules_Rule2_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Racing, preferred car lock-on enabled, and preferred car heat >= minimum, look at preferred car using"/>
+                                        <ComboBox x:Name="Director_Rules_Rule2_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Rule 3" Width="60"/>
+                                        <CheckBox x:Name="Director_Rules_Rule3_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Racing, checkered flag, look at car nearest to the finish line using"/>
+                                        <ComboBox x:Name="Director_Rules_Rule3_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Rule 4" Width="60"/>
+                                        <CheckBox x:Name="Director_Rules_Rule4_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Incident, look at car involved using"/>
+                                        <ComboBox x:Name="Director_Rules_Rule4_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Rule 5" Width="60"/>
+                                        <CheckBox x:Name="Director_Rules_Rule5_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Racing, green flag is about to be shown or is waving, look at lead car using"/>
+                                        <ComboBox x:Name="Director_Rules_Rule5_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Rule 6" Width="60"/>
+                                        <CheckBox x:Name="Director_Rules_Rule6_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Driver is talking, look at this car using"/>
+                                        <ComboBox x:Name="Director_Rules_Rule6_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Rule 7" Width="60"/>
+                                        <CheckBox x:Name="Director_Rules_Rule7_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Practice session, look at random car using"/>
+                                        <ComboBox x:Name="Director_Rules_Rule7_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Rule 8" Width="60"/>
+                                        <CheckBox x:Name="Director_Rules_Rule8_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Qualifying session, look at random car using"/>
+                                        <ComboBox x:Name="Director_Rules_Rule8_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Rule 9" Width="60"/>
+                                        <CheckBox x:Name="Director_Rules_Rule9_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Cars are warming up, look at lead car using"/>
+                                        <ComboBox x:Name="Director_Rules_Rule9_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Rule 10" Width="60"/>
+                                        <CheckBox x:Name="Director_Rules_Rule10_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Cars are doing parade laps, look at lead car using"/>
+                                        <ComboBox x:Name="Director_Rules_Rule10_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Rule 11" Width="60"/>
+                                        <CheckBox x:Name="Director_Rules_Rule11_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Drivers are getting into their cars, look at lead car using"/>
+                                        <ComboBox x:Name="Director_Rules_Rule11_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Rule 12" Width="60"/>
+                                        <CheckBox x:Name="Director_Rules_Rule12_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Caution flag waving, look at lead car using"/>
+                                        <ComboBox x:Name="Director_Rules_Rule12_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Rule 13" Width="60"/>
+                                        <CheckBox x:Name="Director_Rules_Rule13_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Hottest car, look at hottest car using"/>
+                                        <ComboBox x:Name="Director_Rules_Rule13_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="AutoCam" Padding="12,6,12,6">
+                                <StackPanel Margin="6,6,6,6">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Override" Width="100"/>
+                                        <CheckBox x:Name="Director_AutoCam_Override" VerticalAlignment="Center" Click="Director_AutoCam_Update"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                        <Label Content="Inside" Width="100"/>
+                                        <local:Decimal x:Name="Director_AutoCam_Inside_Maximum" ValueChanged="Director_AutoCam_Update" Width="100"/>
+                                        <Label Content="Maximum Distance"/>
+                                        <local:Decimal x:Name="Director_AutoCam_Inside_Minimum" ValueChanged="Director_AutoCam_Update" Width="100" Margin="12,0,0,0"/>
+                                        <Label Content="Minimum Distance"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                        <Label Content="Close" Width="100"/>
+                                        <local:Decimal x:Name="Director_AutoCam_Close_Maximum" ValueChanged="Director_AutoCam_Update" Width="100"/>
+                                        <Label Content="Maximum Distance"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                        <Label Content="Medium" Width="100"/>
+                                        <local:Decimal x:Name="Director_AutoCam_Medium_Maximum" ValueChanged="Director_AutoCam_Update" Width="100"/>
+                                        <Label Content="Maximum Distance"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                        <Label Content="Far" Width="100"/>
+                                        <local:Decimal x:Name="Director_AutoCam_Far_Maximum" ValueChanged="Director_AutoCam_Update" Width="100"/>
+                                        <Label Content="Maximum Distance"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </TabItem>
                         </TabControl>
@@ -823,7 +1079,7 @@
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Enable"/>
                                         <CheckBox x:Name="Overlay_Subtitle_Enable" VerticalAlignment="Center" Click="Overlay_Subtitle_Update" Grid.Column="1" />
-                                        <CheckBox x:Name="Subtitle_Enable_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Subtitle_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        <CheckBox x:Name="Overlay_Subtitle_Enable_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Subtitle_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
@@ -839,7 +1095,7 @@
                                         <Label Content="X" HorizontalContentAlignment="Center" Grid.Column="2" />
                                         <local:Number x:Name="Overlay_Subtitle_Position_Y" ValueChanged="Overlay_Subtitle_Update" Grid.Column="3" />
                                         <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
-                                        <CheckBox x:Name="Subtitle_Position_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Subtitle_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        <CheckBox x:Name="Overlay_Subtitle_Position_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Subtitle_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
@@ -855,7 +1111,7 @@
                                         <Label Content="W" HorizontalContentAlignment="Center" Grid.Column="2" />
                                         <local:Number x:Name="Overlay_Subtitle_MaxSize_H" ValueChanged="Overlay_Subtitle_Update" Grid.Column="3" />
                                         <Label Content="H" HorizontalContentAlignment="Center" Grid.Column="4" />
-                                        <CheckBox x:Name="Subtitle_MaxSize_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Subtitle_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        <CheckBox x:Name="Overlay_Subtitle_MaxSize_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Subtitle_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
@@ -880,8 +1136,8 @@
                                         <Label Content="B" HorizontalContentAlignment="Center" Grid.Column="6"/>
                                         <local:Decimal x:Name="Overlay_Subtitle_BackgroundColor_A" ValueChanged="Overlay_Subtitle_Update" Grid.Column="7" />
                                         <Label Content="A" HorizontalContentAlignment="Center" Grid.Column="8"/>
-                                        <Button x:Name="Subtitle_OverlayBackgroundColor_Palette" Padding="6,0,6,0" Content="🎨" Grid.Column="9" Margin="6,0,0,0" Click="Overlay_Subtitle_OverlayBackgroundColor_Palette_Click" />
-                                        <CheckBox x:Name="Subtitle_BackgroundColor_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Subtitle_Update" Grid.Column="10" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        <Button x:Name="Overlay_Subtitle_BackgroundColor_Palette" Padding="6,0,6,0" Content="🎨" Grid.Column="9" Margin="6,0,0,0" Click="Overlay_Subtitle_OverlayBackgroundColor_Palette_Click" />
+                                        <CheckBox x:Name="Overlay_Subtitle_BackgroundColor_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Subtitle_Update" Grid.Column="10" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
@@ -897,7 +1153,7 @@
                                         <Label Content="X" HorizontalContentAlignment="Center" Grid.Column="2" />
                                         <local:Number x:Name="Overlay_Subtitle_TextPadding_Y" ValueChanged="Overlay_Subtitle_Update" Grid.Column="3" />
                                         <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
-                                        <CheckBox x:Name="Subtitle_TextPadding_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Subtitle_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        <CheckBox x:Name="Overlay_Subtitle_TextPadding_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Subtitle_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                 </StackPanel>
                             </TabItem>
@@ -936,7 +1192,7 @@
                                         <Label Content="B" HorizontalContentAlignment="Center" Grid.Column="6"/>
                                         <local:Decimal x:Name="Overlay_CarNumber_ColorA_A" ValueChanged="Overlay_CarNumber_Update" Grid.Column="7" />
                                         <Label Content="A" HorizontalContentAlignment="Center" Grid.Column="8"/>
-                                        <Button x:Name="CarNumber_ColorOverrideA_Palette" Padding="6,0,6,0" Content="🎨" Grid.Column="9" Margin="6,0,0,0" Click="Overlay_CarNumber_ColorOverrideA_Palette_Click" />
+                                        <Button x:Name="Overlay_CarNumber_ColorA_Palette" Padding="6,0,6,0" Content="🎨" Grid.Column="9" Margin="6,0,0,0" Click="Overlay_CarNumber_ColorA_Palette_Click" />
                                         <CheckBox x:Name="Overlay_CarNumber_ColorA_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_CarNumber_Update" Grid.Column="10" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
@@ -962,7 +1218,7 @@
                                         <Label Content="B" HorizontalContentAlignment="Center" Grid.Column="6"/>
                                         <local:Decimal x:Name="Overlay_CarNumber_ColorB_A" ValueChanged="Overlay_CarNumber_Update" Grid.Column="7" />
                                         <Label Content="A" HorizontalContentAlignment="Center" Grid.Column="8"/>
-                                        <Button x:Name="CarNumber_ColorOverrideB_Palette" Padding="6,0,6,0" Content="🎨" Grid.Column="9" Margin="6,0,0,0" Click="Overlay_CarNumber_ColorOverrideB_Palette_Click" />
+                                        <Button x:Name="Overlay_CarNumber_ColorB_Palette" Padding="6,0,6,0" Content="🎨" Grid.Column="9" Margin="6,0,0,0" Click="Overlay_CarNumber_ColorB_Palette_Click" />
                                         <CheckBox x:Name="Overlay_CarNumber_ColorB_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_CarNumber_Update" Grid.Column="10" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
@@ -988,7 +1244,7 @@
                                         <Label Content="B" HorizontalContentAlignment="Center" Grid.Column="6"/>
                                         <local:Decimal x:Name="Overlay_CarNumber_ColorC_A" ValueChanged="Overlay_CarNumber_Update" Grid.Column="7" />
                                         <Label Content="A" HorizontalContentAlignment="Center" Grid.Column="8"/>
-                                        <Button x:Name="CarNumber_ColorOverrideC_Palette" Padding="6,0,6,0" Content="🎨" Grid.Column="9" Margin="6,0,0,0" Click="Overlay_CarNumber_ColorOverrideC_Palette_Click" />
+                                        <Button x:Name="Overlay_CarNumber_ColorC_Palette" Padding="6,0,6,0" Content="🎨" Grid.Column="9" Margin="6,0,0,0" Click="Overlay_CarNumber_ColorC_Palette_Click" />
                                         <CheckBox x:Name="Overlay_CarNumber_ColorC_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_CarNumber_Update" Grid.Column="10" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
@@ -1038,7 +1294,7 @@
                                         <Label Content="B" HorizontalContentAlignment="Center" Grid.Column="6"/>
                                         <local:Decimal x:Name="Overlay_Telemetry_PitColor_A" ValueChanged="Overlay_Telemetry_Update" Grid.Column="7" />
                                         <Label Content="A" HorizontalContentAlignment="Center" Grid.Column="8"/>
-                                        <Button x:Name="Leaderboard_TelemetryPitColor_Palette" Padding="6,0,6,0" Content="🎨" Grid.Column="9" Margin="6,0,0,0" Click="Overlay_Telemetry_PitColor_Palette_Click" />
+                                        <Button x:Name="Overlay_Telemetry_PitColor_Palette" Padding="6,0,6,0" Content="🎨" Grid.Column="9" Margin="6,0,0,0" Click="Overlay_Telemetry_PitColor_Palette_Click" />
                                         <CheckBox x:Name="Overlay_Telemetry_PitColor_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Telemetry_Update" Grid.Column="10" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
@@ -1064,7 +1320,7 @@
                                         <Label Content="B" HorizontalContentAlignment="Center" Grid.Column="6"/>
                                         <local:Decimal x:Name="Overlay_Telemetry_OutColor_A" ValueChanged="Overlay_Telemetry_Update" Grid.Column="7" />
                                         <Label Content="A" HorizontalContentAlignment="Center" Grid.Column="8"/>
-                                        <Button x:Name="Leaderboard_TelemetryOutColor_Palette" Padding="6,0,6,0" Content="🎨" Grid.Column="9" Margin="6,0,0,0" Click="Overlay_Telemetry_OutColor_Palette_Click" />
+                                        <Button x:Name="Overlay_Telemetry_OutColor_Palette" Padding="6,0,6,0" Content="🎨" Grid.Column="9" Margin="6,0,0,0" Click="Overlay_Telemetry_OutColor_Palette_Click" />
                                         <CheckBox x:Name="Overlay_Telemetry_OutColor_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Telemetry_Update" Grid.Column="10" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
@@ -1100,6 +1356,32 @@
                                         <Label Content="Checkpoints"/>
                                         <Slider x:Name="Overlay_Telemetry_NumberOfCheckpoints" Grid.Column="1" VerticalAlignment="Center" SmallChange="1" LargeChange="10" Maximum="300" Minimum="2" ValueChanged="Overlay_Telemetry_Update" TickPlacement="TopLeft"/>
                                         <CheckBox x:Name="Overlay_Telemetry_NumberOfCheckpoints_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Telemetry_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="Intro" Padding="12,6,12,6">
+                                <StackPanel Margin="6,6,6,6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Enable"/>
+                                        <CheckBox x:Name="Overlay_Intro_Enable" VerticalAlignment="Center" Click="Overlay_Intro_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Overlay_Intro_Enable_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Start Time"/>
+                                        <local:Decimal x:Name="Overlay_Intro_StartTime" Width="100" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
+                                        <Label Content="Seconds From Start of Race Session" Grid.Column="2"/>
+                                        <CheckBox x:Name="Overlay_Intro_StartTime_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                 </StackPanel>
                             </TabItem>
@@ -1176,5 +1458,11 @@
                 </TabControl>
             </TabItem>
         </TabControl>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,6,6,0">
+            <Label x:Name="SessionState" VerticalContentAlignment="Center"/>
+            <Label x:Name="FrameNumber" FontFamily="Courier New" VerticalContentAlignment="Bottom"/>
+            <Image x:Name="ConnectionStatusImage" Source="/Assets/status-disconnected.png" Width="16" Height="16" Margin="6,0,0,0" ToolTip="iRacing Connection Status"/>
+            <Image x:Name="DirectorStatusImage" Source="/Assets/status-disconnected.png" Width="16" Height="16" Margin="6,0,0,0"  ToolTip="Director Status"/>
+        </StackPanel>
     </Grid>
 </Window>

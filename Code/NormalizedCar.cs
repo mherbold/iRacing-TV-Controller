@@ -30,6 +30,8 @@ namespace iRacingTVController
 		public bool isOnPitRoad = false;
 		public bool isOutOfCar = false;
 
+		public float outOfCarTimer = 0;
+
 		public int officialPosition = 0;
 		public int leaderboardPosition = 0;
 
@@ -51,6 +53,7 @@ namespace iRacingTVController
 
 		public float attackingHeat = 0;
 		public float defendingHeat = 0;
+		public float heatBias = 0;
 
 		public float distanceToCarInFrontInMeters = 0;
 		public float distanceToCarBehindInMeters = 0;
@@ -61,6 +64,7 @@ namespace iRacingTVController
 		public string carNumberTextureUrl = string.Empty;
 		public string carTextureUrl = string.Empty;
 		public string helmetTextureUrl = string.Empty;
+		public string driverTextureUrl = string.Empty;
 
 		public bool wasVisibleOnLeaderboard = false;
 		public Vector2 placePosition = Vector2.zero;
@@ -191,22 +195,6 @@ namespace iRacingTVController
 
 					if ( includeInLeaderboard )
 					{
-						foreach ( var session in IRSDK.session.SessionInfo.Sessions )
-						{
-							if ( ( session.SessionName == "QUALIFY" ) && ( session.ResultsPositions != null ) )
-							{
-								foreach ( var position in session.ResultsPositions )
-								{
-									if ( position.CarIdx == carIdx )
-									{
-										qualifyingPosition = position.Position;
-										qualifyingTime = position.Time;
-										break;
-									}
-								}
-							}
-						}
-
 						var numberDesignMatch = Regex.Match( driver.CarNumberDesignStr, "(\\d+),(\\d+),(.{6}),(.{6}),(.{6})" );
 
 						if ( numberDesignMatch.Success )
@@ -233,17 +221,21 @@ namespace iRacingTVController
 							carNumberTextureUrl = $"http://localhost:32034/pk_number.png?size={settings.size.y}&view=0&number={carNumber}&numPat={pattern}&numCol={colorA},{colorB},{colorC}&numSlnt={slant}";
 						}
 
-						var carDesignMatch = Regex.Match( driver.CarDesignStr, "(\\d+),(.{6}),(.{6}),(.{6}),?(.{6})?" );
+						var carDesignMatch = Regex.Match( driver.CarDesignStr, "(\\d+),(.{6}),(.{6}),(.{6})[,.]?(.{6})?" );
 
 						if ( numberDesignMatch.Success && carDesignMatch.Success )
 						{
 							var licColor = driver.LicColor[ 2.. ];
 							var carPath = driver.CarPath.Replace( " ", "%5C" );
-							var customCarTgaFilePath = $"{Settings.editor.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_{driver.UserID}.tga".Replace( " ", "%5C" );
+							var customCarTgaFilePath = $"{Settings.editor.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_{driver.UserID}.tga";
 
 							if ( !File.Exists( customCarTgaFilePath ) )
 							{
 								customCarTgaFilePath = string.Empty;
+							}
+							else
+							{
+								customCarTgaFilePath = customCarTgaFilePath.Replace( " ", "%20" );
 							}
 
 							carTextureUrl = $"http://localhost:32034/pk_car.png?size=2&view=1&licCol={licColor}&club={driver.ClubID}&sponsors={driver.CarSponsor_1},{driver.CarSponsor_2}&numPat={numberDesignMatch.Groups[ 1 ].Value}&numCol={numberDesignMatch.Groups[ 3 ].Value},{numberDesignMatch.Groups[ 4 ].Value},{numberDesignMatch.Groups[ 5 ].Value}&numSlnt={numberDesignMatch.Groups[ 2 ].Value}&number={carNumber}&carPath={carPath}&carPat={carDesignMatch.Groups[ 1 ].Value}&carCol={carDesignMatch.Groups[ 2 ].Value},{carDesignMatch.Groups[ 3 ].Value},{carDesignMatch.Groups[ 4 ].Value}&carRimType=2&carRimCol={carDesignMatch.Groups[ 5 ].Value}&carCustPaint={customCarTgaFilePath}";
@@ -255,14 +247,39 @@ namespace iRacingTVController
 						{
 							var licColor = driver.LicColor[ 2.. ];
 							var helmetType = driver.HelmetType;
-							var customHelmetTgaFileName = $"{Settings.editor.iracingCustomPaintsDirectory}\\helmet_{driver.UserID}.tga".Replace( " ", "%5C" );
+							var customHelmetTgaFileName = $"{Settings.editor.iracingCustomPaintsDirectory}\\helmet_{driver.UserID}.tga";
 
 							if ( !File.Exists( customHelmetTgaFileName ) )
 							{
 								customHelmetTgaFileName = string.Empty;
 							}
+							else
+							{
+								customHelmetTgaFileName = customHelmetTgaFileName.Replace( " ", "%20" );
+							}
 
 							helmetTextureUrl = $"http://localhost:32034/pk_helmet.png?size=7&hlmtPat={helmetDesignMatch.Groups[ 1 ].Value}&licCol={licColor}&hlmtCol={helmetDesignMatch.Groups[ 2 ].Value},{helmetDesignMatch.Groups[ 3 ].Value},{helmetDesignMatch.Groups[ 4 ].Value}&view=1&hlmtType={helmetType}&hlmtCustPaint={customHelmetTgaFileName}";
+						}
+
+						var driverDesignMatch = Regex.Match( driver.SuitDesignStr, "(\\d+),(.{6}),(.{6}),(.{6})" );
+
+						if ( driverDesignMatch.Success )
+						{
+							var suitType = driver.BodyType;
+							var helmetType = driver.HelmetType;
+							var faceType = driver.FaceType;
+							var customSuitTgaFileName = $"{Settings.editor.iracingCustomPaintsDirectory}\\suit_{driver.UserID}.tga";
+
+							if ( !File.Exists( customSuitTgaFileName ) )
+							{
+								customSuitTgaFileName = string.Empty;
+							}
+							else
+							{
+								customSuitTgaFileName = customSuitTgaFileName.Replace( " ", "%20" );
+							}
+
+							driverTextureUrl = $"http://localhost:32034/pk_body.png?size=1&view=2&bodyType={suitType}&suitPat={driverDesignMatch.Groups[ 1 ].Value}&suitCol={driverDesignMatch.Groups[ 2 ].Value},{driverDesignMatch.Groups[ 3 ].Value},{driverDesignMatch.Groups[ 4 ].Value}&hlmtType={helmetType}&hlmtPat={helmetDesignMatch.Groups[ 1 ].Value}&hlmtCol={helmetDesignMatch.Groups[ 2 ].Value},{helmetDesignMatch.Groups[ 3 ].Value},{helmetDesignMatch.Groups[ 4 ].Value}&faceType={faceType}&suitCustPaint={customSuitTgaFileName}";
 						}
 					}
 				}
@@ -284,9 +301,28 @@ namespace iRacingTVController
 			officialPosition = car.CarIdxPosition;
 			f2Time = Math.Max( 0, car.CarIdxF2Time );
 
-			if ( !isOutOfCar )
+			var newCarIdxLapDistPct = Math.Max( 0, car.CarIdxLapDistPct );
+
+			if ( isOutOfCar )
 			{
-				var newCarIdxLapDistPct = Math.Max( 0, car.CarIdxLapDistPct );
+				outOfCarTimer += Program.deltaTime;
+
+				lapDistPctDelta *= 0.99f;
+				lapDistPct += lapDistPctDelta;
+				lapPosition += lapDistPctDelta;
+
+				if ( lapDistPct >= 1.0f )
+				{
+					lapDistPct -= 1.0f;
+				}
+				else if ( lapDistPct < 0.0f )
+				{
+					lapDistPct += 1.0f;
+				}
+			}
+			else
+			{
+				outOfCarTimer = 0;
 
 				lapDistPctDelta = newCarIdxLapDistPct - lapDistPct;
 				lapDistPct = newCarIdxLapDistPct;
@@ -307,7 +343,7 @@ namespace iRacingTVController
 						hasCrossedStartLine = false;
 					}
 				}
-				else
+				else if ( !isOnPitRoad )
 				{
 					if ( ( car.CarIdxLap >= 2 ) || ( ( car.CarIdxLap >= 1 ) && ( newCarIdxLapDistPct > 0 ) && ( newCarIdxLapDistPct < 0.5f ) ) )
 					{
@@ -315,9 +351,9 @@ namespace iRacingTVController
 					}
 				}
 
-				if ( hasCrossedStartLine )
+				if ( !IRSDK.normalizedSession.isInRaceSession || hasCrossedStartLine )
 				{
-					var newLapPosition = car.CarIdxLap + car.CarIdxLapDistPct - 1;
+					var newLapPosition = car.CarIdxLap + newCarIdxLapDistPct - 1;
 
 					lapPositionErrorCount++;
 
@@ -330,24 +366,24 @@ namespace iRacingTVController
 					{
 						lapPosition += lapDistPctDelta;
 					}
-
-					var checkpointIdx = (int) Math.Floor( lapDistPct * Settings.overlay.telemetryNumberOfCheckpoints ) % Settings.overlay.telemetryNumberOfCheckpoints;
-
-					if ( checkpointIdx != this.checkpointIdx )
-					{
-						this.checkpointIdx = checkpointIdx;
-
-						checkpoints[ checkpointIdx ] = IRSDK.normalizedData.sessionTime;
-					}
 				}
 				else
 				{
-					lapPosition = 0;
+					lapPosition = 0 - qualifyingPosition / 200.0f;
 				}
-
-				distanceMovedInMeters = lapDistPctDelta * IRSDK.normalizedSession.trackLengthInMeters;
-				speedInMetersPerSecond = distanceMovedInMeters / (float) IRSDK.normalizedData.sessionTimeDelta;
 			}
+
+			var checkpointIdx = (int) Math.Max( 0, Math.Floor( lapDistPct * Settings.overlay.telemetryNumberOfCheckpoints ) ) % Settings.overlay.telemetryNumberOfCheckpoints;
+
+			if ( checkpointIdx != this.checkpointIdx )
+			{
+				this.checkpointIdx = checkpointIdx;
+
+				checkpoints[ checkpointIdx ] = IRSDK.normalizedData.sessionTime;
+			}
+
+			distanceMovedInMeters = lapDistPctDelta * IRSDK.normalizedSession.trackLengthInMeters;
+			speedInMetersPerSecond = distanceMovedInMeters / (float) IRSDK.normalizedData.sessionTimeDelta;
 		}
 
 		public void GenerateAbbrevName( bool includeFirstNameInitial )
@@ -372,85 +408,88 @@ namespace iRacingTVController
 			}
 		}
 
-		public static Comparison<NormalizedCar> LapPositionComparison = delegate ( NormalizedCar object1, NormalizedCar object2 )
+		public static Comparison<NormalizedCar> AbsoluteLapPositionComparison = delegate ( NormalizedCar object1, NormalizedCar object2 )
 		{
+			int result = 0;
+
 			if ( object1.includeInLeaderboard && object2.includeInLeaderboard )
 			{
 				if ( object1.lapPosition == object2.lapPosition )
 				{
-					return object1.carIdx.CompareTo( object2.carIdx );
+					result = object1.carIdx.CompareTo( object2.carIdx );
 				}
 				else
 				{
-					return object2.lapPosition.CompareTo( object1.lapPosition );
+					result = object2.lapPosition.CompareTo( object1.lapPosition );
 				}
 			}
 			else if ( object1.includeInLeaderboard )
 			{
-				return -1;
+				result = -1;
 			}
 			else if ( object2.includeInLeaderboard )
 			{
-				return 1;
+				result = 1;
 			}
-			else
-			{
-				return 0;
-			}
+
+			return result;
 		};
 
-		public static Comparison<NormalizedCar> HeatComparison = delegate ( NormalizedCar object1, NormalizedCar object2 )
+		public static Comparison<NormalizedCar> RelativeLapPositionComparison = delegate ( NormalizedCar object1, NormalizedCar object2 )
 		{
+			int result = 0;
+
 			if ( object1.includeInLeaderboard && object2.includeInLeaderboard )
 			{
-				if ( object1.attackingHeat == object2.attackingHeat )
+				var lprl1 = object1.lapPositionRelativeToLeader % 1;
+				var lprl2 = object2.lapPositionRelativeToLeader % 1;
+
+				if ( lprl1 == lprl2 )
 				{
-					return object1.officialPosition.CompareTo( object2.officialPosition );
+					result = object1.carIdx.CompareTo( object2.carIdx );
 				}
 				else
 				{
-					return object2.attackingHeat.CompareTo( object1.attackingHeat );
+					result = lprl1.CompareTo( lprl2 );
 				}
 			}
 			else if ( object1.includeInLeaderboard )
 			{
-				return -1;
+				result = -1;
 			}
 			else if ( object2.includeInLeaderboard )
 			{
-				return 1;
+				result = 1;
 			}
-			else
-			{
-				return 0;
-			}
+
+			return result;
 		};
 
 		public static Comparison<NormalizedCar> LeaderboardPositionComparison = delegate ( NormalizedCar object1, NormalizedCar object2 )
 		{
+			int result = 0;
+
 			if ( object1.includeInLeaderboard && object2.includeInLeaderboard )
 			{
 				if ( object1.leaderboardPosition == object2.leaderboardPosition )
 				{
-					return object1.officialPosition.CompareTo( object2.officialPosition );
+					result = object1.officialPosition.CompareTo( object2.officialPosition );
 				}
 				else
 				{
-					return object1.leaderboardPosition.CompareTo( object2.leaderboardPosition );
+					result = object1.leaderboardPosition.CompareTo( object2.leaderboardPosition );
 				}
 			}
 			else if ( object1.includeInLeaderboard )
 			{
-				return -1;
+				result = -1;
 			}
 			else if ( object2.includeInLeaderboard )
 			{
-				return 1;
+				result = 1;
 			}
-			else
-			{
-				return 0;
-			}
+
+			return result;
 		};
 	}
 }

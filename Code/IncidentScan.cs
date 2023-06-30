@@ -15,7 +15,7 @@ namespace iRacingTVController
 
 		public static string incidentScanFilePath = string.Empty;
 
-		public static int saveIncidentsTick = 0;
+		public static float saveIncidentsTimeRemaining = 0;
 		public static bool saveIncidentsQueued = false;
 
 		public static int currentSession = 0;
@@ -23,7 +23,7 @@ namespace iRacingTVController
 		public static int settleStartingFrameNumber = 0;
 		public static int settleTargetFrameNumber = 0;
 		public static int settleLastFrameNumber = 0;
-		public static int settleLoopCount = 0;
+		public static float settleTimer = 0;
 
 		public enum IncidentScanStateEnum
 		{
@@ -68,6 +68,15 @@ namespace iRacingTVController
 			IRSDK.targetCamEnabled = false;
 			IRSDK.targetCamFastSwitchEnabled = false;
 
+			Clear();
+
+			currentIncidentScanState = IncidentScanStateEnum.RewindToStartOfReplay;
+
+			Director.isEnabled = false;
+		}
+
+		public static void Clear()
+		{
 			incidentDataList.Clear();
 
 			MainWindow.Instance.Incidents_ListView.Items.Clear();
@@ -75,17 +84,6 @@ namespace iRacingTVController
 			var incidentScanFilePath = GetIncidentScanFilePath();
 
 			File.Delete( incidentScanFilePath );
-
-			currentIncidentScanState = IncidentScanStateEnum.RewindToStartOfReplay;
-
-			Director.isEnabled = false;
-
-			//if ( Overlay.isVisible )
-			//{
-			//Overlay.ToggleVisibility();
-			//}
-
-			//MainWindow.instance?.Update();
 		}
 
 		public static bool IsRunning()
@@ -287,15 +285,15 @@ namespace iRacingTVController
 							if ( ( settleLastFrameNumber == 0 ) || ( settleLastFrameNumber != IRSDK.normalizedData.replayFrameNum ) )
 							{
 								settleLastFrameNumber = IRSDK.normalizedData.replayFrameNum;
-								settleLoopCount = 0;
+								settleTimer = 0;
 							}
 							else
 							{
-								var targetLoopCount = (int) Math.Ceiling( 60.0f / Settings.editor.iracingCommandRateLimit );
+								var targetTime = 1.0f / Settings.editor.iracingCommandRateLimit;
 
-								settleLoopCount++;
+								settleTimer += Program.deltaTime;
 
-								if ( settleLoopCount == targetLoopCount )
+								if ( settleTimer >= targetTime )
 								{
 									currentIncidentScanState = nextIncidentScanState;
 								}
@@ -303,11 +301,11 @@ namespace iRacingTVController
 						}
 						else
 						{
-							var targetLoopCount = (int) Math.Ceiling( Settings.editor.incidentsTimeout * 60 );
+							var targetTime = Settings.editor.incidentsTimeout;
 
-							settleLoopCount++;
+							settleTimer += Program.deltaTime;
 
-							if ( settleLoopCount == targetLoopCount )
+							if ( settleTimer >= targetTime )
 							{
 								currentIncidentScanState = IncidentScanStateEnum.RewindToStartOfReplayAgain;
 							}
@@ -317,12 +315,12 @@ namespace iRacingTVController
 					break;
 			}
 
-			saveIncidentsTick--;
+			saveIncidentsTimeRemaining = Math.Max( 0, saveIncidentsTimeRemaining - Program.deltaTime );
 
-			if ( saveIncidentsQueued && ( saveIncidentsTick <= 0 ) )
+			if ( saveIncidentsQueued && ( saveIncidentsTimeRemaining <= 0 ) )
 			{
 				saveIncidentsQueued = false;
-				saveIncidentsTick = 60;
+				saveIncidentsTimeRemaining = 1;
 
 				SaveIncidents();
 			}
@@ -333,7 +331,7 @@ namespace iRacingTVController
 			settleStartingFrameNumber = IRSDK.normalizedData.replayFrameNum;
 			settleTargetFrameNumber = targetFrameNumber;
 			settleLastFrameNumber = 0;
-			settleLoopCount = 0;
+			settleTimer = 0;
 
 			currentIncidentScanState = IncidentScanStateEnum.WaitForFrameNumberToSettle;
 

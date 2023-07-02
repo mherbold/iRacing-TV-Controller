@@ -57,6 +57,7 @@ namespace iRacingTVController
 
 		public SortedDictionary<string, int> patternOptions = new();
 		public SortedDictionary<string, int> slantOptions = new();
+		public SortedDictionary<string, int> animationOptions = new();
 
 		static MainWindow()
 		{
@@ -288,6 +289,14 @@ namespace iRacingTVController
 			foreach ( var item in slantOptions )
 			{
 				Overlay_CarNumber_Slant.Items.Add( item.Key );
+			}
+
+			animationOptions.Add( "Static (Use For Editing)", 0 );
+			animationOptions.Add( "Animation #1", 1 );
+
+			foreach ( var item in animationOptions )
+			{
+				Overlay_Intro_AnimationNumber.Items.Add( item.Key );
 			}
 
 			//
@@ -571,9 +580,25 @@ namespace iRacingTVController
 
 			Overlay_Intro_Enable.IsChecked = Settings.overlay.introEnabled;
 			Overlay_Intro_StartTime.Value = Settings.overlay.introStartTime;
+			Overlay_Intro_RowInterval.Value = Settings.overlay.introRowInterval;
+			Overlay_Intro_AnimationNumber.SelectedItem = animationOptions.FirstOrDefault( x => x.Value == Settings.overlay.introAnimationNumber ).Key;
+			Overlay_Intro_AnimationSpeed.Value = Settings.overlay.introAnimationSpeed;
+			Overlay_Intro_LeftPosition_X.Value = Settings.overlay.introLeftPosition.x;
+			Overlay_Intro_LeftPosition_Y.Value = Settings.overlay.introLeftPosition.y;
+			Overlay_Intro_LeftScale.Value = Settings.overlay.introLeftScale;
+			Overlay_Intro_RightPosition_X.Value = Settings.overlay.introRightPosition.x;
+			Overlay_Intro_RightPosition_Y.Value = Settings.overlay.introRightPosition.y;
+			Overlay_Intro_RightScale.Value = Settings.overlay.introRightScale;
 
 			Overlay_Intro_Enable_Override.IsChecked = Settings.overlay.introEnabled_Overridden;
 			Overlay_Intro_StartTime_Override.IsChecked = Settings.overlay.introStartTime_Overridden;
+			Overlay_Intro_RowInterval_Override.IsChecked = Settings.overlay.introRowInterval_Overridden;
+			Overlay_Intro_AnimationNumber_Override.IsChecked = Settings.overlay.introAnimationNumber_Overridden;
+			Overlay_Intro_AnimationSpeed_Override.IsChecked = Settings.overlay.introAnimationSpeed_Overridden;
+			Overlay_Intro_LeftPosition_Override.IsChecked = Settings.overlay.introLeftPosition_Overridden;
+			Overlay_Intro_LeftScale_Override.IsChecked = Settings.overlay.introLeftScale_Overridden;
+			Overlay_Intro_RightPosition_Override.IsChecked = Settings.overlay.introRightPosition_Overridden;
+			Overlay_Intro_RightScale_Override.IsChecked = Settings.overlay.introRightScale_Overridden;
 
 			// iracing
 
@@ -2987,6 +3012,111 @@ namespace iRacingTVController
 					var overlay = Settings.overlayLocal.introStartTime_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
 
 					overlay.introStartTime = Overlay_Intro_StartTime.Value;
+				}
+
+				overridden = Overlay_Intro_RowInterval_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.introRowInterval_Overridden != overridden )
+				{
+					Settings.overlayLocal.introRowInterval_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.introRowInterval_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.introRowInterval = Overlay_Intro_RowInterval.Value;
+				}
+
+				overridden = Overlay_Intro_AnimationNumber_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.introAnimationNumber_Overridden != overridden )
+				{
+					Settings.overlayLocal.introAnimationNumber_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.introAnimationNumber_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.introAnimationNumber = animationOptions[ (string) Overlay_Intro_AnimationNumber.SelectedItem ];
+				}
+
+				overridden = Overlay_Intro_AnimationSpeed_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.introAnimationSpeed_Overridden != overridden )
+				{
+					Settings.overlayLocal.introAnimationSpeed_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.introAnimationSpeed_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.introAnimationSpeed = Overlay_Intro_AnimationSpeed.Value;
+				}
+
+				overridden = Overlay_Intro_LeftPosition_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.introLeftPosition_Overridden != overridden )
+				{
+					Settings.overlayLocal.introLeftPosition_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.introLeftPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.introLeftPosition = new Vector2( Overlay_Intro_LeftPosition_X.Value, Overlay_Intro_LeftPosition_Y.Value );
+				}
+
+				overridden = Overlay_Intro_LeftScale_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.introLeftScale_Overridden!= overridden )
+				{
+					Settings.overlayLocal.introLeftScale_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.introLeftScale_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.introLeftScale = Overlay_Intro_LeftScale.Value;
+				}
+
+				overridden = Overlay_Intro_RightPosition_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.introRightPosition_Overridden != overridden )
+				{
+					Settings.overlayLocal.introRightPosition_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.introRightPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.introRightPosition = new Vector2( Overlay_Intro_RightPosition_X.Value, Overlay_Intro_RightPosition_Y.Value );
+				}
+
+				overridden = Overlay_Intro_RightScale_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.introRightScale_Overridden != overridden )
+				{
+					Settings.overlayLocal.introRightScale_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.introRightScale_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.introRightScale = Overlay_Intro_RightScale.Value;
 				}
 
 				IPC.readyToSendSettings = true;

@@ -206,6 +206,7 @@ namespace iRacingTVController
 				{ "GreenFlag", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\flag-green.png" } },
 				{ "GreenLight", new SettingsImage(){ imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\light-green.png", position = { x = 280, y = 130 } } },
 				{ "Highlight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\current-target.png" } },
+				{ "IntroBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\leaderboard.png", position = { x = 404, y = 223 }, size = { x = 1471, y = 601 }, border = { x = 32, y = 32, z = 32, w = 32 } } },
 				{ "IntroDriverBackground", new SettingsImage() { imageType = SettingsImage.ImageType.None, position = { x = -203, y = -177 }, size = { x = 408, y = 336 } } },
 				{ "IntroDriverSuit", new SettingsImage() { imageType = SettingsImage.ImageType.Driver, position = { x = 13, y = -125 }, size = { x = 150, y = 250 } } },
 				{ "IntroDriverCar", new SettingsImage() { imageType = SettingsImage.ImageType.Car, position = { x = -254, y = -113 }, size = { x = 508, y = 272 } } },
@@ -427,9 +428,23 @@ namespace iRacingTVController
 
 				introEnabled = overlayLocal.introEnabled_Overridden ? overlayLocal.introEnabled : overlayGlobal.introEnabled,
 				introStartTime = overlayLocal.introStartTime_Overridden ? overlayLocal.introStartTime : overlayGlobal.introStartTime,
+				introRowInterval = overlayLocal.introRowInterval_Overridden ? overlayLocal.introRowInterval : overlayGlobal.introRowInterval,
+				introAnimationNumber = overlayLocal.introAnimationNumber_Overridden ? overlayLocal.introAnimationNumber : overlayGlobal.introAnimationNumber,
+				introAnimationSpeed = overlayLocal.introAnimationSpeed_Overridden ? overlayLocal.introAnimationSpeed : overlayGlobal.introAnimationSpeed,
+				introLeftPosition = overlayLocal.introLeftPosition_Overridden ? overlayLocal.introLeftPosition : overlayGlobal.introLeftPosition,
+				introLeftScale = overlayLocal.introLeftScale_Overridden ? overlayLocal.introLeftScale : overlayGlobal.introLeftScale,
+				introRightPosition = overlayLocal.introRightPosition_Overridden ? overlayLocal.introRightPosition : overlayGlobal.introRightPosition,
+				introRightScale = overlayLocal.introRightScale_Overridden ? overlayLocal.introRightScale : overlayGlobal.introRightScale,
 
 				introEnabled_Overridden = overlayLocal.introEnabled_Overridden,
 				introStartTime_Overridden = overlayLocal.introStartTime_Overridden,
+				introRowInterval_Overridden = overlayLocal.introRowInterval_Overridden,
+				introAnimationNumber_Overridden = overlayLocal.introAnimationNumber_Overridden,
+				introAnimationSpeed_Overridden = overlayLocal.introAnimationSpeed_Overridden,
+				introLeftPosition_Overridden = overlayLocal.introLeftPosition_Overridden,
+				introLeftScale_Overridden = overlayLocal.introLeftScale_Overridden,
+				introRightPosition_Overridden = overlayLocal.introRightPosition_Overridden,
+				introRightScale_Overridden = overlayLocal.introRightScale_Overridden,
 			};
 
 			foreach ( var item in overlayLocal.imageSettingsDataDictionary )

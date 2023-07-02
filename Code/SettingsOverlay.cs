@@ -16,6 +16,7 @@ namespace iRacingTVController
 		}
 
 		[NonSerialized] public const int MaxNumFonts = 4;
+		[NonSerialized] public const int MaxNumAnimations = 2;
 
 		public Vector2Int position = new( 0, 0 );
 		public Vector2Int size = new( 1920, 1080 );
@@ -95,9 +96,23 @@ namespace iRacingTVController
 
 		public bool introEnabled = true;
 		public float introStartTime = 10;
+		public float introRowInterval = 4;
+		public int introAnimationNumber = 1;
+		public float introAnimationSpeed = 1;
+		public Vector2 introLeftPosition = new( 781, 534 );
+		public float introLeftScale = 1.7f;
+		public Vector2 introRightPosition = new( 1495, 534 );
+		public float introRightScale = 1.7f;
 
 		public bool introEnabled_Overridden = false;
 		public bool introStartTime_Overridden = false;
+		public bool introRowInterval_Overridden = false;
+		public bool introAnimationNumber_Overridden = false;
+		public bool introAnimationSpeed_Overridden = false;
+		public bool introLeftPosition_Overridden = false;
+		public bool introLeftScale_Overridden = false;
+		public bool introRightPosition_Overridden = false;
+		public bool introRightScale_Overridden = false;
 
 		public SerializableDictionary<string, SettingsText> textSettingsDataDictionary = new();
 		public SerializableDictionary<string, SettingsImage> imageSettingsDataDictionary = new();

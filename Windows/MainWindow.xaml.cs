@@ -602,19 +602,22 @@ namespace iRacingTVController
 
 			// iracing
 
-			iRacing_General_CommandRateLimit.Value = Settings.editor.iracingCommandRateLimit;
+			iRacing_General_CommandRateLimit.Value = Settings.editor.iracingGeneralCommandRateLimit;
+
 			iRacing_CustomPaints_Directory.Text = Settings.editor.iracingCustomPaintsDirectory;
+
+			iRacing_DriverNames_Suffixes.Text = Settings.editor.iracingDriverNamesSuffixes;
 
 			// editor
 
-			Editor_Mouse_PositioningSpeedNormal.Value = Settings.editor.positioningSpeedNormal;
-			Editor_Mouse_PositioningSpeedFast.Value = Settings.editor.positioningSpeedFast;
-			Editor_Mouse_PositioningSpeedSlow.Value = Settings.editor.positioningSpeedSlow;
+			Editor_Mouse_PositioningSpeedNormal.Value = Settings.editor.editorMousePositioningSpeedNormal;
+			Editor_Mouse_PositioningSpeedFast.Value = Settings.editor.editorMousePositioningSpeedFast;
+			Editor_Mouse_PositioningSpeedSlow.Value = Settings.editor.editorMousePositioningSpeedSlow;
 
-			Editor_Incidents_ScenicCameras.Text = Settings.editor.incidentsScenicCameras;
-			Editor_Incidents_EditCameras.Text = Settings.editor.incidentsEditCameras;
-			Editor_Incidents_OverlapMergeTime.Value = Settings.editor.incidentsOverlapMergeTime;
-			Editor_Incidents_Timeout.Value = Settings.editor.incidentsTimeout;
+			Editor_Incidents_ScenicCameras.Text = Settings.editor.editorIncidentsScenicCameras;
+			Editor_Incidents_EditCameras.Text = Settings.editor.editorIncidentsEditCameras;
+			Editor_Incidents_OverlapMergeTime.Value = Settings.editor.editorIncidentsOverlapMergeTime;
+			Editor_Incidents_Timeout.Value = Settings.editor.editorIncidentsTimeout;
 
 			//
 
@@ -1700,7 +1703,7 @@ namespace iRacingTVController
 				IRSDK.targetCamEnabled = true;
 				IRSDK.targetCamFastSwitchEnabled = true;
 				IRSDK.targetCamCarIdx = item.CarIdx;
-				IRSDK.targetCamGroupNumber = IRSDK.GetCamGroupNumber( Settings.editor.incidentsEditCameras );
+				IRSDK.targetCamGroupNumber = IRSDK.GetCamGroupNumber( Settings.editor.editorIncidentsEditCameras );
 
 				IRSDK.targetReplayStartFrameNumberEnabled = true;
 				IRSDK.targetReplayStartFrameNumber = item.StartFrame;
@@ -3157,9 +3160,11 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				Settings.editor.iracingCommandRateLimit = iRacing_General_CommandRateLimit.Value;
+				Settings.editor.iracingGeneralCommandRateLimit = iRacing_General_CommandRateLimit.Value;
 
 				Settings.editor.iracingCustomPaintsDirectory = iRacing_CustomPaints_Directory.Text;
+
+				Settings.editor.iracingDriverNamesSuffixes = iRacing_DriverNames_Suffixes.Text;
 
 				Settings.SaveEditor();
 
@@ -3193,14 +3198,14 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				Settings.editor.positioningSpeedNormal = Editor_Mouse_PositioningSpeedNormal.Value;
-				Settings.editor.positioningSpeedFast = Editor_Mouse_PositioningSpeedFast.Value;
-				Settings.editor.positioningSpeedSlow = Editor_Mouse_PositioningSpeedSlow.Value;
+				Settings.editor.editorMousePositioningSpeedNormal = Editor_Mouse_PositioningSpeedNormal.Value;
+				Settings.editor.editorMousePositioningSpeedFast = Editor_Mouse_PositioningSpeedFast.Value;
+				Settings.editor.editorMousePositioningSpeedSlow = Editor_Mouse_PositioningSpeedSlow.Value;
 
-				Settings.editor.incidentsScenicCameras = Editor_Incidents_ScenicCameras.Text;
-				Settings.editor.incidentsEditCameras = Editor_Incidents_EditCameras.Text;
-				Settings.editor.incidentsOverlapMergeTime = Editor_Incidents_OverlapMergeTime.Value;
-				Settings.editor.incidentsTimeout = Editor_Incidents_Timeout.Value;
+				Settings.editor.editorIncidentsScenicCameras = Editor_Incidents_ScenicCameras.Text;
+				Settings.editor.editorIncidentsEditCameras = Editor_Incidents_EditCameras.Text;
+				Settings.editor.editorIncidentsOverlapMergeTime = Editor_Incidents_OverlapMergeTime.Value;
+				Settings.editor.editorIncidentsTimeout = Editor_Incidents_Timeout.Value;
 
 				Settings.SaveEditor();
 			}

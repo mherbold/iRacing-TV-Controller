@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iRacing-TV-Controller", "iRacing-TV-Controller.csproj", "{3D0A6C4B-D824-4BB9-A024-4931D4B1A499}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iRacing-TV Controller", "iRacing-TV Controller.csproj", "{3D0A6C4B-D824-4BB9-A024-4931D4B1A499}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "irsdkSharp", "..\irsdkSharp\src\irsdkSharp\irsdkSharp.csproj", "{1371DEEC-7B38-4F72-A4F1-80B0CFB68CBE}"
 EndProject

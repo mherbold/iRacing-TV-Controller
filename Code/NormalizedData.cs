@@ -108,18 +108,18 @@ namespace iRacingTVController
 		{
 			numLeaderboardCars = 0;
 
-			foreach ( var normalizedCar in normalizedCars )
-			{
-				normalizedCar.SessionUpdate( forceUpdate );
-
-				if ( normalizedCar.includeInLeaderboard )
-				{
-					numLeaderboardCars++;
-				}
-			}
-
 			if ( IRSDK.session != null )
 			{
+				foreach ( var normalizedCar in normalizedCars )
+				{
+					normalizedCar.SessionUpdate( forceUpdate );
+
+					if ( normalizedCar.includeInLeaderboard )
+					{
+						numLeaderboardCars++;
+					}
+				}
+
 				foreach ( var session in IRSDK.session.SessionInfo.Sessions )
 				{
 					if ( session.SessionName == "QUALIFY" )
@@ -134,6 +134,24 @@ namespace iRacingTVController
 						}
 
 						break;
+					}
+				}
+			}
+
+			for ( var carIdx = 0; carIdx < MaxNumCars; carIdx++ )
+			{
+				var normalizedCar = normalizedCars[ carIdx ];
+
+				var originalAbbrevName = normalizedCar.abbrevName;
+
+				for ( var otherCarIdx = carIdx + 1; otherCarIdx < MaxNumCars; otherCarIdx++ )
+				{
+					var otherNormalizedCar = normalizedCars[ otherCarIdx ];
+
+					if ( otherNormalizedCar.abbrevName == originalAbbrevName )
+					{
+						normalizedCar.GenerateAbbrevName( true );
+						otherNormalizedCar.GenerateAbbrevName( true );
 					}
 				}
 			}

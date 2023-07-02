@@ -11,6 +11,9 @@ namespace iRacingTVController
 		public static bool isOverridden = false;
 		public static bool driverWasTalking = false;
 
+		public static int targetCamCarIdx = 0;
+		public static SettingsDirector.CameraType targetCamType = SettingsDirector.CameraType.Intro;
+
 		public static void Update()
 		{
 			if ( !IRSDK.isConnected )
@@ -71,24 +74,23 @@ namespace iRacingTVController
 				}
 			}
 
-			IRSDK.targetCamEnabled = true;
-			IRSDK.targetCamFastSwitchEnabled = false;
-			IRSDK.targetCamSlowSwitchEnabled = false;
-			IRSDK.targetCamCarIdx = preferredCar?.carIdx ?? leadingOnTrackCar?.carIdx ?? leadingPittedCar?.carIdx ?? 0;
-			IRSDK.targetCamGroupNumber = IRSDK.GetCamGroupNumber( SettingsDirector.CameraType.Far );
-			IRSDK.targetCamReason = "No matching rule, looking at the preferred or leading car.";
+			var targetCamCarIdx = preferredCar?.carIdx ?? leadingOnTrackCar?.carIdx ?? leadingPittedCar?.carIdx ?? 0;
+			var targetCamType = SettingsDirector.CameraType.Far;
+			var targetCamFastSwitchEnabled = false;
+			var targetCamSlowSwitchEnabled = false;
+			var targetCamReason = "No matching rule, looking at the preferred or leading car.";
 
 			if ( Settings.director.rule1_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateCoolDown ) && ( firstPlaceCar != null ) && !firstPlaceCar.isOutOfCar ) )
 			{
-				IRSDK.targetCamCarIdx = firstPlaceCar.carIdx;
-				IRSDK.targetCamGroupNumber = GetCamGroupNumber( firstPlaceCar, Settings.director.rule1_Camera );
-				IRSDK.targetCamReason = "Rule 1: Post-race cool down, first place car still connected, look at first place car.";
+				targetCamCarIdx = firstPlaceCar.carIdx;
+				targetCamType = Settings.director.rule1_Camera;
+				targetCamReason = "Rule 1: Post-race cool down, first place car still connected, look at first place car.";
 			}
 			else if ( Settings.director.rule2_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateRacing ) && Settings.director.preferredCarLockOnEnabled && ( preferredCar != null ) && ( ( preferredCar.attackingHeat >= Settings.director.preferredCarLockOnMinimumHeat ) || ( preferredCar.defendingHeat >= Settings.director.preferredCarLockOnMinimumHeat ) ) ) )
 			{
-				IRSDK.targetCamCarIdx = preferredCar.carIdx;
-				IRSDK.targetCamGroupNumber = GetCamGroupNumber( preferredCar, Settings.director.rule2_Camera );
-				IRSDK.targetCamReason = "Rule 2: Racing, preferred car lock-on enabled, and preferred car heat >= minimum, look at preferred car.";
+				targetCamCarIdx = preferredCar.carIdx;
+				targetCamType = Settings.director.rule2_Camera;
+				targetCamReason = "Rule 2: Racing, preferred car lock-on enabled, and preferred car heat >= minimum, look at preferred car.";
 			}
 			else if ( Settings.director.rule3_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateCheckered ) ) )
 			{
@@ -104,10 +106,10 @@ namespace iRacingTVController
 							{
 								highestLapPosition = normalizedCar.lapPosition;
 
-								IRSDK.targetCamFastSwitchEnabled = true;
-								IRSDK.targetCamCarIdx = normalizedCar.carIdx;
-								IRSDK.targetCamGroupNumber = GetCamGroupNumber( normalizedCar, Settings.director.rule3_Camera );
-								IRSDK.targetCamReason = "Rule 3: Racing, checkered flag, look at car nearest to the finish line.";
+								targetCamFastSwitchEnabled = true;
+								targetCamCarIdx = normalizedCar.carIdx;
+								targetCamType = Settings.director.rule3_Camera;
+								targetCamReason = "Rule 3: Racing, checkered flag, look at car nearest to the finish line.";
 
 								driverWasTalking = false;
 							}
@@ -117,28 +119,28 @@ namespace iRacingTVController
 			}
 			else if ( Settings.director.rule4_Enabled && ( ( currentIncident != null ) && ( incidentCar != null ) ) )
 			{
-				IRSDK.targetCamFastSwitchEnabled = true;
-				IRSDK.targetCamCarIdx = currentIncident.CarIdx;
-				IRSDK.targetCamGroupNumber = GetCamGroupNumber( incidentCar, Settings.director.rule4_Camera );
-				IRSDK.targetCamReason = "Rule 4: Incident.";
+				targetCamFastSwitchEnabled = true;
+				targetCamCarIdx = currentIncident.CarIdx;
+				targetCamType = Settings.director.rule4_Camera;
+				targetCamReason = "Rule 4: Incident.";
 
 				driverWasTalking = false;
 			}
 			else if ( Settings.director.rule5_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState >= SessionState.StateRacing ) && ( leadingOnTrackCar != null ) && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.GreenHeld | (uint) SessionFlags.StartReady | (uint) SessionFlags.StartSet | (uint) SessionFlags.StartGo ) ) != 0 ) ) )
 			{
-				IRSDK.targetCamFastSwitchEnabled = true;
-				IRSDK.targetCamCarIdx = leadingOnTrackCar.carIdx;
-				IRSDK.targetCamGroupNumber = GetCamGroupNumber( leadingOnTrackCar, Settings.director.rule5_Camera );
-				IRSDK.targetCamReason = "Rule 5: Racing, green flag is about to be shown or is waving.";
+				targetCamFastSwitchEnabled = true;
+				targetCamCarIdx = leadingOnTrackCar.carIdx;
+				targetCamType = Settings.director.rule5_Camera;
+				targetCamReason = "Rule 5: Racing, green flag is about to be shown or is waving.";
 
 				driverWasTalking = false;
 			}
 			else if ( Settings.director.rule6_Enabled && ( talkingCar != null ) )
 			{
-				IRSDK.targetCamFastSwitchEnabled = true;
-				IRSDK.targetCamCarIdx = IRSDK.normalizedData.radioTransmitCarIdx;
-				IRSDK.targetCamGroupNumber = GetCamGroupNumber( talkingCar, Settings.director.rule6_Camera );
-				IRSDK.targetCamReason = "Rule 6: Driver is talking";
+				targetCamFastSwitchEnabled = true;
+				targetCamCarIdx = IRSDK.normalizedData.radioTransmitCarIdx;
+				targetCamType = Settings.director.rule6_Camera;
+				targetCamReason = "Rule 6: Driver is talking";
 
 				driverWasTalking = true;
 			}
@@ -146,40 +148,38 @@ namespace iRacingTVController
 			{
 				driverWasTalking = false;
 
-				IRSDK.targetCamReason = "Radio chatter ended - setting camera switch delay.";
-
 				IRSDK.cameraSwitchWaitTimeRemaining = Settings.director.switchDelayRadioChatter;
 			}
 			else if ( Settings.director.rule7_Enabled && ( IRSDK.normalizedSession.isInPracticeSession ) )
 			{
 				if ( randomCar != null )
 				{
-					IRSDK.targetCamSlowSwitchEnabled = true;
-					IRSDK.targetCamCarIdx = randomCar.carIdx;
-					IRSDK.targetCamGroupNumber = GetCamGroupNumber( randomCar, Settings.director.rule7_Camera );
-					IRSDK.targetCamReason = "Rule 7: Practice session.";
+					targetCamSlowSwitchEnabled = true;
+					targetCamCarIdx = randomCar.carIdx;
+					targetCamType = Settings.director.rule7_Camera;
+					targetCamReason = "Rule 7: Practice session.";
 				}
 				else
 				{
-					IRSDK.targetCamCarIdx = 0;
-					IRSDK.targetCamGroupNumber = IRSDK.GetCamGroupNumber( Settings.director.camerasIntro );
-					IRSDK.targetCamReason = "Rule 7: Practice session (no cars on track).";
+					targetCamCarIdx = 0;
+					targetCamType = SettingsDirector.CameraType.Intro;
+					targetCamReason = "Rule 7: Practice session (no cars on track).";
 				}
 			}
 			else if ( Settings.director.rule8_Enabled && ( IRSDK.normalizedSession.isInQualifyingSession ) )
 			{
 				if ( randomCar != null )
 				{
-					IRSDK.targetCamSlowSwitchEnabled = true;
-					IRSDK.targetCamCarIdx = randomCar.carIdx;
-					IRSDK.targetCamGroupNumber = GetCamGroupNumber( randomCar, Settings.director.rule8_Camera );
-					IRSDK.targetCamReason = "Rule 8: Qualifying session.";
+					targetCamSlowSwitchEnabled = true;
+					targetCamCarIdx = randomCar.carIdx;
+					targetCamType = Settings.director.rule8_Camera;
+					targetCamReason = "Rule 8: Qualifying session.";
 				}
 				else
 				{
-					IRSDK.targetCamCarIdx = 0;
-					IRSDK.targetCamGroupNumber = IRSDK.GetCamGroupNumber( Settings.director.camerasIntro );
-					IRSDK.targetCamReason = "Rule 8: Qualifying session (no cars on track).";
+					targetCamCarIdx = 0;
+					targetCamType = SettingsDirector.CameraType.Intro;
+					targetCamReason = "Rule 8: Qualifying session (no cars on track).";
 				}
 			}
 			else if ( Settings.director.rule9_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) ) && ( IRSDK.normalizedData.sessionState == SessionState.StateWarmup ) ) )
@@ -188,9 +188,9 @@ namespace iRacingTVController
 
 				if ( normalizedCar != null )
 				{
-					IRSDK.targetCamCarIdx = normalizedCar.carIdx;
-					IRSDK.targetCamGroupNumber = GetCamGroupNumber( normalizedCar, Settings.director.rule9_Camera );
-					IRSDK.targetCamReason = "Rule 9: Cars are warming up.";
+					targetCamCarIdx = normalizedCar.carIdx;
+					targetCamType = Settings.director.rule9_Camera;
+					targetCamReason = "Rule 9: Cars are warming up.";
 				}
 			}
 			else if ( Settings.director.rule10_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) ) && ( IRSDK.normalizedData.sessionState == SessionState.StateParadeLaps ) ) )
@@ -199,9 +199,9 @@ namespace iRacingTVController
 
 				if ( normalizedCar != null )
 				{
-					IRSDK.targetCamCarIdx = normalizedCar.carIdx;
-					IRSDK.targetCamGroupNumber = GetCamGroupNumber( normalizedCar, Settings.director.rule10_Camera );
-					IRSDK.targetCamReason = "Rule 10: Cars are doing parade laps.";
+					targetCamCarIdx = normalizedCar.carIdx;
+					targetCamType = Settings.director.rule10_Camera;
+					targetCamReason = "Rule 10: Cars are doing parade laps.";
 				}
 			}
 			else if ( Settings.director.rule11_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) ) && ( IRSDK.normalizedData.sessionState == SessionState.StateGetInCar ) ) )
@@ -210,9 +210,9 @@ namespace iRacingTVController
 
 				if ( normalizedCar != null )
 				{
-					IRSDK.targetCamCarIdx = normalizedCar.carIdx;
-					IRSDK.targetCamGroupNumber = GetCamGroupNumber( normalizedCar, Settings.director.rule11_Camera );
-					IRSDK.targetCamReason = "Rule 11: Drivers are getting into their cars.";
+					targetCamCarIdx = normalizedCar.carIdx;
+					targetCamType = Settings.director.rule11_Camera;
+					targetCamReason = "Rule 11: Drivers are getting into their cars.";
 				}
 			}
 			else if ( Settings.director.rule12_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) ) && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.CautionWaving | (uint) SessionFlags.YellowWaving ) ) != 0 ) ) )
@@ -221,19 +221,32 @@ namespace iRacingTVController
 
 				if ( normalizedCar != null )
 				{
-					IRSDK.targetCamCarIdx = normalizedCar.carIdx;
-					IRSDK.targetCamGroupNumber = GetCamGroupNumber( normalizedCar, Settings.director.rule12_Camera );
-					IRSDK.targetCamReason = "Rule 12: Caution flag waving.";
+					targetCamCarIdx = normalizedCar.carIdx;
+					targetCamType = Settings.director.rule12_Camera;
+					targetCamReason = "Rule 12: Caution flag waving.";
 				}
 			}
 			else if ( Settings.director.rule13_Enabled )
 			{
 				if ( hottestCar != null )
 				{
-					IRSDK.targetCamCarIdx = hottestCar.carIdx;
-					IRSDK.targetCamGroupNumber = GetCamGroupNumber( hottestCar, Settings.director.rule13_Camera );
-					IRSDK.targetCamReason = "Rule 13: Hottest car.";
+					targetCamCarIdx = hottestCar.carIdx;
+					targetCamType = Settings.director.rule13_Camera;
+					targetCamReason = "Rule 13: Hottest car.";
 				}
+			}
+
+			if ( ( Director.targetCamCarIdx != targetCamCarIdx ) || ( Director.targetCamType != targetCamType ) )
+			{
+				Director.targetCamCarIdx = targetCamCarIdx;
+				Director.targetCamType = targetCamType;
+
+				IRSDK.targetCamEnabled = true;
+				IRSDK.targetCamFastSwitchEnabled = targetCamFastSwitchEnabled;
+				IRSDK.targetCamSlowSwitchEnabled = targetCamSlowSwitchEnabled;
+				IRSDK.targetCamCarIdx = targetCamCarIdx;
+				IRSDK.targetCamGroupNumber = GetCamGroupNumber( IRSDK.normalizedData.normalizedCars[ targetCamCarIdx ], targetCamType );
+				IRSDK.targetCamReason = targetCamReason;
 			}
 		}
 

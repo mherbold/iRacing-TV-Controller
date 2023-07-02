@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 using irsdkSharp.Serialization.Enums.Fastest;
@@ -390,21 +391,40 @@ namespace iRacingTVController
 		{
 			var userNameParts = userName.Split( " " );
 
-			if ( userNameParts.Length == 0 )
+			if ( ( userNameParts.Length == 0 ) || ( userNameParts[ 0 ] == string.Empty ) )
 			{
 				abbrevName = "---";
+
+				return;
 			}
-			else if ( userNameParts.Length == 1 )
+
+			var userNameIndex = userNameParts.Length - 1;
+
+			abbrevName = userNameParts[ userNameIndex ];
+
+			var suffixList = Settings.editor.iracingDriverNamesSuffixes.Split( "," ).ToList().Select( s => s.Trim().ToLower() ).ToList();
+
+			if ( suffixList.Contains( abbrevName.ToLower() ) )
 			{
-				abbrevName = userNameParts[ 0 ];
+				userNameIndex--;
+
+				if ( userNameIndex >= 0 )
+				{
+					abbrevName = userNameParts[ userNameIndex ];
+				}
 			}
-			else if ( includeFirstNameInitial )
+
+			if ( abbrevName == abbrevName.ToUpper() )
 			{
-				abbrevName = $"{userNameParts[ 0 ][ ..1 ]}. {userNameParts[ ^1 ]}";
+				abbrevName = $"{abbrevName[ 0 ].ToString().ToUpper()}{abbrevName[ 1.. ].ToLower()}";
 			}
-			else
+
+			if ( includeFirstNameInitial )
 			{
-				abbrevName = userNameParts[ ^1 ];
+				if ( userNameIndex >= 1 )
+				{
+					abbrevName = $"{userNameParts[ 0 ][ ..1 ].ToUpper()}. {abbrevName}";
+				}
 			}
 		}
 

@@ -104,7 +104,7 @@ namespace iRacingTVController
 
 			iRacingSdk.BroadcastMessage( message.msg, message.var1, message.var2, message.var3 );
 
-			sendMessageWaitTimeRemaining = 1.0f / Settings.editor.iracingCommandRateLimit;
+			sendMessageWaitTimeRemaining = 1.0f / Settings.editor.iracingGeneralCommandRateLimit;
 
 			if ( message.msg == BroadcastMessageTypes.CamSwitchNum )
 			{
@@ -286,7 +286,9 @@ namespace iRacingTVController
 			{
 				var selectedCameraGroupList = cameraGroupNames.Split( "," ).ToList().Select( s => s.Trim().ToLower() ).ToList();
 
-				foreach ( var selectedCameraGroup in selectedCameraGroupList )
+				var shuffledSelectedCameraGroupList = selectedCameraGroupList.OrderBy( s => Program.random.Next() ).ToList();
+
+				foreach ( var selectedCameraGroup in shuffledSelectedCameraGroupList )
 				{
 					foreach ( var group in session.CameraInfo.Groups )
 					{

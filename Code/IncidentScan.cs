@@ -135,7 +135,7 @@ namespace iRacingTVController
 
 				case IncidentScanStateEnum.LookAtPaceCarWithScenicCamera:
 
-					var scenicCameraGroupNumber = IRSDK.GetCamGroupNumber( Settings.editor.incidentsScenicCameras );
+					var scenicCameraGroupNumber = IRSDK.GetCamGroupNumber( Settings.editor.editorIncidentsScenicCameras );
 
 					IRSDK.AddMessage( BroadcastMessageTypes.CamSwitchNum, 0, scenicCameraGroupNumber, 0 );
 
@@ -145,7 +145,7 @@ namespace iRacingTVController
 
 				case IncidentScanStateEnum.WaitForLookAtPaceCarToComplete:
 
-					scenicCameraGroupNumber = IRSDK.GetCamGroupNumber( Settings.editor.incidentsScenicCameras );
+					scenicCameraGroupNumber = IRSDK.GetCamGroupNumber( Settings.editor.editorIncidentsScenicCameras );
 
 					if ( ( IRSDK.camCarIdx == 0 ) && ( IRSDK.camGroupNumber == scenicCameraGroupNumber ) )
 					{
@@ -174,7 +174,7 @@ namespace iRacingTVController
 
 						foreach ( var incidentData in incidentDataList )
 						{
-							var incidentOverlapMergeFrames = (int) Math.Ceiling( 60 * Settings.editor.incidentsOverlapMergeTime );
+							var incidentOverlapMergeFrames = (int) Math.Ceiling( 60 * Settings.editor.editorIncidentsOverlapMergeTime );
 
 							if ( ( IRSDK.normalizedData.camCarIdx == incidentData.CarIdx ) && ( IRSDK.normalizedData.replayFrameNum >= ( incidentData.StartFrame - incidentOverlapMergeFrames ) ) && ( IRSDK.normalizedData.replayFrameNum <= ( incidentData.EndFrame + incidentOverlapMergeFrames ) ) )
 							{
@@ -289,7 +289,7 @@ namespace iRacingTVController
 							}
 							else
 							{
-								var targetTime = 1.0f / Settings.editor.iracingCommandRateLimit;
+								var targetTime = 1.0f / Settings.editor.iracingGeneralCommandRateLimit;
 
 								settleTimer += Program.deltaTime;
 
@@ -301,7 +301,7 @@ namespace iRacingTVController
 						}
 						else
 						{
-							var targetTime = Settings.editor.incidentsTimeout;
+							var targetTime = Settings.editor.editorIncidentsTimeout;
 
 							settleTimer += Program.deltaTime;
 

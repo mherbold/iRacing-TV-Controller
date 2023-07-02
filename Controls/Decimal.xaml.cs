@@ -69,7 +69,7 @@ namespace iRacingTVController
 
 		private void Button_PreviewMouseDown( object sender, MouseButtonEventArgs e )
 		{
-			currentScale = Settings.editor.positioningSpeedNormal;
+			currentScale = Settings.editor.editorMousePositioningSpeedNormal;
 			startingPosition = e.GetPosition( this );
 			startingDecimal = Value;
 
@@ -91,15 +91,15 @@ namespace iRacingTVController
 
 				if ( ( deltaPosition.X != 0 ) || ( deltaPosition.Y != 0 ) )
 				{
-					var scale = Settings.editor.positioningSpeedNormal;
+					var scale = Settings.editor.editorMousePositioningSpeedNormal;
 
 					if ( Keyboard.IsKeyDown( Key.LeftShift ) || Keyboard.IsKeyDown( Key.RightShift ) )
 					{
-						scale = Settings.editor.positioningSpeedFast;
+						scale = Settings.editor.editorMousePositioningSpeedFast;
 					}
 					else if ( Keyboard.IsKeyDown( Key.LeftCtrl ) || Keyboard.IsKeyDown( Key.RightCtrl ) )
 					{
-						scale = Settings.editor.positioningSpeedSlow;
+						scale = Settings.editor.editorMousePositioningSpeedSlow;
 					}
 
 					if ( currentScale != scale )

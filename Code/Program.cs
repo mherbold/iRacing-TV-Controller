@@ -31,6 +31,8 @@ namespace iRacingTVController
 		public static long elapsedMilliseconds = 0;
 		public static float deltaTime = 0;
 
+		public static Random random = new Random();
+
 		public static void Initialize()
 		{
 			if ( !Directory.Exists( documentsFolder ) )

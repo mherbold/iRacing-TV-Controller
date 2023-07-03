@@ -114,137 +114,151 @@ namespace iRacingTVController
 
 		public static void SendMessages()
 		{
-			// update wait timers
-
-			sendMessageWaitTimeRemaining = Math.Max( 0, sendMessageWaitTimeRemaining - Program.deltaTime );
-			cameraSwitchWaitTimeRemaining = Math.Max( 0, cameraSwitchWaitTimeRemaining - Program.deltaTime );
-
-			// if iracing has switched the camera then we need to reset the camera switch wait ticks
-
-			if ( ( normalizedData.camCarIdx != camCarIdx ) || ( normalizedData.camGroupNumber != camGroupNumber ) || ( normalizedData.camCameraNumber != camCameraNumber ) )
+			if ( isConnected )
 			{
-				camCarIdx = normalizedData.camCarIdx;
-				camGroupNumber = normalizedData.camGroupNumber;
-				camCameraNumber = normalizedData.camCameraNumber;
+				// update wait timers
 
-				if ( cameraSwitchWaitTimeRemaining < Settings.director.switchDelayIracing )
+				sendMessageWaitTimeRemaining = Math.Max( 0, sendMessageWaitTimeRemaining - Program.deltaTime );
+				cameraSwitchWaitTimeRemaining = Math.Max( 0, cameraSwitchWaitTimeRemaining - Program.deltaTime );
+
+				// if iracing has switched the camera then we need to reset the camera switch wait ticks
+
+				if ( ( normalizedData.camCarIdx != camCarIdx ) || ( normalizedData.camGroupNumber != camGroupNumber ) || ( normalizedData.camCameraNumber != camCameraNumber ) )
 				{
-					cameraSwitchWaitTimeRemaining = Settings.director.switchDelayIracing;
-				}
-			}
+					camCarIdx = normalizedData.camCarIdx;
+					camGroupNumber = normalizedData.camGroupNumber;
+					camCameraNumber = normalizedData.camCameraNumber;
 
-			// send the next message in the queue
-
-			if ( sendMessageWaitTimeRemaining <= 0 )
-			{
-				if ( messageBuffer.Count > 0 )
-				{
-					var message = messageBuffer.First();
-
-					messageBuffer.RemoveAt( 0 );
-
-					SendMessage( message );
-				}
-			}
-
-			// send message to pause the replay if target frame number is enabled and we are not paused
-
-			if ( sendMessageWaitTimeRemaining <= 0 )
-			{
-				if ( targetReplayStartFrameNumberEnabled )
-				{
-					if ( normalizedData.replaySpeed != 0 )
+					if ( cameraSwitchWaitTimeRemaining < Settings.director.switchDelayIracing )
 					{
-						var message = new Message( BroadcastMessageTypes.ReplaySetPlaySpeed, 0, 0, 0 );
+						cameraSwitchWaitTimeRemaining = Settings.director.switchDelayIracing;
+					}
+				}
+
+				// send the next message in the queue
+
+				if ( sendMessageWaitTimeRemaining <= 0 )
+				{
+					if ( messageBuffer.Count > 0 )
+					{
+						var message = messageBuffer.First();
+
+						messageBuffer.RemoveAt( 0 );
 
 						SendMessage( message );
 					}
 				}
-			}
 
-			// send message to change the frame number if target frame number is enabled and we are not on it (also auto-start playing if enabled)
+				// send message to pause the replay if target frame number is enabled and we are not paused
 
-			if ( sendMessageWaitTimeRemaining <= 0 )
-			{
-				if ( targetReplayStartFrameNumberEnabled )
+				if ( sendMessageWaitTimeRemaining <= 0 )
 				{
-					if ( normalizedData.replayFrameNum != targetReplayStartFrameNumber )
+					if ( targetReplayStartFrameNumberEnabled )
 					{
-						var message = new Message( BroadcastMessageTypes.ReplaySetPlayPosition, (int) ReplayPositionModeTypes.Begin, IRacingSDK.LoWord( targetReplayStartFrameNumber ), IRacingSDK.HiWord( targetReplayStartFrameNumber ) );
-
-						SendMessage( message );
-					}
-					else
-					{
-						targetReplayStartFrameNumberEnabled = false;
-
-						if ( targetReplayStartPlaying )
-						{
-							targetReplayStartPlaying = false;
-
-							var message = new Message( BroadcastMessageTypes.ReplaySetPlaySpeed, 1, 0, 0 );
-
-							SendMessage( message );
-						}
-					}
-				}
-			}
-
-			// send message to auto-stop replay if enabled
-
-			if ( sendMessageWaitTimeRemaining <= 0 )
-			{
-				if ( targetReplayStopFrameNumberEnabled )
-				{
-					if ( normalizedData.replaySpeed != 0 )
-					{
-						if ( normalizedData.replayFrameNum >= targetReplayStopFrameNumber )
+						if ( normalizedData.replaySpeed != 0 )
 						{
 							var message = new Message( BroadcastMessageTypes.ReplaySetPlaySpeed, 0, 0, 0 );
 
 							SendMessage( message );
 						}
 					}
-					else
-					{
-						targetReplayStopFrameNumberEnabled = false;
-					}
 				}
-			}
 
-			// send message to switch the camera if target camera is enabled and the current camera is not the target camera
+				// send message to change the frame number if target frame number is enabled and we are not on it (also auto-start playing if enabled)
 
-			if ( sendMessageWaitTimeRemaining <= 0 )
-			{
-				if ( targetCamEnabled )
+				if ( sendMessageWaitTimeRemaining <= 0 )
 				{
-					if ( ( camCarIdx != targetCamCarIdx ) || ( camGroupNumber != targetCamGroupNumber ) )
+					if ( targetReplayStartFrameNumberEnabled )
 					{
-						if ( ( cameraSwitchWaitTimeRemaining <= 0 ) || targetCamFastSwitchEnabled )
+						if ( normalizedData.replayFrameNum != targetReplayStartFrameNumber )
 						{
-							var normalizedCar = normalizedData.FindNormalizedCarByCarIdx( targetCamCarIdx );
+							var message = new Message( BroadcastMessageTypes.ReplaySetPlayPosition, (int) ReplayPositionModeTypes.Begin, IRacingSDK.LoWord( targetReplayStartFrameNumber ), IRacingSDK.HiWord( targetReplayStartFrameNumber ) );
 
-							if ( normalizedCar != null )
+							SendMessage( message );
+						}
+						else
+						{
+							targetReplayStartFrameNumberEnabled = false;
+
+							if ( targetReplayStartPlaying )
 							{
-								var message = new Message( BroadcastMessageTypes.CamSwitchNum, normalizedCar.carNumberRaw, targetCamGroupNumber, 0 );
+								targetReplayStartPlaying = false;
+
+								var message = new Message( BroadcastMessageTypes.ReplaySetPlaySpeed, 1, 0, 0 );
 
 								SendMessage( message );
-
-								if ( targetCamSlowSwitchEnabled )
-								{
-									targetCamSlowSwitchEnabled = false;
-
-									cameraSwitchWaitTimeRemaining = Settings.director.switchDelayNotInRace;
-								}
 							}
 						}
 					}
-					else
+				}
+
+				// send message to auto-stop replay if enabled
+
+				if ( sendMessageWaitTimeRemaining <= 0 )
+				{
+					if ( targetReplayStopFrameNumberEnabled )
 					{
-						targetCamEnabled = false;
-						targetCamFastSwitchEnabled = false;
+						if ( normalizedData.replaySpeed != 0 )
+						{
+							if ( normalizedData.replayFrameNum >= targetReplayStopFrameNumber )
+							{
+								var message = new Message( BroadcastMessageTypes.ReplaySetPlaySpeed, 0, 0, 0 );
+
+								SendMessage( message );
+							}
+						}
+						else
+						{
+							targetReplayStopFrameNumberEnabled = false;
+						}
 					}
 				}
+
+				// send message to switch the camera if target camera is enabled and the current camera is not the target camera
+
+				if ( sendMessageWaitTimeRemaining <= 0 )
+				{
+					if ( targetCamEnabled )
+					{
+						if ( ( camCarIdx != targetCamCarIdx ) || ( camGroupNumber != targetCamGroupNumber ) )
+						{
+							if ( ( cameraSwitchWaitTimeRemaining <= 0 ) || targetCamFastSwitchEnabled )
+							{
+								var normalizedCar = normalizedData.FindNormalizedCarByCarIdx( targetCamCarIdx );
+
+								if ( normalizedCar != null )
+								{
+									var message = new Message( BroadcastMessageTypes.CamSwitchNum, normalizedCar.carNumberRaw, targetCamGroupNumber, 0 );
+
+									SendMessage( message );
+
+									if ( targetCamSlowSwitchEnabled )
+									{
+										targetCamSlowSwitchEnabled = false;
+
+										cameraSwitchWaitTimeRemaining = Settings.director.switchDelayNotInRace;
+									}
+								}
+							}
+						}
+						else
+						{
+							targetCamEnabled = false;
+							targetCamFastSwitchEnabled = false;
+						}
+					}
+				}
+			}
+			else
+			{
+				sendMessageWaitTimeRemaining = 0;
+				cameraSwitchWaitTimeRemaining = 0;
+
+				targetCamEnabled = false;
+				targetReplayStartFrameNumberEnabled = false;
+				targetReplayStopFrameNumberEnabled = false;
+
+				messageBuffer.Clear();
 			}
 		}
 

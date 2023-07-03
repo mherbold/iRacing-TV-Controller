@@ -100,7 +100,8 @@ namespace iRacingTVController
 					IPC.UpdateLiveData();
 
 					Director.Update();
-					IncidentScan.Update();
+					IncidentPlayback.Update();
+					SubtitlePlayback.Update();
 
 					MainWindow.Instance.ControlPanel_Update();
 

@@ -46,7 +46,6 @@ namespace iRacingTVController
 			seriesLogoTextureUrl = string.Empty;
 
 			SessionFlagsPlayback.Close();
-			ChatLogPlayback.Close();
 		}
 
 		public void SessionNumberChange()
@@ -102,8 +101,8 @@ namespace iRacingTVController
 			if ( isReplay )
 			{
 				SessionFlagsPlayback.LoadRecording();
-				ChatLogPlayback.LoadRecording();
-				IncidentScan.LoadIncidents();
+				IncidentPlayback.LoadIncidents();
+				SubtitlePlayback.LoadSubtitles();
 			}
 			else
 			{

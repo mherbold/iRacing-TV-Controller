@@ -200,8 +200,6 @@ namespace iRacingTVController
 
 						if ( numberDesignMatch.Success )
 						{
-							var settings = Settings.overlay.imageSettingsDataDictionary[ "CarNumber" ];
-
 							var colorA = numberDesignMatch.Groups[ 3 ].Value;
 							var colorB = numberDesignMatch.Groups[ 4 ].Value;
 							var colorC = numberDesignMatch.Groups[ 5 ].Value;
@@ -219,7 +217,7 @@ namespace iRacingTVController
 								slant = Settings.overlay.carNumberSlant;
 							}
 
-							carNumberTextureUrl = $"http://localhost:32034/pk_number.png?size={settings.size.y}&view=0&number={carNumber}&numPat={pattern}&numCol={colorA},{colorB},{colorC}&numSlnt={slant}";
+							carNumberTextureUrl = $"http://localhost:32034/pk_number.png?size=64&view=0&number={carNumber}&numPat={pattern}&numCol={colorA},{colorB},{colorC}&numSlnt={slant}";
 						}
 
 						var carDesignMatch = Regex.Match( driver.CarDesignStr, "(\\d+),(.{6}),(.{6}),(.{6})[,.]?(.{6})?" );
@@ -414,9 +412,16 @@ namespace iRacingTVController
 				}
 			}
 
-			if ( abbrevName == abbrevName.ToUpper() )
+			if ( Settings.editor.iracingDriverNameCapitalizationOption == 1 )
 			{
-				abbrevName = $"{abbrevName[ 0 ].ToString().ToUpper()}{abbrevName[ 1.. ].ToLower()}";
+				if ( abbrevName == abbrevName.ToUpper() )
+				{
+					abbrevName = $"{abbrevName[ 0 ].ToString().ToUpper()}{abbrevName[ 1.. ].ToLower()}";
+				}
+			}
+			else if ( Settings.editor.iracingDriverNameCapitalizationOption == 2 )
+			{
+				abbrevName = abbrevName.ToUpper();
 			}
 
 			if ( includeFirstNameInitial )

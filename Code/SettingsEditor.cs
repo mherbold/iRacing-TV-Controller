@@ -11,6 +11,7 @@ namespace iRacingTVController
 		public string iracingCustomPaintsDirectory = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ) + "\\iRacing\\paint";
 
 		public string iracingDriverNamesSuffixes = "jr, sr, jr., sr.";
+		public int iracingDriverNameCapitalizationOption = 0;
 
 		public float editorMousePositioningSpeedNormal = 0.25f;
 		public float editorMousePositioningSpeedFast = 1.0f;

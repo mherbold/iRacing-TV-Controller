@@ -14,6 +14,8 @@ namespace iRacingTVController
 		public static string sessionFlagsFilePath = string.Empty;
 		public static StreamWriter? streamWriter = null;
 
+		public static uint sessionFlags = 0;
+
 		public static string GetSessionFlagsFilePath()
 		{
 			return $"{sessionFlagsPath}\\{IRSDK.normalizedSession.sessionId}-{IRSDK.normalizedSession.subSessionId}.csv";
@@ -39,6 +41,8 @@ namespace iRacingTVController
 				Directory.CreateDirectory( sessionFlagsPath );
 
 				streamWriter = File.AppendText( sessionFlagsFilePath );
+
+				sessionFlags = 0;
 			}
 		}
 
@@ -87,8 +91,10 @@ namespace iRacingTVController
 
 		public static void Record( int sessionNumber, double sessionTime, uint sessionFlags )
 		{
-			if ( sessionFlags != IRSDK.normalizedData.sessionFlags )
+			if ( SessionFlagsPlayback.sessionFlags != sessionFlags )
 			{
+				SessionFlagsPlayback.sessionFlags = sessionFlags;
+
 				if ( streamWriter != null )
 				{
 					var sessionFlagsAsHex = sessionFlags.ToString( "X8" );

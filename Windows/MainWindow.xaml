@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.3"
+        Title="iRacing-TV Controller v1.4"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanMinimize" Width="860" Height="550">
     <Grid>
@@ -156,6 +156,81 @@
                         </Grid.ColumnDefinitions>
                         <Button Content="Scan Now" Margin="0,0,3,0" Click="Incidents_ScanNow_Button_Click"/>
                         <Button Content="Clear All" Grid.Column="1" Margin="3,0,0,0" Click="Incidents_Clear_Button_Click"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Subtitles" Padding="12,6,12,6">
+                <Grid Margin="6,6,6,6">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <DockPanel>
+                        <ListView x:Name="Subtitles_ListView" MouseDoubleClick="Subtitles_ListView_MouseDoubleClick">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="#" Width="50">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Label Content="{Binding Index}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="SN" Width="50">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Label Content="{Binding SessionNumber}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Start" Width="100">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Label Content="{Binding StartFrame}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="End" Width="100">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Label Content="{Binding EndFrame}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Text" Width="400">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding Text}" TextChanged="Subtitles_Text_TextChanged"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Ignore" Width="100">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding Ignore}" Click="Subtitles_Ignore_Click"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                            <ListView.Resources>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                                <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </ListView.Resources>
+                        </ListView>
+                    </DockPanel>
+                    <Grid Grid.Row="1" Margin="0,6,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="Import From iRacing-STT-VR" Margin="0,0,3,0" Click="Subtitles_Import_Button_Click"/>
+                        <Button Content="Clear All" Grid.Column="1" Margin="3,0,3,0" Click="Subtitles_Clear_Button_Click"/>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -1513,6 +1588,16 @@
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Suffixes" Width="100"/>
                                 <TextBox x:Name="iRacing_DriverNames_Suffixes" Grid.Column="1" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="iRacing_Update"/>
+                            </Grid>
+                            <Grid Margin="0,6,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Capitalization" Width="100"/>
+                                <ComboBox x:Name="iRacing_DriverNames_CapitalizationOption" Grid.Column="1" VerticalContentAlignment="Center" SelectionChanged="iRacing_Update" />
+                                <Label Content="(Requires Restarting Controller)" Grid.Column="2"/>
                             </Grid>
                         </StackPanel>
                     </TabItem>

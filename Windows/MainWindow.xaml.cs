@@ -58,6 +58,7 @@ namespace iRacingTVController
 		public SortedDictionary<string, int> patternOptions = new();
 		public SortedDictionary<string, int> slantOptions = new();
 		public SortedDictionary<string, int> animationOptions = new();
+		public SortedDictionary<string, int> capitalizationOptions = new();
 
 		static MainWindow()
 		{
@@ -297,6 +298,17 @@ namespace iRacingTVController
 			foreach ( var item in animationOptions )
 			{
 				Overlay_Intro_AnimationNumber.Items.Add( item.Key );
+			}
+
+			// editor
+
+			capitalizationOptions.Add( "Leave Names Alone", 0 );
+			capitalizationOptions.Add( "Change From All Uppercase To Uppercase First Letter Only", 1 );
+			capitalizationOptions.Add( "Change To All Uppercase Always", 1 );
+
+			foreach ( var item in capitalizationOptions )
+			{
+				iRacing_DriverNames_CapitalizationOption.Items.Add( item.Key );
 			}
 
 			//
@@ -607,6 +619,7 @@ namespace iRacingTVController
 			iRacing_CustomPaints_Directory.Text = Settings.editor.iracingCustomPaintsDirectory;
 
 			iRacing_DriverNames_Suffixes.Text = Settings.editor.iracingDriverNamesSuffixes;
+			iRacing_DriverNames_CapitalizationOption.SelectedItem = capitalizationOptions.FirstOrDefault( x => x.Value == Settings.editor.iracingDriverNameCapitalizationOption ).Key;
 
 			// editor
 
@@ -1654,7 +1667,7 @@ namespace iRacingTVController
 
 				item.StartFrame = number.Value;
 
-				IncidentScan.saveIncidentsQueued = true;
+				IncidentPlayback.saveIncidentsQueued = true;
 
 				IRSDK.targetReplayStartFrameNumberEnabled = true;
 				IRSDK.targetReplayStartFrameNumber = item.StartFrame;
@@ -1673,7 +1686,7 @@ namespace iRacingTVController
 
 				item.EndFrame = number.Value;
 
-				IncidentScan.saveIncidentsQueued = true;
+				IncidentPlayback.saveIncidentsQueued = true;
 
 				IRSDK.targetReplayStartFrameNumberEnabled = true;
 				IRSDK.targetReplayStartFrameNumber = item.EndFrame;
@@ -1692,7 +1705,7 @@ namespace iRacingTVController
 
 				item.Ignore = checkBox.IsChecked ?? false;
 
-				IncidentScan.saveIncidentsQueued = true;
+				IncidentPlayback.saveIncidentsQueued = true;
 			}
 		}
 
@@ -1746,10 +1759,78 @@ namespace iRacingTVController
 				}
 			}
 
-			IncidentScan.Start();
+			IncidentPlayback.Start();
 		}
 
 		private void Incidents_Clear_Button_Click( object sender, EventArgs e )
+		{
+			if ( Incidents_ListView.Items.Count > 0 )
+			{
+				if ( MessageBox.Show( this, "Are you sure you want to clear all incidents?", "Are You Sure?", MessageBoxButton.OKCancel, MessageBoxImage.Question ) == MessageBoxResult.Cancel )
+				{
+					return;
+				}
+			}
+
+			IncidentPlayback.Clear();
+		}
+
+		// subtitles
+
+		private void Subtitles_Text_TextChanged( object sender, EventArgs e )
+		{
+			if ( initializing == 0 )
+			{
+				var textBox = (TextBox) sender;
+
+				var listViewItem = FindVisualParent<ListViewItem>( textBox );
+
+				var item = (SubtitleData) Subtitles_ListView.ItemContainerGenerator.ItemFromContainer( listViewItem );
+
+				item.Text = textBox.Text;
+
+				SubtitlePlayback.saveSubtitlesQueued = true;
+			}
+		}
+
+		private void Subtitles_Ignore_Click( object sender, EventArgs e )
+		{
+			if ( initializing == 0 )
+			{
+				var checkBox = (CheckBox) sender;
+
+				var listViewItem = FindVisualParent<ListViewItem>( checkBox );
+
+				var item = (SubtitleData) Subtitles_ListView.ItemContainerGenerator.ItemFromContainer( listViewItem );
+
+				item.Ignore = checkBox.IsChecked ?? false;
+
+				SubtitlePlayback.saveSubtitlesQueued = true;
+			}
+		}
+
+		private void Subtitles_ListView_MouseDoubleClick( object sender, RoutedEventArgs e )
+		{
+			if ( ( (FrameworkElement) e.OriginalSource ).DataContext is SubtitleData item )
+			{
+				IRSDK.targetReplayStartFrameNumberEnabled = true;
+				IRSDK.targetReplayStartFrameNumber = item.StartFrame;
+
+				if ( item.EndFrame != item.StartFrame )
+				{
+					IRSDK.targetReplayStartPlaying = true;
+
+					IRSDK.targetReplayStopFrameNumberEnabled = true;
+					IRSDK.targetReplayStopFrameNumber = item.EndFrame;
+				}
+				else
+				{
+					IRSDK.targetReplayStartPlaying = false;
+				}
+			}
+		}
+
+		private void Subtitles_Import_Button_Click( object sender, EventArgs e )
 		{
 			if ( !IRSDK.isConnected )
 			{
@@ -1760,20 +1841,36 @@ namespace iRacingTVController
 
 			if ( !IRSDK.normalizedSession.isReplay )
 			{
-				MessageBox.Show( this, "Sorry, the incidents system does not work outside of replays.", "Not In Replay", MessageBoxButton.OK, MessageBoxImage.Exclamation );
+				MessageBox.Show( this, "Sorry, the subtitles system does not work outside of replays.", "Not In Replay", MessageBoxButton.OK, MessageBoxImage.Exclamation );
 
 				return;
 			}
 
-			if ( Incidents_ListView.Items.Count > 0 )
+			if ( Subtitles_ListView.Items.Count > 0 )
 			{
-				if ( MessageBox.Show( this, "Are you sure you want to clear all incidents?", "Are You Sure?", MessageBoxButton.OKCancel, MessageBoxImage.Question ) == MessageBoxResult.Cancel )
+				if ( MessageBox.Show( this, "Are you sure you want to clear all subtitles and import them from iRacing-STT-VR?", "Are You Sure?", MessageBoxButton.OKCancel, MessageBoxImage.Question ) == MessageBoxResult.Cancel )
 				{
 					return;
 				}
 			}
 
-			IncidentScan.Clear();
+			if ( !SubtitlePlayback.Import() )
+			{
+				MessageBox.Show( this, "Sorry, we were not able to find any iRacing-STT-VR chat log matching this session ID.", "Chat Log Not Found", MessageBoxButton.OK, MessageBoxImage.Error );
+			}
+		}
+
+		private void Subtitles_Clear_Button_Click( object sender, EventArgs e )
+		{
+			if ( Subtitles_ListView.Items.Count > 0 )
+			{
+				if ( MessageBox.Show( this, "Are you sure you want to clear all subtitles?", "Are You Sure?", MessageBoxButton.OKCancel, MessageBoxImage.Question ) == MessageBoxResult.Cancel )
+				{
+					return;
+				}
+			}
+
+			SubtitlePlayback.Clear();
 		}
 
 		// overlay
@@ -3079,7 +3176,7 @@ namespace iRacingTVController
 
 				overridden = Overlay_Intro_LeftScale_Override.IsChecked ?? false;
 
-				if ( Settings.overlayLocal.introLeftScale_Overridden!= overridden )
+				if ( Settings.overlayLocal.introLeftScale_Overridden != overridden )
 				{
 					Settings.overlayLocal.introLeftScale_Overridden = overridden;
 
@@ -3165,6 +3262,7 @@ namespace iRacingTVController
 				Settings.editor.iracingCustomPaintsDirectory = iRacing_CustomPaints_Directory.Text;
 
 				Settings.editor.iracingDriverNamesSuffixes = iRacing_DriverNames_Suffixes.Text;
+				Settings.editor.iracingDriverNameCapitalizationOption = capitalizationOptions[ (string) iRacing_DriverNames_CapitalizationOption.SelectedItem ];
 
 				Settings.SaveEditor();
 

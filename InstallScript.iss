@@ -5,7 +5,7 @@
 
 [Setup]
 AppName=iRacing-TV Unity
-AppVersion=1.3
+AppVersion=1.4
 AppCopyright=Created by Marvin Herbold
 AppPublisher=Marvin Herbold
 AppPublisherURL=http://herboldracing.com/blog/iracing/iracing-tv-unity/
@@ -20,6 +20,9 @@ OutputDir=userdocs:iRacing-TV-Unity
 PrivilegesRequired=lowest
 SetupIconFile="C:\Users\marvi\Desktop\iRacing-TV Controller\Assets\iRacing-TV-Icon.ico"
 
+[Tasks]
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}";
+
 [Files]
 Source: "C:\Users\marvi\Desktop\iRacing-TV Controller\*"; DestDir: "{app}"
 Source: "C:\Users\marvi\Desktop\iRacing-TV Controller\Assets\*"; DestDir: "{userdocs}\iRacing-TV-Unity\Assets"
@@ -30,9 +33,12 @@ Name: "{userdocs}\iRacing-TV-Unity"
 Name: "{userdocs}\iRacing-TV-Unity\Assets"
 Name: "{userdocs}\iRacing-TV-Unity\OverlaySettings"
 Name: "{userdocs}\iRacing-TV-Unity\DirectorSettings"
-Name: "{userdocs}\iRacing-TV-Unity\IncidentScans"
+Name: "{userdocs}\iRacing-TV-Unity\Incidents"
 Name: "{userdocs}\iRacing-TV-Unity\SessionFlags"
+Name: "{userdocs}\iRacing-TV-Unity\Subtitles"
 
 [Icons]
 Name: "{group}\iRacing-TV Controller"; Filename: "{app}\iRacing-TV Controller.exe"
 Name: "{group}\iRacing-TV Overlay"; Filename: "{app}\iRacing-TV Overlay.exe"
+Name: "{userdesktop}\iRacing-TV Controller"; Filename: "{app}\iRacing-TV Controller.exe"; Tasks: desktopicon
+Name: "{userdesktop}\iRacing-TV Overlay"; Filename: "{app}\iRacing-TV Overlay.exe"; Tasks: desktopicon

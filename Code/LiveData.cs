@@ -460,7 +460,9 @@ namespace iRacingTVController
 
 		public void UpdateSubtitle()
 		{
-			liveDataSubtitle.text = ChatLogPlayback.Playback( IRSDK.normalizedSession.sessionNumber, IRSDK.normalizedData.sessionTime ) ?? string.Empty;
+			var subtitleData = SubtitlePlayback.GetCurrentSubtitle();
+
+			liveDataSubtitle.text = ( subtitleData == null ) ? string.Empty : subtitleData.Text;
 		}
 
 		public void UpdateIntro()

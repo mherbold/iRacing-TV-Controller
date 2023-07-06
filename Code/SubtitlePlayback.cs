@@ -86,6 +86,16 @@ namespace iRacingTVController
 										insertAt = index;
 									}
 								}
+								else
+								{
+									if ( IRSDK.normalizedSession.sessionNumber > subtitleData.SessionNumber )
+									{
+										if ( ( nearestPreviousSubtitleData == null ) && ( nearestNextSubtitleData == null ) )
+										{
+											insertAt = index + 1;
+										}
+									}
+								}
 
 								index++;
 							}
@@ -132,9 +142,13 @@ namespace iRacingTVController
 									subtitleDataList.Insert( insertAt, subtitleData );
 
 									MainWindow.Instance.Subtitles_ListView.Items.Insert( insertAt, subtitleData );
-								}
 
-								MainWindow.Instance.Subtitles_ListView.Items.Refresh();
+									MainWindow.Instance.Subtitles_ListView.ScrollIntoView( subtitleData );
+								}
+								else
+								{
+									MainWindow.Instance.Subtitles_ListView.Items.Refresh();
+								}
 
 								saveSubtitlesQueued = true;
 							}

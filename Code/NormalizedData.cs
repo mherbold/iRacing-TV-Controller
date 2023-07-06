@@ -41,9 +41,8 @@ namespace iRacingTVController
 
 		public NormalizedCar[] normalizedCars = new NormalizedCar[ MaxNumCars ];
 
-		public List<NormalizedCar> absoluteLapPositionSortedNormalizedCars = new( MaxNumCars );
+		public List<NormalizedCar> leaderboardIndexSortedNormalizedCars = new( MaxNumCars );
 		public List<NormalizedCar> relativeLapPositionSortedNormalizedCars = new( MaxNumCars );
-		public List<NormalizedCar> leaderboardPositionSortedNormalizedCars = new( MaxNumCars );
 
 		public NormalizedData()
 		{
@@ -51,9 +50,8 @@ namespace iRacingTVController
 			{
 				normalizedCars[ i ] = new NormalizedCar( i );
 
-				absoluteLapPositionSortedNormalizedCars.Add( normalizedCars[ i ] );
+				leaderboardIndexSortedNormalizedCars.Add( normalizedCars[ i ] );
 				relativeLapPositionSortedNormalizedCars.Add( normalizedCars[ i ] );
-				leaderboardPositionSortedNormalizedCars.Add( normalizedCars[ i ] );
 			}
 
 			Reset();
@@ -264,70 +262,110 @@ namespace iRacingTVController
 					}
 				}
 
-				// sort cars by absolute lap positions
+				// leaderboard indexing
 
-				absoluteLapPositionSortedNormalizedCars.Sort( NormalizedCar.AbsoluteLapPositionComparison );
+				var leaderboardIndex = 1;
 
-				// set leaderboard position and lap position relative to leader for each car
-
-				var leaderboardPosition = 1;
-				var leaderLapPosition = absoluteLapPositionSortedNormalizedCars[ 0 ].lapPosition;
-
-				foreach ( var normalizedCar in absoluteLapPositionSortedNormalizedCars )
+				if ( IRSDK.normalizedSession.isInPracticeSession || IRSDK.normalizedSession.isInQualifyingSession )
 				{
-					if ( IRSDK.normalizedSession.isInQualifyingSession )
+					leaderboardIndexSortedNormalizedCars.Sort( NormalizedCar.BestLapTimeComparison );
+
+					var classID = 0;
+					var displayedPosition = 1;
+
+					foreach ( var normalizedCar in leaderboardIndexSortedNormalizedCars )
 					{
-						if ( ( normalizedCar.f2Time > 0 ) && ( normalizedCar.officialPosition >= 1 ) )
+						normalizedCar.leaderboardIndex = leaderboardIndex++;
+
+						if ( normalizedCar.bestLapTime == 0 )
 						{
-							normalizedCar.leaderboardPosition = normalizedCar.officialPosition;
+							normalizedCar.leaderboardIndex += MaxNumCars;
+							normalizedCar.displayedPosition = 0;
 						}
 						else
 						{
-							normalizedCar.leaderboardPosition = normalizedCar.carIdx + 64;
+							if ( classID != normalizedCar.classID )
+							{
+								classID = normalizedCar.classID;
+								displayedPosition = 1;
+							}
+
+							normalizedCar.displayedPosition = displayedPosition++;
 						}
 					}
-					else if ( IRSDK.normalizedSession.isInRaceSession )
+
+					leaderboardIndexSortedNormalizedCars.Sort( NormalizedCar.LeaderboardIndexComparison );
+				}
+				else if ( IRSDK.normalizedSession.isInRaceSession )
+				{
+					if ( IRSDK.normalizedData.sessionState <= SessionState.StateParadeLaps )
 					{
-						if ( IRSDK.normalizedData.sessionState <= SessionState.StateWarmup )
-						{
-							normalizedCar.leaderboardPosition = normalizedCar.qualifyingPosition;
-						}
-						else if ( IRSDK.normalizedData.sessionState == SessionState.StateParadeLaps )
-						{
-							if ( normalizedCar.isOutOfCar )
-							{
-								normalizedCar.leaderboardPosition = normalizedCar.carIdx + 64;
-							}
-							else
-							{
-								normalizedCar.leaderboardPosition = normalizedCar.qualifyingPosition;
-							}
-						}
-						else if ( isUnderCaution || !normalizedCar.hasCrossedStartLine || ( IRSDK.normalizedData.sessionState >= SessionState.StateCheckered ) )
-						{
-							if ( normalizedCar.officialPosition == 0 )
-							{
-								normalizedCar.leaderboardPosition = normalizedCar.qualifyingPosition;
-							}
-							else
-							{
-								normalizedCar.leaderboardPosition = normalizedCar.officialPosition;
-							}
-						}
-						else
-						{
-							normalizedCar.leaderboardPosition = leaderboardPosition++;
-						}
+						leaderboardIndexSortedNormalizedCars.Sort( NormalizedCar.QualifyingPositionComparison );
+					}
+					else if ( isUnderCaution || ( IRSDK.normalizedData.sessionState >= SessionState.StateCheckered ) )
+					{
+						leaderboardIndexSortedNormalizedCars.Sort( NormalizedCar.OverallPositionComparison );
 					}
 					else
 					{
-						normalizedCar.leaderboardPosition = normalizedCar.carIdx;
+						leaderboardIndexSortedNormalizedCars.Sort( NormalizedCar.LapPositionComparison );
 					}
 
-					normalizedCar.lapPositionRelativeToLeader = leaderLapPosition - normalizedCar.lapPosition;
+					var classID = 0;
+					var displayedPosition = 1;
+
+					foreach ( var normalizedCar in leaderboardIndexSortedNormalizedCars )
+					{
+						if ( classID != normalizedCar.classID )
+						{
+							classID = normalizedCar.classID;
+							displayedPosition = 1;
+						}
+
+						normalizedCar.displayedPosition = displayedPosition++;
+					}
 				}
 
-				// sort cars by relative lap position (relative to leader)
+				// clean up leaderboard index and set the heat bias of each car
+
+				leaderboardIndex = 1;
+
+				foreach ( var normalizedCar in leaderboardIndexSortedNormalizedCars )
+				{
+					normalizedCar.leaderboardIndex = leaderboardIndex++;
+
+					if ( normalizedCar.includeInLeaderboard )
+					{
+						if ( normalizedCar.attackingHeat > 0 )
+						{
+							var positionAsSignedPct = ( ( numLeaderboardCars / 2.0f ) - normalizedCar.leaderboardIndex ) / ( numLeaderboardCars / 2.0f );
+
+							normalizedCar.heatBias = Settings.director.heatBias * positionAsSignedPct + Math.Abs( Settings.director.heatBias );
+						}
+					}
+				}
+
+				// sort cars by relative lap position (relative to leader) for control panel
+
+				var leader = leaderboardIndexSortedNormalizedCars[ 0 ];
+				var classLeader = leaderboardIndexSortedNormalizedCars[ 0 ];
+
+				foreach ( var normalizedCar in leaderboardIndexSortedNormalizedCars )
+				{
+					if ( classLeader.classID != normalizedCar.classID )
+					{
+						classLeader = normalizedCar;
+					}
+
+					normalizedCar.lapDistPctRelativeToLeader = leader.lapDistPct - normalizedCar.lapDistPct;
+
+					if ( normalizedCar.lapDistPctRelativeToLeader < 0 )
+					{
+						normalizedCar.lapDistPctRelativeToLeader += 1;
+					}
+
+					normalizedCar.lapPositionRelativeToClassLeader = classLeader.lapPosition - normalizedCar.lapPosition;
+				}
 
 				relativeLapPositionSortedNormalizedCars.Sort( NormalizedCar.RelativeLapPositionComparison );
 
@@ -340,29 +378,6 @@ namespace iRacingTVController
 					normalizedCarInFront.defendingHeat = normalizedCar.attackingHeat;
 
 					normalizedCarInFront = normalizedCar;
-				}
-
-				// sort cars by leaderboard position
-
-				leaderboardPositionSortedNormalizedCars.Sort( NormalizedCar.LeaderboardPositionComparison );
-
-				// clean up leaderboard positions and set the heat bias of each car
-
-				leaderboardPosition = 1;
-
-				foreach ( var normalizedCar in leaderboardPositionSortedNormalizedCars )
-				{
-					normalizedCar.leaderboardPosition = leaderboardPosition++;
-
-					if ( normalizedCar.includeInLeaderboard )
-					{
-						if ( normalizedCar.attackingHeat > 0 )
-						{
-							var positionAsSignedPct = ( ( numLeaderboardCars / 2.0f ) - normalizedCar.leaderboardPosition ) / ( numLeaderboardCars / 2.0f );
-
-							normalizedCar.heatBias = Settings.director.heatBias * positionAsSignedPct + Math.Abs( Settings.director.heatBias );
-						}
-					}
 				}
 			}
 		}

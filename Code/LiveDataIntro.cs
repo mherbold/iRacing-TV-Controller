@@ -8,13 +8,13 @@ namespace iRacingTVController
 	{
 		public bool show = false;
 
-		public LiveDataIntroDriver[] liveDataIntroDrivers = new LiveDataIntroDriver[ LiveDataLeaderboard.MaxNumPlaces ];
+		public LiveDataIntroDriver[] liveDataIntroDrivers = new LiveDataIntroDriver[ LiveDataLeaderboard.MaxNumSlots ];
 
 		public LiveDataIntro()
 		{
-			for ( int placeIndex = 0; placeIndex < liveDataIntroDrivers.Length; placeIndex++ )
+			for ( int liveDataIntroDriverIndex = 0; liveDataIntroDriverIndex < liveDataIntroDrivers.Length; liveDataIntroDriverIndex++ )
 			{
-				liveDataIntroDrivers[ placeIndex ] = new LiveDataIntroDriver();
+				liveDataIntroDrivers[ liveDataIntroDriverIndex ] = new LiveDataIntroDriver();
 			}
 		}
 	}

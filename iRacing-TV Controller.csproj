@@ -6,11 +6,12 @@
     <RootNamespace>iRacingTVController</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <VersionPrefix>1.4</VersionPrefix>
+    <VersionPrefix>1.5</VersionPrefix>
     <ApplicationIcon>Assets\iRacing-TV-Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\iRacing-TV-Icon.png" />
     <None Remove="Assets\status-connected.png" />
     <None Remove="Assets\status-disconnected.png" />
   </ItemGroup>
@@ -30,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\iRacing-TV-Icon.png" />
     <Resource Include="Assets\status-connected.png" />
     <Resource Include="Assets\status-disconnected.png" />
   </ItemGroup>

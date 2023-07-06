@@ -224,6 +224,20 @@ namespace iRacingTVController
 				{ "YellowLight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\light-yellow.png", position = { x = 280, y = 130 } } },
 			};
 
+			var oldImageSettingNames = new Dictionary<string, string>()
+			{
+			};
+
+			foreach ( var item in oldImageSettingNames )
+			{
+				if ( settings.imageSettingsDataDictionary.ContainsKey( item.Key ) )
+				{
+					settings.imageSettingsDataDictionary[ item.Value ] = settings.imageSettingsDataDictionary[ item.Key ];
+
+					settings.imageSettingsDataDictionary.Remove( item.Key );
+				}
+			}
+
 			foreach ( var item in defaultImageSettings )
 			{
 				if ( !settings.imageSettingsDataDictionary.ContainsKey( item.Key ) )
@@ -240,7 +254,7 @@ namespace iRacingTVController
 				{ "IntroStatsQualifyingTime", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 27, alignment = TextAlignmentOptions.Top, position = { x = 0, y = 99 }, tintColor = { r = 0.306f, g = 0.832f, b = 1 } } },
 				{ "IntroStatsDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, alignment = TextAlignmentOptions.Top, position = { x = 0, y = 70 } } },
 				{ "LapsRemaining", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, alignment = TextAlignmentOptions.TopRight, position = { x = 269, y = 125 }, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
-				{ "Place", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 43, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
+				{ "Position", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 43, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "SessionName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, position = { x = 18, y = 125 }, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
 				{ "Speed", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 397, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "Subtitles", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 39, alignment = TextAlignmentOptions.Center, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
@@ -249,6 +263,21 @@ namespace iRacingTVController
 				{ "VoiceOf", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 30, position = { x = 30, y = 10 }, tintColor = { r = 0.434f, g = 0.434f, b = 0.434f } } },
 				{ "VoiceOfDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 38, position = { x = 30, y = 41 }, tintColor = { r = 0.137f, g = 0.122f, b = 0.125f } } },
 			};
+
+			var oldTextSettingNames = new Dictionary<string, string>()
+			{
+				{ "Place", "Position" }
+			};
+
+			foreach ( var item in oldTextSettingNames )
+			{
+				if ( settings.textSettingsDataDictionary.ContainsKey( item.Key ) )
+				{
+					settings.textSettingsDataDictionary[ item.Value ] = settings.textSettingsDataDictionary[ item.Key ];
+
+					settings.textSettingsDataDictionary.Remove( item.Key );
+				}
+			}
 
 			foreach ( var item in defaultTextSettings )
 			{
@@ -368,17 +397,17 @@ namespace iRacingTVController
 
 				leaderboardEnabled = overlayLocal.leaderboardEnabled_Overridden ? overlayLocal.leaderboardEnabled : overlayGlobal.leaderboardEnabled,
 				leaderboardPosition = overlayLocal.leaderboardPosition_Overridden ? overlayLocal.leaderboardPosition : overlayGlobal.leaderboardPosition,
-				leaderboardFirstPlacePosition = overlayLocal.leaderboardFirstPlacePosition_Overridden ? overlayLocal.leaderboardFirstPlacePosition : overlayGlobal.leaderboardFirstPlacePosition,
-				leaderboardPlaceCount = overlayLocal.leaderboardPlaceCount_Overridden ? overlayLocal.leaderboardPlaceCount : overlayGlobal.leaderboardPlaceCount,
-				leaderboardPlaceSpacing = overlayLocal.leaderboardPlaceSpacing_Overridden ? overlayLocal.leaderboardPlaceSpacing : overlayGlobal.leaderboardPlaceSpacing,
+				leaderboardFirstSlotPosition = overlayLocal.leaderboardFirstSlotPosition_Overridden ? overlayLocal.leaderboardFirstSlotPosition : overlayGlobal.leaderboardFirstSlotPosition,
+				leaderboardSlotCount = overlayLocal.leaderboardSlotCount_Overridden ? overlayLocal.leaderboardSlotCount : overlayGlobal.leaderboardSlotCount,
+				leaderboardSlotSpacing = overlayLocal.leaderboardSlotSpacing_Overridden ? overlayLocal.leaderboardSlotSpacing : overlayGlobal.leaderboardSlotSpacing,
 				leaderboardUseClassColors = overlayLocal.leaderboardUseClassColors_Overridden ? overlayLocal.leaderboardUseClassColors : overlayGlobal.leaderboardUseClassColors,
 				leaderboardClassColorStrength = overlayLocal.leaderboardClassColorStrength_Overridden ? overlayLocal.leaderboardClassColorStrength : overlayGlobal.leaderboardClassColorStrength,
 
 				leaderboardEnabled_Overridden = overlayLocal.leaderboardEnabled_Overridden,
 				leaderboardPosition_Overridden = overlayLocal.leaderboardPosition_Overridden,
-				leaderboardFirstPlacePosition_Overridden = overlayLocal.leaderboardFirstPlacePosition_Overridden,
-				leaderboardPlaceCount_Overridden = overlayLocal.leaderboardPlaceCount_Overridden,
-				leaderboardPlaceSpacing_Overridden = overlayLocal.leaderboardPlaceSpacing_Overridden,
+				leaderboardFirstSlotPosition_Overridden = overlayLocal.leaderboardFirstSlotPosition_Overridden,
+				leaderboardSlotCount_Overridden = overlayLocal.leaderboardSlotCount_Overridden,
+				leaderboardSlotSpacing_Overridden = overlayLocal.leaderboardSlotSpacing_Overridden,
 				leaderboardUseClassColors_Overridden = overlayLocal.leaderboardUseClassColors_Overridden,
 				leaderboardClassColorStrength_Overridden = overlayLocal.leaderboardClassColorStrength_Overridden,
 

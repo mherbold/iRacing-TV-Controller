@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.4"
+        Title="iRacing-TV Controller v1.5"
         WindowStartupLocation="CenterScreen"
-        Closed="Window_Closed" ResizeMode="CanMinimize" Width="860" Height="550">
+        Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="860" Height="550" MinWidth="860" MinHeight="550" Icon="/Assets/iRacing-TV-Icon.png">
     <Grid>
         <TabControl>
             <TabItem Header="Control Panel" Padding="12,6,12,6">
@@ -197,7 +197,7 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Text" Width="400">
+                                    <GridViewColumn Header="Text" Width="390">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox Text="{Binding Text}" TextChanged="Subtitles_Text_TextChanged"/>
@@ -1060,11 +1060,11 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="P1 Position"/>
-                                        <local:Number x:Name="Overlay_Leaderboard_FirstPlacePosition_X" ValueChanged="Overlay_Leaderboard_Update" Grid.Column="1" />
+                                        <local:Number x:Name="Overlay_Leaderboard_FirstSlotPosition_X" ValueChanged="Overlay_Leaderboard_Update" Grid.Column="1" />
                                         <Label Content="X" HorizontalContentAlignment="Center" Grid.Column="2" />
-                                        <local:Number x:Name="Overlay_Leaderboard_FirstPlacePosition_Y" ValueChanged="Overlay_Leaderboard_Update" Grid.Column="3" />
+                                        <local:Number x:Name="Overlay_Leaderboard_FirstSlotPosition_Y" ValueChanged="Overlay_Leaderboard_Update" Grid.Column="3" />
                                         <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
-                                        <CheckBox x:Name="Overlay_Leaderboard_FirstPlacePosition_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Leaderboard_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        <CheckBox x:Name="Overlay_Leaderboard_FirstSlotPosition_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Leaderboard_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
@@ -1073,8 +1073,8 @@
                                             <ColumnDefinition Width="80"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Max Count"/>
-                                        <Slider x:Name="Overlay_Leaderboard_PlaceCount" Grid.Column="1" VerticalAlignment="Center" SmallChange="1" LargeChange="4" Maximum="63" Minimum="1" ValueChanged="Overlay_Leaderboard_Update" TickPlacement="TopLeft"/>
-                                        <CheckBox x:Name="Overlay_Leaderboard_PlaceCount_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Leaderboard_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        <Slider x:Name="Overlay_Leaderboard_SlotCount" Grid.Column="1" VerticalAlignment="Center" SmallChange="1" LargeChange="4" Maximum="63" Minimum="1" ValueChanged="Overlay_Leaderboard_Update" TickPlacement="TopLeft"/>
+                                        <CheckBox x:Name="Overlay_Leaderboard_SlotCount_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Leaderboard_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
@@ -1086,11 +1086,11 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Spacing"/>
-                                        <local:Number x:Name="Overlay_Leaderboard_PlaceSpacing_X" ValueChanged="Overlay_Leaderboard_Update" Grid.Column="1" />
+                                        <local:Number x:Name="Overlay_Leaderboard_SlotSpacing_X" ValueChanged="Overlay_Leaderboard_Update" Grid.Column="1" />
                                         <Label Content="X" HorizontalContentAlignment="Center" Grid.Column="2" />
-                                        <local:Number x:Name="Overlay_Leaderboard_PlaceSpacing_Y" ValueChanged="Overlay_Leaderboard_Update" Grid.Column="3" />
+                                        <local:Number x:Name="Overlay_Leaderboard_SlotSpacing_Y" ValueChanged="Overlay_Leaderboard_Update" Grid.Column="3" />
                                         <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
-                                        <CheckBox x:Name="Overlay_Leaderboard_PlaceSpacing_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Leaderboard_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        <CheckBox x:Name="Overlay_Leaderboard_SlotSpacing_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Leaderboard_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
@@ -1646,7 +1646,7 @@
             </TabItem>
         </TabControl>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,6,6,0">
-            <Label x:Name="SessionState" VerticalContentAlignment="Center"/>
+            <Label x:Name="Status" VerticalContentAlignment="Center"/>
             <Label x:Name="FrameNumber" FontFamily="Courier New" VerticalContentAlignment="Bottom"/>
             <Image x:Name="ConnectionStatusImage" Source="/Assets/status-disconnected.png" Width="16" Height="16" Margin="6,0,0,0" ToolTip="iRacing Connection Status"/>
             <Image x:Name="DirectorStatusImage" Source="/Assets/status-disconnected.png" Width="16" Height="16" Margin="6,0,0,0"  ToolTip="Director Status"/>

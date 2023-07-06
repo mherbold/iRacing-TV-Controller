@@ -24,6 +24,7 @@ namespace iRacingTVController
 		public string carNumber = string.Empty;
 		public int carNumberRaw = 0;
 
+		public int classID = 0;
 		public Color classColor = Color.white;
 
 		public bool includeInLeaderboard = false;
@@ -33,24 +34,28 @@ namespace iRacingTVController
 
 		public float outOfCarTimer = 0;
 
-		public int officialPosition = 0;
-		public int leaderboardPosition = 0;
+		public int leaderboardIndex = 0;
+
+		public int overallPosition = 0;
+		public int classPosition = 0;
+		public int displayedPosition = 0;
+		public int qualifyingPosition = 0;
+
+		public float bestLapTime = 0;
+		public float qualifyingTime = 0;
 
 		public float lapDistPctDelta = 0;
 		public float lapDistPct = 0;
 
 		public int lapPositionErrorCount = 0;
 		public float lapPosition = 0;
-		public float lapPositionRelativeToLeader = 0;
+		public float lapPositionPct = 0;
+		public float lapDistPctRelativeToLeader = 0;
+		public float lapPositionRelativeToClassLeader = 0;
 
+		public float checkpointTime = 0;
 		public int checkpointIdx = 0;
 		public double[] checkpoints = new double[ MAX_NUM_CHECKPOINTS ];
-
-		public float f2Time = 0;
-		public float checkpointTime = 0;
-
-		public int qualifyingPosition = 0;
-		public float qualifyingTime = 0;
 
 		public float attackingHeat = 0;
 		public float defendingHeat = 0;
@@ -68,7 +73,7 @@ namespace iRacingTVController
 		public string driverTextureUrl = string.Empty;
 
 		public bool wasVisibleOnLeaderboard = false;
-		public Vector2 placePosition = Vector2.zero;
+		public Vector2 leaderboardSlotOffset = Vector2.zero;
 
 		public NormalizedCar( int carIdx )
 		{
@@ -87,6 +92,7 @@ namespace iRacingTVController
 			carNumber = string.Empty;
 			carNumberRaw = 0;
 
+			classID = 0;
 			classColor = Color.white;
 
 			includeInLeaderboard = false;
@@ -94,23 +100,25 @@ namespace iRacingTVController
 			isOnPitRoad = false;
 			isOutOfCar = false;
 
-			officialPosition = int.MaxValue;
-			leaderboardPosition = int.MaxValue;
+			leaderboardIndex = 0;
+
+			overallPosition = 0;
+			classPosition = 0;
+			displayedPosition = 0;
+			qualifyingPosition = 0;
+
+			bestLapTime = 0;
+			qualifyingTime = 0;
 
 			lapDistPctDelta = 0;
 			lapDistPct = 0;
 
 			lapPositionErrorCount = 0;
 			lapPosition = 0;
-			lapPositionRelativeToLeader = 0;
+			lapDistPctRelativeToLeader = 0;
 
 			checkpointIdx = -1;
-
-			f2Time = 0;
 			checkpointTime = 0;
-
-			qualifyingPosition = int.MaxValue;
-			qualifyingTime = 0;
 
 			attackingHeat = 0;
 			defendingHeat = 0;
@@ -124,7 +132,7 @@ namespace iRacingTVController
 			carNumberTextureUrl = string.Empty;
 			carTextureUrl = string.Empty;
 
-			placePosition = Vector2.zero;
+			leaderboardSlotOffset = Vector2.zero;
 			wasVisibleOnLeaderboard = false;
 
 			for ( var i = 0; i < checkpoints.Length; i++ )
@@ -190,6 +198,7 @@ namespace iRacingTVController
 					carNumber = driver.CarNumber;
 					carNumberRaw = driver.CarNumberRaw;
 
+					classID = driver.CarClassID;
 					classColor = new Color( driver.CarClassColor[ 2.. ] );
 
 					includeInLeaderboard = ( driver.IsSpectator == 0 ) && ( driver.CarIsPaceCar == 0 );
@@ -297,8 +306,10 @@ namespace iRacingTVController
 			isOnPitRoad = car.CarIdxOnPitRoad;
 			isOutOfCar = car.CarIdxLapDistPct == -1;
 
-			officialPosition = car.CarIdxPosition;
-			f2Time = Math.Max( 0, car.CarIdxF2Time );
+			overallPosition = car.CarIdxPosition;
+			classPosition = car.CarIdxClassPosition;
+
+			bestLapTime = IRSDK.normalizedSession.isInQualifyingSession ? Math.Max( 0, car.CarIdxF2Time ) : Math.Max( 0, car.CarIdxBestLapTime );
 
 			var newCarIdxLapDistPct = Math.Max( 0, car.CarIdxLapDistPct );
 
@@ -342,34 +353,36 @@ namespace iRacingTVController
 						hasCrossedStartLine = false;
 					}
 				}
+				else if ( car.CarIdxLap >= 2 )
+				{
+					hasCrossedStartLine = true;
+				}
 				else if ( !isOnPitRoad )
 				{
-					if ( ( car.CarIdxLap >= 2 ) || ( ( car.CarIdxLap >= 1 ) && ( newCarIdxLapDistPct > 0 ) && ( newCarIdxLapDistPct < 0.5f ) ) )
+					if ( ( car.CarIdxLap == 1 ) && ( newCarIdxLapDistPct > 0 ) && ( newCarIdxLapDistPct < 0.5f ) )
 					{
 						hasCrossedStartLine = true;
 					}
 				}
 
-				if ( !IRSDK.normalizedSession.isInRaceSession || hasCrossedStartLine )
+				var newLapPosition = car.CarIdxLap + newCarIdxLapDistPct - 1;
+
+				lapPositionErrorCount++;
+
+				if ( ( lapPositionErrorCount >= 10 ) || ( Math.Abs( newLapPosition - lapPosition ) < 0.05f ) )
 				{
-					var newLapPosition = car.CarIdxLap + newCarIdxLapDistPct - 1;
-
-					lapPositionErrorCount++;
-
-					if ( ( lapPositionErrorCount >= 10 ) || ( Math.Abs( newLapPosition - lapPosition ) < 0.05f ) )
-					{
-						lapPositionErrorCount = 0;
-						lapPosition = newLapPosition;
-					}
-					else
-					{
-						lapPosition += lapDistPctDelta;
-					}
+					lapPositionErrorCount = 0;
+					lapPosition = newLapPosition;
 				}
 				else
 				{
-					lapPosition = 0 - qualifyingPosition / 200.0f;
+					lapPosition += lapDistPctDelta;
 				}
+			}
+
+			if ( IRSDK.normalizedSession.isInRaceSession && !hasCrossedStartLine )
+			{
+				lapPosition = -1 - qualifyingPosition / 200.0f;
 			}
 
 			var checkpointIdx = (int) Math.Max( 0, Math.Floor( lapDistPct * Settings.overlay.telemetryNumberOfCheckpoints ) ) % Settings.overlay.telemetryNumberOfCheckpoints;
@@ -433,88 +446,210 @@ namespace iRacingTVController
 			}
 		}
 
-		public static Comparison<NormalizedCar> AbsoluteLapPositionComparison = delegate ( NormalizedCar object1, NormalizedCar object2 )
+		public static Comparison<NormalizedCar> BestLapTimeComparison = delegate ( NormalizedCar a, NormalizedCar b )
 		{
-			int result = 0;
+			int result;
 
-			if ( object1.includeInLeaderboard && object2.includeInLeaderboard )
+			if ( a.includeInLeaderboard && b.includeInLeaderboard )
 			{
-				if ( object1.lapPosition == object2.lapPosition )
+				if ( a.classID == b.classID )
 				{
-					result = object1.carIdx.CompareTo( object2.carIdx );
+					if ( a.bestLapTime == b.bestLapTime )
+					{
+						result = a.carIdx.CompareTo( b.carIdx );
+					}
+					else
+					{
+						result = a.bestLapTime.CompareTo( b.bestLapTime );
+					}
 				}
 				else
 				{
-					result = object2.lapPosition.CompareTo( object1.lapPosition );
+					result = a.classID.CompareTo( b.classID );
 				}
 			}
-			else if ( object1.includeInLeaderboard )
+			else if ( a.includeInLeaderboard )
 			{
 				result = -1;
 			}
-			else if ( object2.includeInLeaderboard )
+			else if ( b.includeInLeaderboard )
 			{
 				result = 1;
+			}
+			else
+			{
+				result = a.carIdx.CompareTo( b.carIdx );
 			}
 
 			return result;
 		};
 
-		public static Comparison<NormalizedCar> RelativeLapPositionComparison = delegate ( NormalizedCar object1, NormalizedCar object2 )
+		public static Comparison<NormalizedCar> QualifyingPositionComparison = delegate ( NormalizedCar a, NormalizedCar b )
 		{
-			int result = 0;
+			int result;
 
-			if ( object1.includeInLeaderboard && object2.includeInLeaderboard )
+			if ( a.includeInLeaderboard && b.includeInLeaderboard )
 			{
-				var lprl1 = object1.lapPositionRelativeToLeader % 1;
-				var lprl2 = object2.lapPositionRelativeToLeader % 1;
+				if ( a.classID == b.classID )
+				{
+					if ( a.qualifyingPosition == b.qualifyingPosition )
+					{
+						result = a.carIdx.CompareTo( b.carIdx );
+					}
+					else
+					{
+						result = a.qualifyingPosition.CompareTo( b.qualifyingPosition );
+					}
+				}
+				else
+				{
+					result = a.classID.CompareTo( b.classID );
+				}
+			}
+			else if ( a.includeInLeaderboard )
+			{
+				result = -1;
+			}
+			else if ( b.includeInLeaderboard )
+			{
+				result = 1;
+			}
+			else
+			{
+				result = a.carIdx.CompareTo( b.carIdx );
+			}
+
+			return result;
+		};
+
+		public static Comparison<NormalizedCar> OverallPositionComparison = delegate ( NormalizedCar a, NormalizedCar b )
+		{
+			int result;
+
+			if ( a.includeInLeaderboard && b.includeInLeaderboard )
+			{
+				if ( a.classID == b.classID )
+				{
+					if ( ( a.overallPosition >= 1 ) && ( b.overallPosition >= 1 ) )
+					{
+						if ( a.overallPosition == b.overallPosition )
+						{
+							result = a.carIdx.CompareTo( b.carIdx );
+						}
+						else
+						{
+							result = a.overallPosition.CompareTo( b.overallPosition );
+						}
+					}
+					else if ( a.overallPosition >= 1 )
+					{
+						result = -1;
+					}
+					else if ( b.overallPosition >= 1 )
+					{
+						result = 1;
+					}
+					else
+					{
+						result = a.carIdx.CompareTo( b.carIdx );
+					}
+				}
+				else
+				{
+					result = a.classID.CompareTo( b.classID );
+				}
+			}
+			else if ( a.includeInLeaderboard )
+			{
+				result = -1;
+			}
+			else if ( b.includeInLeaderboard )
+			{
+				result = 1;
+			}
+			else
+			{
+				result = a.carIdx.CompareTo( b.carIdx );
+			}
+
+			return result;
+		};
+
+		public static Comparison<NormalizedCar> LapPositionComparison = delegate ( NormalizedCar a, NormalizedCar b )
+		{
+			int result;
+
+			if ( a.includeInLeaderboard && b.includeInLeaderboard )
+			{
+				if ( a.classID == b.classID )
+				{
+					if ( a.lapPosition == b.lapPosition )
+					{
+						result = a.carIdx.CompareTo( b.carIdx );
+					}
+					else
+					{
+						result = b.lapPosition.CompareTo( a.lapPosition );
+					}
+				}
+				else
+				{
+					result = a.classID.CompareTo( b.classID );
+				}
+			}
+			else if ( a.includeInLeaderboard )
+			{
+				result = -1;
+			}
+			else if ( b.includeInLeaderboard )
+			{
+				result = 1;
+			}
+			else
+			{
+				result = a.carIdx.CompareTo( b.carIdx );
+			}
+
+			return result;
+		};
+
+		public static Comparison<NormalizedCar> RelativeLapPositionComparison = delegate ( NormalizedCar a, NormalizedCar b )
+		{
+			int result;
+
+			if ( a.includeInLeaderboard && b.includeInLeaderboard )
+			{
+				var lprl1 = a.lapDistPctRelativeToLeader % 1;
+				var lprl2 = b.lapDistPctRelativeToLeader % 1;
 
 				if ( lprl1 == lprl2 )
 				{
-					result = object1.carIdx.CompareTo( object2.carIdx );
+					result = a.carIdx.CompareTo( b.carIdx );
 				}
 				else
 				{
 					result = lprl1.CompareTo( lprl2 );
 				}
 			}
-			else if ( object1.includeInLeaderboard )
+			else if ( a.includeInLeaderboard )
 			{
 				result = -1;
 			}
-			else if ( object2.includeInLeaderboard )
+			else if ( b.includeInLeaderboard )
 			{
 				result = 1;
+			}
+			else
+			{
+				result = a.carIdx.CompareTo( b.carIdx );
 			}
 
 			return result;
 		};
 
-		public static Comparison<NormalizedCar> LeaderboardPositionComparison = delegate ( NormalizedCar object1, NormalizedCar object2 )
+		public static Comparison<NormalizedCar> LeaderboardIndexComparison = delegate ( NormalizedCar a, NormalizedCar b )
 		{
-			int result = 0;
-
-			if ( object1.includeInLeaderboard && object2.includeInLeaderboard )
-			{
-				if ( object1.leaderboardPosition == object2.leaderboardPosition )
-				{
-					result = object1.officialPosition.CompareTo( object2.officialPosition );
-				}
-				else
-				{
-					result = object1.leaderboardPosition.CompareTo( object2.leaderboardPosition );
-				}
-			}
-			else if ( object1.includeInLeaderboard )
-			{
-				result = -1;
-			}
-			else if ( object2.includeInLeaderboard )
-			{
-				result = 1;
-			}
-
-			return result;
+			return a.leaderboardIndex.CompareTo( b.leaderboardIndex );
 		};
 	}
 }

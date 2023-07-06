@@ -23,15 +23,17 @@ namespace iRacingTVController
 				return;
 			}
 
-			if ( !isEnabled )
+			if ( isOverridden )
 			{
-				IRSDK.targetCamReason = "Director is not enabled.";
+				IRSDK.targetCamReason = "Manual override.";
 
 				return;
 			}
 
-			if ( isOverridden )
+			if ( !isEnabled )
 			{
+				IRSDK.targetCamReason = "Director is not enabled.";
+
 				return;
 			}
 
@@ -46,7 +48,7 @@ namespace iRacingTVController
 			NormalizedCar? talkingCar = ( IRSDK.normalizedData.radioTransmitCarIdx != -1 ) ? IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.normalizedData.radioTransmitCarIdx ) : null;
 			NormalizedCar? randomCar = GetRandomNormalizedCar();
 
-			foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardPositionSortedNormalizedCars )
+			foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardIndexSortedNormalizedCars )
 			{
 				if ( normalizedCar.includeInLeaderboard )
 				{
@@ -96,7 +98,7 @@ namespace iRacingTVController
 			{
 				var highestLapPosition = 0.0f;
 
-				foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardPositionSortedNormalizedCars )
+				foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardIndexSortedNormalizedCars )
 				{
 					if ( normalizedCar.includeInLeaderboard )
 					{

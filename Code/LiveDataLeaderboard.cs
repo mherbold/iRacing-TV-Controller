@@ -8,7 +8,7 @@ namespace iRacingTVController
 	[Serializable]
 	public class LiveDataLeaderboard
 	{
-		public const int MaxNumPlaces = 63;
+		public const int MaxNumSlots = 63;
 
 		public bool show = false;
 		public bool showSplitter = false;
@@ -16,13 +16,13 @@ namespace iRacingTVController
 		public Vector2 backgroundSize = Vector2.zero;
 		public Vector2 splitterPosition = Vector2.zero;
 
-		public LiveDataLeaderboardPlace[] liveDataLeaderboardPlaces = new LiveDataLeaderboardPlace[ MaxNumPlaces ];
+		public LiveDataLeaderboardSlot[] liveDataLeaderboardSlots = new LiveDataLeaderboardSlot[ MaxNumSlots ];
 
 		public LiveDataLeaderboard()
 		{
-			for ( int placeIndex = 0; placeIndex < liveDataLeaderboardPlaces.Length; placeIndex++ )
+			for ( int slotIndex = 0; slotIndex < liveDataLeaderboardSlots.Length; slotIndex++ )
 			{
-				liveDataLeaderboardPlaces[ placeIndex ] = new LiveDataLeaderboardPlace();
+				liveDataLeaderboardSlots[ slotIndex ] = new LiveDataLeaderboardSlot();
 			}
 		}
 	}

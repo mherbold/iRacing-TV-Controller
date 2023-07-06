@@ -24,17 +24,18 @@ namespace iRacingTVController
 			public Button button;
 			public Label[] label;
 
-			public ControlPanelButton( Grid grid, Button button, Label label1, Label label2, Label label3, Label label4 )
+			public ControlPanelButton( Grid grid, Button button, Label label1, Label label2, Label label3, Label label4, Label label5 )
 			{
 				this.grid = grid;
 				this.button = button;
 
-				label = new Label[ 4 ];
+				label = new Label[ 5 ];
 
 				label[ 0 ] = label1;
 				label[ 1 ] = label2;
 				label[ 2 ] = label3;
 				label[ 3 ] = label4;
+				label[ 4 ] = label5;
 			}
 		}
 
@@ -118,6 +119,7 @@ namespace iRacingTVController
 						label1.VerticalAlignment = VerticalAlignment.Top;
 						label1.FontSize = 10;
 						label1.Foreground = System.Windows.Media.Brushes.Gray;
+						label1.IsHitTestVisible = false;
 
 						grid.Children.Add( label1 );
 
@@ -127,6 +129,7 @@ namespace iRacingTVController
 						label2.VerticalAlignment = VerticalAlignment.Top;
 						label2.FontSize = 10;
 						label2.Foreground = System.Windows.Media.Brushes.Gray;
+						label2.IsHitTestVisible = false;
 
 						grid.Children.Add( label2 );
 
@@ -136,6 +139,7 @@ namespace iRacingTVController
 						label3.VerticalAlignment = VerticalAlignment.Bottom;
 						label3.FontSize = 10;
 						label3.Foreground = System.Windows.Media.Brushes.Gray;
+						label3.IsHitTestVisible = false;
 
 						grid.Children.Add( label3 );
 
@@ -145,18 +149,35 @@ namespace iRacingTVController
 						label4.VerticalAlignment = VerticalAlignment.Bottom;
 						label4.FontSize = 10;
 						label4.Foreground = System.Windows.Media.Brushes.Gray;
+						label4.IsHitTestVisible = false;
 
 						grid.Children.Add( label4 );
+
+						var label5 = new Label();
+
+						label5.HorizontalAlignment = HorizontalAlignment.Stretch;
+						label5.VerticalAlignment = VerticalAlignment.Center;
+						label5.FontSize = 10;
+						label5.Foreground = System.Windows.Media.Brushes.White;
+						label5.Background = System.Windows.Media.Brushes.Black;
+						label5.Padding = new Thickness( 5, 0, 5, 1 );
+						label5.IsHitTestVisible = false;
+						label5.FontWeight = FontWeights.Bold;
+						label5.Margin = new Thickness( 5, 0, 5, 0 );
+						label5.HorizontalContentAlignment = HorizontalAlignment.Center;
+
+						grid.Children.Add( label5 );
 
 						ControlPanel_ButtonGrid.Children.Add( grid );
 
 						if ( buttonIndex == 63 )
 						{
 							button.Name = "PACE";
-							button.Content = "PACE CAR";
+
+							label5.Content = "PACE CAR";
 						}
 
-						controlPanelButton[ buttonIndex ] = new ControlPanelButton( grid, button, label1, label2, label3, label4 );
+						controlPanelButton[ buttonIndex ] = new ControlPanelButton( grid, button, label1, label2, label3, label4, label5 );
 					}
 				}
 			}
@@ -496,19 +517,19 @@ namespace iRacingTVController
 			Overlay_Leaderboard_Enable.IsChecked = Settings.overlay.leaderboardEnabled;
 			Overlay_Leaderboard_Position_X.Value = (int) Settings.overlay.leaderboardPosition.x;
 			Overlay_Leaderboard_Position_Y.Value = (int) Settings.overlay.leaderboardPosition.y;
-			Overlay_Leaderboard_FirstPlacePosition_X.Value = (int) Settings.overlay.leaderboardFirstPlacePosition.x;
-			Overlay_Leaderboard_FirstPlacePosition_Y.Value = (int) Settings.overlay.leaderboardFirstPlacePosition.y;
-			Overlay_Leaderboard_PlaceCount.Value = Settings.overlay.leaderboardPlaceCount;
-			Overlay_Leaderboard_PlaceSpacing_X.Value = (int) Settings.overlay.leaderboardPlaceSpacing.x;
-			Overlay_Leaderboard_PlaceSpacing_Y.Value = (int) Settings.overlay.leaderboardPlaceSpacing.y;
+			Overlay_Leaderboard_FirstSlotPosition_X.Value = (int) Settings.overlay.leaderboardFirstSlotPosition.x;
+			Overlay_Leaderboard_FirstSlotPosition_Y.Value = (int) Settings.overlay.leaderboardFirstSlotPosition.y;
+			Overlay_Leaderboard_SlotCount.Value = Settings.overlay.leaderboardSlotCount;
+			Overlay_Leaderboard_SlotSpacing_X.Value = (int) Settings.overlay.leaderboardSlotSpacing.x;
+			Overlay_Leaderboard_SlotSpacing_Y.Value = (int) Settings.overlay.leaderboardSlotSpacing.y;
 			Overlay_Leaderboard_UseClassColors_Enable.IsChecked = Settings.overlay.leaderboardUseClassColors;
 			Overlay_Leaderboard_ClassColorStrength.Value = Settings.overlay.leaderboardClassColorStrength * 255.0f;
 
 			Overlay_Leaderboard_Enable_Override.IsChecked = Settings.overlay.leaderboardEnabled_Overridden;
 			Overlay_Leaderboard_Position_Override.IsChecked = Settings.overlay.leaderboardPosition_Overridden;
-			Overlay_Leaderboard_FirstPlacePosition_Override.IsChecked = Settings.overlay.leaderboardFirstPlacePosition_Overridden;
-			Overlay_Leaderboard_PlaceCount_Override.IsChecked = Settings.overlay.leaderboardPlaceCount_Overridden;
-			Overlay_Leaderboard_PlaceSpacing_Override.IsChecked = Settings.overlay.leaderboardPlaceSpacing_Overridden;
+			Overlay_Leaderboard_FirstSlotPosition_Override.IsChecked = Settings.overlay.leaderboardFirstSlotPosition_Overridden;
+			Overlay_Leaderboard_SlotCount_Override.IsChecked = Settings.overlay.leaderboardSlotCount_Overridden;
+			Overlay_Leaderboard_SlotSpacing_Override.IsChecked = Settings.overlay.leaderboardSlotSpacing_Overridden;
 			Overlay_Leaderboard_UseClassColors_Override.IsChecked = Settings.overlay.leaderboardUseClassColors_Overridden;
 			Overlay_Leaderboard_ClassColorStrength_Override.IsChecked = Settings.overlay.leaderboardClassColorStrength_Overridden;
 
@@ -748,14 +769,14 @@ namespace iRacingTVController
 			{
 				if ( IRSDK.isConnected )
 				{
-					SessionState.Content = IRSDK.normalizedData.sessionState;
+					Status.Content = $"{IRSDK.normalizedSession.sessionName} - {IRSDK.normalizedData.sessionState}";
 					FrameNumber.Content = IRSDK.normalizedData.replayFrameNum;
 
 					ConnectionStatusImage.Source = statusConnectedBitmapImage;
 				}
 				else
 				{
-					SessionState.Content = string.Empty;
+					Status.Content = string.Empty;
 					FrameNumber.Content = string.Empty;
 
 					ConnectionStatusImage.Source = statusDisconnectedBitmapImage;
@@ -791,6 +812,19 @@ namespace iRacingTVController
 					ControlPanel_TargetCamGroupNumber.Text = string.Empty;
 					ControlPanel_TargetCamReason.Text = string.Empty;
 					ControlPanel_CameraSwitchTimer.Text = string.Empty;
+				}
+
+				var widthScale = ActualWidth / 860;
+				var heightScale = ActualHeight / 550;
+
+				var fontSize = 10 * Math.Min( widthScale, heightScale );
+
+				foreach ( var cpb in controlPanelButton )
+				{
+					for ( var i = 0; i < 5; i++ )
+					{
+						cpb.label[ i ].FontSize = fontSize;
+					}
 				}
 
 				int controlPanelButtonIndex_Front = 0;
@@ -847,18 +881,20 @@ namespace iRacingTVController
 						cpb.grid.Visibility = Visibility.Visible;
 
 						cpb.button.Name = $"P{normalizedCar.carIdx}";
-						cpb.button.Content = normalizedCar.abbrevName;
 
-						if ( normalizedCar.lapPositionRelativeToLeader >= 1 )
+						cpb.label[ 4 ].Background = System.Windows.Media.Brushes.Black;
+						cpb.label[ 4 ].Foreground = new System.Windows.Media.SolidColorBrush( System.Windows.Media.Color.FromArgb( 255, (byte) ( 128 + normalizedCar.classColor.r * 127 ), (byte) ( 128 + normalizedCar.classColor.g * 127 ), (byte) ( 128 + normalizedCar.classColor.b * 127 ) ) );
+
+						if ( normalizedCar.lapPositionRelativeToClassLeader >= 1 )
 						{
-							cpb.button.Foreground = System.Windows.Media.Brushes.CadetBlue;
+							cpb.label[ 4 ].Content = $"↓ {normalizedCar.abbrevName} ↓";
 						}
 						else
 						{
-							cpb.button.Foreground = System.Windows.Media.Brushes.Black;
+							cpb.label[ 4 ].Content = normalizedCar.abbrevName;
 						}
 
-						cpb.label[ 0 ].Content = $"P{normalizedCar.leaderboardPosition}";
+						cpb.label[ 0 ].Content = $"P{normalizedCar.leaderboardIndex}";
 						cpb.label[ 1 ].Content = $"#{normalizedCar.carNumber}";
 
 						if ( normalizedCar.attackingHeat > 0 )
@@ -2486,49 +2522,49 @@ namespace iRacingTVController
 					overlay.leaderboardPosition = new Vector2( Overlay_Leaderboard_Position_X.Value, Overlay_Leaderboard_Position_Y.Value );
 				}
 
-				overridden = Overlay_Leaderboard_FirstPlacePosition_Override.IsChecked ?? false;
+				overridden = Overlay_Leaderboard_FirstSlotPosition_Override.IsChecked ?? false;
 
-				if ( Settings.overlayLocal.leaderboardFirstPlacePosition_Overridden != overridden )
+				if ( Settings.overlayLocal.leaderboardFirstSlotPosition_Overridden != overridden )
 				{
-					Settings.overlayLocal.leaderboardFirstPlacePosition_Overridden = overridden;
+					Settings.overlayLocal.leaderboardFirstSlotPosition_Overridden = overridden;
 
 					Initialize();
 				}
 				else
 				{
-					var overlay = Settings.overlayLocal.leaderboardFirstPlacePosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+					var overlay = Settings.overlayLocal.leaderboardFirstSlotPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
 
-					overlay.leaderboardFirstPlacePosition = new Vector2( Overlay_Leaderboard_FirstPlacePosition_X.Value, Overlay_Leaderboard_FirstPlacePosition_Y.Value );
+					overlay.leaderboardFirstSlotPosition = new Vector2( Overlay_Leaderboard_FirstSlotPosition_X.Value, Overlay_Leaderboard_FirstSlotPosition_Y.Value );
 				}
 
-				overridden = Overlay_Leaderboard_PlaceCount_Override.IsChecked ?? false;
+				overridden = Overlay_Leaderboard_SlotCount_Override.IsChecked ?? false;
 
-				if ( Settings.overlayLocal.leaderboardPlaceCount_Overridden != overridden )
+				if ( Settings.overlayLocal.leaderboardSlotCount_Overridden != overridden )
 				{
-					Settings.overlayLocal.leaderboardPlaceCount_Overridden = overridden;
+					Settings.overlayLocal.leaderboardSlotCount_Overridden = overridden;
 
 					Initialize();
 				}
 				else
 				{
-					var overlay = Settings.overlayLocal.leaderboardPlaceCount_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+					var overlay = Settings.overlayLocal.leaderboardSlotCount_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
 
-					overlay.leaderboardPlaceCount = (int) Overlay_Leaderboard_PlaceCount.Value;
+					overlay.leaderboardSlotCount = (int) Overlay_Leaderboard_SlotCount.Value;
 				}
 
-				overridden = Overlay_Leaderboard_PlaceSpacing_Override.IsChecked ?? false;
+				overridden = Overlay_Leaderboard_SlotSpacing_Override.IsChecked ?? false;
 
-				if ( Settings.overlayLocal.leaderboardPlaceSpacing_Overridden != overridden )
+				if ( Settings.overlayLocal.leaderboardSlotSpacing_Overridden != overridden )
 				{
-					Settings.overlayLocal.leaderboardPlaceSpacing_Overridden = overridden;
+					Settings.overlayLocal.leaderboardSlotSpacing_Overridden = overridden;
 
 					Initialize();
 				}
 				else
 				{
-					var overlay = Settings.overlayLocal.leaderboardPlaceSpacing_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+					var overlay = Settings.overlayLocal.leaderboardSlotSpacing_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
 
-					overlay.leaderboardPlaceSpacing = new Vector2( Overlay_Leaderboard_PlaceSpacing_X.Value, Overlay_Leaderboard_PlaceSpacing_Y.Value );
+					overlay.leaderboardSlotSpacing = new Vector2( Overlay_Leaderboard_SlotSpacing_X.Value, Overlay_Leaderboard_SlotSpacing_Y.Value );
 				}
 
 				overridden = Overlay_Leaderboard_UseClassColors_Override.IsChecked ?? false;

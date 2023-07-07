@@ -92,6 +92,8 @@ namespace iRacingTVController
 
 					elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
 
+					Settings.Update();
+
 					IRSDK.Update();
 
 					LiveData.Instance.Update();

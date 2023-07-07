@@ -1,7 +1,9 @@
 ﻿
-using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
 using System.Xml.Serialization;
+using System;
 
 namespace iRacingTVController
 {
@@ -9,12 +11,12 @@ namespace iRacingTVController
 	[XmlRoot( "dictionary" )]
 	public class SerializableDictionary<TKey, TValue> : SortedDictionary<TKey, TValue>, IXmlSerializable where TKey : notnull
 	{
-		public System.Xml.Schema.XmlSchema? GetSchema()
+		public XmlSchema? GetSchema()
 		{
 			return null;
 		}
 
-		public void ReadXml( System.Xml.XmlReader reader )
+		public void ReadXml( XmlReader reader )
 		{
 			var keySerializer = new XmlSerializer( typeof( TKey ) );
 			var valueSerializer = new XmlSerializer( typeof( TValue ) );
@@ -28,7 +30,7 @@ namespace iRacingTVController
 				return;
 			}
 
-			while ( reader.NodeType != System.Xml.XmlNodeType.EndElement )
+			while ( reader.NodeType != XmlNodeType.EndElement )
 			{
 				reader.ReadStartElement( "item" );
 				reader.ReadStartElement( "key" );
@@ -54,7 +56,7 @@ namespace iRacingTVController
 			reader.ReadEndElement();
 		}
 
-		public void WriteXml( System.Xml.XmlWriter writer )
+		public void WriteXml( XmlWriter writer )
 		{
 			var keySerializer = new XmlSerializer( typeof( TKey ) );
 			var valueSerializer = new XmlSerializer( typeof( TValue ) );

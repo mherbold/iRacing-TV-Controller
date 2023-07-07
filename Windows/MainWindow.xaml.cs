@@ -39,6 +39,8 @@ namespace iRacingTVController
 			}
 		}
 
+		public const float UpdateIntervalTime = 0.1f;
+
 		public const string StatusDisconnectedImageFileName = "Assets\\status-disconnected.png";
 		public const string StatusConnectedImageFileName = "Assets\\status-connected.png";
 
@@ -48,6 +50,7 @@ namespace iRacingTVController
 		public static MainWindow Instance { get; private set; }
 
 		public int initializing = 0;
+		public float updateTimeRemaining = 0;
 
 		public SettingsDirector.CameraType cameraType = SettingsDirector.CameraType.AutoCam;
 		public NormalizedCar? normalizedCar;
@@ -765,250 +768,257 @@ namespace iRacingTVController
 
 		public void ControlPanel_Update()
 		{
-			Dispatcher.Invoke( () =>
+			updateTimeRemaining = Math.Max( 0, updateTimeRemaining - Program.deltaTime );
+
+			if ( updateTimeRemaining == 0 )
 			{
-				if ( IRSDK.isConnected )
+				updateTimeRemaining = UpdateIntervalTime;
+
+				Dispatcher.Invoke( () =>
 				{
-					Status.Content = $"{IRSDK.normalizedSession.sessionName} - {IRSDK.normalizedData.sessionState}";
-					FrameNumber.Content = IRSDK.normalizedData.replayFrameNum;
-
-					ConnectionStatusImage.Source = statusConnectedBitmapImage;
-				}
-				else
-				{
-					Status.Content = string.Empty;
-					FrameNumber.Content = string.Empty;
-
-					ConnectionStatusImage.Source = statusDisconnectedBitmapImage;
-				}
-
-				if ( Director.isEnabled )
-				{
-					DirectorStatusImage.Source = statusConnectedBitmapImage;
-
-					var normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.targetCamCarIdx );
-
-					if ( normalizedCar != null )
+					if ( IRSDK.isConnected )
 					{
-						ControlPanel_TargetCamCarNumber.Text = $"#{normalizedCar.carNumber}";
-						ControlPanel_TargetDriverName.Text = normalizedCar.userName;
+						Status.Content = $"{IRSDK.normalizedSession.sessionName} - {IRSDK.normalizedData.sessionState}";
+						FrameNumber.Content = IRSDK.normalizedData.replayFrameNum;
+
+						ConnectionStatusImage.Source = statusConnectedBitmapImage;
 					}
 					else
 					{
+						Status.Content = string.Empty;
+						FrameNumber.Content = string.Empty;
+
+						ConnectionStatusImage.Source = statusDisconnectedBitmapImage;
+					}
+
+					if ( Director.isEnabled )
+					{
+						DirectorStatusImage.Source = statusConnectedBitmapImage;
+
+						var normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.targetCamCarIdx );
+
+						if ( normalizedCar != null )
+						{
+							ControlPanel_TargetCamCarNumber.Text = $"#{normalizedCar.carNumber}";
+							ControlPanel_TargetDriverName.Text = normalizedCar.userName;
+						}
+						else
+						{
+							ControlPanel_TargetCamCarNumber.Text = string.Empty;
+							ControlPanel_TargetDriverName.Text = string.Empty;
+						}
+
+						ControlPanel_TargetCamGroupNumber.Text = IRSDK.GetCamGroupName( IRSDK.targetCamGroupNumber );
+						ControlPanel_TargetCamReason.Text = IRSDK.targetCamReason;
+						ControlPanel_CameraSwitchTimer.Text = $"{IRSDK.cameraSwitchWaitTimeRemaining:0.0}";
+					}
+					else
+					{
+						DirectorStatusImage.Source = statusDisconnectedBitmapImage;
+
 						ControlPanel_TargetCamCarNumber.Text = string.Empty;
 						ControlPanel_TargetDriverName.Text = string.Empty;
+						ControlPanel_TargetCamGroupNumber.Text = string.Empty;
+						ControlPanel_TargetCamReason.Text = string.Empty;
+						ControlPanel_CameraSwitchTimer.Text = string.Empty;
 					}
 
-					ControlPanel_TargetCamGroupNumber.Text = IRSDK.GetCamGroupName( IRSDK.targetCamGroupNumber );
-					ControlPanel_TargetCamReason.Text = IRSDK.targetCamReason;
-					ControlPanel_CameraSwitchTimer.Text = $"{IRSDK.cameraSwitchWaitTimeRemaining:0.0}";
-				}
-				else
-				{
-					DirectorStatusImage.Source = statusDisconnectedBitmapImage;
+					var widthScale = ActualWidth / 860;
+					var heightScale = ActualHeight / 550;
 
-					ControlPanel_TargetCamCarNumber.Text = string.Empty;
-					ControlPanel_TargetDriverName.Text = string.Empty;
-					ControlPanel_TargetCamGroupNumber.Text = string.Empty;
-					ControlPanel_TargetCamReason.Text = string.Empty;
-					ControlPanel_CameraSwitchTimer.Text = string.Empty;
-				}
+					var fontSize = 10 * Math.Min( widthScale, heightScale );
 
-				var widthScale = ActualWidth / 860;
-				var heightScale = ActualHeight / 550;
-
-				var fontSize = 10 * Math.Min( widthScale, heightScale );
-
-				foreach ( var cpb in controlPanelButton )
-				{
-					for ( var i = 0; i < 5; i++ )
+					foreach ( var cpb in controlPanelButton )
 					{
-						cpb.label[ i ].FontSize = fontSize;
-					}
-				}
-
-				int controlPanelButtonIndex_Front = 0;
-				int controlPanelButtonIndex_Back = 62;
-
-				foreach ( var normalizedCar in IRSDK.normalizedData.relativeLapPositionSortedNormalizedCars )
-				{
-					ControlPanelButton cpb;
-
-					if ( normalizedCar.carIdx == 0 )
-					{
-						cpb = controlPanelButton[ 63 ];
-
-						if ( Director.isOverridden && ( IRSDK.targetCamCarIdx == normalizedCar.carIdx ) )
+						for ( var i = 0; i < 5; i++ )
 						{
-							if ( ( Program.stopwatch.ElapsedMilliseconds / 500 % 2 ) == 0 )
+							cpb.label[ i ].FontSize = fontSize;
+						}
+					}
+
+					int controlPanelButtonIndex_Front = 0;
+					int controlPanelButtonIndex_Back = 62;
+
+					foreach ( var normalizedCar in IRSDK.normalizedData.relativeLapPositionSortedNormalizedCars )
+					{
+						ControlPanelButton cpb;
+
+						if ( normalizedCar.carIdx == 0 )
+						{
+							cpb = controlPanelButton[ 63 ];
+
+							if ( Director.isOverridden && ( IRSDK.targetCamCarIdx == normalizedCar.carIdx ) )
 							{
-								cpb.button.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
+								if ( ( Program.stopwatch.ElapsedMilliseconds / 500 % 2 ) == 0 )
+								{
+									cpb.button.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
+								}
+								else
+								{
+									cpb.button.BorderBrush = System.Windows.Media.Brushes.SkyBlue;
+								}
+
+								cpb.button.BorderThickness = new Thickness( 3.0 );
+							}
+							else if ( normalizedCar.carIdx == IRSDK.normalizedData.camCarIdx )
+							{
+								cpb.button.BorderBrush = System.Windows.Media.Brushes.Green;
+								cpb.button.BorderThickness = new Thickness( 3.0 );
 							}
 							else
 							{
-								cpb.button.BorderBrush = System.Windows.Media.Brushes.SkyBlue;
+								cpb.button.BorderBrush = System.Windows.Media.Brushes.DarkGray;
+								cpb.button.BorderThickness = new Thickness( 0.5 );
 							}
 
-							cpb.button.BorderThickness = new Thickness( 3.0 );
+							cpb.button.Background = System.Windows.Media.Brushes.White;
+
+							continue;
 						}
-						else if ( normalizedCar.carIdx == IRSDK.normalizedData.camCarIdx )
+
+						if ( normalizedCar.isOnPitRoad || ( normalizedCar.outOfCarTimer >= 10 ) )
 						{
-							cpb.button.BorderBrush = System.Windows.Media.Brushes.Green;
-							cpb.button.BorderThickness = new Thickness( 3.0 );
+							cpb = controlPanelButton[ controlPanelButtonIndex_Back-- ];
 						}
 						else
 						{
-							cpb.button.BorderBrush = System.Windows.Media.Brushes.DarkGray;
-							cpb.button.BorderThickness = new Thickness( 0.5 );
+							cpb = controlPanelButton[ controlPanelButtonIndex_Front++ ];
 						}
 
-						cpb.button.Background = System.Windows.Media.Brushes.White;
-
-						continue;
-					}
-
-					if ( normalizedCar.isOnPitRoad || ( normalizedCar.outOfCarTimer >= 10 ) )
-					{
-						cpb = controlPanelButton[ controlPanelButtonIndex_Back-- ];
-					}
-					else
-					{
-						cpb = controlPanelButton[ controlPanelButtonIndex_Front++ ];
-					}
-
-					if ( normalizedCar.includeInLeaderboard )
-					{
-						cpb.grid.Visibility = Visibility.Visible;
-
-						cpb.button.Name = $"P{normalizedCar.carIdx}";
-
-						cpb.label[ 4 ].Background = System.Windows.Media.Brushes.Black;
-						cpb.label[ 4 ].Foreground = new System.Windows.Media.SolidColorBrush( System.Windows.Media.Color.FromArgb( 255, (byte) ( 128 + normalizedCar.classColor.r * 127 ), (byte) ( 128 + normalizedCar.classColor.g * 127 ), (byte) ( 128 + normalizedCar.classColor.b * 127 ) ) );
-
-						if ( normalizedCar.lapPositionRelativeToClassLeader >= 1 )
+						if ( normalizedCar.includeInLeaderboard )
 						{
-							cpb.label[ 4 ].Content = $"↓ {normalizedCar.abbrevName} ↓";
-						}
-						else
-						{
-							cpb.label[ 4 ].Content = normalizedCar.abbrevName;
-						}
+							cpb.grid.Visibility = Visibility.Visible;
 
-						cpb.label[ 0 ].Content = $"P{normalizedCar.leaderboardIndex}";
-						cpb.label[ 1 ].Content = $"#{normalizedCar.carNumber}";
+							cpb.button.Name = $"P{normalizedCar.carIdx}";
 
-						if ( normalizedCar.attackingHeat > 0 )
-						{
-							cpb.label[ 2 ].Content = $"{normalizedCar.attackingHeat:0.0}";
-						}
-						else
-						{
-							cpb.label[ 2 ].Content = string.Empty;
-						}
+							cpb.label[ 4 ].Background = System.Windows.Media.Brushes.Black;
+							cpb.label[ 4 ].Foreground = new System.Windows.Media.SolidColorBrush( System.Windows.Media.Color.FromArgb( 255, (byte) ( 128 + normalizedCar.classColor.r * 127 ), (byte) ( 128 + normalizedCar.classColor.g * 127 ), (byte) ( 128 + normalizedCar.classColor.b * 127 ) ) );
 
-						var heat = normalizedCar.attackingHeat;
-
-						var backgroundButton = System.Windows.Media.Brushes.White;
-						var foregroundLabels = System.Windows.Media.Brushes.Black;
-
-						if ( heat > 0 )
-						{
-							var r = 0;
-							var g = 0;
-							var b = 0;
-
-							if ( heat < 1 )
+							if ( normalizedCar.lapPositionRelativeToClassLeader >= 1 )
 							{
-								r = g = 255;
-								b = (int) Math.Round( 255 - ( heat - 0 ) * 255 * 0.5 );
-							}
-							else if ( heat < 2 )
-							{
-								r = 255;
-								g = (int) Math.Round( 255 - ( heat - 1 ) * 255 * 0.5 );
-								b = 128;
-							}
-							else if ( heat < 3 )
-							{
-								r = 255;
-								g = b = (int) Math.Round( 128 - ( heat - 2 ) * 255 * 0.5 );
+								cpb.label[ 4 ].Content = $"↓ {normalizedCar.abbrevName} ↓";
 							}
 							else
 							{
-								r = 255;
-								g = b = 0;
+								cpb.label[ 4 ].Content = normalizedCar.abbrevName;
 							}
 
-							backgroundButton = new System.Windows.Media.SolidColorBrush( System.Windows.Media.Color.FromArgb( 255, (byte) r, (byte) g, (byte) b ) );
-						}
+							cpb.label[ 0 ].Content = $"P{normalizedCar.leaderboardIndex}";
+							cpb.label[ 1 ].Content = $"#{normalizedCar.carNumber}";
 
-						cpb.button.Background = backgroundButton;
-
-						cpb.label[ 0 ].Foreground = foregroundLabels;
-						cpb.label[ 1 ].Foreground = foregroundLabels;
-						cpb.label[ 2 ].Foreground = foregroundLabels;
-
-						if ( normalizedCar.isOutOfCar )
-						{
-							cpb.label[ 3 ].Content = "OUT";
-							cpb.label[ 3 ].Foreground = System.Windows.Media.Brushes.Red;
-						}
-						else if ( normalizedCar.isOnPitRoad )
-						{
-							cpb.label[ 3 ].Content = "PIT";
-							cpb.label[ 3 ].Foreground = System.Windows.Media.Brushes.Black;
-						}
-						else
-						{
-							cpb.label[ 3 ].Content = string.Empty;
-							cpb.label[ 3 ].Foreground = System.Windows.Media.Brushes.Black;
-						}
-
-						if ( Director.isOverridden && ( IRSDK.targetCamCarIdx == normalizedCar.carIdx ) )
-						{
-							if ( ( Program.stopwatch.ElapsedMilliseconds / 500 % 2 ) == 0 )
+							if ( normalizedCar.attackingHeat > 0 )
 							{
-								cpb.button.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
+								cpb.label[ 2 ].Content = $"{normalizedCar.attackingHeat:0.0}";
 							}
 							else
 							{
-								cpb.button.BorderBrush = System.Windows.Media.Brushes.SkyBlue;
+								cpb.label[ 2 ].Content = string.Empty;
 							}
 
-							cpb.button.BorderThickness = new Thickness( 3.0 );
-						}
-						else if ( normalizedCar.carIdx == IRSDK.normalizedData.camCarIdx )
-						{
-							cpb.button.BorderBrush = System.Windows.Media.Brushes.Green;
-							cpb.button.BorderThickness = new Thickness( 3.0 );
+							var heat = normalizedCar.attackingHeat;
+
+							var backgroundButton = System.Windows.Media.Brushes.White;
+							var foregroundLabels = System.Windows.Media.Brushes.Black;
+
+							if ( heat > 0 )
+							{
+								var r = 0;
+								var g = 0;
+								var b = 0;
+
+								if ( heat < 1 )
+								{
+									r = g = 255;
+									b = (int) Math.Round( 255 - ( heat - 0 ) * 255 * 0.5 );
+								}
+								else if ( heat < 2 )
+								{
+									r = 255;
+									g = (int) Math.Round( 255 - ( heat - 1 ) * 255 * 0.5 );
+									b = 128;
+								}
+								else if ( heat < 3 )
+								{
+									r = 255;
+									g = b = (int) Math.Round( 128 - ( heat - 2 ) * 255 * 0.5 );
+								}
+								else
+								{
+									r = 255;
+									g = b = 0;
+								}
+
+								backgroundButton = new System.Windows.Media.SolidColorBrush( System.Windows.Media.Color.FromArgb( 255, (byte) r, (byte) g, (byte) b ) );
+							}
+
+							cpb.button.Background = backgroundButton;
+
+							cpb.label[ 0 ].Foreground = foregroundLabels;
+							cpb.label[ 1 ].Foreground = foregroundLabels;
+							cpb.label[ 2 ].Foreground = foregroundLabels;
+
+							if ( normalizedCar.isOutOfCar )
+							{
+								cpb.label[ 3 ].Content = "OUT";
+								cpb.label[ 3 ].Foreground = System.Windows.Media.Brushes.Red;
+							}
+							else if ( normalizedCar.isOnPitRoad )
+							{
+								cpb.label[ 3 ].Content = "PIT";
+								cpb.label[ 3 ].Foreground = System.Windows.Media.Brushes.Black;
+							}
+							else
+							{
+								cpb.label[ 3 ].Content = string.Empty;
+								cpb.label[ 3 ].Foreground = System.Windows.Media.Brushes.Black;
+							}
+
+							if ( Director.isOverridden && ( IRSDK.targetCamCarIdx == normalizedCar.carIdx ) )
+							{
+								if ( ( Program.stopwatch.ElapsedMilliseconds / 500 % 2 ) == 0 )
+								{
+									cpb.button.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
+								}
+								else
+								{
+									cpb.button.BorderBrush = System.Windows.Media.Brushes.SkyBlue;
+								}
+
+								cpb.button.BorderThickness = new Thickness( 3.0 );
+							}
+							else if ( normalizedCar.carIdx == IRSDK.normalizedData.camCarIdx )
+							{
+								cpb.button.BorderBrush = System.Windows.Media.Brushes.Green;
+								cpb.button.BorderThickness = new Thickness( 3.0 );
+							}
+							else
+							{
+								cpb.button.BorderBrush = System.Windows.Media.Brushes.DarkGray;
+								cpb.button.BorderThickness = new Thickness( 0.5 );
+							}
 						}
 						else
 						{
-							cpb.button.BorderBrush = System.Windows.Media.Brushes.DarkGray;
-							cpb.button.BorderThickness = new Thickness( 0.5 );
+							cpb.grid.Visibility = Visibility.Hidden;
 						}
 					}
-					else
+
+					while ( controlPanelButtonIndex_Front <= controlPanelButtonIndex_Back )
 					{
+						var cpb = controlPanelButton[ controlPanelButtonIndex_Front++ ];
+
 						cpb.grid.Visibility = Visibility.Hidden;
 					}
-				}
 
-				while ( controlPanelButtonIndex_Front <= controlPanelButtonIndex_Back )
-				{
-					var cpb = controlPanelButton[ controlPanelButtonIndex_Front++ ];
-
-					cpb.grid.Visibility = Visibility.Hidden;
-				}
-
-				UpdateCameraButton( ControlPanel_Camera_Intro_Button, cameraType == SettingsDirector.CameraType.Intro );
-				UpdateCameraButton( ControlPanel_Camera_Inside_Button, cameraType == SettingsDirector.CameraType.Inside );
-				UpdateCameraButton( ControlPanel_Camera_Close_Button, cameraType == SettingsDirector.CameraType.Close );
-				UpdateCameraButton( ControlPanel_Camera_Medium_Button, cameraType == SettingsDirector.CameraType.Medium );
-				UpdateCameraButton( ControlPanel_Camera_Far_Button, cameraType == SettingsDirector.CameraType.Far );
-				UpdateCameraButton( ControlPanel_Camera_VeryFar_Button, cameraType == SettingsDirector.CameraType.VeryFar );
-				UpdateCameraButton( ControlPanel_Camera_AutoCam_Button, cameraType == SettingsDirector.CameraType.AutoCam );
-			} );
+					UpdateCameraButton( ControlPanel_Camera_Intro_Button, cameraType == SettingsDirector.CameraType.Intro );
+					UpdateCameraButton( ControlPanel_Camera_Inside_Button, cameraType == SettingsDirector.CameraType.Inside );
+					UpdateCameraButton( ControlPanel_Camera_Close_Button, cameraType == SettingsDirector.CameraType.Close );
+					UpdateCameraButton( ControlPanel_Camera_Medium_Button, cameraType == SettingsDirector.CameraType.Medium );
+					UpdateCameraButton( ControlPanel_Camera_Far_Button, cameraType == SettingsDirector.CameraType.Far );
+					UpdateCameraButton( ControlPanel_Camera_VeryFar_Button, cameraType == SettingsDirector.CameraType.VeryFar );
+					UpdateCameraButton( ControlPanel_Camera_AutoCam_Button, cameraType == SettingsDirector.CameraType.AutoCam );
+				} );
+			}
 		}
 
 		private void UpdateCameraButton( Button button, bool isActive )
@@ -1174,7 +1184,7 @@ namespace iRacingTVController
 
 				Settings.editor.lastActiveDirectorFilePath = Settings.directorLocal.filePath;
 
-				Settings.SaveEditor();
+				Settings.saveEditorToFileQueued = true;
 
 				Initialize();
 			}
@@ -1207,11 +1217,11 @@ namespace iRacingTVController
 
 				Settings.directorList.Add( Settings.directorLocal );
 
-				Settings.SaveDirector();
+				Settings.saveDirectorToFileQueued = true;
 
 				Settings.editor.lastActiveDirectorFilePath = Settings.directorLocal.filePath;
 
-				Settings.SaveEditor();
+				Settings.saveEditorToFileQueued = true;
 
 				Initialize();
 			}
@@ -1237,7 +1247,7 @@ namespace iRacingTVController
 
 					Settings.editor.lastActiveDirectorFilePath = Settings.directorLocal.filePath;
 
-					Settings.SaveEditor();
+					Settings.saveEditorToFileQueued = true;
 
 					Initialize();
 				}
@@ -1598,7 +1608,7 @@ namespace iRacingTVController
 					director.preferredCarLockOnMinimumHeat = Director_PreferredCar_LockOnMinimumHeat.Value;
 				}
 
-				Settings.SaveDirector();
+				Settings.saveDirectorToFileQueued = true;
 			}
 		}
 
@@ -1658,7 +1668,7 @@ namespace iRacingTVController
 					director.rule13_Camera = (SettingsDirector.CameraType) Director_Rules_Rule13_Camera.SelectedItem;
 				}
 
-				Settings.SaveDirector();
+				Settings.saveDirectorToFileQueued = true;
 			}
 		}
 
@@ -1685,7 +1695,7 @@ namespace iRacingTVController
 					director.autoCamFarMaximum = Director_AutoCam_Far_Maximum.Value;
 				}
 
-				Settings.SaveDirector();
+				Settings.saveDirectorToFileQueued = true;
 			}
 		}
 
@@ -1703,7 +1713,7 @@ namespace iRacingTVController
 
 				item.StartFrame = number.Value;
 
-				IncidentPlayback.saveIncidentsQueued = true;
+				IncidentPlayback.saveToFileQueued = true;
 
 				IRSDK.targetReplayStartFrameNumberEnabled = true;
 				IRSDK.targetReplayStartFrameNumber = item.StartFrame;
@@ -1722,7 +1732,7 @@ namespace iRacingTVController
 
 				item.EndFrame = number.Value;
 
-				IncidentPlayback.saveIncidentsQueued = true;
+				IncidentPlayback.saveToFileQueued = true;
 
 				IRSDK.targetReplayStartFrameNumberEnabled = true;
 				IRSDK.targetReplayStartFrameNumber = item.EndFrame;
@@ -1741,7 +1751,7 @@ namespace iRacingTVController
 
 				item.Ignore = checkBox.IsChecked ?? false;
 
-				IncidentPlayback.saveIncidentsQueued = true;
+				IncidentPlayback.saveToFileQueued = true;
 			}
 		}
 
@@ -1825,7 +1835,7 @@ namespace iRacingTVController
 
 				item.Text = textBox.Text;
 
-				SubtitlePlayback.saveSubtitlesQueued = true;
+				SubtitlePlayback.saveToFileQueued = true;
 			}
 		}
 
@@ -1841,7 +1851,7 @@ namespace iRacingTVController
 
 				item.Ignore = checkBox.IsChecked ?? false;
 
-				SubtitlePlayback.saveSubtitlesQueued = true;
+				SubtitlePlayback.saveToFileQueued = true;
 			}
 		}
 
@@ -1919,7 +1929,7 @@ namespace iRacingTVController
 
 				Settings.editor.lastActiveOverlayFilePath = Settings.overlayLocal.filePath;
 
-				Settings.SaveEditor();
+				Settings.saveEditorToFileQueued = true;
 
 				Initialize();
 
@@ -1956,11 +1966,11 @@ namespace iRacingTVController
 
 				Settings.overlayList.Add( Settings.overlayLocal );
 
-				Settings.SaveOverlay();
+				Settings.saveOverlayToFileQueued = true;
 
 				Settings.editor.lastActiveOverlayFilePath = Settings.overlayLocal.filePath;
 
-				Settings.SaveEditor();
+				Settings.saveEditorToFileQueued = true;
 
 				Initialize();
 			}
@@ -1986,7 +1996,7 @@ namespace iRacingTVController
 
 					Settings.editor.lastActiveOverlayFilePath = Settings.overlayLocal.filePath;
 
-					Settings.SaveEditor();
+					Settings.saveEditorToFileQueued = true;
 
 					Initialize();
 				}
@@ -2031,7 +2041,7 @@ namespace iRacingTVController
 
 				IPC.readyToSendSettings = true;
 
-				Settings.SaveOverlay();
+				Settings.saveOverlayToFileQueued = true;
 			}
 		}
 
@@ -2137,7 +2147,7 @@ namespace iRacingTVController
 
 				IPC.readyToSendSettings = true;
 
-				Settings.SaveOverlay();
+				Settings.saveOverlayToFileQueued = true;
 			}
 		}
 
@@ -2301,7 +2311,7 @@ namespace iRacingTVController
 
 				IPC.readyToSendSettings = true;
 
-				Settings.SaveOverlay();
+				Settings.saveOverlayToFileQueued = true;
 			}
 		}
 
@@ -2444,7 +2454,7 @@ namespace iRacingTVController
 
 				IPC.readyToSendSettings = true;
 
-				Settings.SaveOverlay();
+				Settings.saveOverlayToFileQueued = true;
 			}
 		}
 
@@ -2484,7 +2494,7 @@ namespace iRacingTVController
 
 				IPC.readyToSendSettings = true;
 
-				Settings.SaveOverlay();
+				Settings.saveOverlayToFileQueued = true;
 			}
 		}
 
@@ -2599,7 +2609,7 @@ namespace iRacingTVController
 
 				IPC.readyToSendSettings = true;
 
-				Settings.SaveOverlay();
+				Settings.saveOverlayToFileQueued = true;
 			}
 		}
 
@@ -2639,7 +2649,7 @@ namespace iRacingTVController
 
 				IPC.readyToSendSettings = true;
 
-				Settings.SaveOverlay();
+				Settings.saveOverlayToFileQueued = true;
 			}
 		}
 
@@ -2756,7 +2766,7 @@ namespace iRacingTVController
 
 				IPC.readyToSendSettings = true;
 
-				Settings.SaveOverlay();
+				Settings.saveOverlayToFileQueued = true;
 			}
 		}
 
@@ -2952,7 +2962,7 @@ namespace iRacingTVController
 
 				IPC.readyToSendSettings = true;
 
-				Settings.SaveOverlay();
+				Settings.saveOverlayToFileQueued = true;
 
 				IRSDK.normalizedData.SessionUpdate( true );
 			}
@@ -3112,7 +3122,7 @@ namespace iRacingTVController
 
 				IPC.readyToSendSettings = true;
 
-				Settings.SaveOverlay();
+				Settings.saveOverlayToFileQueued = true;
 			}
 		}
 
@@ -3257,7 +3267,7 @@ namespace iRacingTVController
 
 				IPC.readyToSendSettings = true;
 
-				Settings.SaveOverlay();
+				Settings.saveOverlayToFileQueued = true;
 			}
 		}
 
@@ -3300,7 +3310,7 @@ namespace iRacingTVController
 				Settings.editor.iracingDriverNamesSuffixes = iRacing_DriverNames_Suffixes.Text;
 				Settings.editor.iracingDriverNameCapitalizationOption = capitalizationOptions[ (string) iRacing_DriverNames_CapitalizationOption.SelectedItem ];
 
-				Settings.SaveEditor();
+				Settings.saveEditorToFileQueued = true;
 
 				IRSDK.normalizedData.SessionUpdate( true );
 			}
@@ -3341,7 +3351,7 @@ namespace iRacingTVController
 				Settings.editor.editorIncidentsOverlapMergeTime = Editor_Incidents_OverlapMergeTime.Value;
 				Settings.editor.editorIncidentsTimeout = Editor_Incidents_Timeout.Value;
 
-				Settings.SaveEditor();
+				Settings.saveEditorToFileQueued = true;
 			}
 		}
 

@@ -9,14 +9,15 @@ namespace iRacingTVController
 {
 	public static class SubtitlePlayback
 	{
+		public const int SaveToFileIntervalTime = 3;
 		public const int SubtitleOverlapMergeThreshold = 5;
 
 		public static List<SubtitleData> subtitleDataList = new();
 
 		public static string subtitlesFilePath = string.Empty;
 
-		public static float saveSubtitlesTimeRemaining = 0;
-		public static bool saveSubtitlesQueued = false;
+		public static float saveToFileTimeRemaining = 0;
+		public static bool saveToFileQueued = false;
 
 		public static bool subtitlesWereImported = false;
 
@@ -150,18 +151,18 @@ namespace iRacingTVController
 									MainWindow.Instance.Subtitles_ListView.Items.Refresh();
 								}
 
-								saveSubtitlesQueued = true;
+								saveToFileQueued = true;
 							}
 						}
 					}
 				}
 
-				saveSubtitlesTimeRemaining = Math.Max( 0, saveSubtitlesTimeRemaining - Program.deltaTime );
+				saveToFileTimeRemaining = Math.Max( 0, saveToFileTimeRemaining - Program.deltaTime );
 
-				if ( saveSubtitlesQueued && ( saveSubtitlesTimeRemaining <= 0 ) )
+				if ( saveToFileQueued && ( saveToFileTimeRemaining == 0 ) )
 				{
-					saveSubtitlesQueued = false;
-					saveSubtitlesTimeRemaining = 1;
+					saveToFileQueued = false;
+					saveToFileTimeRemaining = SaveToFileIntervalTime;
 
 					SaveSubtitles();
 				}
@@ -169,7 +170,7 @@ namespace iRacingTVController
 			else
 			{
 				subtitlesFilePath = string.Empty;
-				saveSubtitlesQueued = false;
+				saveToFileQueued = false;
 				subtitlesWereImported = false;
 
 				subtitleDataList.Clear();
@@ -199,11 +200,19 @@ namespace iRacingTVController
 
 				var xmlSerializer = new XmlSerializer( subtitleDataList.GetType() );
 
-				var streamWriter = new StreamWriter( subtitlesFilePath );
+				try
+				{
+					var streamWriter = new StreamWriter( subtitlesFilePath );
 
-				xmlSerializer.Serialize( streamWriter, subtitleDataList );
+					xmlSerializer.Serialize( streamWriter, subtitleDataList );
 
-				streamWriter.Close();
+					streamWriter.Close();
+				}
+				catch ( IOException )
+				{
+					saveToFileQueued = true;
+					saveToFileTimeRemaining = SaveToFileIntervalTime;
+				}
 			}
 		}
 
@@ -214,7 +223,7 @@ namespace iRacingTVController
 			if ( subtitlesFilePath != newSubtitlesFilePath )
 			{
 				subtitlesFilePath = newSubtitlesFilePath;
-				saveSubtitlesQueued = false;
+				saveToFileQueued = false;
 				subtitlesWereImported = false;
 
 				subtitleDataList.Clear();

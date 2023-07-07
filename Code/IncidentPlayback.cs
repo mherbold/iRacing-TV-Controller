@@ -11,12 +11,14 @@ namespace iRacingTVController
 {
 	public static class IncidentPlayback
 	{
+		public const int SaveToFileIntervalTime = 3;
+
 		public static List<IncidentData> incidentDataList = new();
 
 		public static string incidentsFilePath = string.Empty;
 
-		public static float saveIncidentsTimeRemaining = 0;
-		public static bool saveIncidentsQueued = false;
+		public static float saveToFileTimeRemaining = 0;
+		public static bool saveToFileQueued = false;
 
 		public static int currentSession = 0;
 
@@ -208,7 +210,7 @@ namespace iRacingTVController
 							}
 
 
-							saveIncidentsQueued = true;
+							saveToFileQueued = true;
 						}
 
 						currentIncidentScanState = IncidentScanStateEnum.SearchForNextIncident;
@@ -306,12 +308,12 @@ namespace iRacingTVController
 						break;
 				}
 
-				saveIncidentsTimeRemaining = Math.Max( 0, saveIncidentsTimeRemaining - Program.deltaTime );
+				saveToFileTimeRemaining = Math.Max( 0, saveToFileTimeRemaining - Program.deltaTime );
 
-				if ( saveIncidentsQueued && ( saveIncidentsTimeRemaining <= 0 ) )
+				if ( saveToFileQueued && ( saveToFileTimeRemaining == 0 ) )
 				{
-					saveIncidentsQueued = false;
-					saveIncidentsTimeRemaining = 1;
+					saveToFileQueued = false;
+					saveToFileTimeRemaining = SaveToFileIntervalTime;
 
 					SaveIncidents();
 				}
@@ -322,7 +324,7 @@ namespace iRacingTVController
 
 				currentIncidentScanState = IncidentScanStateEnum.Idle;
 
-				saveIncidentsQueued = false;
+				saveToFileQueued = false;
 
 				incidentDataList.Clear();
 
@@ -349,7 +351,7 @@ namespace iRacingTVController
 
 		public static void Clear()
 		{
-			saveIncidentsQueued = false;
+			saveToFileQueued = false;
 
 			incidentDataList.Clear();
 
@@ -368,11 +370,19 @@ namespace iRacingTVController
 
 				var xmlSerializer = new XmlSerializer( incidentDataList.GetType() );
 
-				var streamWriter = new StreamWriter( incidentsFilePath );
+				try
+				{
+					var streamWriter = new StreamWriter( incidentsFilePath );
 
-				xmlSerializer.Serialize( streamWriter, incidentDataList );
+					xmlSerializer.Serialize( streamWriter, incidentDataList );
 
-				streamWriter.Close();
+					streamWriter.Close();
+				}
+				catch ( IOException )
+				{
+					saveToFileQueued = true;
+					saveToFileTimeRemaining = SaveToFileIntervalTime;
+				}
 			}
 		}
 
@@ -383,7 +393,7 @@ namespace iRacingTVController
 			if ( incidentsFilePath != newIncidentsFilePath )
 			{
 				incidentsFilePath = newIncidentsFilePath;
-				saveIncidentsQueued = false;
+				saveToFileQueued = false;
 
 				incidentDataList.Clear();
 

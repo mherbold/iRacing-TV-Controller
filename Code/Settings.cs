@@ -11,6 +11,8 @@ namespace iRacingTVController
 {
 	public static class Settings
 	{
+		public const int SaveToFileIntervalTime = 1;
+
 		public const string OverlaySettingsFolderName = "OverlaySettings";
 		public const string DirectorSettingsFolderName = "DirectorSettings";
 
@@ -39,6 +41,15 @@ namespace iRacingTVController
 		public static List<SettingsDirector> directorList = new();
 
 		public static int loading = 0;
+
+		public static float saveEditorToFileTimeRemaining = 0;
+		public static bool saveEditorToFileQueued = false;
+
+		public static float saveOverlayToFileTimeRemaining = 0;
+		public static bool saveOverlayToFileQueued = false;
+
+		public static float saveDirectorToFileTimeRemaining = 0;
+		public static bool saveDirectorToFileQueued = false;
 
 		public static void Initialize()
 		{
@@ -131,7 +142,7 @@ namespace iRacingTVController
 
 					overlayList.Add( overlayLocal );
 
-					SaveOverlay();
+					saveOverlayToFileQueued = true;
 				}
 			}
 
@@ -186,11 +197,44 @@ namespace iRacingTVController
 
 					directorList.Add( directorLocal );
 
-					SaveDirector();
+					saveDirectorToFileQueued = true;
 				}
 			}
 
 			IPC.readyToSendSettings = true;
+		}
+
+		public static void Update()
+		{
+			saveEditorToFileTimeRemaining = Math.Max( 0, saveEditorToFileTimeRemaining - Program.deltaTime );
+
+			if ( saveEditorToFileQueued && ( saveEditorToFileTimeRemaining == 0 ) )
+			{
+				saveEditorToFileQueued = false;
+				saveEditorToFileTimeRemaining = SaveToFileIntervalTime;
+
+				SaveEditor();
+			}
+
+			saveOverlayToFileTimeRemaining = Math.Max( 0, saveOverlayToFileTimeRemaining - Program.deltaTime );
+
+			if ( saveOverlayToFileQueued && ( saveOverlayToFileTimeRemaining == 0 ) )
+			{
+				saveOverlayToFileQueued = false;
+				saveOverlayToFileTimeRemaining = SaveToFileIntervalTime;
+
+				SaveOverlay();
+			}
+
+			saveDirectorToFileTimeRemaining = Math.Max( 0, saveDirectorToFileTimeRemaining - Program.deltaTime );
+
+			if ( saveDirectorToFileQueued && ( saveDirectorToFileTimeRemaining == 0 ) )
+			{
+				saveDirectorToFileQueued = false;
+				saveDirectorToFileTimeRemaining = SaveToFileIntervalTime;
+
+				SaveDirector();
+			}
 		}
 
 		public static void AddMissingDictionaryItems( SettingsOverlay settings )
@@ -334,21 +378,45 @@ namespace iRacingTVController
 
 		public static void SaveEditor()
 		{
-			Save( editorSettingsFilePath, editor );
+			try
+			{
+				Save( editorSettingsFilePath, editor );
+			}
+			catch ( IOException )
+			{
+				saveEditorToFileQueued = true;
+				saveEditorToFileTimeRemaining = SaveToFileIntervalTime;
+			}
 		}
 
 		public static void SaveOverlay()
 		{
-			Save( overlayGlobal.filePath, overlayGlobal );
-			Save( overlayLocal.filePath, overlayLocal );
+			try
+			{
+				Save( overlayGlobal.filePath, overlayGlobal );
+				Save( overlayLocal.filePath, overlayLocal );
+			}
+			catch ( IOException )
+			{
+				saveOverlayToFileQueued = true;
+				saveOverlayToFileTimeRemaining = SaveToFileIntervalTime;
+			}
 
 			UpdateCombinedOverlay();
 		}
 
 		public static void SaveDirector()
 		{
-			Save( directorGlobal.filePath, directorGlobal );
-			Save( directorLocal.filePath, directorLocal );
+			try
+			{
+				Save( directorGlobal.filePath, directorGlobal );
+				Save( directorLocal.filePath, directorLocal );
+			}
+			catch ( IOException )
+			{
+				saveDirectorToFileQueued = true;
+				saveDirectorToFileTimeRemaining = SaveToFileIntervalTime;
+			}
 
 			UpdateCombinedDirector();
 		}

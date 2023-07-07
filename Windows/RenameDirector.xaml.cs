@@ -50,11 +50,11 @@ namespace iRacingTVController
 
 					Settings.directorLocal.filePath = directorFilePath;
 
-					Settings.SaveDirector();
+					Settings.saveDirectorToFileQueued = true;
 
 					Settings.editor.lastActiveDirectorFilePath = Settings.directorLocal.filePath;
 
-					Settings.SaveEditor();
+					Settings.saveEditorToFileQueued = true;
 
 					MainWindow.Instance.Initialize();
 

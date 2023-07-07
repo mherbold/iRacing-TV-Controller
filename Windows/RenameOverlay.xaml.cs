@@ -50,11 +50,11 @@ namespace iRacingTVController
 
 					Settings.overlayLocal.filePath = overlayFilePath;
 
-					Settings.SaveOverlay();
+					Settings.saveOverlayToFileQueued = true;
 
 					Settings.editor.lastActiveOverlayFilePath = Settings.overlayLocal.filePath;
 
-					Settings.SaveEditor();
+					Settings.saveEditorToFileQueued = true;
 
 					MainWindow.Instance.Initialize();
 

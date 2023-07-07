@@ -5,7 +5,7 @@
 
 [Setup]
 AppName=iRacing-TV Unity
-AppVersion=1.5
+AppVersion=1.6
 AppCopyright=Created by Marvin Herbold
 AppPublisher=Marvin Herbold
 AppPublisherURL=http://herboldracing.com/blog/iracing/iracing-tv-unity/

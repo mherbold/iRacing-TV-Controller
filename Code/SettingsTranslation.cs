@@ -31,7 +31,7 @@ namespace iRacingTVController
 
 					IPC.readyToSendSettings = true;
 
-					Settings.SaveOverlay();
+					Settings.saveOverlayToFileQueued = true;
 				}
 			}
 		}
@@ -55,7 +55,7 @@ namespace iRacingTVController
 
 					IPC.readyToSendSettings = true;
 
-					Settings.SaveOverlay();
+					Settings.saveOverlayToFileQueued = true;
 				}
 			}
 		}

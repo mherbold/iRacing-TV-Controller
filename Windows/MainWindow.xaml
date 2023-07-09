@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.6"
+        Title="iRacing-TV Controller v1.8"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="860" Height="550" MinWidth="860" MinHeight="550" Icon="/Assets/iRacing-TV-Icon.png">
     <Grid>
@@ -1449,52 +1449,6 @@
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Start Time"/>
-                                        <local:Decimal x:Name="Overlay_Intro_StartTime" Width="100" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
-                                        <Label Content="Seconds From Start of Race Session" Grid.Column="2"/>
-                                        <CheckBox x:Name="Overlay_Intro_StartTime_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
-                                    <Grid Margin="0,6,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Row Interval"/>
-                                        <local:Decimal x:Name="Overlay_Intro_RowInterval" Width="100" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
-                                        <Label Content="Seconds" Grid.Column="2"/>
-                                        <CheckBox x:Name="Overlay_Intro_RowInterval_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
-                                    <Grid Margin="0,6,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Animation"/>
-                                        <ComboBox x:Name="Overlay_Intro_AnimationNumber" Grid.Column="1" VerticalContentAlignment="Center" SelectionChanged="Overlay_Intro_Update" />
-                                        <CheckBox x:Name="Overlay_Intro_AnimationNumber_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
-                                    <Grid Margin="0,6,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Speed"/>
-                                        <local:Decimal x:Name="Overlay_Intro_AnimationSpeed" Width="100" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
-                                        <Label Content="x" Grid.Column="2"/>
-                                        <CheckBox x:Name="Overlay_Intro_AnimationSpeed_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
-                                    <Grid Margin="0,6,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="25"/>
                                             <ColumnDefinition Width="100"/>
@@ -1511,14 +1465,12 @@
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Left Scale"/>
-                                        <local:Decimal x:Name="Overlay_Intro_LeftScale" Width="100" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
-                                        <Label Content="x" Grid.Column="2"/>
-                                        <CheckBox x:Name="Overlay_Intro_LeftScale_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        <local:Decimal x:Name="Overlay_Intro_LeftScale" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Overlay_Intro_LeftScale_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
@@ -1539,14 +1491,100 @@
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Right Scale"/>
-                                        <local:Decimal x:Name="Overlay_Intro_RightScale" Width="100" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
-                                        <Label Content="x" Grid.Column="2"/>
-                                        <CheckBox x:Name="Overlay_Intro_RightScale_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        <local:Decimal x:Name="Overlay_Intro_RightScale" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Overlay_Intro_RightScale_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Start Time"/>
+                                        <local:Decimal x:Name="Overlay_Intro_LeftStartTime" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
+                                        <Label Content="L" HorizontalContentAlignment="Center" Grid.Column="2"/>
+                                        <local:Decimal x:Name="Overlay_Intro_RightStartTime" ValueChanged="Overlay_Intro_Update" Grid.Column="3" />
+                                        <Label Content="R" HorizontalContentAlignment="Center" Grid.Column="4"/>
+                                        <CheckBox x:Name="Overlay_Intro_StartTime_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Start Interval"/>
+                                        <local:Decimal x:Name="Overlay_Intro_StartInterval" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Overlay_Intro_StartInterval_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="In Animation"/>
+                                        <ComboBox x:Name="Overlay_Intro_LeftInAnimationNumber" Grid.Column="1" VerticalContentAlignment="Center" SelectionChanged="Overlay_Intro_Update" />
+                                        <Label Content="L" HorizontalContentAlignment="Center" Grid.Column="2"/>
+                                        <ComboBox x:Name="Overlay_Intro_RightInAnimationNumber" Grid.Column="3" VerticalContentAlignment="Center" SelectionChanged="Overlay_Intro_Update" />
+                                        <Label Content="R" HorizontalContentAlignment="Center" Grid.Column="4"/>
+                                        <CheckBox x:Name="Overlay_Intro_InAnimationNumber_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Out Animation"/>
+                                        <ComboBox x:Name="Overlay_Intro_LeftOutAnimationNumber" Grid.Column="1" VerticalContentAlignment="Center" SelectionChanged="Overlay_Intro_Update" />
+                                        <Label Content="L" HorizontalContentAlignment="Center" Grid.Column="2"/>
+                                        <ComboBox x:Name="Overlay_Intro_RightOutAnimationNumber" Grid.Column="3" VerticalContentAlignment="Center" SelectionChanged="Overlay_Intro_Update" />
+                                        <Label Content="R" HorizontalContentAlignment="Center" Grid.Column="4"/>
+                                        <CheckBox x:Name="Overlay_Intro_OutAnimationNumber_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="In Time"/>
+                                        <local:Decimal x:Name="Overlay_Intro_InTime" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Overlay_Intro_InTime_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Hold Time"/>
+                                        <local:Decimal x:Name="Overlay_Intro_HoldTime" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Overlay_Intro_HoldTime_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Out Time"/>
+                                        <local:Decimal x:Name="Overlay_Intro_OutTime" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Overlay_Intro_OutTime_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                 </StackPanel>
                             </TabItem>

@@ -10,7 +10,6 @@ namespace iRacingTVController
 	[Serializable]
 	public class LiveData
 	{
-		public const float AnimationDuration = 10;
 		public static LiveData Instance { get; private set; }
 
 		public bool isConnected = false;
@@ -59,7 +58,7 @@ namespace iRacingTVController
 
 			// laps remaining
 
-			if ( IRSDK.normalizedData.isInTimedRace || !IRSDK.normalizedSession.isInRaceSession )
+			if ( ( IRSDK.normalizedData.isInTimedRace || !IRSDK.normalizedSession.isInRaceSession ) && ( IRSDK.normalizedData.sessionTimeRemaining > 0 ) )
 			{
 				liveDataRaceStatus.lapsRemainingText = GetTimeString( IRSDK.normalizedData.sessionTimeRemaining, false );
 			}
@@ -487,49 +486,57 @@ namespace iRacingTVController
 
 		public void UpdateIntro()
 		{
-			liveDataIntro.show = false;
-
-			if ( IRSDK.normalizedSession.isInRaceSession )
+			if ( IRSDK.normalizedData.sessionTimeDelta < 0 )
 			{
-				var numRows = (int) Math.Ceiling( IRSDK.normalizedData.numLeaderboardCars / 2.0 );
+				liveDataIntro.show = false;
+			}
+			else if ( IRSDK.normalizedData.sessionTimeDelta > 0 )
+			{
+				liveDataIntro.show = false;
 
-				var animationDuration = AnimationDuration / Settings.overlay.introAnimationSpeed;
-
-				var introEndTime = Settings.overlay.introStartTime + ( numRows - 1 ) * Settings.overlay.introRowInterval + animationDuration;
-
-				if ( ( IRSDK.normalizedData.sessionTime >= Settings.overlay.introStartTime ) && ( IRSDK.normalizedData.sessionTime < introEndTime ) )
+				if ( IRSDK.normalizedSession.isInRaceSession )
 				{
-					liveDataIntro.show = true;
+					var numRows = (int) Math.Ceiling( IRSDK.normalizedData.numLeaderboardCars / 2.0 );
 
-					for ( var qualifyingPosition = 0; qualifyingPosition < liveDataIntro.liveDataIntroDrivers.Length; qualifyingPosition++ )
+					var animationDuration = Settings.overlay.introInTime + Settings.overlay.introHoldTime + Settings.overlay.introOutTime;
+
+					var introStartTime = Math.Min( Settings.overlay.introLeftStartTime, Settings.overlay.introRightStartTime );
+					var introEndTime = Math.Max( Settings.overlay.introLeftStartTime, Settings.overlay.introRightStartTime ) + ( numRows - 1 ) * Settings.overlay.introStartInterval + animationDuration;
+
+					if ( ( IRSDK.normalizedData.sessionTime >= introStartTime ) && ( IRSDK.normalizedData.sessionTime < introEndTime ) )
 					{
-						var liveDataIntroDriver = liveDataIntro.liveDataIntroDrivers[ qualifyingPosition ];
+						liveDataIntro.show = true;
 
-						var normalizedCar = IRSDK.normalizedData.leaderboardIndexSortedNormalizedCars[ qualifyingPosition ];
-
-						if ( normalizedCar.includeInLeaderboard )
+						for ( var driverIndex = 0; driverIndex < liveDataIntro.liveDataIntroDrivers.Length; driverIndex++ )
 						{
-							var rowNumber = Math.Floor( qualifyingPosition / 2.0 );
-							var rowStartTime = Settings.overlay.introStartTime + rowNumber * Settings.overlay.introRowInterval;
-							var rowEndTime = rowStartTime + animationDuration;
+							var liveDataIntroDriver = liveDataIntro.liveDataIntroDrivers[ driverIndex ];
 
-							liveDataIntroDriver.show = ( IRSDK.normalizedData.sessionTime >= rowStartTime ) && ( IRSDK.normalizedData.sessionTime < rowEndTime );
-							liveDataIntroDriver.carIdx = normalizedCar.carIdx;
-							liveDataIntroDriver.positionText = $"P{normalizedCar.qualifyingPosition}";
-							liveDataIntroDriver.driverNameText = normalizedCar.userName;
+							var normalizedCar = IRSDK.normalizedData.leaderboardIndexSortedNormalizedCars[ driverIndex ];
 
-							if ( normalizedCar.qualifyingTime == -1 )
+							if ( normalizedCar.includeInLeaderboard )
 							{
-								liveDataIntroDriver.qualifyingTimeText = Settings.overlay.translationDictionary[ "DidNotQualify" ].translation;
+								var rowNumber = Math.Floor( driverIndex / 2.0 );
+								var rowStartTime = ( ( ( driverIndex & 1 ) == 0 ) ? Settings.overlay.introLeftStartTime : Settings.overlay.introRightStartTime ) + rowNumber * Settings.overlay.introStartInterval;
+								var rowEndTime = rowStartTime + animationDuration;
+
+								liveDataIntroDriver.show = ( IRSDK.normalizedData.sessionTime >= rowStartTime ) && ( IRSDK.normalizedData.sessionTime < rowEndTime );
+								liveDataIntroDriver.carIdx = normalizedCar.carIdx;
+								liveDataIntroDriver.positionText = $"P{normalizedCar.qualifyingPosition}";
+								liveDataIntroDriver.driverNameText = normalizedCar.userName;
+
+								if ( normalizedCar.qualifyingTime == -1 )
+								{
+									liveDataIntroDriver.qualifyingTimeText = Settings.overlay.translationDictionary[ "DidNotQualify" ].translation;
+								}
+								else
+								{
+									liveDataIntroDriver.qualifyingTimeText = GetTimeString( normalizedCar.qualifyingTime, true );
+								}
 							}
 							else
 							{
-								liveDataIntroDriver.qualifyingTimeText = GetTimeString( normalizedCar.qualifyingTime, true );
+								liveDataIntroDriver.show = false;
 							}
-						}
-						else
-						{
-							liveDataIntroDriver.show = false;
 						}
 					}
 				}

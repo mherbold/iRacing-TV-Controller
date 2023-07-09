@@ -96,24 +96,33 @@ namespace iRacingTVController
 		public bool telemetryNumberOfCheckpoints_Overridden = false;
 
 		public bool introEnabled = true;
-		public float introStartTime = 10;
-		public float introRowInterval = 4;
-		public int introAnimationNumber = 1;
-		public float introAnimationSpeed = 1;
-		public Vector2 introLeftPosition = new( 781, 534 );
+		public Vector2 introLeftPosition = new( 567, 453 );
 		public float introLeftScale = 1.7f;
-		public Vector2 introRightPosition = new( 1495, 534 );
+		public Vector2 introRightPosition = new( 1331, 529 );
 		public float introRightScale = 1.7f;
+		public float introLeftStartTime = 10;
+		public float introRightStartTime = 10.5f;
+		public float introStartInterval = 2;
+		public int introLeftInAnimationNumber = 1;
+		public int introRightInAnimationNumber = 1;
+		public int introLeftOutAnimationNumber = 1;
+		public int introRightOutAnimationNumber = 1;
+		public float introInTime = 5;
+		public float introHoldTime = 3;
+		public float introOutTime = 1;
 
 		public bool introEnabled_Overridden = false;
-		public bool introStartTime_Overridden = false;
-		public bool introRowInterval_Overridden = false;
-		public bool introAnimationNumber_Overridden = false;
-		public bool introAnimationSpeed_Overridden = false;
 		public bool introLeftPosition_Overridden = false;
 		public bool introLeftScale_Overridden = false;
 		public bool introRightPosition_Overridden = false;
 		public bool introRightScale_Overridden = false;
+		public bool introStartTime_Overridden = false;
+		public bool introStartInterval_Overridden = false;
+		public bool introInAnimationNumber_Overridden = false;
+		public bool introOutAnimationNumber_Overridden = false;
+		public bool introInTime_Overridden = false;
+		public bool introHoldTime_Overridden = false;
+		public bool introOutTime_Overridden = false;
 
 		public SerializableDictionary<string, SettingsText> textSettingsDataDictionary = new();
 		public SerializableDictionary<string, SettingsImage> imageSettingsDataDictionary = new();

@@ -61,7 +61,8 @@ namespace iRacingTVController
 
 		public SortedDictionary<string, int> patternOptions = new();
 		public SortedDictionary<string, int> slantOptions = new();
-		public SortedDictionary<string, int> animationOptions = new();
+		public SortedDictionary<string, int> inAnimationOptions = new();
+		public SortedDictionary<string, int> outAnimationOptions = new();
 		public SortedDictionary<string, int> capitalizationOptions = new();
 
 		static MainWindow()
@@ -316,12 +317,37 @@ namespace iRacingTVController
 				Overlay_CarNumber_Slant.Items.Add( item.Key );
 			}
 
-			animationOptions.Add( "Static (Use For Editing)", 0 );
-			animationOptions.Add( "Animation #1", 1 );
+			inAnimationOptions.Add( "Static (Use For Editing)", 0 );
+			inAnimationOptions.Add( "Fade", 1 );
+			inAnimationOptions.Add( "Drop Down", 2 );
+			inAnimationOptions.Add( "Drop Up", 3 );
+			inAnimationOptions.Add( "Slide Left", 4 );
+			inAnimationOptions.Add( "Slide Right", 5 );
+			inAnimationOptions.Add( "Leave", 6 );
+			inAnimationOptions.Add( "Approach", 7 );
+			inAnimationOptions.Add( "Conveyor", 8 );
 
-			foreach ( var item in animationOptions )
+			foreach ( var item in inAnimationOptions )
 			{
-				Overlay_Intro_AnimationNumber.Items.Add( item.Key );
+				Overlay_Intro_LeftInAnimationNumber.Items.Add( item.Key );
+				Overlay_Intro_RightInAnimationNumber.Items.Add( item.Key );
+			}
+
+			outAnimationOptions.Add( "Static (Use For Editing)", 0 );
+			outAnimationOptions.Add( "Fade", 1 );
+			outAnimationOptions.Add( "Drop Down", 2 );
+			outAnimationOptions.Add( "Drop Up", 3 );
+			outAnimationOptions.Add( "Slide Left", 4 );
+			outAnimationOptions.Add( "Slide Right", 5 );
+			outAnimationOptions.Add( "Leave", 6 );
+			outAnimationOptions.Add( "Approach", 7 );
+			outAnimationOptions.Add( "Conveyor", 8 );
+			outAnimationOptions.Add( "Fall Down", 9 );
+
+			foreach ( var item in outAnimationOptions )
+			{
+				Overlay_Intro_LeftOutAnimationNumber.Items.Add( item.Key );
+				Overlay_Intro_RightOutAnimationNumber.Items.Add( item.Key );
 			}
 
 			// editor
@@ -615,26 +641,35 @@ namespace iRacingTVController
 			// overlay - intro
 
 			Overlay_Intro_Enable.IsChecked = Settings.overlay.introEnabled;
-			Overlay_Intro_StartTime.Value = Settings.overlay.introStartTime;
-			Overlay_Intro_RowInterval.Value = Settings.overlay.introRowInterval;
-			Overlay_Intro_AnimationNumber.SelectedItem = animationOptions.FirstOrDefault( x => x.Value == Settings.overlay.introAnimationNumber ).Key;
-			Overlay_Intro_AnimationSpeed.Value = Settings.overlay.introAnimationSpeed;
 			Overlay_Intro_LeftPosition_X.Value = Settings.overlay.introLeftPosition.x;
 			Overlay_Intro_LeftPosition_Y.Value = Settings.overlay.introLeftPosition.y;
 			Overlay_Intro_LeftScale.Value = Settings.overlay.introLeftScale;
 			Overlay_Intro_RightPosition_X.Value = Settings.overlay.introRightPosition.x;
 			Overlay_Intro_RightPosition_Y.Value = Settings.overlay.introRightPosition.y;
 			Overlay_Intro_RightScale.Value = Settings.overlay.introRightScale;
+			Overlay_Intro_LeftStartTime.Value = Settings.overlay.introLeftStartTime;
+			Overlay_Intro_RightStartTime.Value = Settings.overlay.introRightStartTime;
+			Overlay_Intro_StartInterval.Value = Settings.overlay.introStartInterval;
+			Overlay_Intro_LeftInAnimationNumber.SelectedItem = inAnimationOptions.FirstOrDefault( x => x.Value == Settings.overlay.introLeftInAnimationNumber ).Key;
+			Overlay_Intro_RightInAnimationNumber.SelectedItem = inAnimationOptions.FirstOrDefault( x => x.Value == Settings.overlay.introRightInAnimationNumber ).Key;
+			Overlay_Intro_LeftOutAnimationNumber.SelectedItem = outAnimationOptions.FirstOrDefault( x => x.Value == Settings.overlay.introLeftOutAnimationNumber ).Key;
+			Overlay_Intro_RightOutAnimationNumber.SelectedItem = outAnimationOptions.FirstOrDefault( x => x.Value == Settings.overlay.introRightOutAnimationNumber ).Key;
+			Overlay_Intro_InTime.Value = Settings.overlay.introInTime;
+			Overlay_Intro_HoldTime.Value = Settings.overlay.introHoldTime;
+			Overlay_Intro_OutTime.Value = Settings.overlay.introOutTime;
 
 			Overlay_Intro_Enable_Override.IsChecked = Settings.overlay.introEnabled_Overridden;
-			Overlay_Intro_StartTime_Override.IsChecked = Settings.overlay.introStartTime_Overridden;
-			Overlay_Intro_RowInterval_Override.IsChecked = Settings.overlay.introRowInterval_Overridden;
-			Overlay_Intro_AnimationNumber_Override.IsChecked = Settings.overlay.introAnimationNumber_Overridden;
-			Overlay_Intro_AnimationSpeed_Override.IsChecked = Settings.overlay.introAnimationSpeed_Overridden;
 			Overlay_Intro_LeftPosition_Override.IsChecked = Settings.overlay.introLeftPosition_Overridden;
 			Overlay_Intro_LeftScale_Override.IsChecked = Settings.overlay.introLeftScale_Overridden;
 			Overlay_Intro_RightPosition_Override.IsChecked = Settings.overlay.introRightPosition_Overridden;
 			Overlay_Intro_RightScale_Override.IsChecked = Settings.overlay.introRightScale_Overridden;
+			Overlay_Intro_StartTime_Override.IsChecked = Settings.overlay.introStartTime_Overridden;
+			Overlay_Intro_StartInterval_Override.IsChecked = Settings.overlay.introStartInterval_Overridden;
+			Overlay_Intro_InAnimationNumber_Override.IsChecked = Settings.overlay.introInAnimationNumber_Overridden;
+			Overlay_Intro_OutAnimationNumber_Override.IsChecked = Settings.overlay.introOutAnimationNumber_Overridden;
+			Overlay_Intro_InTime_Override.IsChecked = Settings.overlay.introInTime_Overridden;
+			Overlay_Intro_HoldTime_Override.IsChecked = Settings.overlay.introHoldTime_Overridden;
+			Overlay_Intro_OutTime_Override.IsChecked = Settings.overlay.introOutTime_Overridden;
 
 			// iracing
 
@@ -3145,66 +3180,6 @@ namespace iRacingTVController
 					overlay.introEnabled = Overlay_Intro_Enable.IsChecked ?? false;
 				}
 
-				overridden = Overlay_Intro_StartTime_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.introStartTime_Overridden != overridden )
-				{
-					Settings.overlayLocal.introStartTime_Overridden = overridden;
-
-					Initialize();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.introStartTime_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.introStartTime = Overlay_Intro_StartTime.Value;
-				}
-
-				overridden = Overlay_Intro_RowInterval_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.introRowInterval_Overridden != overridden )
-				{
-					Settings.overlayLocal.introRowInterval_Overridden = overridden;
-
-					Initialize();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.introRowInterval_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.introRowInterval = Overlay_Intro_RowInterval.Value;
-				}
-
-				overridden = Overlay_Intro_AnimationNumber_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.introAnimationNumber_Overridden != overridden )
-				{
-					Settings.overlayLocal.introAnimationNumber_Overridden = overridden;
-
-					Initialize();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.introAnimationNumber_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.introAnimationNumber = animationOptions[ (string) Overlay_Intro_AnimationNumber.SelectedItem ];
-				}
-
-				overridden = Overlay_Intro_AnimationSpeed_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.introAnimationSpeed_Overridden != overridden )
-				{
-					Settings.overlayLocal.introAnimationSpeed_Overridden = overridden;
-
-					Initialize();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.introAnimationSpeed_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.introAnimationSpeed = Overlay_Intro_AnimationSpeed.Value;
-				}
-
 				overridden = Overlay_Intro_LeftPosition_Override.IsChecked ?? false;
 
 				if ( Settings.overlayLocal.introLeftPosition_Overridden != overridden )
@@ -3263,6 +3238,114 @@ namespace iRacingTVController
 					var overlay = Settings.overlayLocal.introRightScale_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
 
 					overlay.introRightScale = Overlay_Intro_RightScale.Value;
+				}
+
+				overridden = Overlay_Intro_StartTime_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.introStartTime_Overridden != overridden )
+				{
+					Settings.overlayLocal.introStartTime_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.introStartTime_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.introLeftStartTime = Overlay_Intro_LeftStartTime.Value;
+					overlay.introRightStartTime = Overlay_Intro_RightStartTime.Value;
+				}
+
+				overridden = Overlay_Intro_StartInterval_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.introStartInterval_Overridden != overridden )
+				{
+					Settings.overlayLocal.introStartInterval_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.introStartInterval_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.introStartInterval = Overlay_Intro_StartInterval.Value;
+				}
+
+				overridden = Overlay_Intro_InAnimationNumber_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.introInAnimationNumber_Overridden != overridden )
+				{
+					Settings.overlayLocal.introInAnimationNumber_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.introInAnimationNumber_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.introLeftInAnimationNumber = inAnimationOptions[ (string) Overlay_Intro_LeftInAnimationNumber.SelectedItem ];
+					overlay.introRightInAnimationNumber = inAnimationOptions[ (string) Overlay_Intro_RightInAnimationNumber.SelectedItem ];
+				}
+
+				overridden = Overlay_Intro_OutAnimationNumber_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.introOutAnimationNumber_Overridden != overridden )
+				{
+					Settings.overlayLocal.introOutAnimationNumber_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.introOutAnimationNumber_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.introLeftOutAnimationNumber = outAnimationOptions[ (string) Overlay_Intro_LeftOutAnimationNumber.SelectedItem ];
+					overlay.introRightOutAnimationNumber = outAnimationOptions[ (string) Overlay_Intro_RightOutAnimationNumber.SelectedItem ];
+				}
+
+				overridden = Overlay_Intro_InTime_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.introInTime_Overridden != overridden )
+				{
+					Settings.overlayLocal.introInTime_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.introInTime_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.introInTime = Overlay_Intro_InTime.Value;
+				}
+
+				overridden = Overlay_Intro_HoldTime_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.introHoldTime_Overridden != overridden )
+				{
+					Settings.overlayLocal.introHoldTime_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.introHoldTime_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.introHoldTime = Overlay_Intro_HoldTime.Value;
+				}
+
+				overridden = Overlay_Intro_OutTime_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.introOutTime_Overridden != overridden )
+				{
+					Settings.overlayLocal.introOutTime_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.introOutTime_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.introOutTime = Overlay_Intro_OutTime.Value;
 				}
 
 				IPC.readyToSendSettings = true;

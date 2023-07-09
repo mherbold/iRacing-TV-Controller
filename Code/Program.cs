@@ -16,7 +16,7 @@ namespace iRacingTVController
 		public const string MutexNameSettings = "iRacing-TV Mutex Settings";
 		public const string MutexNameLiveData = "iRacing-TV Mutex Live Data";
 
-		public const string AppName = "iRacing-TV-Unity";
+		public const string AppName = "iRacing-TV";
 		public const string AppNameSTT = "iRacing-STT-VR";
 
 		public static readonly string documentsFolder = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ) + $"\\{AppName}\\";

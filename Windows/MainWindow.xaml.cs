@@ -532,6 +532,15 @@ namespace iRacingTVController
 
 			InitializeOverlayTranslation();
 
+			// overlay - start lights
+
+			Overlay_StartLights_Enable.IsChecked = Settings.overlay.startLightsEnabled;
+			Overlay_StartLights_Position_X.Value = (int) Settings.overlay.startLightsPosition.x;
+			Overlay_StartLights_Position_Y.Value = (int) Settings.overlay.startLightsPosition.y;
+
+			Overlay_StartLights_Enable_Override.IsChecked = Settings.overlay.startLightsEnabled_Overridden;
+			Overlay_StartLights_Position_Override.IsChecked = Settings.overlay.startLightsPosition_Overridden;
+
 			// overlay - race status
 
 			Overlay_RaceStatus_Enable.IsChecked = Settings.overlay.raceStatusEnabled;
@@ -2485,6 +2494,46 @@ namespace iRacingTVController
 					var settings = overlaySettings.tintColor_Overridden ? overlaySettings : globalSettings;
 
 					settings.tintColor = new Color( Text_TintColor_R.Value, Text_TintColor_G.Value, Text_TintColor_B.Value, Text_TintColor_A.Value );
+				}
+
+				IPC.readyToSendSettings = true;
+
+				Settings.saveOverlayToFileQueued = true;
+			}
+		}
+
+		private void Overlay_StartLights_Update( object sender, EventArgs e )
+		{
+			if ( initializing == 0 )
+			{
+				var overridden = Overlay_StartLights_Enable_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.startLightsEnabled_Overridden != overridden )
+				{
+					Settings.overlayLocal.startLightsEnabled_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.startLightsEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.startLightsEnabled = Overlay_StartLights_Enable.IsChecked ?? false;
+				}
+
+				overridden = Overlay_StartLights_Position_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.startLightsPosition_Overridden != overridden )
+				{
+					Settings.overlayLocal.startLightsPosition_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.startLightsPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.startLightsPosition = new Vector2( Overlay_StartLights_Position_X.Value, Overlay_StartLights_Position_Y.Value );
 				}
 
 				IPC.readyToSendSettings = true;

@@ -124,6 +124,12 @@ namespace iRacingTVController
 		public bool introHoldTime_Overridden = false;
 		public bool introOutTime_Overridden = false;
 
+		public bool startLightsEnabled = true;
+		public Vector2 startLightsPosition = new( 903, 130 );
+
+		public bool startLightsEnabled_Overridden = false;
+		public bool startLightsPosition_Overridden = false;
+
 		public SerializableDictionary<string, SettingsText> textSettingsDataDictionary = new();
 		public SerializableDictionary<string, SettingsImage> imageSettingsDataDictionary = new();
 		public SerializableDictionary<string, SettingsTranslation> translationDictionary = new();

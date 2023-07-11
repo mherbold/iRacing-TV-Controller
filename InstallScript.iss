@@ -1,6 +1,6 @@
 [Setup]
 AppName=iRacing-TV
-AppVersion=1.8
+AppVersion=1.9
 AppCopyright=Created by Marvin Herbold
 AppPublisher=Marvin Herbold
 AppPublisherURL=https://herboldracing.com/iracing-tv
@@ -22,6 +22,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "C:\Users\marvi\Desktop\iRacing-TV Controller\*"; DestDir: "{app}"
 Source: "C:\Users\marvi\Desktop\iRacing-TV Controller\Assets\*"; DestDir: "{userdocs}\iRacing-TV\Assets"
 Source: "C:\Users\marvi\Documents\GitHub\iRacing-TV-Unity\Build\*"; DestDir: "{app}"; Flags: recursesubdirs
+
+Source: "C:\Users\marvi\Desktop\iRacing-TV Controller\Assets\RevolutionGothic_ExtraBold.otf"; DestDir: "{autofonts}"; FontInstall: "Revolution Gothic ExtraBold"; Flags: onlyifdoesntexist uninsneveruninstall fontisnttruetype
+Source: "C:\Users\marvi\Desktop\iRacing-TV Controller\Assets\RevolutionGothic_ExtraBold_It.otf"; DestDir: "{autofonts}"; FontInstall: "Revolution Gothic ExtraBold It"; Flags: onlyifdoesntexist uninsneveruninstall fontisnttruetype
 
 [Dirs]
 Name: "{userdocs}\iRacing-TV"

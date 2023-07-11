@@ -252,15 +252,18 @@ namespace iRacingTVController
 				{ "Highlight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\current-target.png" } },
 				{ "IntroBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\leaderboard.png", position = { x = 44, y = 155 }, size = { x = 1826, y = 660 }, border = { x = 32, y = 32, z = 32, w = 32 } } },
 				{ "IntroDriverBackground", new SettingsImage() { imageType = SettingsImage.ImageType.None, position = { x = -203, y = -177 }, size = { x = 408, y = 336 } } },
-				{ "IntroDriverSuit", new SettingsImage() { imageType = SettingsImage.ImageType.Driver, position = { x = 13, y = -125 }, size = { x = 150, y = 250 } } },
 				{ "IntroDriverCar", new SettingsImage() { imageType = SettingsImage.ImageType.Car, position = { x = -254, y = -113 }, size = { x = 508, y = 272 } } },
-				{ "IntroDriverHelmet", new SettingsImage() { imageType = SettingsImage.ImageType.Helmet, position = { x = -175, y = -159 }, size = { x = 100, y = 100 } } },
-				{ "IntroStatsBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\leaderboard.png", position = { x = -178, y = 53 }, size = { x = 357, y = 90 }, border = { x = 32, y = 32, z = 32, w = 32 } } },
 				{ "IntroDriverCarNumber", new SettingsImage() { imageType = SettingsImage.ImageType.CarNumber, position = { x = 97, y = 73 }, size = { x = 73, y = 52 } } },
+				{ "IntroDriverHelmet", new SettingsImage() { imageType = SettingsImage.ImageType.Helmet, position = { x = -175, y = -159 }, size = { x = 100, y = 100 } } },
+				{ "IntroDriverSuit", new SettingsImage() { imageType = SettingsImage.ImageType.Driver, position = { x = 13, y = -125 }, size = { x = 150, y = 250 } } },
+				{ "IntroStatsBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\leaderboard.png", position = { x = -178, y = 53 }, size = { x = 357, y = 90 }, border = { x = 32, y = 32, z = 32, w = 32 } } },
 				{ "LeaderboardBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\leaderboard.png", size = { x = 319, y = 8 }, border = { x = 32, y = 32, z = 32, w = 32 } } },
 				{ "PositionSplitter", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\position-splitter.png" } },
 				{ "RaceStatusBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\race-status.png" } },
 				{ "SeriesLogo", new SettingsImage() { imageType = SettingsImage.ImageType.SeriesLogo, position = { x = 7, y = 7 }, size = { x = 305, y = 103 } } },
+				{ "StartLightsGo", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\lights-go.png" } },
+				{ "StartLightsReady", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\lights-ready.png" } },
+				{ "StartLightsSet", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\lights-set.png" } },
 				{ "VoiceOfBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\voice-of.png" } },
 				{ "VoiceOfCar", new SettingsImage() { imageType = SettingsImage.ImageType.Car, position = { x = 220, y = -48 }, size = { x = 400, y = 200 } } },
 				{ "WhiteLight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\light-white.png", position = { x = 280, y = 130 } } },
@@ -551,6 +554,12 @@ namespace iRacingTVController
 				introInTime_Overridden = overlayLocal.introInTime_Overridden,
 				introHoldTime_Overridden = overlayLocal.introHoldTime_Overridden,
 				introOutTime_Overridden = overlayLocal.introOutTime_Overridden,
+
+				startLightsEnabled = overlayLocal.startLightsEnabled_Overridden ? overlayLocal.startLightsEnabled : overlayGlobal.startLightsEnabled,
+				startLightsPosition = overlayLocal.startLightsPosition_Overridden ? overlayLocal.startLightsPosition : overlayGlobal.startLightsPosition,
+
+				startLightsEnabled_Overridden = overlayLocal.startLightsEnabled_Overridden,
+				startLightsPosition_Overridden = overlayLocal.startLightsPosition_Overridden,
 			};
 
 			foreach ( var item in overlayLocal.imageSettingsDataDictionary )

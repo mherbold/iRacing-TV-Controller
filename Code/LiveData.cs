@@ -19,6 +19,7 @@ namespace iRacingTVController
 		public LiveDataVoiceOf liveDataVoiceOf = new();
 		public LiveDataSubtitle liveDataSubtitle = new();
 		public LiveDataIntro liveDataIntro = new();
+		public LiveDataStartLights liveDataStartLights = new();
 
 		public string seriesLogoTextureUrl = string.Empty;
 		public int lastFrameBottomSplitFirstPosition = 0;
@@ -44,6 +45,7 @@ namespace iRacingTVController
 			UpdateVoiceOf();
 			UpdateSubtitle();
 			UpdateIntro();
+			UpdateStartLights();
 
 			seriesLogoTextureUrl = IRSDK.normalizedSession.seriesLogoTextureUrl;
 
@@ -58,7 +60,7 @@ namespace iRacingTVController
 
 			// laps remaining
 
-			if ( ( IRSDK.normalizedData.isInTimedRace || !IRSDK.normalizedSession.isInRaceSession ) && ( IRSDK.normalizedData.sessionTimeRemaining > 0 ) )
+			if ( IRSDK.normalizedData.isInTimedRace || !IRSDK.normalizedSession.isInRaceSession )
 			{
 				liveDataRaceStatus.lapsRemainingText = GetTimeString( IRSDK.normalizedData.sessionTimeRemaining, false );
 			}
@@ -540,6 +542,26 @@ namespace iRacingTVController
 						}
 					}
 				}
+			}
+		}
+
+		public void UpdateStartLights()
+		{
+			liveDataStartLights.showReady = false;
+			liveDataStartLights.showSet = false;
+			liveDataStartLights.showGo = false;
+
+			if ( ( IRSDK.normalizedData.sessionFlags & (uint) SessionFlags.StartGo ) != 0 )
+			{
+				liveDataStartLights.showGo = true;
+			}
+			else if ( ( IRSDK.normalizedData.sessionFlags & (uint) SessionFlags.StartSet ) != 0 )
+			{
+				liveDataStartLights.showSet = true;
+			}
+			else if ( ( IRSDK.normalizedData.sessionFlags & (uint) SessionFlags.StartReady ) != 0 )
+			{
+				liveDataStartLights.showReady = true;
 			}
 		}
 

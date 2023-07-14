@@ -262,45 +262,55 @@ namespace iRacingTVController
 			}
 		}
 
-		public static int GetCamGroupNumber( SettingsDirector.CameraType cameraType )
+		public static int GetCamGroupNumber( SettingsDirector.CameraType cameraType, bool shuffleCamerasInList = true )
 		{
+			string? cameraGroupNames = null;
+
 			switch ( cameraType )
 			{
 				case SettingsDirector.CameraType.Practice:
-					return GetCamGroupNumber( Settings.director.camerasPractice );
+					cameraGroupNames = Settings.director.camerasPractice;
+					break;
 
 				case SettingsDirector.CameraType.Qualifying:
-					return GetCamGroupNumber( Settings.director.camerasQualifying );
+					cameraGroupNames = Settings.director.camerasQualifying;
+					break;
 
 				case SettingsDirector.CameraType.Intro:
-					return GetCamGroupNumber( Settings.director.camerasIntro );
+					cameraGroupNames = Settings.director.camerasIntro;
+					break;
 
 				case SettingsDirector.CameraType.Inside:
-					return GetCamGroupNumber( Settings.director.camerasInside );
+					cameraGroupNames = Settings.director.camerasInside;
+					break;
 
 				case SettingsDirector.CameraType.Close:
-					return GetCamGroupNumber( Settings.director.camerasClose );
+					cameraGroupNames = Settings.director.camerasClose;
+					break;
 
 				case SettingsDirector.CameraType.Medium:
-					return GetCamGroupNumber( Settings.director.camerasMedium );
+					cameraGroupNames = Settings.director.camerasMedium;
+					break;
 
 				case SettingsDirector.CameraType.Far:
-					return GetCamGroupNumber( Settings.director.camerasFar );
+					cameraGroupNames = Settings.director.camerasFar;
+					break;
 
 				case SettingsDirector.CameraType.VeryFar:
-					return GetCamGroupNumber( Settings.director.camerasVeryFar );
+					cameraGroupNames = Settings.director.camerasVeryFar;
+					break;
 			}
 
-			return 0;
+			return ( cameraGroupNames == null ) ? 0 : GetCamGroupNumber( cameraGroupNames, shuffleCamerasInList );
 		}
 
-		public static int GetCamGroupNumber( string cameraGroupNames )
+		public static int GetCamGroupNumber( string cameraGroupNames, bool shuffleCamerasInList = true )
 		{
 			if ( session != null )
 			{
 				var selectedCameraGroupList = cameraGroupNames.Split( "," ).ToList().Select( s => s.Trim().ToLower() ).ToList();
 
-				var shuffledSelectedCameraGroupList = selectedCameraGroupList.OrderBy( s => Program.random.Next() ).ToList();
+				var shuffledSelectedCameraGroupList = shuffleCamerasInList ? selectedCameraGroupList.OrderBy( s => Program.random.Next() ).ToList() : selectedCameraGroupList;
 
 				foreach ( var selectedCameraGroup in shuffledSelectedCameraGroupList )
 				{

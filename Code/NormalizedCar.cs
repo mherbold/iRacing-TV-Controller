@@ -31,6 +31,8 @@ namespace iRacingTVController
 		public bool hasCrossedStartLine = false;
 		public bool isOnPitRoad = false;
 		public bool isOutOfCar = false;
+		public bool isPaceCar = false;
+		public bool isSpectator = false;
 
 		public float outOfCarTimer = 0;
 
@@ -99,6 +101,8 @@ namespace iRacingTVController
 			hasCrossedStartLine = false;
 			isOnPitRoad = false;
 			isOutOfCar = false;
+			isPaceCar = false;
+			isSpectator = false;
 
 			leaderboardIndex = 0;
 
@@ -193,7 +197,17 @@ namespace iRacingTVController
 				{
 					userName = Regex.Replace( driver.UserName, @"[\d]", string.Empty );
 
-					GenerateAbbrevName( false );
+					isPaceCar = driver.CarIsPaceCar == 1;
+					isSpectator = driver.IsSpectator == 1;
+
+					if ( isPaceCar )
+					{
+						abbrevName = driver.UserName;
+					}
+					else
+					{
+						GenerateAbbrevName( false );
+					}
 
 					carNumber = driver.CarNumber;
 					carNumberRaw = driver.CarNumberRaw;
@@ -201,7 +215,7 @@ namespace iRacingTVController
 					classID = driver.CarClassID;
 					classColor = new Color( driver.CarClassColor[ 2.. ] );
 
-					includeInLeaderboard = ( driver.IsSpectator == 0 ) && ( driver.CarIsPaceCar == 0 );
+					includeInLeaderboard = !isSpectator && !isPaceCar;
 
 					if ( includeInLeaderboard )
 					{
@@ -296,7 +310,7 @@ namespace iRacingTVController
 
 		public void Update()
 		{
-			if ( ( IRSDK.data == null ) || !includeInLeaderboard )
+			if ( IRSDK.data == null )
 			{
 				return;
 			}
@@ -305,6 +319,13 @@ namespace iRacingTVController
 
 			isOnPitRoad = car.CarIdxOnPitRoad;
 			isOutOfCar = car.CarIdxLapDistPct == -1;
+
+			if ( !includeInLeaderboard )
+			{
+				lapDistPct = Math.Max( 0, car.CarIdxLapDistPct );
+
+				return;
+			}
 
 			overallPosition = car.CarIdxPosition;
 			classPosition = car.CarIdxClassPosition;

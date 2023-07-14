@@ -32,7 +32,6 @@ namespace iRacingTVController
 			RewindToStartOfReplay,
 			FindStartOfRace,
 			LookAtPaceCarWithScenicCamera,
-			WaitForLookAtPaceCarToComplete,
 			SearchForNextIncident,
 			AddIncidentToList,
 			RewindToStartOfReplayAgain,
@@ -128,22 +127,11 @@ namespace iRacingTVController
 
 					case IncidentScanStateEnum.LookAtPaceCarWithScenicCamera:
 
-						var scenicCameraGroupNumber = IRSDK.GetCamGroupNumber( Settings.editor.editorIncidentsScenicCameras );
+						var scenicCameraGroupNumber = IRSDK.GetCamGroupNumber( Settings.editor.editorIncidentsScenicCameras, false );
 
 						IRSDK.AddMessage( BroadcastMessageTypes.CamSwitchNum, 0, scenicCameraGroupNumber, 0 );
 
-						currentIncidentScanState = IncidentScanStateEnum.WaitForLookAtPaceCarToComplete;
-
-						break;
-
-					case IncidentScanStateEnum.WaitForLookAtPaceCarToComplete:
-
-						scenicCameraGroupNumber = IRSDK.GetCamGroupNumber( Settings.editor.editorIncidentsScenicCameras );
-
-						if ( ( IRSDK.camCarIdx == 0 ) && ( IRSDK.camGroupNumber == scenicCameraGroupNumber ) )
-						{
-							currentIncidentScanState = IncidentScanStateEnum.SearchForNextIncident;
-						}
+						currentIncidentScanState = IncidentScanStateEnum.SearchForNextIncident;
 
 						break;
 

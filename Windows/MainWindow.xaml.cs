@@ -1806,7 +1806,7 @@ namespace iRacingTVController
 				IRSDK.targetCamEnabled = true;
 				IRSDK.targetCamFastSwitchEnabled = true;
 				IRSDK.targetCamCarIdx = item.CarIdx;
-				IRSDK.targetCamGroupNumber = IRSDK.GetCamGroupNumber( Settings.editor.editorIncidentsEditCameras );
+				IRSDK.targetCamGroupNumber = IRSDK.GetCamGroupNumber( Settings.editor.editorIncidentsEditCameras, false );
 
 				IRSDK.targetReplayStartFrameNumberEnabled = true;
 				IRSDK.targetReplayStartFrameNumber = item.StartFrame;
@@ -1917,36 +1917,6 @@ namespace iRacingTVController
 				{
 					IRSDK.targetReplayStartPlaying = false;
 				}
-			}
-		}
-
-		private void Subtitles_Import_Button_Click( object sender, EventArgs e )
-		{
-			if ( !IRSDK.isConnected )
-			{
-				MessageBox.Show( this, "iRacing is not running.", "Not Yet", MessageBoxButton.OK, MessageBoxImage.Exclamation );
-
-				return;
-			}
-
-			if ( !IRSDK.normalizedSession.isReplay )
-			{
-				MessageBox.Show( this, "Sorry, the subtitles system does not work outside of replays.", "Not In Replay", MessageBoxButton.OK, MessageBoxImage.Exclamation );
-
-				return;
-			}
-
-			if ( Subtitles_ListView.Items.Count > 0 )
-			{
-				if ( MessageBox.Show( this, "Are you sure you want to clear all subtitles and import them from iRacing-STT-VR?", "Are You Sure?", MessageBoxButton.OKCancel, MessageBoxImage.Question ) == MessageBoxResult.Cancel )
-				{
-					return;
-				}
-			}
-
-			if ( !SubtitlePlayback.Import() )
-			{
-				MessageBox.Show( this, "Sorry, we were not able to find any iRacing-STT-VR chat log matching this session ID.", "Chat Log Not Found", MessageBoxButton.OK, MessageBoxImage.Error );
 			}
 		}
 

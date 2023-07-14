@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.9"
+        Title="iRacing-TV Controller v1.10"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="860" Height="550" MinWidth="860" MinHeight="550" Icon="/Assets/iRacing-TV-Icon.png">
     <Grid>
@@ -227,10 +227,8 @@
                     <Grid Grid.Row="1" Margin="0,6,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Content="Import From iRacing-STT-VR" Margin="0,0,3,0" Click="Subtitles_Import_Button_Click"/>
-                        <Button Content="Clear All" Grid.Column="1" Margin="3,0,3,0" Click="Subtitles_Clear_Button_Click"/>
+                        <Button Content="Clear All" Click="Subtitles_Clear_Button_Click"/>
                     </Grid>
                 </Grid>
             </TabItem>

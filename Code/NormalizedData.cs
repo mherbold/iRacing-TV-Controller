@@ -39,6 +39,8 @@ namespace iRacingTVController
 
 		public int radioTransmitCarIdx;
 
+		public NormalizedCar? paceCar = null;
+
 		public NormalizedCar[] normalizedCars = new NormalizedCar[ MaxNumCars ];
 
 		public List<NormalizedCar> leaderboardIndexSortedNormalizedCars = new( MaxNumCars );
@@ -88,6 +90,8 @@ namespace iRacingTVController
 
 			radioTransmitCarIdx = -1;
 
+			paceCar = null;
+
 			foreach ( var normalizedCar in normalizedCars )
 			{
 				normalizedCar.Reset();
@@ -115,6 +119,11 @@ namespace iRacingTVController
 					if ( normalizedCar.includeInLeaderboard )
 					{
 						numLeaderboardCars++;
+					}
+
+					if ( normalizedCar.isPaceCar )
+					{
+						paceCar = normalizedCar;
 					}
 				}
 

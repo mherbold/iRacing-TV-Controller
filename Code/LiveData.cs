@@ -559,9 +559,12 @@ namespace iRacingTVController
 			{
 				liveDataStartLights.showSet = true;
 			}
-			else if ( ( IRSDK.normalizedData.sessionFlags & (uint) SessionFlags.StartReady ) != 0 )
+			else if ( ( IRSDK.normalizedData.sessionFlags & (uint) ( SessionFlags.StartReady | SessionFlags.OneLapToGreen ) ) != 0 )
 			{
-				liveDataStartLights.showReady = true;
+				if ( ( IRSDK.normalizedData.paceCar == null ) || ( IRSDK.normalizedData.paceCar.isOnPitRoad && ( IRSDK.normalizedData.paceCar.lapDistPct > 0.5f ) ) )
+				{
+					liveDataStartLights.showReady = true;
+				}
 			}
 		}
 

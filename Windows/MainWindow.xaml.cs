@@ -426,7 +426,7 @@ namespace iRacingTVController
 			Director_Heat_Falloff_Override.IsChecked = Settings.director.heatFalloff_Overridden;
 			Director_Heat_Bias_Override.IsChecked = Settings.director.heatBias_Overridden;
 
-			Director_PreferredCar_Number.Text = Settings.director.preferredCarNumber;
+			Director_PreferredCar_Number.Text = Settings.director.preferredCarNumbers;
 			Director_PreferredCar_LockOnEnabled.IsChecked = Settings.director.preferredCarLockOnEnabled;
 			Director_PreferredCar_LockOnMinimumHeat.Value = Settings.director.preferredCarLockOnMinimumHeat;
 
@@ -640,12 +640,14 @@ namespace iRacingTVController
 			Overlay_TelemetryMode_ShowDistance.IsChecked = ( Settings.overlay.telemetryMode == 1 );
 			Overlay_Telemetry_Mode_ShowTime.IsChecked = ( Settings.overlay.telemetryMode == 2 );
 			Overlay_Telemetry_NumberOfCheckpoints.Value = Settings.overlay.telemetryNumberOfCheckpoints;
+			Overlay_Telemetry_ShowAsNegativeNumbers.IsChecked = Settings.overlay.telemetryShowAsNegativeNumbers;
 
 			Overlay_Telemetry_PitColor_Override.IsChecked = Settings.overlay.telemetryPitColor_Overridden;
 			Overlay_Telemetry_OutColor_Override.IsChecked = Settings.overlay.telemetryOutColor_Overridden;
 			Overlay_Telemetry_IsInBetweenCars_Override.IsChecked = Settings.overlay.telemetryIsBetweenCars_Overridden;
 			Overlay_Telemetry_Mode_Override.IsChecked = Settings.overlay.telemetryMode_Overridden;
 			Overlay_Telemetry_NumberOfCheckpoints_Override.IsChecked = Settings.overlay.telemetryNumberOfCheckpoints_Overridden;
+			Overlay_Telemetry_ShowAsNegativeNumbers_Override.IsChecked = Settings.overlay.telemetryShowAsNegativeNumbers_Overridden;
 
 			// overlay - intro
 
@@ -1619,7 +1621,7 @@ namespace iRacingTVController
 				{
 					var director = Settings.directorLocal.preferredCarNumber_Overridden ? Settings.directorLocal : Settings.directorGlobal;
 
-					director.preferredCarNumber = Director_PreferredCar_Number.Text;
+					director.preferredCarNumbers = Director_PreferredCar_Number.Text;
 				}
 
 				overridden = Director_PreferredCar_LockOnEnabled_Override.IsChecked ?? false;
@@ -3172,6 +3174,21 @@ namespace iRacingTVController
 					var overlay = Settings.overlayLocal.telemetryNumberOfCheckpoints_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
 
 					overlay.telemetryNumberOfCheckpoints = (int) Overlay_Telemetry_NumberOfCheckpoints.Value;
+				}
+
+				overridden = Overlay_Telemetry_ShowAsNegativeNumbers_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.telemetryShowAsNegativeNumbers_Overridden != overridden )
+				{
+					Settings.overlayLocal.telemetryShowAsNegativeNumbers_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.telemetryShowAsNegativeNumbers_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.telemetryShowAsNegativeNumbers = Overlay_Telemetry_ShowAsNegativeNumbers.IsChecked ?? false;
 				}
 
 				IPC.readyToSendSettings = true;

@@ -1,6 +1,6 @@
 ﻿
 using System;
-
+using System.Diagnostics.Eventing.Reader;
 using irsdkSharp.Serialization.Enums.Fastest;
 
 using static iRacingTVController.Unity;
@@ -296,7 +296,7 @@ namespace iRacingTVController
 
 					// position text color
 
-					var tintColor = Settings.overlay.textSettingsDataDictionary[ "Position" ].tintColor;
+					var tintColor = Settings.overlay.textSettingsDataDictionary[ "LeaderboardPosition" ].tintColor;
 
 					if ( Settings.overlay.leaderboardUseClassColors )
 					{
@@ -313,7 +313,7 @@ namespace iRacingTVController
 
 					// driver name color
 
-					tintColor = Settings.overlay.textSettingsDataDictionary[ "DriverName" ].tintColor;
+					tintColor = Settings.overlay.textSettingsDataDictionary[ "LeaderboardPositionDriverName" ].tintColor;
 
 					if ( Settings.overlay.leaderboardUseClassColors )
 					{
@@ -326,8 +326,10 @@ namespace iRacingTVController
 
 					// telemetry
 
+					var negativeSign = Settings.overlay.telemetryShowAsNegativeNumbers ? "-" : "";
+
 					liveDataLeaderboardSlot.telemetryText = string.Empty;
-					liveDataLeaderboardSlot.telemetryColor = Settings.overlay.textSettingsDataDictionary[ "Telemetry" ].tintColor;
+					liveDataLeaderboardSlot.telemetryColor = Settings.overlay.textSettingsDataDictionary[ "LeaderboardPositionTelemetry" ].tintColor;
 
 					if ( IRSDK.normalizedSession.isInPracticeSession || IRSDK.normalizedSession.isInQualifyingSession )
 					{
@@ -341,7 +343,7 @@ namespace iRacingTVController
 							{
 								var deltaTime = normalizedCar.bestLapTime - leadCarBestLapTime;
 
-								liveDataLeaderboardSlot.telemetryText = $"-{deltaTime:0.000}";
+								liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{deltaTime:0.000}";
 							}
 						}
 					}
@@ -373,7 +375,7 @@ namespace iRacingTVController
 								{
 									if ( Settings.overlay.telemetryMode == 0 )
 									{
-										liveDataLeaderboardSlot.telemetryText = $"-{lapPosition:0.000} {Settings.overlay.translationDictionary[ "LapsAbbreviation" ].translation}";
+										liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{lapPosition:0.000} {Settings.overlay.translationDictionary[ "LapsAbbreviation" ].translation}";
 									}
 									else if ( Settings.overlay.telemetryMode == 1 )
 									{
@@ -385,7 +387,7 @@ namespace iRacingTVController
 
 											if ( distanceString != "0" )
 											{
-												liveDataLeaderboardSlot.telemetryText = $"-{distanceString} {Settings.overlay.translationDictionary[ "MetersAbbreviation" ].translation}";
+												liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{distanceString} {Settings.overlay.translationDictionary[ "MetersAbbreviation" ].translation}";
 											}
 										}
 										else
@@ -396,7 +398,7 @@ namespace iRacingTVController
 
 											if ( distanceString != "0" )
 											{
-												liveDataLeaderboardSlot.telemetryText = $"-{distanceString} {Settings.overlay.translationDictionary[ "FeetAbbreviation" ].translation}";
+												liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{distanceString} {Settings.overlay.translationDictionary[ "FeetAbbreviation" ].translation}";
 											}
 										}
 									}
@@ -404,11 +406,11 @@ namespace iRacingTVController
 									{
 										if ( ( carInFront != null ) && ( carInFront.checkpoints[ normalizedCar.checkpointIdx ] > 0 ) )
 										{
-											var checkpointTime = (float) ( carInFront.checkpoints[ normalizedCar.checkpointIdx ] - normalizedCar.checkpoints[ normalizedCar.checkpointIdx ] );
+											var checkpointTime = Math.Abs( (float) ( normalizedCar.checkpoints[ normalizedCar.checkpointIdx ] - carInFront.checkpoints[ normalizedCar.checkpointIdx ] ) );
 
 											var deltaCheckpointTime = checkpointTime - normalizedCar.checkpointTime;
 
-											if ( Math.Abs( deltaCheckpointTime ) < 0.05 )
+											if ( Math.Abs( deltaCheckpointTime ) < 0.1 )
 											{
 												normalizedCar.checkpointTime += deltaCheckpointTime * 0.05f;
 											}
@@ -417,7 +419,7 @@ namespace iRacingTVController
 												normalizedCar.checkpointTime = checkpointTime;
 											}
 
-											liveDataLeaderboardSlot.telemetryText = $"{normalizedCar.checkpointTime:0.00}";
+											liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{normalizedCar.checkpointTime:0.00}";
 										}
 									}
 								}
@@ -559,9 +561,16 @@ namespace iRacingTVController
 			{
 				liveDataStartLights.showSet = true;
 			}
-			else if ( ( IRSDK.normalizedData.sessionFlags & (uint) ( SessionFlags.StartReady | SessionFlags.OneLapToGreen ) ) != 0 )
+			else if ( ( IRSDK.normalizedData.sessionFlags & (uint) SessionFlags.StartReady ) != 0 )
 			{
-				if ( ( IRSDK.normalizedData.paceCar == null ) || ( IRSDK.normalizedData.paceCar.isOnPitRoad && ( IRSDK.normalizedData.paceCar.lapDistPct > 0.5f ) ) )
+				if ( ( IRSDK.normalizedData.sessionFlags & (uint) SessionFlags.OneLapToGreen ) != 0 )
+				{
+					if ( ( IRSDK.normalizedData.paceCar == null ) || ( IRSDK.normalizedData.paceCar.isOnPitRoad && ( IRSDK.normalizedData.paceCar.lapDistPct > 0.5f ) ) )
+					{
+						liveDataStartLights.showReady = true;
+					}
+				}
+				else if ( ( IRSDK.normalizedData.sessionFlags & (uint) SessionFlags.StartHidden ) == 0 )
 				{
 					liveDataStartLights.showReady = true;
 				}

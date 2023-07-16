@@ -1,5 +1,7 @@
 ﻿
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using irsdkSharp.Serialization.Enums.Fastest;
 
@@ -13,6 +15,8 @@ namespace iRacingTVController
 
 		public static int targetCamCarIdx = 0;
 		public static SettingsDirector.CameraType targetCamType = SettingsDirector.CameraType.Intro;
+
+		public static List<NormalizedCar> preferredCarList = new();
 
 		public static void Update()
 		{
@@ -42,11 +46,12 @@ namespace iRacingTVController
 			NormalizedCar? firstPlaceCar = null;
 			NormalizedCar? leadingOnTrackCar = null;
 			NormalizedCar? leadingPittedCar = null;
-			NormalizedCar? preferredCar = null;
 			NormalizedCar? hottestCar = null;
 			NormalizedCar? incidentCar = ( currentIncident != null ) ? IRSDK.normalizedData.FindNormalizedCarByCarIdx( currentIncident.CarIdx ) : null;
 			NormalizedCar? talkingCar = ( IRSDK.normalizedData.radioTransmitCarIdx != -1 ) ? IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.normalizedData.radioTransmitCarIdx ) : null;
 			NormalizedCar? randomCar = GetRandomNormalizedCar();
+
+			var preferredCarNumbersList = Settings.director.preferredCarNumbers.Split( "," ).ToList().Select( s => s.Trim() ).ToList();
 
 			foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardIndexSortedNormalizedCars )
 			{
@@ -64,16 +69,25 @@ namespace iRacingTVController
 						leadingPittedCar = normalizedCar;
 					}
 
-					if ( normalizedCar.carNumber == Settings.director.preferredCarNumber )
-					{
-						preferredCar = normalizedCar;
-					}
-
 					if ( ( normalizedCar.attackingHeat > 0 ) && ( ( hottestCar == null ) || ( ( normalizedCar.attackingHeat + normalizedCar.heatBias ) > ( hottestCar.attackingHeat + hottestCar.heatBias ) ) ) )
 					{
 						hottestCar = normalizedCar;
 					}
+
+					if ( preferredCarNumbersList.Contains( normalizedCar.carNumber ) )
+					{
+						preferredCarList.Add( normalizedCar );
+					}
 				}
+			}
+
+			NormalizedCar? preferredCar = null;
+
+			if ( preferredCarList.Count > 0 )
+			{
+				var preferredCarIndex = (int) Math.Floor( IRSDK.normalizedData.sessionTime / 10.0f ) % preferredCarList.Count;
+
+				preferredCar = preferredCarList[ preferredCarIndex ];
 			}
 
 			var targetCamCarIdx = preferredCar?.carIdx ?? leadingOnTrackCar?.carIdx ?? leadingPittedCar?.carIdx ?? 0;

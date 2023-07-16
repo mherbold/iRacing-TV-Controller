@@ -88,12 +88,14 @@ namespace iRacingTVController
 		public bool telemetryIsBetweenCars = true;
 		public int telemetryMode = 2;
 		public int telemetryNumberOfCheckpoints = 150;
+		public bool telemetryShowAsNegativeNumbers = true;
 
 		public bool telemetryPitColor_Overridden = false;
 		public bool telemetryOutColor_Overridden = false;
 		public bool telemetryIsBetweenCars_Overridden = false;
 		public bool telemetryMode_Overridden = false;
 		public bool telemetryNumberOfCheckpoints_Overridden = false;
+		public bool telemetryShowAsNegativeNumbers_Overridden = false;
 
 		public bool introEnabled = true;
 		public Vector2 introLeftPosition = new( 567, 453 );

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.10"
+        Title="iRacing-TV Controller v1.12"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="860" Height="550" MinWidth="860" MinHeight="550" Icon="/Assets/iRacing-TV-Icon.png">
     <Grid>
@@ -448,7 +448,7 @@
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Label Content="Number"/>
+                                        <Label Content="Numbers"/>
                                         <TextBox x:Name="Director_PreferredCar_Number" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                         <CheckBox x:Name="Director_PreferredCar_Number_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
@@ -1459,6 +1459,16 @@
                                         <Label Content="Checkpoints"/>
                                         <Slider x:Name="Overlay_Telemetry_NumberOfCheckpoints" Grid.Column="1" VerticalAlignment="Center" SmallChange="1" LargeChange="10" Maximum="300" Minimum="2" ValueChanged="Overlay_Telemetry_Update" TickPlacement="TopLeft"/>
                                         <CheckBox x:Name="Overlay_Telemetry_NumberOfCheckpoints_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Telemetry_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Numbers"/>
+                                        <CheckBox x:Name="Overlay_Telemetry_ShowAsNegativeNumbers" VerticalAlignment="Center" Click="Overlay_Telemetry_Update" Grid.Column="1" Content="Show Telemetry As Negative Numbers" />
+                                        <CheckBox x:Name="Overlay_Telemetry_ShowAsNegativeNumbers_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Telemetry_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                 </StackPanel>
                             </TabItem>

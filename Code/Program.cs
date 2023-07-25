@@ -73,6 +73,8 @@ namespace iRacingTVController
 			catch ( Exception exception )
 			{
 				LogFile.WriteException( exception );
+
+				throw;
 			}
 		}
 
@@ -102,6 +104,8 @@ namespace iRacingTVController
 					IPC.UpdateLiveData();
 
 					Director.Update();
+
+					SessionFlagsPlayback.Update();
 					IncidentPlayback.Update();
 					SubtitlePlayback.Update();
 

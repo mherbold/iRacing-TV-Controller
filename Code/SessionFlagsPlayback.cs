@@ -1,64 +1,136 @@
-﻿using System.Collections.Generic;
+﻿
+using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
+
+using irsdkSharp.Serialization.Enums.Fastest;
+using static iRacingTVController.IncidentPlayback;
 
 namespace iRacingTVController
 {
 	public static class SessionFlagsPlayback
 	{
-		public static string sessionFlagsPath = Program.documentsFolder + "SessionFlags";
+		public const int SaveToFileIntervalTime = 3;
 
 		public static List<SessionFlagsData> sessionFlagsDataList = new();
 
-		public static string sessionFlagsFilePath = string.Empty;
-		public static StreamWriter? streamWriter = null;
+		public static string filePath = string.Empty;
+
+		public static float saveToFileTimeRemaining = 0;
+		public static bool saveToFileQueued = false;
 
 		public static uint sessionFlags = 0;
 
-		public static string GetSessionFlagsFilePath()
+		public static string GetFilePath()
 		{
-			return $"{sessionFlagsPath}\\{IRSDK.normalizedSession.sessionId}-{IRSDK.normalizedSession.subSessionId}.csv";
+			return $"{Program.documentsFolder}SessionFlags\\{IRSDK.normalizedSession.sessionId}-{IRSDK.normalizedSession.subSessionId}.csv";
 		}
 
-		public static void OpenForRecording()
+		public static SessionFlagsData? GetCurrentSessionFlagsData()
 		{
-			var newSessionFlagsFilePath = GetSessionFlagsFilePath();
+			SessionFlagsData? currentSessionFlagsData = null;
 
-			if ( newSessionFlagsFilePath != sessionFlagsFilePath )
+			foreach ( var sessionFlagsData in sessionFlagsDataList )
 			{
-				sessionFlagsFilePath = newSessionFlagsFilePath;
-
-				sessionFlagsDataList = new List<SessionFlagsData>();
-
-				if ( streamWriter != null )
+				if ( sessionFlagsData.SessionNumber > IRSDK.normalizedSession.sessionNumber )
 				{
-					streamWriter.Close();
-
-					streamWriter = null;
+					break;
 				}
 
-				Directory.CreateDirectory( sessionFlagsPath );
+				if ( IRSDK.normalizedSession.sessionNumber == sessionFlagsData.SessionNumber )
+				{
+					if ( sessionFlagsData.SessionTime > IRSDK.normalizedData.sessionTime )
+					{
+						break;
+					}
 
-				streamWriter = File.AppendText( sessionFlagsFilePath );
-
-				sessionFlags = 0;
+					currentSessionFlagsData = sessionFlagsData;
+				}
 			}
+
+			return currentSessionFlagsData;
 		}
 
-		public static void LoadRecording()
+		public static void Update()
 		{
-			var newSessionFlagsFilePath = GetSessionFlagsFilePath();
-
-			if ( newSessionFlagsFilePath != sessionFlagsFilePath )
+			if ( IRSDK.isConnected )
 			{
-				sessionFlagsFilePath = newSessionFlagsFilePath;
+				if ( !IRSDK.normalizedSession.isReplay )
+				{
+					if ( IRSDK.normalizedData.sessionFlags != sessionFlags )
+					{
+						sessionFlags = IRSDK.normalizedData.sessionFlags;
+
+						AddAtCurrentFrame( sessionFlags );
+
+						saveToFileQueued = true;
+					}
+				}
+
+				saveToFileTimeRemaining = Math.Max( 0, saveToFileTimeRemaining - Program.deltaTime );
+
+				if ( saveToFileQueued && ( saveToFileTimeRemaining == 0 ) )
+				{
+					saveToFileQueued = false;
+					saveToFileTimeRemaining = SaveToFileIntervalTime;
+
+					Save();
+				}
+			}
+			else
+			{
+				filePath = string.Empty;
+
+				saveToFileQueued = false;
 
 				sessionFlagsDataList.Clear();
 
-				if ( File.Exists( sessionFlagsFilePath ) )
+				MainWindow.Instance.SessionFlags_ListView.Items.Refresh();
+			}
+		}
+
+		public static void Save()
+		{
+			filePath = GetFilePath();
+
+			try
+			{
+				var streamWriter = new StreamWriter( filePath, false );
+
+				foreach ( var sessionFlagsData in sessionFlagsDataList )
 				{
-					var streamReader = File.OpenText( sessionFlagsFilePath );
+					var sessionFlagsAsHex = sessionFlagsData.SessionFlags.ToString( "X8" );
+
+					streamWriter.WriteLine( $"{sessionFlagsData.SessionNumber},{sessionFlagsData.SessionTime:0.000},0x{sessionFlagsAsHex}" );
+				}
+
+				streamWriter.Close();
+			}
+			catch ( IOException )
+			{
+				saveToFileQueued = true;
+				saveToFileTimeRemaining = SaveToFileIntervalTime;
+			}
+		}
+
+		public static void Load()
+		{
+			var newFilePath = GetFilePath();
+
+			if ( filePath != newFilePath )
+			{
+				filePath = newFilePath;
+				saveToFileQueued = false;
+
+				sessionFlagsDataList.Clear();
+
+				MainWindow.Instance.SessionFlags_ListView.Items.Clear();
+
+				if ( File.Exists( filePath ) )
+				{
+					var streamReader = File.OpenText( filePath );
 
 					while ( true )
 					{
@@ -69,57 +141,72 @@ namespace iRacingTVController
 							break;
 						}
 
-						var match = Regex.Match( line, "(.*),(.*),0x(.*)" );
+						var match = Regex.Match( line, "(\\d{1}),([0-9.]+),0x([0-9a-fA-F]{8})" );
 
 						if ( match.Success )
 						{
-							sessionFlagsDataList.Add( new SessionFlagsData( int.Parse( match.Groups[ 1 ].Value ), float.Parse( match.Groups[ 2 ].Value, CultureInfo.InvariantCulture.NumberFormat ), uint.Parse( match.Groups[ 3 ].Value, NumberStyles.HexNumber ) ) );
+							sessionFlags = uint.Parse( match.Groups[ 3 ].Value, NumberStyles.HexNumber );
+
+							var sessionFlagsData = new SessionFlagsData()
+							{
+								SessionNumber = int.Parse( match.Groups[ 1 ].Value ),
+								SessionTime = double.Parse( match.Groups[ 2 ].Value ),
+								SessionFlags = uint.Parse( match.Groups[ 3 ].Value, NumberStyles.HexNumber ),
+								SessionFlagsAsString = ( (SessionFlags) sessionFlags ).ToString()
+							};
+
+							sessionFlagsDataList.Add( sessionFlagsData );
 						}
 					}
 				}
 
-				sessionFlagsDataList.Reverse();
+				Refresh();
 			}
 		}
 
-		public static void Close()
+		public static void Refresh()
 		{
-			sessionFlagsFilePath = string.Empty;
+			sessionFlagsDataList.Sort( SessionFlagsDataComparison );
 
-			sessionFlagsDataList.Clear();
-		}
+			var index = 1;
 
-		public static void Record( int sessionNumber, double sessionTime, uint sessionFlags )
-		{
-			if ( SessionFlagsPlayback.sessionFlags != sessionFlags )
+			foreach ( var sessionFlagsData in sessionFlagsDataList )
 			{
-				SessionFlagsPlayback.sessionFlags = sessionFlags;
-
-				if ( streamWriter != null )
-				{
-					var sessionFlagsAsHex = sessionFlags.ToString( "X8" );
-
-					streamWriter.WriteLine( $"{sessionNumber},{sessionTime:0.000},0x{sessionFlagsAsHex}" );
-
-					streamWriter.Flush();
-				}
+				sessionFlagsData.Index = index++;
 			}
+
+			MainWindow.Instance.SessionFlags_ListView.ItemsSource = sessionFlagsDataList;
+
+			MainWindow.Instance.SessionFlags_ListView.Items.Refresh();
 		}
 
-		public static uint Playback( int sessionNumber, double sessionTime )
+		public static void AddAtCurrentFrame( uint sessionFlags )
 		{
-			if ( sessionFlagsDataList != null )
+			var sessionFlagsData = new SessionFlagsData()
 			{
-				foreach ( var sessionFlagData in sessionFlagsDataList )
-				{
-					if ( ( sessionNumber == sessionFlagData.sessionNumber ) && ( sessionTime >= sessionFlagData.sessionTime ) )
-					{
-						return sessionFlagData.sessionFlags;
-					}
-				}
+				SessionNumber = IRSDK.normalizedSession.sessionNumber,
+				SessionTime = Math.Round( IRSDK.normalizedData.sessionTime, 3 ),
+				SessionFlags = 0,
+				SessionFlagsAsString = string.Empty
+			};
+
+			sessionFlagsDataList.Add( sessionFlagsData );
+
+			Refresh();
+
+			saveToFileQueued = true;
+
+			MainWindow.Instance.SessionFlags_ListView.ScrollIntoView( sessionFlagsData );
+		}
+
+		public static Comparison<SessionFlagsData> SessionFlagsDataComparison = delegate ( SessionFlagsData a, SessionFlagsData b )
+		{
+			if ( a.SessionNumber == b.SessionNumber )
+			{
+				return a.SessionTime.CompareTo( b.SessionTime );
 			}
 
-			return 0;
-		}
+			return a.SessionNumber.CompareTo( b.SessionNumber );
+		};
 	}
 }

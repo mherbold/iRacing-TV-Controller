@@ -53,8 +53,8 @@ namespace iRacingTVController
 
 		public static void Initialize()
 		{
-			AddMissingDictionaryItems( overlayGlobal );
-			AddMissingDictionaryItems( overlayLocal );
+			FixSettings( overlayGlobal );
+			FixSettings( overlayLocal );
 
 			if ( !Directory.Exists( Program.documentsFolder ) )
 			{
@@ -108,7 +108,7 @@ namespace iRacingTVController
 
 					settings.filePath = overlaySettingsFilePath;
 
-					AddMissingDictionaryItems( settings );
+					FixSettings( settings );
 
 					if ( overlaySettingsFilePath == globalOverlaySettingsFilePath )
 					{
@@ -237,13 +237,31 @@ namespace iRacingTVController
 			}
 		}
 
-		public static void AddMissingDictionaryItems( SettingsOverlay settings )
+		public static void FixSettings( SettingsOverlay settings )
 		{
+			var defaultFontNames = new string[]
+			{
+				"Revolution Gothic",
+				"Revolution Gothic It",
+				"Arial",
+				"Arial"
+			};
+
+			for ( var fontPathIndex = 0; fontPathIndex < settings.fontPaths.Length; fontPathIndex++ )
+			{
+				if ( ( settings.fontPaths[ fontPathIndex ] == null ) || ( settings.fontPaths[ fontPathIndex ] == string.Empty ) )
+				{
+					settings.fontPaths[ fontPathIndex ] = MainWindow.Instance.fontOptions[ defaultFontNames[ fontPathIndex ] ];
+				}
+			}
+
 			var defaultImageSettings = new Dictionary<string, SettingsImage>() {
 				{ "CustomLayer1", new SettingsImage() },
 				{ "CustomLayer2", new SettingsImage() },
 				{ "CustomLayer3", new SettingsImage() },
 				{ "CustomLayer4", new SettingsImage() },
+				{ "CustomLayer5", new SettingsImage() },
+				{ "CustomLayer6", new SettingsImage() },
 				{ "IntroBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\leaderboard.png", position = { x = 44, y = 155 }, size = { x = 1826, y = 660 }, border = { x = 32, y = 32, z = 32, w = 32 } } },
 				{ "IntroLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.None, position = { x = -203, y = -177 }, size = { x = 408, y = 336 } } },
 				{ "IntroLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.Driver, position = { x = 13, y = -125 }, size = { x = 150, y = 250 } } },

@@ -14,12 +14,17 @@ namespace iRacingTVController
 
 		public static List<SubtitleData> subtitleDataList = new();
 
-		public static string subtitlesFilePath = string.Empty;
+		public static string filePath = string.Empty;
 
 		public static float saveToFileTimeRemaining = 0;
 		public static bool saveToFileQueued = false;
 
-		public static SubtitleData? GetCurrentSubtitle()
+		public static string GetFilePath()
+		{
+			return $"{Program.documentsFolder}Subtitles\\{IRSDK.normalizedSession.sessionId}-{IRSDK.normalizedSession.subSessionId}.xml";
+		}
+
+		public static SubtitleData? GetCurrentSubtitleData()
 		{
 			SubtitleData? currentSubtitleData = null;
 
@@ -36,11 +41,6 @@ namespace iRacingTVController
 			}
 
 			return currentSubtitleData;
-		}
-
-		public static string GetSubtitlesFilePath()
-		{
-			return $"{Program.documentsFolder}Subtitles\\{IRSDK.normalizedSession.sessionId}-{IRSDK.normalizedSession.subSessionId}.xml";
 		}
 
 		public static void Update()
@@ -159,12 +159,12 @@ namespace iRacingTVController
 					saveToFileQueued = false;
 					saveToFileTimeRemaining = SaveToFileIntervalTime;
 
-					SaveSubtitles();
+					Save();
 				}
 			}
 			else
 			{
-				subtitlesFilePath = string.Empty;
+				filePath = string.Empty;
 				saveToFileQueued = false;
 
 				subtitleDataList.Clear();
@@ -173,28 +173,17 @@ namespace iRacingTVController
 			}
 		}
 
-		public static void Clear()
-		{
-			subtitleDataList.Clear();
-
-			MainWindow.Instance.Subtitles_ListView.Items.Clear();
-
-			var subtitlesFilePath = GetSubtitlesFilePath();
-
-			File.Delete( subtitlesFilePath );
-		}
-
-		public static void SaveSubtitles()
+		public static void Save()
 		{
 			if ( subtitleDataList.Count > 0 )
 			{
-				subtitlesFilePath = GetSubtitlesFilePath();
+				filePath = GetFilePath();
 
 				var xmlSerializer = new XmlSerializer( subtitleDataList.GetType() );
 
 				try
 				{
-					var streamWriter = new StreamWriter( subtitlesFilePath );
+					var streamWriter = new StreamWriter( filePath );
 
 					xmlSerializer.Serialize( streamWriter, subtitleDataList );
 
@@ -208,24 +197,24 @@ namespace iRacingTVController
 			}
 		}
 
-		public static void LoadSubtitles()
+		public static void Load()
 		{
-			var newSubtitlesFilePath = GetSubtitlesFilePath();
+			var newFilePath = GetFilePath();
 
-			if ( subtitlesFilePath != newSubtitlesFilePath )
+			if ( filePath != newFilePath )
 			{
-				subtitlesFilePath = newSubtitlesFilePath;
+				filePath = newFilePath;
 				saveToFileQueued = false;
 
 				subtitleDataList.Clear();
 
 				MainWindow.Instance.Subtitles_ListView.Items.Clear();
 
-				if ( File.Exists( subtitlesFilePath ) )
+				if ( File.Exists( filePath ) )
 				{
 					var xmlSerializer = new XmlSerializer( subtitleDataList.GetType() );
 
-					var fileStream = new FileStream( subtitlesFilePath, FileMode.Open );
+					var fileStream = new FileStream( filePath, FileMode.Open );
 
 					subtitleDataList = (List<SubtitleData>) ( xmlSerializer.Deserialize( fileStream ) ?? throw new Exception() );
 
@@ -237,6 +226,17 @@ namespace iRacingTVController
 					}
 				}
 			}
+		}
+
+		public static void Clear()
+		{
+			subtitleDataList.Clear();
+
+			MainWindow.Instance.Subtitles_ListView.Items.Clear();
+
+			var subtitlesFilePath = GetFilePath();
+
+			File.Delete( subtitlesFilePath );
 		}
 	}
 }

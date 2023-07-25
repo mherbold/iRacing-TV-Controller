@@ -41,7 +41,7 @@ namespace iRacingTVController
 				return;
 			}
 
-			IncidentData? currentIncident = IncidentPlayback.GetCurrentIncident();
+			IncidentData? currentIncident = IncidentPlayback.GetCurrentIncidentData();
 
 			NormalizedCar? firstPlaceCar = null;
 			NormalizedCar? leadingOnTrackCar = null;

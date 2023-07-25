@@ -14,6 +14,7 @@ namespace iRacingTVController
 
 		public bool isConnected = false;
 
+		public LiveDataControlPanel liveDataControlPanel = new();
 		public LiveDataRaceStatus liveDataRaceStatus = new();
 		public LiveDataLeaderboard liveDataLeaderboard = new();
 		public LiveDataVoiceOf liveDataVoiceOf = new();
@@ -22,7 +23,8 @@ namespace iRacingTVController
 		public LiveDataStartLights liveDataStartLights = new();
 
 		public string seriesLogoTextureUrl = string.Empty;
-		public int lastFrameBottomSplitFirstPosition = 0;
+
+		[NonSerialized] public int lastFrameBottomSplitFirstPosition = 0;
 
 		static LiveData()
 		{
@@ -40,6 +42,7 @@ namespace iRacingTVController
 
 			Settings.UpdateCombinedOverlay();
 
+			UpdateControlPanel();
 			UpdateRaceStatus();
 			UpdateLeaderboard();
 			UpdateVoiceOf();
@@ -50,6 +53,18 @@ namespace iRacingTVController
 			seriesLogoTextureUrl = IRSDK.normalizedSession.seriesLogoTextureUrl;
 
 			IPC.readyToSendLiveData = true;
+		}
+
+		public void UpdateControlPanel()
+		{
+			liveDataControlPanel.masterOn = MainWindow.Instance.masterOn;
+			liveDataControlPanel.raceStatusOn = MainWindow.Instance.raceStatusOn;
+			liveDataControlPanel.leaderboardOn = MainWindow.Instance.leaderboardOn;
+			liveDataControlPanel.startLightsOn = MainWindow.Instance.startLightsOn;
+			liveDataControlPanel.voiceOfOn = MainWindow.Instance.voiceOfOn;
+			liveDataControlPanel.subtitlesOn = MainWindow.Instance.subtitlesOn;
+			liveDataControlPanel.introOn = MainWindow.Instance.introOn;
+			liveDataControlPanel.customLayerOn = MainWindow.Instance.customLayerOn;
 		}
 
 		public void UpdateRaceStatus()
@@ -483,7 +498,7 @@ namespace iRacingTVController
 
 		public void UpdateSubtitle()
 		{
-			var subtitleData = SubtitlePlayback.GetCurrentSubtitle();
+			var subtitleData = SubtitlePlayback.GetCurrentSubtitleData();
 
 			liveDataSubtitle.text = ( subtitleData == null ) ? string.Empty : subtitleData.Text;
 		}

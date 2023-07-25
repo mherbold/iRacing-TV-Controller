@@ -176,13 +176,13 @@ namespace iRacingTVController
 
 			if ( IRSDK.normalizedSession.isReplay )
 			{
-				sessionFlags = SessionFlagsPlayback.Playback( IRSDK.normalizedSession.sessionNumber, IRSDK.normalizedData.sessionTime );
+				var sessionFlagsData = SessionFlagsPlayback.GetCurrentSessionFlagsData();
+
+				sessionFlags = sessionFlagsData?.SessionFlags ?? 0;
 			}
 			else
 			{
 				sessionFlags = (uint) IRSDK.data.SessionFlags;
-
-				SessionFlagsPlayback.Record( IRSDK.normalizedSession.sessionNumber, IRSDK.normalizedData.sessionTime, sessionFlags );
 			}
 
 			replayFrameNum = IRSDK.data.ReplayFrameNum;

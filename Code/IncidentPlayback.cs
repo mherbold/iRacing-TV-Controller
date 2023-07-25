@@ -15,7 +15,7 @@ namespace iRacingTVController
 
 		public static List<IncidentData> incidentDataList = new();
 
-		public static string incidentsFilePath = string.Empty;
+		public static string filePath = string.Empty;
 
 		public static float saveToFileTimeRemaining = 0;
 		public static bool saveToFileQueued = false;
@@ -44,7 +44,12 @@ namespace iRacingTVController
 		public static IncidentScanStateEnum currentIncidentScanState = IncidentScanStateEnum.Idle;
 		public static IncidentScanStateEnum nextIncidentScanState = IncidentScanStateEnum.Idle;
 
-		public static IncidentData? GetCurrentIncident()
+		public static string GetFilePath()
+		{
+			return $"{Program.documentsFolder}Incidents\\{IRSDK.normalizedSession.sessionId}-{IRSDK.normalizedSession.subSessionId}.xml";
+		}
+
+		public static IncidentData? GetCurrentIncidentData()
 		{
 			IncidentData? currentIncidentData = null;
 
@@ -55,30 +60,12 @@ namespace iRacingTVController
 					if ( ( IRSDK.normalizedData.replayFrameNum >= incidentData.StartFrame ) && ( IRSDK.normalizedData.replayFrameNum <= incidentData.EndFrame ) )
 					{
 						currentIncidentData = incidentData;
-
 						break;
 					}
 				}
 			}
 
 			return currentIncidentData;
-		}
-
-		public static void Start()
-		{
-			IRSDK.targetCamEnabled = false;
-			IRSDK.targetCamFastSwitchEnabled = false;
-
-			Clear();
-
-			currentIncidentScanState = IncidentScanStateEnum.RewindToStartOfReplay;
-
-			Director.isEnabled = false;
-		}
-
-		public static bool IsRunning()
-		{
-			return currentIncidentScanState != IncidentScanStateEnum.Idle;
 		}
 
 		public static void Update()
@@ -303,12 +290,12 @@ namespace iRacingTVController
 					saveToFileQueued = false;
 					saveToFileTimeRemaining = SaveToFileIntervalTime;
 
-					SaveIncidents();
+					Save();
 				}
 			}
 			else
 			{
-				incidentsFilePath = string.Empty;
+				filePath = string.Empty;
 
 				currentIncidentScanState = IncidentScanStateEnum.Idle;
 
@@ -320,47 +307,17 @@ namespace iRacingTVController
 			}
 		}
 
-		public static void WaitForFrameNumberToSettleState( IncidentScanStateEnum nextIncidentScanState, int targetFrameNumber )
-		{
-			settleStartingFrameNumber = IRSDK.normalizedData.replayFrameNum;
-			settleTargetFrameNumber = targetFrameNumber;
-			settleLastFrameNumber = 0;
-			settleTimer = 0;
-
-			currentIncidentScanState = IncidentScanStateEnum.WaitForFrameNumberToSettle;
-
-			IncidentPlayback.nextIncidentScanState = nextIncidentScanState;
-		}
-
-		public static string GetIncidentsFilePath()
-		{
-			return $"{Program.documentsFolder}Incidents\\{IRSDK.normalizedSession.sessionId}-{IRSDK.normalizedSession.subSessionId}.xml";
-		}
-
-		public static void Clear()
-		{
-			saveToFileQueued = false;
-
-			incidentDataList.Clear();
-
-			MainWindow.Instance.Incidents_ListView.Items.Clear();
-
-			var incidentFilePath = GetIncidentsFilePath();
-
-			File.Delete( incidentFilePath );
-		}
-
-		public static void SaveIncidents()
+		public static void Save()
 		{
 			if ( incidentDataList.Count > 0 )
 			{
-				incidentsFilePath = GetIncidentsFilePath();
+				filePath = GetFilePath();
 
 				var xmlSerializer = new XmlSerializer( incidentDataList.GetType() );
 
 				try
 				{
-					var streamWriter = new StreamWriter( incidentsFilePath );
+					var streamWriter = new StreamWriter( filePath );
 
 					xmlSerializer.Serialize( streamWriter, incidentDataList );
 
@@ -374,24 +331,24 @@ namespace iRacingTVController
 			}
 		}
 
-		public static void LoadIncidents()
+		public static void Load()
 		{
-			var newIncidentsFilePath = GetIncidentsFilePath();
+			var newFilePath = GetFilePath();
 
-			if ( incidentsFilePath != newIncidentsFilePath )
+			if ( filePath != newFilePath )
 			{
-				incidentsFilePath = newIncidentsFilePath;
+				filePath = newFilePath;
 				saveToFileQueued = false;
 
 				incidentDataList.Clear();
 
 				MainWindow.Instance.Incidents_ListView.Items.Clear();
 
-				if ( File.Exists( incidentsFilePath ) )
+				if ( File.Exists( filePath ) )
 				{
 					var xmlSerializer = new XmlSerializer( incidentDataList.GetType() );
 
-					var fileStream = new FileStream( incidentsFilePath, FileMode.Open );
+					var fileStream = new FileStream( filePath, FileMode.Open );
 
 					incidentDataList = (List<IncidentData>) ( xmlSerializer.Deserialize( fileStream ) ?? throw new Exception() );
 
@@ -403,6 +360,48 @@ namespace iRacingTVController
 					}
 				}
 			}
+		}
+
+		public static void Clear()
+		{
+			saveToFileQueued = false;
+
+			incidentDataList.Clear();
+
+			MainWindow.Instance.Incidents_ListView.Items.Clear();
+
+			var incidentFilePath = GetFilePath();
+
+			File.Delete( incidentFilePath );
+		}
+
+		public static void Start()
+		{
+			IRSDK.targetCamEnabled = false;
+			IRSDK.targetCamFastSwitchEnabled = false;
+
+			Clear();
+
+			currentIncidentScanState = IncidentScanStateEnum.RewindToStartOfReplay;
+
+			Director.isEnabled = false;
+		}
+
+		public static bool IsRunning()
+		{
+			return currentIncidentScanState != IncidentScanStateEnum.Idle;
+		}
+
+		public static void WaitForFrameNumberToSettleState( IncidentScanStateEnum nextIncidentScanState, int targetFrameNumber )
+		{
+			settleStartingFrameNumber = IRSDK.normalizedData.replayFrameNum;
+			settleTargetFrameNumber = targetFrameNumber;
+			settleLastFrameNumber = 0;
+			settleTimer = 0;
+
+			currentIncidentScanState = IncidentScanStateEnum.WaitForFrameNumberToSettle;
+
+			IncidentPlayback.nextIncidentScanState = nextIncidentScanState;
 		}
 	}
 }

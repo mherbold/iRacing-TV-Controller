@@ -1,16 +1,20 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media.Imaging;
-
-using Dsafa.WpfColorPicker;
 
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
+
+using Dsafa.WpfColorPicker;
+
+using iRacingTVController.Windows;
 
 using static iRacingTVController.Unity;
 
@@ -57,7 +61,16 @@ namespace iRacingTVController
 
 		public ControlPanelButton[] controlPanelButton = new ControlPanelButton[ 64 ];
 
-		public SortedDictionary<string, string> fontPaths;
+		public bool masterOn;
+		public bool raceStatusOn;
+		public bool leaderboardOn;
+		public bool startLightsOn;
+		public bool voiceOfOn;
+		public bool subtitlesOn;
+		public bool introOn;
+		public bool[] customLayerOn = new bool[ 6 ];
+
+		public SortedDictionary<string, string> fontOptions;
 
 		public SortedDictionary<string, int> patternOptions = new();
 		public SortedDictionary<string, int> slantOptions = new();
@@ -74,13 +87,295 @@ namespace iRacingTVController
 		{
 			Instance = this;
 
-			initializing++;
-
 			try
 			{
+				initializing++;
+
 				InitializeComponent();
 
+				fontOptions = FontPaths.FindAll();
+
 				Program.Initialize();
+
+				// control panel
+
+				for ( int i = 0; i < 8; i++ )
+				{
+					for ( int j = 0; j < 8; j++ )
+					{
+						var buttonIndex = ( j + i * 8 );
+
+						var grid = new Grid();
+
+						if ( buttonIndex != 63 )
+						{
+							grid.Visibility = Visibility.Hidden;
+						}
+
+						grid.SetValue( Grid.RowProperty, i );
+						grid.SetValue( Grid.ColumnProperty, j );
+
+						if ( buttonIndex <= 63 )
+						{
+							var button = new Button();
+
+							button.Click += ControlPanel_Grid_Button_Click;
+
+							grid.Children.Add( button );
+
+							var label1 = new Label();
+
+							label1.HorizontalAlignment = HorizontalAlignment.Left;
+							label1.VerticalAlignment = VerticalAlignment.Top;
+							label1.FontSize = 10;
+							label1.Foreground = System.Windows.Media.Brushes.Gray;
+							label1.IsHitTestVisible = false;
+							label1.Padding = new Thickness( 6, 3, 6, 3 );
+
+							grid.Children.Add( label1 );
+
+							var label2 = new Label();
+
+							label2.HorizontalAlignment = HorizontalAlignment.Right;
+							label2.VerticalAlignment = VerticalAlignment.Top;
+							label2.FontSize = 10;
+							label2.Foreground = System.Windows.Media.Brushes.Gray;
+							label2.IsHitTestVisible = false;
+							label2.Padding = new Thickness( 6, 3, 6, 3 );
+
+							grid.Children.Add( label2 );
+
+							var label3 = new Label();
+
+							label3.HorizontalAlignment = HorizontalAlignment.Left;
+							label3.VerticalAlignment = VerticalAlignment.Bottom;
+							label3.FontSize = 10;
+							label3.Foreground = System.Windows.Media.Brushes.Gray;
+							label3.IsHitTestVisible = false;
+							label3.Padding = new Thickness( 6, 3, 6, 3 );
+
+							grid.Children.Add( label3 );
+
+							var label4 = new Label();
+
+							label4.HorizontalAlignment = HorizontalAlignment.Right;
+							label4.VerticalAlignment = VerticalAlignment.Bottom;
+							label4.FontSize = 10;
+							label4.Foreground = System.Windows.Media.Brushes.Gray;
+							label4.IsHitTestVisible = false;
+							label4.Padding = new Thickness( 6, 3, 6, 3 );
+
+							grid.Children.Add( label4 );
+
+							var label5 = new Label();
+
+							label5.HorizontalAlignment = HorizontalAlignment.Stretch;
+							label5.VerticalAlignment = VerticalAlignment.Center;
+							label5.FontSize = 10;
+							label5.Foreground = System.Windows.Media.Brushes.White;
+							label5.Background = System.Windows.Media.Brushes.Black;
+							label5.Padding = new Thickness( 5, 0, 5, 1 );
+							label5.IsHitTestVisible = false;
+							label5.FontWeight = FontWeights.Bold;
+							label5.Margin = new Thickness( 5, 0, 5, 0 );
+							label5.HorizontalContentAlignment = HorizontalAlignment.Center;
+
+							grid.Children.Add( label5 );
+
+							ControlPanel_ButtonGrid.Children.Add( grid );
+
+							if ( buttonIndex == 63 )
+							{
+								button.Name = "PACE";
+
+								label5.Content = "PACE CAR";
+							}
+
+							controlPanelButton[ buttonIndex ] = new ControlPanelButton( grid, button, label1, label2, label3, label4, label5 );
+						}
+					}
+				}
+
+				// director
+
+				foreach ( var item in Enum.GetValues( typeof( SettingsDirector.CameraType ) ) )
+				{
+					Director_Rules_Rule1_Camera.Items.Add( item );
+					Director_Rules_Rule2_Camera.Items.Add( item );
+					Director_Rules_Rule3_Camera.Items.Add( item );
+					Director_Rules_Rule4_Camera.Items.Add( item );
+					Director_Rules_Rule5_Camera.Items.Add( item );
+					Director_Rules_Rule6_Camera.Items.Add( item );
+					Director_Rules_Rule7_Camera.Items.Add( item );
+					Director_Rules_Rule8_Camera.Items.Add( item );
+					Director_Rules_Rule9_Camera.Items.Add( item );
+					Director_Rules_Rule10_Camera.Items.Add( item );
+					Director_Rules_Rule11_Camera.Items.Add( item );
+					Director_Rules_Rule12_Camera.Items.Add( item );
+					Director_Rules_Rule13_Camera.Items.Add( item );
+				}
+
+				// overlay
+
+				foreach ( var item in Settings.overlayLocal.imageSettingsDataDictionary )
+				{
+					Overlay_Image_ID.Items.Add( item.Key );
+				}
+
+				foreach ( var imageType in Enum.GetValues( typeof( SettingsImage.ImageType ) ) )
+				{
+					Image_ImageType.Items.Add( imageType );
+				}
+
+				foreach ( var fontOption in fontOptions )
+				{
+					Overlay_Font_FontA_Name.Items.Add( fontOption.Key );
+					Overlay_Font_FontB_Name.Items.Add( fontOption.Key );
+					Overlay_Font_FontC_Name.Items.Add( fontOption.Key );
+					Overlay_Font_FontD_Name.Items.Add( fontOption.Key );
+				}
+
+				foreach ( var item in Settings.overlayLocal.textSettingsDataDictionary )
+				{
+					Overlay_Text_ID.Items.Add( item.Key );
+				}
+
+				foreach ( var fontIndex in Enum.GetValues( typeof( SettingsText.FontIndex ) ) )
+				{
+					Text_FontIndex.Items.Add( fontIndex );
+				}
+
+				foreach ( var textAlignmentOption in Enum.GetValues( typeof( TextAlignmentOptions ) ) )
+				{
+					Text_Alignment.Items.Add( textAlignmentOption );
+				}
+
+				patternOptions.Add( "914", 37 );
+				patternOptions.Add( "Aardvark", 11 );
+				patternOptions.Add( "Aero", 1 );
+				patternOptions.Add( "Air Millhouse", 42 );
+				patternOptions.Add( "Antique Oil", 46 );
+				patternOptions.Add( "Arial", 0 );
+				patternOptions.Add( "Batavia", 39 );
+				patternOptions.Add( "Bauer", 24 );
+				patternOptions.Add( "Bauhaus Alt", 41 );
+				patternOptions.Add( "Bavuese", 18 );
+				patternOptions.Add( "Bell Gothic", 2 );
+				patternOptions.Add( "Berlin Sans", 20 );
+				patternOptions.Add( "Bernard", 25 );
+				patternOptions.Add( "Biondi", 29 );
+				patternOptions.Add( "Blackoak", 13 );
+				patternOptions.Add( "Bodoni Poster", 45 );
+				patternOptions.Add( "Bolt", 3 );
+				patternOptions.Add( "Brittanic Bold", 50 );
+				patternOptions.Add( "Brushwhacker", 10 );
+				patternOptions.Add( "Carnegie Way", 40 );
+				patternOptions.Add( "CBrown", 55 );
+				patternOptions.Add( "Convecta Alt", 38 );
+				patternOptions.Add( "Convecta Alt-2", 54 );
+				patternOptions.Add( "Convecta", 19 );
+				patternOptions.Add( "Cricket", 22 );
+				patternOptions.Add( "Demonized", 33 );
+				patternOptions.Add( "Eras Bold", 51 );
+				patternOptions.Add( "Foolio", 4 );
+				patternOptions.Add( "Harabara", 56 );
+				patternOptions.Add( "Harlow Solid", 49 );
+				patternOptions.Add( "Hattenschweiler", 26 );
+				patternOptions.Add( "He is Dead Jim", 48 );
+				patternOptions.Add( "Humanist", 5 );
+				patternOptions.Add( "Idea", 12 );
+				patternOptions.Add( "Impact", 35 );
+				patternOptions.Add( "Incised 901", 44 );
+				patternOptions.Add( "Infinite Justice", 14 );
+				patternOptions.Add( "Kimberly", 32 );
+				patternOptions.Add( "Lithograph", 6 );
+				patternOptions.Add( "Matt Rolfe", 53 );
+				patternOptions.Add( "Microgamma", 7 );
+				patternOptions.Add( "Minion", 47 );
+				patternOptions.Add( "Motherlode", 21 );
+				patternOptions.Add( "Okayd", 8 );
+				patternOptions.Add( "Omni Custom", 31 );
+				patternOptions.Add( "Omni", 30 );
+				patternOptions.Add( "Pepsi", 36 );
+				patternOptions.Add( "Piazza Black", 52 );
+				patternOptions.Add( "Pilsen", 57 );
+				patternOptions.Add( "Rhino", 23 );
+				patternOptions.Add( "Sofachrome", 15 );
+				patternOptions.Add( "SportsNight Alt", 28 );
+				patternOptions.Add( "SportsNight", 27 );
+				patternOptions.Add( "Swiss 721 Bold", 43 );
+				patternOptions.Add( "Walldoc", 17 );
+				patternOptions.Add( "Wide Latin", 34 );
+				patternOptions.Add( "Winsdor", 9 );
+				patternOptions.Add( "Yikes", 16 );
+
+				foreach ( var item in patternOptions )
+				{
+					Overlay_CarNumber_Pattern.Items.Add( item.Key );
+				}
+
+				slantOptions.Add( "Normal Slant", 0 );
+				slantOptions.Add( "Left Slant", 1 );
+				slantOptions.Add( "Right Slant", 2 );
+				slantOptions.Add( "Forward Slant", 3 );
+				slantOptions.Add( "Backward Slant", 4 );
+
+				foreach ( var item in slantOptions )
+				{
+					Overlay_CarNumber_Slant.Items.Add( item.Key );
+				}
+
+				inAnimationOptions.Add( "Static (Use For Editing)", 0 );
+				inAnimationOptions.Add( "Fade", 1 );
+				inAnimationOptions.Add( "Drop Down", 2 );
+				inAnimationOptions.Add( "Drop Up", 3 );
+				inAnimationOptions.Add( "Slide Left", 4 );
+				inAnimationOptions.Add( "Slide Right", 5 );
+				inAnimationOptions.Add( "Leave", 6 );
+				inAnimationOptions.Add( "Approach", 7 );
+				inAnimationOptions.Add( "Conveyor", 8 );
+
+				foreach ( var item in inAnimationOptions )
+				{
+					Overlay_Intro_LeftInAnimationNumber.Items.Add( item.Key );
+					Overlay_Intro_RightInAnimationNumber.Items.Add( item.Key );
+				}
+
+				outAnimationOptions.Add( "Static (Use For Editing)", 0 );
+				outAnimationOptions.Add( "Fade", 1 );
+				outAnimationOptions.Add( "Drop Down", 2 );
+				outAnimationOptions.Add( "Drop Up", 3 );
+				outAnimationOptions.Add( "Slide Left", 4 );
+				outAnimationOptions.Add( "Slide Right", 5 );
+				outAnimationOptions.Add( "Leave", 6 );
+				outAnimationOptions.Add( "Approach", 7 );
+				outAnimationOptions.Add( "Conveyor", 8 );
+				outAnimationOptions.Add( "Fall Down", 9 );
+
+				foreach ( var item in outAnimationOptions )
+				{
+					Overlay_Intro_LeftOutAnimationNumber.Items.Add( item.Key );
+					Overlay_Intro_RightOutAnimationNumber.Items.Add( item.Key );
+				}
+
+				// editor
+
+				capitalizationOptions.Add( "Leave Names Alone", 0 );
+				capitalizationOptions.Add( "Change From All Uppercase To Uppercase First Letter Only", 1 );
+				capitalizationOptions.Add( "Change To All Uppercase Always", 1 );
+
+				foreach ( var item in capitalizationOptions )
+				{
+					iRacing_DriverNames_CapitalizationOption.Items.Add( item.Key );
+				}
+
+				//
+
+				initializing--;
+
+				//
+
+				Initialize();
 			}
 			catch ( Exception exception )
 			{
@@ -88,284 +383,6 @@ namespace iRacingTVController
 
 				throw;
 			}
-
-			// control panel
-
-			UpdateManualCamera();
-
-			for ( int i = 0; i < 8; i++ )
-			{
-				for ( int j = 0; j < 8; j++ )
-				{
-					var buttonIndex = ( j + i * 8 );
-
-					var grid = new Grid();
-
-					if ( buttonIndex != 63 )
-					{
-						grid.Visibility = Visibility.Hidden;
-					}
-
-					grid.SetValue( Grid.RowProperty, i );
-					grid.SetValue( Grid.ColumnProperty, j );
-
-					if ( buttonIndex <= 63 )
-					{
-						var button = new Button();
-
-						button.Click += ControlPanel_Grid_Button_Click;
-
-						grid.Children.Add( button );
-
-						var label1 = new Label();
-
-						label1.HorizontalAlignment = HorizontalAlignment.Left;
-						label1.VerticalAlignment = VerticalAlignment.Top;
-						label1.FontSize = 10;
-						label1.Foreground = System.Windows.Media.Brushes.Gray;
-						label1.IsHitTestVisible = false;
-
-						grid.Children.Add( label1 );
-
-						var label2 = new Label();
-
-						label2.HorizontalAlignment = HorizontalAlignment.Right;
-						label2.VerticalAlignment = VerticalAlignment.Top;
-						label2.FontSize = 10;
-						label2.Foreground = System.Windows.Media.Brushes.Gray;
-						label2.IsHitTestVisible = false;
-
-						grid.Children.Add( label2 );
-
-						var label3 = new Label();
-
-						label3.HorizontalAlignment = HorizontalAlignment.Left;
-						label3.VerticalAlignment = VerticalAlignment.Bottom;
-						label3.FontSize = 10;
-						label3.Foreground = System.Windows.Media.Brushes.Gray;
-						label3.IsHitTestVisible = false;
-
-						grid.Children.Add( label3 );
-
-						var label4 = new Label();
-
-						label4.HorizontalAlignment = HorizontalAlignment.Right;
-						label4.VerticalAlignment = VerticalAlignment.Bottom;
-						label4.FontSize = 10;
-						label4.Foreground = System.Windows.Media.Brushes.Gray;
-						label4.IsHitTestVisible = false;
-
-						grid.Children.Add( label4 );
-
-						var label5 = new Label();
-
-						label5.HorizontalAlignment = HorizontalAlignment.Stretch;
-						label5.VerticalAlignment = VerticalAlignment.Center;
-						label5.FontSize = 10;
-						label5.Foreground = System.Windows.Media.Brushes.White;
-						label5.Background = System.Windows.Media.Brushes.Black;
-						label5.Padding = new Thickness( 5, 0, 5, 1 );
-						label5.IsHitTestVisible = false;
-						label5.FontWeight = FontWeights.Bold;
-						label5.Margin = new Thickness( 5, 0, 5, 0 );
-						label5.HorizontalContentAlignment = HorizontalAlignment.Center;
-
-						grid.Children.Add( label5 );
-
-						ControlPanel_ButtonGrid.Children.Add( grid );
-
-						if ( buttonIndex == 63 )
-						{
-							button.Name = "PACE";
-
-							label5.Content = "PACE CAR";
-						}
-
-						controlPanelButton[ buttonIndex ] = new ControlPanelButton( grid, button, label1, label2, label3, label4, label5 );
-					}
-				}
-			}
-
-			// director
-
-			foreach ( var item in Enum.GetValues( typeof( SettingsDirector.CameraType ) ) )
-			{
-				Director_Rules_Rule1_Camera.Items.Add( item );
-				Director_Rules_Rule2_Camera.Items.Add( item );
-				Director_Rules_Rule3_Camera.Items.Add( item );
-				Director_Rules_Rule4_Camera.Items.Add( item );
-				Director_Rules_Rule5_Camera.Items.Add( item );
-				Director_Rules_Rule6_Camera.Items.Add( item );
-				Director_Rules_Rule7_Camera.Items.Add( item );
-				Director_Rules_Rule8_Camera.Items.Add( item );
-				Director_Rules_Rule9_Camera.Items.Add( item );
-				Director_Rules_Rule10_Camera.Items.Add( item );
-				Director_Rules_Rule11_Camera.Items.Add( item );
-				Director_Rules_Rule12_Camera.Items.Add( item );
-				Director_Rules_Rule13_Camera.Items.Add( item );
-			}
-
-			// overlay
-
-			foreach ( var item in Settings.overlayLocal.imageSettingsDataDictionary )
-			{
-				Overlay_Image_ID.Items.Add( item.Key );
-			}
-
-			foreach ( var imageType in Enum.GetValues( typeof( SettingsImage.ImageType ) ) )
-			{
-				Image_ImageType.Items.Add( imageType );
-			}
-
-			fontPaths = FontPaths.FindAll();
-
-			foreach ( var installedFont in fontPaths )
-			{
-				Overlay_Font_FontA_Name.Items.Add( installedFont.Key );
-				Overlay_Font_FontB_Name.Items.Add( installedFont.Key );
-				Overlay_Font_FontC_Name.Items.Add( installedFont.Key );
-				Overlay_Font_FontD_Name.Items.Add( installedFont.Key );
-			}
-
-			foreach ( var item in Settings.overlayLocal.textSettingsDataDictionary )
-			{
-				Overlay_Text_ID.Items.Add( item.Key );
-			}
-
-			foreach ( var fontIndex in Enum.GetValues( typeof( SettingsText.FontIndex ) ) )
-			{
-				Text_FontIndex.Items.Add( fontIndex );
-			}
-
-			foreach ( var textAlignmentOption in Enum.GetValues( typeof( TextAlignmentOptions ) ) )
-			{
-				Text_Alignment.Items.Add( textAlignmentOption );
-			}
-
-			patternOptions.Add( "914", 37 );
-			patternOptions.Add( "Aardvark", 11 );
-			patternOptions.Add( "Aero", 1 );
-			patternOptions.Add( "Air Millhouse", 42 );
-			patternOptions.Add( "Antique Oil", 46 );
-			patternOptions.Add( "Arial", 0 );
-			patternOptions.Add( "Batavia", 39 );
-			patternOptions.Add( "Bauer", 24 );
-			patternOptions.Add( "Bauhaus Alt", 41 );
-			patternOptions.Add( "Bavuese", 18 );
-			patternOptions.Add( "Bell Gothic", 2 );
-			patternOptions.Add( "Berlin Sans", 20 );
-			patternOptions.Add( "Bernard", 25 );
-			patternOptions.Add( "Biondi", 29 );
-			patternOptions.Add( "Blackoak", 13 );
-			patternOptions.Add( "Bodoni Poster", 45 );
-			patternOptions.Add( "Bolt", 3 );
-			patternOptions.Add( "Brittanic Bold", 50 );
-			patternOptions.Add( "Brushwhacker", 10 );
-			patternOptions.Add( "Carnegie Way", 40 );
-			patternOptions.Add( "CBrown", 55 );
-			patternOptions.Add( "Convecta Alt", 38 );
-			patternOptions.Add( "Convecta Alt-2", 54 );
-			patternOptions.Add( "Convecta", 19 );
-			patternOptions.Add( "Cricket", 22 );
-			patternOptions.Add( "Demonized", 33 );
-			patternOptions.Add( "Eras Bold", 51 );
-			patternOptions.Add( "Foolio", 4 );
-			patternOptions.Add( "Harabara", 56 );
-			patternOptions.Add( "Harlow Solid", 49 );
-			patternOptions.Add( "Hattenschweiler", 26 );
-			patternOptions.Add( "He is Dead Jim", 48 );
-			patternOptions.Add( "Humanist", 5 );
-			patternOptions.Add( "Idea", 12 );
-			patternOptions.Add( "Impact", 35 );
-			patternOptions.Add( "Incised 901", 44 );
-			patternOptions.Add( "Infinite Justice", 14 );
-			patternOptions.Add( "Kimberly", 32 );
-			patternOptions.Add( "Lithograph", 6 );
-			patternOptions.Add( "Matt Rolfe", 53 );
-			patternOptions.Add( "Microgamma", 7 );
-			patternOptions.Add( "Minion", 47 );
-			patternOptions.Add( "Motherlode", 21 );
-			patternOptions.Add( "Okayd", 8 );
-			patternOptions.Add( "Omni Custom", 31 );
-			patternOptions.Add( "Omni", 30 );
-			patternOptions.Add( "Pepsi", 36 );
-			patternOptions.Add( "Piazza Black", 52 );
-			patternOptions.Add( "Pilsen", 57 );
-			patternOptions.Add( "Rhino", 23 );
-			patternOptions.Add( "Sofachrome", 15 );
-			patternOptions.Add( "SportsNight Alt", 28 );
-			patternOptions.Add( "SportsNight", 27 );
-			patternOptions.Add( "Swiss 721 Bold", 43 );
-			patternOptions.Add( "Walldoc", 17 );
-			patternOptions.Add( "Wide Latin", 34 );
-			patternOptions.Add( "Winsdor", 9 );
-			patternOptions.Add( "Yikes", 16 );
-
-			foreach ( var item in patternOptions )
-			{
-				Overlay_CarNumber_Pattern.Items.Add( item.Key );
-			}
-
-			slantOptions.Add( "Normal Slant", 0 );
-			slantOptions.Add( "Left Slant", 1 );
-			slantOptions.Add( "Right Slant", 2 );
-			slantOptions.Add( "Forward Slant", 3 );
-			slantOptions.Add( "Backward Slant", 4 );
-
-			foreach ( var item in slantOptions )
-			{
-				Overlay_CarNumber_Slant.Items.Add( item.Key );
-			}
-
-			inAnimationOptions.Add( "Static (Use For Editing)", 0 );
-			inAnimationOptions.Add( "Fade", 1 );
-			inAnimationOptions.Add( "Drop Down", 2 );
-			inAnimationOptions.Add( "Drop Up", 3 );
-			inAnimationOptions.Add( "Slide Left", 4 );
-			inAnimationOptions.Add( "Slide Right", 5 );
-			inAnimationOptions.Add( "Leave", 6 );
-			inAnimationOptions.Add( "Approach", 7 );
-			inAnimationOptions.Add( "Conveyor", 8 );
-
-			foreach ( var item in inAnimationOptions )
-			{
-				Overlay_Intro_LeftInAnimationNumber.Items.Add( item.Key );
-				Overlay_Intro_RightInAnimationNumber.Items.Add( item.Key );
-			}
-
-			outAnimationOptions.Add( "Static (Use For Editing)", 0 );
-			outAnimationOptions.Add( "Fade", 1 );
-			outAnimationOptions.Add( "Drop Down", 2 );
-			outAnimationOptions.Add( "Drop Up", 3 );
-			outAnimationOptions.Add( "Slide Left", 4 );
-			outAnimationOptions.Add( "Slide Right", 5 );
-			outAnimationOptions.Add( "Leave", 6 );
-			outAnimationOptions.Add( "Approach", 7 );
-			outAnimationOptions.Add( "Conveyor", 8 );
-			outAnimationOptions.Add( "Fall Down", 9 );
-
-			foreach ( var item in outAnimationOptions )
-			{
-				Overlay_Intro_LeftOutAnimationNumber.Items.Add( item.Key );
-				Overlay_Intro_RightOutAnimationNumber.Items.Add( item.Key );
-			}
-
-			// editor
-
-			capitalizationOptions.Add( "Leave Names Alone", 0 );
-			capitalizationOptions.Add( "Change From All Uppercase To Uppercase First Letter Only", 1 );
-			capitalizationOptions.Add( "Change To All Uppercase Always", 1 );
-
-			foreach ( var item in capitalizationOptions )
-			{
-				iRacing_DriverNames_CapitalizationOption.Items.Add( item.Key );
-			}
-
-			//
-
-			initializing--;
-
-			Initialize();
 		}
 
 		// initialize
@@ -373,6 +390,26 @@ namespace iRacingTVController
 		public void Initialize()
 		{
 			initializing++;
+
+			Settings.UpdateCombinedDirector();
+			Settings.UpdateCombinedOverlay();
+
+			// control panel
+
+			ControlPanel_Master_Button.IsChecked = masterOn = true;
+			ControlPanel_RaceStatus_Button.IsChecked = raceStatusOn = Settings.overlay.raceStatusEnabled;
+			ControlPanel_Leaderboard_Button.IsChecked = leaderboardOn = Settings.overlay.leaderboardEnabled;
+			ControlPanel_StartLights_Button.IsChecked = startLightsOn = Settings.overlay.startLightsEnabled;
+			ControlPanel_VoiceOf_Button.IsChecked = voiceOfOn = Settings.overlay.voiceOfEnabled;
+			ControlPanel_Subtitles_Button.IsChecked = subtitlesOn = Settings.overlay.subtitleEnabled;
+			ControlPanel_Intro_Button.IsChecked = introOn = Settings.overlay.introEnabled;
+
+			ControlPanel_C1_Button.IsChecked = customLayerOn[ 0 ] = Settings.overlay.imageSettingsDataDictionary[ "CustomLayer1" ].imageType != SettingsImage.ImageType.None;
+			ControlPanel_C2_Button.IsChecked = customLayerOn[ 1 ] = Settings.overlay.imageSettingsDataDictionary[ "CustomLayer2" ].imageType != SettingsImage.ImageType.None;
+			ControlPanel_C3_Button.IsChecked = customLayerOn[ 2 ] = Settings.overlay.imageSettingsDataDictionary[ "CustomLayer3" ].imageType != SettingsImage.ImageType.None;
+			ControlPanel_C4_Button.IsChecked = customLayerOn[ 3 ] = Settings.overlay.imageSettingsDataDictionary[ "CustomLayer4" ].imageType != SettingsImage.ImageType.None;
+			ControlPanel_C5_Button.IsChecked = customLayerOn[ 4 ] = Settings.overlay.imageSettingsDataDictionary[ "CustomLayer5" ].imageType != SettingsImage.ImageType.None;
+			ControlPanel_C6_Button.IsChecked = customLayerOn[ 5 ] = Settings.overlay.imageSettingsDataDictionary[ "CustomLayer6" ].imageType != SettingsImage.ImageType.None;
 
 			// director
 
@@ -387,8 +424,6 @@ namespace iRacingTVController
 					DirectorList.SelectedItem = director;
 				}
 			}
-
-			Settings.UpdateCombinedDirector();
 
 			Director_Cameras_Practice.Text = Settings.director.camerasPractice;
 			Director_Cameras_Qualifying.Text = Settings.director.camerasQualifying;
@@ -485,8 +520,6 @@ namespace iRacingTVController
 				}
 			}
 
-			Settings.UpdateCombinedOverlay();
-
 			// overlay - general
 
 			Overlay_General_Position_X.Value = Settings.overlay.position.x;
@@ -500,10 +533,10 @@ namespace iRacingTVController
 
 			// overlay - fonts
 
-			Overlay_Font_FontA_Name.SelectedItem = fontPaths.FirstOrDefault( x => x.Value == Settings.overlay.fontPaths[ 0 ] ).Key;
-			Overlay_Font_FontB_Name.SelectedItem = fontPaths.FirstOrDefault( x => x.Value == Settings.overlay.fontPaths[ 1 ] ).Key;
-			Overlay_Font_FontC_Name.SelectedItem = fontPaths.FirstOrDefault( x => x.Value == Settings.overlay.fontPaths[ 2 ] ).Key;
-			Overlay_Font_FontD_Name.SelectedItem = fontPaths.FirstOrDefault( x => x.Value == Settings.overlay.fontPaths[ 3 ] ).Key;
+			Overlay_Font_FontA_Name.SelectedItem = fontOptions.FirstOrDefault( x => x.Value == Settings.overlay.fontPaths[ 0 ] ).Key;
+			Overlay_Font_FontB_Name.SelectedItem = fontOptions.FirstOrDefault( x => x.Value == Settings.overlay.fontPaths[ 1 ] ).Key;
+			Overlay_Font_FontC_Name.SelectedItem = fontOptions.FirstOrDefault( x => x.Value == Settings.overlay.fontPaths[ 2 ] ).Key;
+			Overlay_Font_FontD_Name.SelectedItem = fontOptions.FirstOrDefault( x => x.Value == Settings.overlay.fontPaths[ 3 ] ).Key;
 
 			Overlay_Font_FontA_Name_Override.IsChecked = Settings.overlay.fontNames_Overridden[ 0 ];
 			Overlay_Font_FontB_Name_Override.IsChecked = Settings.overlay.fontNames_Overridden[ 1 ];
@@ -805,13 +838,6 @@ namespace iRacingTVController
 
 		// control panel
 
-		private void ControlPanel_EnableDirector_Click( object sender, RoutedEventArgs e )
-		{
-			Director.isEnabled = !Director.isEnabled;
-
-			ControlPanel_EnableDirector_Button.Content = ( Director.isEnabled ) ? "🎥 Disable Director" : "🎥 Enable Director";
-		}
-
 		public void ControlPanel_Update()
 		{
 			updateTimeRemaining = Math.Max( 0, updateTimeRemaining - Program.deltaTime );
@@ -1102,6 +1128,13 @@ namespace iRacingTVController
 			}
 		}
 
+		private void ControlPanel_EnableDirector_Click( object sender, RoutedEventArgs e )
+		{
+			Director.isEnabled = !Director.isEnabled;
+
+			ControlPanel_EnableDirector_Button.Content = ( Director.isEnabled ) ? "🎥 Disable Director" : "🎥 Enable Director";
+		}
+
 		private void ControlPanel_Camera_Intro_Button_Click( object sender, RoutedEventArgs e )
 		{
 			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Intro ) )
@@ -1218,6 +1251,24 @@ namespace iRacingTVController
 
 				UpdateManualCamera();
 			}
+		}
+
+		private void ControlPanel_ToggleButton_Updated( object sender, RoutedEventArgs e )
+		{
+			masterOn = ControlPanel_Master_Button.IsChecked ?? false;
+			raceStatusOn = ControlPanel_RaceStatus_Button.IsChecked ?? false;
+			leaderboardOn = ControlPanel_Leaderboard_Button.IsChecked ?? false;
+			startLightsOn = ControlPanel_StartLights_Button.IsChecked ?? false;
+			voiceOfOn = ControlPanel_VoiceOf_Button.IsChecked ?? false;
+			subtitlesOn = ControlPanel_Subtitles_Button.IsChecked ?? false;
+			introOn = ControlPanel_Intro_Button.IsChecked ?? false;
+
+			customLayerOn[ 0 ] = ControlPanel_C1_Button.IsChecked ?? false;
+			customLayerOn[ 1 ] = ControlPanel_C2_Button.IsChecked ?? false;
+			customLayerOn[ 2 ] = ControlPanel_C3_Button.IsChecked ?? false;
+			customLayerOn[ 3 ] = ControlPanel_C4_Button.IsChecked ?? false;
+			customLayerOn[ 4 ] = ControlPanel_C5_Button.IsChecked ?? false;
+			customLayerOn[ 5 ] = ControlPanel_C6_Button.IsChecked ?? false;
 		}
 
 		// director
@@ -1745,6 +1796,46 @@ namespace iRacingTVController
 			}
 		}
 
+		// session flags
+
+		private void SessionFlags_Edit_Button_Click( object sender, EventArgs e )
+		{
+			if ( initializing == 0 )
+			{
+				var button = (Button) sender;
+
+				var listViewItem = FindVisualParent<ListViewItem>( button );
+
+				var item = (SessionFlagsData) SessionFlags_ListView.ItemContainerGenerator.ItemFromContainer( listViewItem );
+
+				var editSessionFlagsData = new EditSessionFlagsData( item )
+				{
+					Owner = this
+				};
+
+				editSessionFlagsData.ShowDialog();
+			}
+		}
+
+		private void SessionFlags_AddAtCurrentFrame_Button_Click( object sender, EventArgs e )
+		{
+			if ( !IRSDK.isConnected )
+			{
+				MessageBox.Show( this, "iRacing is not running.", "Not Yet", MessageBoxButton.OK, MessageBoxImage.Exclamation );
+
+				return;
+			}
+
+			if ( !IRSDK.normalizedSession.isReplay )
+			{
+				MessageBox.Show( this, "Sorry, you should add session flags manually only during replays.", "Not In Replay", MessageBoxButton.OK, MessageBoxImage.Exclamation );
+
+				return;
+			}
+
+			SessionFlagsPlayback.AddAtCurrentFrame( 0 );
+		}
+
 		// incidents
 
 		private void Incidents_StartFrame_ValueChanged( object sender, EventArgs e )
@@ -1978,7 +2069,7 @@ namespace iRacingTVController
 					filePath = overlayFilePath
 				};
 
-				Settings.AddMissingDictionaryItems( Settings.overlayLocal );
+				Settings.FixSettings( Settings.overlayLocal );
 
 				Settings.overlayList.Add( Settings.overlayLocal );
 
@@ -2085,7 +2176,7 @@ namespace iRacingTVController
 					{
 						var fontName = (string) Overlay_Font_FontA_Name.SelectedItem;
 
-						overlay.fontPaths[ 0 ] = fontPaths[ fontName ];
+						overlay.fontPaths[ 0 ] = fontOptions[ fontName ];
 					}
 				}
 
@@ -2109,7 +2200,7 @@ namespace iRacingTVController
 					{
 						var fontName = (string) Overlay_Font_FontB_Name.SelectedItem;
 
-						overlay.fontPaths[ 1 ] = fontPaths[ fontName ] ?? string.Empty;
+						overlay.fontPaths[ 1 ] = fontOptions[ fontName ];
 					}
 				}
 
@@ -2133,7 +2224,7 @@ namespace iRacingTVController
 					{
 						var fontName = (string) Overlay_Font_FontC_Name.SelectedItem;
 
-						overlay.fontPaths[ 2 ] = fontPaths[ fontName ];
+						overlay.fontPaths[ 2 ] = fontOptions[ fontName ];
 					}
 				}
 
@@ -2157,7 +2248,7 @@ namespace iRacingTVController
 					{
 						var fontName = (string) Overlay_Font_FontD_Name.SelectedItem;
 
-						overlay.fontPaths[ 3 ] = fontPaths[ fontName ];
+						overlay.fontPaths[ 3 ] = fontOptions[ fontName ];
 					}
 				}
 

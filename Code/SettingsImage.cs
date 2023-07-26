@@ -25,6 +25,9 @@ namespace iRacingTVController
 		public Vector2 size = Vector2.zero;
 		public Color tintColor = Color.white;
 		public Vector4 border = Vector4.zero;
+		public Vector2 frameSize = Vector2.zero;
+		public int frameCount = 1;
+		public float animationSpeed = 10;
 
 		public bool imageType_Overridden = false;
 		public bool filePath_Overridden = false;
@@ -32,5 +35,7 @@ namespace iRacingTVController
 		public bool size_Overridden = false;
 		public bool tintColor_Overridden = false;
 		public bool border_Overridden = false;
+		public bool frames_Overridden = false;
+		public bool animationSpeed_Overridden = false;
 	}
 }

@@ -630,13 +630,18 @@ namespace iRacingTVController
 					size = item.Value.size_Overridden ? item.Value.size : globalItem.size,
 					tintColor = item.Value.tintColor_Overridden ? item.Value.tintColor : globalItem.tintColor,
 					border = item.Value.border_Overridden ? item.Value.border : globalItem.border,
+					frameSize = item.Value.frames_Overridden ? item.Value.frameSize : globalItem.frameSize,
+					frameCount = item.Value.frames_Overridden ? item.Value.frameCount : globalItem.frameCount,
+					animationSpeed = item.Value.animationSpeed_Overridden ? item.Value.animationSpeed : globalItem.animationSpeed,
 
 					imageType_Overridden = item.Value.imageType_Overridden,
 					filePath_Overridden = item.Value.filePath_Overridden,
 					position_Overridden = item.Value.position_Overridden,
 					size_Overridden = item.Value.size_Overridden,
 					tintColor_Overridden = item.Value.tintColor_Overridden,
-					border_Overridden = item.Value.border_Overridden
+					border_Overridden = item.Value.border_Overridden,
+					frames_Overridden = item.Value.frames_Overridden,
+					animationSpeed_Overridden = item.Value.animationSpeed_Overridden,
 				};
 			}
 

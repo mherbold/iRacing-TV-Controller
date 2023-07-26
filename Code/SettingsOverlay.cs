@@ -104,13 +104,13 @@ namespace iRacingTVController
 		public float introRightScale = 1.7f;
 		public float introLeftStartTime = 10;
 		public float introRightStartTime = 10.5f;
-		public float introStartInterval = 2;
-		public int introLeftInAnimationNumber = 1;
-		public int introRightInAnimationNumber = 1;
-		public int introLeftOutAnimationNumber = 1;
-		public int introRightOutAnimationNumber = 1;
-		public float introInTime = 5;
-		public float introHoldTime = 3;
+		public float introStartInterval = 5;
+		public int introLeftInAnimationNumber = 5;
+		public int introRightInAnimationNumber = 4;
+		public int introLeftOutAnimationNumber = 3;
+		public int introRightOutAnimationNumber = 2;
+		public float introInTime = 2;
+		public float introHoldTime = 5;
 		public float introOutTime = 1;
 
 		public bool introEnabled_Overridden = false;

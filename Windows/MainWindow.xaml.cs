@@ -766,6 +766,10 @@ namespace iRacingTVController
 				Image_Border_T.Value = settings.border.y;
 				Image_Border_R.Value = settings.border.z;
 				Image_Border_B.Value = settings.border.w;
+				Image_Frames_W.Value = (int) settings.frameSize.x;
+				Image_Frames_H.Value = (int) settings.frameSize.y;
+				Image_Frames_Count.Value = settings.frameCount;
+				Image_AnimationSpeed.Value = settings.animationSpeed;
 
 				Image_ImageType_Override.IsChecked = settings.imageType_Overridden;
 				Image_FilePath_Override.IsChecked = settings.filePath_Overridden;
@@ -773,6 +777,8 @@ namespace iRacingTVController
 				Image_Size_Override.IsChecked = settings.size_Overridden;
 				Image_TintColor_Override.IsChecked = settings.tintColor_Overridden;
 				Image_Border_Override.IsChecked = settings.border_Overridden;
+				Image_Frames_Override.IsChecked = settings.frames_Overridden;
+				Image_AnimationSpeed_Override.IsChecked = settings.animationSpeed_Overridden;
 
 				initializing--;
 			}
@@ -2414,6 +2420,37 @@ namespace iRacingTVController
 					var settings = overlaySettings.border_Overridden ? overlaySettings : globalSettings;
 
 					settings.border = new Vector4( Image_Border_L.Value, Image_Border_T.Value, Image_Border_R.Value, Image_Border_B.Value );
+				}
+
+				overridden = Image_Frames_Override.IsChecked ?? false;
+
+				if ( overlaySettings.frames_Overridden != overridden )
+				{
+					overlaySettings.frames_Overridden = overridden;
+
+					InitializeOverlayImage();
+				}
+				else
+				{
+					var settings = overlaySettings.frames_Overridden ? overlaySettings : globalSettings;
+
+					settings.frameSize = new Vector2( Image_Frames_W.Value, Image_Frames_H.Value );
+					settings.frameCount = Image_Frames_Count.Value;
+				}
+
+				overridden = Image_AnimationSpeed_Override.IsChecked ?? false;
+
+				if ( overlaySettings.animationSpeed_Overridden != overridden )
+				{
+					overlaySettings.animationSpeed_Overridden = overridden;
+
+					InitializeOverlayImage();
+				}
+				else
+				{
+					var settings = overlaySettings.animationSpeed_Overridden ? overlaySettings : globalSettings;
+
+					settings.animationSpeed = Image_AnimationSpeed.Value;
 				}
 
 				IPC.readyToSendSettings = true;

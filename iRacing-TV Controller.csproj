@@ -6,7 +6,7 @@
     <RootNamespace>iRacingTVController</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <VersionPrefix>1.14</VersionPrefix>
+    <VersionPrefix>1.15</VersionPrefix>
     <ApplicationIcon>Assets\iRacing-TV-Icon.ico</ApplicationIcon>
   </PropertyGroup>
 

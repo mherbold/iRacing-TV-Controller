@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.14"
+        Title="iRacing-TV Controller v1.15"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="860" Height="550" MinWidth="860" MinHeight="550" Icon="/Assets/iRacing-TV-Icon.png">
     <Grid>
@@ -940,6 +940,38 @@
                                         <local:Decimal x:Name="Image_Border_B" ValueChanged="Overlay_Image_Update" Grid.Column="7" />
                                         <Label Content="B" HorizontalContentAlignment="Center" Grid.Column="8"/>
                                         <CheckBox x:Name="Image_Border_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Image_Update" Grid.Column="9" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="50"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Frames"/>
+                                        <local:Number x:Name="Image_Frames_W" ValueChanged="Overlay_Image_Update" Grid.Column="1" />
+                                        <Label Content="W" HorizontalContentAlignment="Center" Grid.Column="2"/>
+                                        <local:Number x:Name="Image_Frames_H" ValueChanged="Overlay_Image_Update" Grid.Column="3" />
+                                        <Label Content="H" HorizontalContentAlignment="Center" Grid.Column="4"/>
+                                        <local:Number x:Name="Image_Frames_Count" ValueChanged="Overlay_Image_Update" Grid.Column="5" />
+                                        <Label Content="Count" HorizontalContentAlignment="Center" Grid.Column="6"/>
+                                        <CheckBox x:Name="Image_Frames_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Image_Update" Grid.Column="7" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="35"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Anim. Speed"/>
+                                        <local:Decimal x:Name="Image_AnimationSpeed" ValueChanged="Overlay_Image_Update" Grid.Column="1" />
+                                        <Label Content="FPS" HorizontalContentAlignment="Center" Grid.Column="2"/>
+                                        <CheckBox x:Name="Image_AnimationSpeed_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Image_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                 </StackPanel>
                             </TabItem>

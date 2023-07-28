@@ -616,6 +616,7 @@ namespace iRacingTVController
 			// overlay - track map
 
 			Overlay_TrackMap_Enable.IsChecked = Settings.overlay.trackMapEnabled;
+			Overlay_TrackMap_Reverse.IsChecked = Settings.overlay.trackMapReverse;
 			Overlay_TrackMap_Position_X.Value = (int) Settings.overlay.trackMapPosition.x;
 			Overlay_TrackMap_Position_Y.Value = (int) Settings.overlay.trackMapPosition.y;
 			Overlay_TrackMap_Size_W.Value = (int) Settings.overlay.trackMapSize.x;
@@ -626,13 +627,16 @@ namespace iRacingTVController
 			Overlay_TrackMap_LineColor_G.Value = Settings.overlay.trackMapLineColor.g;
 			Overlay_TrackMap_LineColor_B.Value = Settings.overlay.trackMapLineColor.b;
 			Overlay_TrackMap_LineColor_A.Value = Settings.overlay.trackMapLineColor.a;
+			Overlay_TrackMap_StartFinishOffset.Value = Settings.overlay.trackMapStartFinishOffset;
 
 			Overlay_TrackMap_Enable_Override.IsChecked = Settings.overlay.trackMapEnabled_Overridden;
+			Overlay_TrackMap_Reverse_Override.IsChecked = Settings.overlay.trackMapReverse_Overridden;
 			Overlay_TrackMap_Position_Override.IsChecked = Settings.overlay.trackMapPosition_Overridden;
 			Overlay_TrackMap_Size_Override.IsChecked = Settings.overlay.trackMapSize_Overridden;
 			Overlay_TrackMap_TextureFilePath_Override.IsChecked = Settings.overlay.trackMapTextureFilePath_Overridden;
 			Overlay_TrackMap_LineThickness_Override.IsChecked = Settings.overlay.trackMapLineThickness_Overridden;
 			Overlay_TrackMap_LineColor_Override.IsChecked = Settings.overlay.trackMapLineColor_Overridden;
+			Overlay_TrackMap_StartFinishOffset_Override.IsChecked = Settings.overlay.trackMapStartFinishOffset_Overridden;
 
 			// overlay - voice of
 
@@ -2905,6 +2909,7 @@ namespace iRacingTVController
 				Overlay_TrackMap_TextureFilePath.Text = openFileDialog.FileName;
 			}
 		}
+
 		private void Overlay_TrackMap_LineColor_Palette_Click( object sender, EventArgs e )
 		{
 			var color = new System.Windows.Media.Color()
@@ -2954,6 +2959,21 @@ namespace iRacingTVController
 					var overlay = Settings.overlayLocal.trackMapEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
 
 					overlay.trackMapEnabled = Overlay_TrackMap_Enable.IsChecked ?? false;
+				}
+
+				overridden = Overlay_TrackMap_Reverse_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.trackMapReverse_Overridden != overridden )
+				{
+					Settings.overlayLocal.trackMapReverse_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.trackMapReverse_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.trackMapReverse = Overlay_TrackMap_Reverse.IsChecked ?? false;
 				}
 
 				overridden = Overlay_TrackMap_Position_Override.IsChecked ?? false;
@@ -3034,6 +3054,21 @@ namespace iRacingTVController
 					overlay.trackMapLineColor.g = Overlay_TrackMap_LineColor_G.Value;
 					overlay.trackMapLineColor.b = Overlay_TrackMap_LineColor_B.Value;
 					overlay.trackMapLineColor.a = Overlay_TrackMap_LineColor_A.Value;
+				}
+
+				overridden = Overlay_TrackMap_StartFinishOffset_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.trackMapStartFinishOffset_Overridden != overridden )
+				{
+					Settings.overlayLocal.trackMapStartFinishOffset_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.trackMapStartFinishOffset_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.trackMapStartFinishOffset = (int) Overlay_TrackMap_StartFinishOffset.Value;
 				}
 
 				IPC.readyToSendSettings = true;

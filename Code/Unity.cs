@@ -205,7 +205,7 @@ namespace iRacingTVController
 
 			public Color( string hex )
 			{
-				var match = Regex.Match( hex, "([\\da-f]{2})([\\da-f]{2})([\\da-f]{2})", RegexOptions.IgnoreCase );
+				var match = Regex.Match( hex, @"([\da-f]{2})([\da-f]{2})([\da-f]{2})", RegexOptions.IgnoreCase );
 
 				if ( match.Success )
 				{

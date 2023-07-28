@@ -91,7 +91,7 @@ namespace iRacingTVController
 
 			trackID = IRSDK.session.WeekendInfo.TrackID;
 
-			var match = Regex.Match( IRSDK.session.WeekendInfo.TrackLength, "([-+]?[0-9]*\\.?[0-9]+)" );
+			var match = Regex.Match( IRSDK.session.WeekendInfo.TrackLength, @"([-+]?[0-9]*\.?[0-9]+)" );
 
 			if ( match.Success )
 			{

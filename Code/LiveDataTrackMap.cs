@@ -11,10 +11,14 @@ namespace iRacingTVController
 	{
 		public const int MaxNumCars = 63;
 
+		public bool show;
+
 		public int trackID;
 
 		public float width;
 		public float height;
+
+		public Vector3 startFinishLine = Vector3.zero;
 
 		public List<Vector3>? drawVectorList;
 

@@ -1,9 +1,11 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 using SvgPathProperties;
+using SvgPathProperties.Base;
 
 using static iRacingTVController.Unity;
 
@@ -11,17 +13,22 @@ namespace iRacingTVController
 {
 	public static class TrackMap
 	{
-		public const int numIterations = 10000;
-		public const double tangentEpsilon = 0.05;
+		public const int numVectors = 10000;
+
+		public const double tangentEpsilon = 0.005;
+
+		public const int minimumDrawVectorSpacing = 10;
+		public const int maximumDrawVectorSpacing = 250;
 
 		public static int trackID = 0;
 		public static bool initialized = false;
 
-		public static Vector3[] fullVectorList = new Vector3[ numIterations ];
+		public static Vector3[] fullVectorList = new Vector3[ numVectors ];
 
 		public static List<Vector3> drawVectorList = new();
 
 		public static int startFinishOffset = 0;
+
 		public static float width = 0;
 		public static float height = 0;
 
@@ -33,7 +40,10 @@ namespace iRacingTVController
 			}
 
 			trackID = IRSDK.normalizedSession.trackID;
+
 			initialized = false;
+
+			drawVectorList.Clear();
 
 			var startFinishPoint = GetStartFinishPoint();
 
@@ -56,102 +66,131 @@ namespace iRacingTVController
 				return;
 			}
 
-			var match = Regex.Match( rawSvg, " d=\"([^\"]*)\"" );
+			var splitSvgPathStringList = GetSplitSvgPathStringListFromRawSvg( rawSvg );
 
-			if ( !match.Success )
+			if ( splitSvgPathStringList.Count == 0 )
 			{
 				return;
 			}
 
-			var rawSvgPathString = match.Groups[ 1 ].Value;
+			var longestLength = double.NegativeInfinity;
 
-			var rawSvgPath = new SvgPath( rawSvgPathString );
+			var minX = 0.0f;
+			var minY = 0.0f;
+			var maxX = 0.0f;
+			var maxY = 0.0f;
 
-			rawSvgPathString = rawSvgPath.ToString();
-
-			var svgPathStrings = rawSvgPathString.Split( 'Z' );
-
-			svgPathStrings[ 0 ] += 'Z';
-
-			var svgPath = new SvgPath( svgPathStrings[ 0 ] );
-
-			var length = svgPath.Length;
-			var stepLength = length / numIterations;
-
-			var point = svgPath.GetPointAtLength( 0 );
-			var tangent = svgPath.GetTangentAtLength( 0 );
-
-			var vector = new Vector3( (float) point.X, (float) point.Y, 0.0f );
-
-			var minX = vector.x;
-			var minY = vector.y;
-			var maxX = vector.x;
-			var maxY = vector.x;
-
-			fullVectorList[ 0 ] = vector;
-
-			drawVectorList.Add( vector );
-
-			var lastPointAdded = true;
-
-			startFinishOffset = 0;
-
-			var dSFX = vector.x - startFinishPoint.x;
-			var dSFY = vector.y - startFinishPoint.y;
-
-			var startFinishDistance = dSFX * dSFX + dSFY * dSFY;
-
-			for ( var i = 1; i < numIterations; i++ )
+			foreach ( var splitSvgPathString in splitSvgPathStringList )
 			{
-				var newTangent = svgPath.GetTangentAtLength( i * stepLength );
+				var svgPath = new SvgPath( splitSvgPathString );
 
-				var dTX = newTangent.X - tangent.X;
-				var dTY = newTangent.Y - tangent.Y;
+				var length = svgPath.Length;
 
-				if ( ( dTX * dTX + dTY * dTY ) > tangentEpsilon )
+				if ( longestLength > length )
 				{
-					if ( !lastPointAdded )
-					{
-						drawVectorList.Add( vector );
+					continue;
+				}
 
-						lastPointAdded = true;
+				longestLength = length;
+
+				drawVectorList.Clear();
+
+				var stepLength = length / numVectors;
+
+				var point = svgPath.GetPointAtLength( 0 );
+
+				var vector = new Vector3( (float) point.X, (float) point.Y, 0.0f );
+
+				var activeTangent = svgPath.GetTangentAtLength( 0 );
+
+				minX = vector.x;
+				minY = vector.y;
+				maxX = vector.x;
+				maxY = vector.x;
+
+				fullVectorList[ 0 ] = vector;
+
+				drawVectorList.Add( vector );
+
+				startFinishOffset = 0;
+
+				var dSFX = vector.x - startFinishPoint.x;
+				var dSFY = vector.y - startFinishPoint.y;
+
+				var startFinishDistance = dSFX * dSFX + dSFY * dSFY;
+
+				var spacing = 0;
+
+				Vector3? lastVector = null;
+				Point? lastTangent = null;
+
+				for ( var i = 1; i < numVectors; i++ )
+				{
+					point = svgPath.GetPointAtLength( i * stepLength );
+
+					vector = new Vector3( (float) point.X, (float) point.Y, 0.0f );
+
+					var tangent = svgPath.GetTangentAtLength( i * stepLength );
+
+					var dTX = tangent.X - activeTangent.X;
+					var dTY = tangent.Y - activeTangent.Y;
+
+					var dT = dTX * dTX + dTY * dTY;
+
+					if ( ( spacing >= maximumDrawVectorSpacing ) || ( ( spacing >= minimumDrawVectorSpacing ) && ( dT >= tangentEpsilon ) ) )
+					{
+						if ( ( lastVector != null ) && ( lastTangent != null ) )
+						{
+							drawVectorList.Add( lastVector );
+
+							activeTangent = (Point) lastTangent;
+						}
+						else
+						{
+							drawVectorList.Add( vector );
+
+							activeTangent = tangent;
+						}
+
+						spacing = 0;
+
+						lastVector = null;
+						lastTangent = null;
+					}
+					else
+					{
+						spacing++;
+
+						lastVector = vector;
+						lastTangent = tangent;
 					}
 
-					point = svgPath.GetPointAtLength( i * stepLength );
+					fullVectorList[ i ] = vector;
 
-					tangent = newTangent;
+					minX = Math.Min( minX, vector.x );
+					minY = Math.Min( minY, vector.y );
+					maxX = Math.Max( maxX, vector.x );
+					maxY = Math.Max( maxY, vector.y );
 
-					vector = new Vector3( (float) point.X, (float) point.Y, 0.0f );
+					dSFX = vector.x - startFinishPoint.x;
+					dSFY = vector.y - startFinishPoint.y;
 
-					drawVectorList.Add( vector );
+					var newStartFinishDistance = dSFX * dSFX + dSFY * dSFY;
+
+					if ( startFinishDistance > newStartFinishDistance )
+					{
+						startFinishDistance = newStartFinishDistance;
+
+						startFinishOffset = i;
+					}
 				}
-				else
-				{
-					point = svgPath.GetPointAtLength( i * stepLength );
+			}
 
-					vector = new Vector3( (float) point.X, (float) point.Y, 0.0f );
+			drawVectorList.RemoveAt( drawVectorList.Count - 1 );
 
-					lastPointAdded = false;
-				}
-
-				fullVectorList[ i ] = vector;
-
-				minX = Math.Min( minX, vector.x );
-				minY = Math.Min( minY, vector.y );
-				maxX = Math.Max( maxX, vector.x );
-				maxY = Math.Max( maxY, vector.y );
-
-				dSFX = vector.x - startFinishPoint.x;
-				dSFY = vector.y - startFinishPoint.y;
-
-				var newStartFinishDistance = dSFX * dSFX + dSFY * dSFY;
-
-				if ( startFinishDistance > newStartFinishDistance )
-				{
-					startFinishDistance = newStartFinishDistance;
-
-					startFinishOffset = i;
-				}
+			foreach ( var v in drawVectorList )
+			{
+				Debug.WriteLine( $"{v.x} {v.y}" );
 			}
 
 			width = maxX - minX;
@@ -159,7 +198,7 @@ namespace iRacingTVController
 
 			var scale = 1 / width;
 
-			for ( var i = 0; i < numIterations; i++ )
+			for ( var i = 0; i < numVectors; i++ )
 			{
 				fullVectorList[ i ].x -= minX;
 				fullVectorList[ i ].y -= minY;
@@ -189,49 +228,97 @@ namespace iRacingTVController
 				return null;
 			}
 
-			var match = Regex.Match( rawSvg, " d=\"([^\"]*)\"" );
+			var splitSvgPathStringList = GetSplitSvgPathStringListFromRawSvg( rawSvg );
 
-            if ( !match.Success )
-            {
-				return null;
-            }
-
-            var rawSvgPathString = match.Groups[ 1 ].Value;
-
-			var rawSvgPath = new SvgPath( rawSvgPathString );
-
-			rawSvgPathString = rawSvgPath.ToString();
-
-			var svgPathStrings = rawSvgPathString.Split( 'Z' );
-
-			svgPathStrings[ 0 ] += 'Z';
-
-			var svgPath = new SvgPath( svgPathStrings[ 0 ] );
-
-			var length = svgPath.Length;
-			var stepLength = length / 100;
-
-			var averagePoint = Vector2.zero;
-
-			for ( var i = 0; i < 100; i++ )
+			if ( splitSvgPathStringList.Count == 0 )
 			{
-				var point = svgPath.GetPointAtLength( i * stepLength );
-
-				averagePoint.x += (float) point.X;
-				averagePoint.y += (float) point.Y;
+				return null;
 			}
 
-			averagePoint.x /= 100;
-			averagePoint.y /= 100;
+			var shortestLength = double.PositiveInfinity;
+			var averagePoint = Vector2.zero;
+
+			foreach ( var splitSvgPathString in splitSvgPathStringList )
+			{
+				var svgPath = new SvgPath( splitSvgPathString );
+
+				var length = svgPath.Length;
+
+				if ( shortestLength < length )
+				{
+					continue;
+				}
+
+				shortestLength = length;
+				averagePoint = Vector2.zero;
+
+				var stepLength = length / 100;
+
+				var minX = double.PositiveInfinity;
+				var minY = double.PositiveInfinity;
+				var maxX = double.NegativeInfinity;
+				var maxY = double.NegativeInfinity;
+
+				for ( var i = 0; i < 100; i++ )
+				{
+					var point = svgPath.GetPointAtLength( i * stepLength );
+
+					averagePoint.x += (float) point.X;
+					averagePoint.y += (float) point.Y;
+
+					minX = Math.Min( minX, point.X );
+					minY = Math.Min( minY, point.Y );
+					maxX = Math.Max( maxX, point.X );
+					maxY = Math.Max( maxY, point.Y );
+				}
+
+				averagePoint.x /= 100;
+				averagePoint.y /= 100;
+			}
 
 			return averagePoint;
+		}
+
+		public static List<string> GetSplitSvgPathStringListFromRawSvg( string rawSvg )
+		{
+			var splitSvgPathStringList = new List<string>();
+
+			var matches = Regex.Matches( rawSvg, @" d=""([^""]*)""" );
+
+			foreach ( Match match in matches )
+			{
+				var rawSvgPathString = match.Groups[ 1 ].Value;
+
+				var rawSvgPath = new SvgPath( rawSvgPathString );
+
+				rawSvgPathString = rawSvgPath.ToString();
+
+				var splitSvgPathStrings = rawSvgPathString.Split( new char[] { 'M', 'Z' } );
+
+				foreach ( var splitSvgPathString in splitSvgPathStrings )
+				{
+					if ( splitSvgPathString.Trim().Length > 0 )
+					{
+						var svgPathString = $"M{splitSvgPathString}Z";
+
+						splitSvgPathStringList.Add( svgPathString );
+					}
+				}
+			}
+
+			return splitSvgPathStringList;
 		}
 
 		public static Vector3 GetPosition( float lapDistPct )
 		{
 			if ( initialized )
 			{
-				int index = ( (int) Math.Round( numIterations * ( 1.0f - lapDistPct ) ) + startFinishOffset ) % numIterations;
+				if ( !Settings.overlay.trackMapReverse )
+				{
+					lapDistPct = 1.0f - lapDistPct;
+				}
+
+				int index = ( (int) Math.Round( numVectors * lapDistPct ) + startFinishOffset + Settings.overlay.trackMapStartFinishOffset ) % numVectors;
 
 				return fullVectorList[ index ];
 			}

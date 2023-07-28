@@ -52,18 +52,22 @@ namespace iRacingTVController
 		public bool leaderboardClassColorStrength_Overridden = false;
 
 		public bool trackMapEnabled = true;
-		public Vector2 trackMapPosition = new( 1403, 88 );
+		public bool trackMapReverse = false;
+		public Vector2 trackMapPosition = new( 1380, 168 );
 		public Vector2 trackMapSize = new( 440, 440 );
 		public string trackMapTextureFilePath = Program.documentsFolder + "Assets\\trackmap.png";
-		public float trackMapLineThickness = 0.05f;
+		public float trackMapLineThickness = 0.025f;
 		public Color trackMapLineColor = new( 0.485f, 0.485f, 0.485f, 1.0f );
+		public int trackMapStartFinishOffset = 0;
 
 		public bool trackMapEnabled_Overridden = false;
+		public bool trackMapReverse_Overridden = false;
 		public bool trackMapPosition_Overridden = false;
 		public bool trackMapSize_Overridden = false;
 		public bool trackMapTextureFilePath_Overridden = false;
 		public bool trackMapLineThickness_Overridden = false;
 		public bool trackMapLineColor_Overridden = false;
+		public bool trackMapStartFinishOffset_Overridden = false;
 
 		public bool voiceOfEnabled = true;
 		public Vector2 voiceOfPosition = new( 1920, 41 );

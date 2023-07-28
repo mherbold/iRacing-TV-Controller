@@ -484,9 +484,11 @@ namespace iRacingTVController
 		{
 			if ( TrackMap.initialized )
 			{
+				liveDataTrackMap.show = true;
 				liveDataTrackMap.trackID = TrackMap.trackID;
 				liveDataTrackMap.width = TrackMap.width;
 				liveDataTrackMap.height = TrackMap.height;
+				liveDataTrackMap.startFinishLine = TrackMap.fullVectorList[ ( TrackMap.startFinishOffset + Settings.overlay.trackMapStartFinishOffset ) % TrackMap.numVectors ];
 				liveDataTrackMap.drawVectorList = TrackMap.drawVectorList;
 
 				foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardIndexSortedNormalizedCars )
@@ -505,13 +507,17 @@ namespace iRacingTVController
 					{
 						liveDataTrackMapCar.offset = TrackMap.GetPosition( normalizedCar.lapDistPct );
 					}
+
+					liveDataTrackMapCar.showHighlight = ( normalizedCar.carIdx == IRSDK.normalizedData.camCarIdx );
 				}
 			}
 			else
 			{
+				liveDataTrackMap.show = false;
 				liveDataTrackMap.trackID = 0;
 				liveDataTrackMap.width = 0;
 				liveDataTrackMap.height = 0;
+				liveDataTrackMap.startFinishLine = Vector3.zero;
 				liveDataTrackMap.drawVectorList = null;
 			}
 		}

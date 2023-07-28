@@ -6,7 +6,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 
 using irsdkSharp.Serialization.Enums.Fastest;
-using static iRacingTVController.IncidentPlayback;
 
 namespace iRacingTVController
 {
@@ -126,7 +125,7 @@ namespace iRacingTVController
 
 				sessionFlagsDataList.Clear();
 
-				MainWindow.Instance.SessionFlags_ListView.Items.Clear();
+				MainWindow.Instance.SessionFlags_ListView.Items.Refresh();
 
 				if ( File.Exists( filePath ) )
 				{
@@ -141,7 +140,7 @@ namespace iRacingTVController
 							break;
 						}
 
-						var match = Regex.Match( line, "(\\d{1}),([0-9.]+),0x([0-9a-fA-F]{8})" );
+						var match = Regex.Match( line, @"(\d{1}),([0-9.]+),0x([0-9a-fA-F]{8})" );
 
 						if ( match.Success )
 						{
@@ -186,8 +185,8 @@ namespace iRacingTVController
 			{
 				SessionNumber = IRSDK.normalizedSession.sessionNumber,
 				SessionTime = Math.Round( IRSDK.normalizedData.sessionTime, 3 ),
-				SessionFlags = 0,
-				SessionFlagsAsString = string.Empty
+				SessionFlags = sessionFlags,
+				SessionFlagsAsString = ( (SessionFlags) sessionFlags ).ToString()
 			};
 
 			sessionFlagsDataList.Add( sessionFlagsData );

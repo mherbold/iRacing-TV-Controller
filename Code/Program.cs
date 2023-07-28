@@ -48,6 +48,8 @@ namespace iRacingTVController
 
 			IPC.Initialize();
 
+			DataApi.Initialize();
+
 			Task.Run( () => ProgramAsync() );
 		}
 

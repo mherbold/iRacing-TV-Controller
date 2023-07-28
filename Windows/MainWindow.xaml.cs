@@ -1,12 +1,10 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
 using Microsoft.Win32;
@@ -64,6 +62,7 @@ namespace iRacingTVController
 		public bool masterOn;
 		public bool raceStatusOn;
 		public bool leaderboardOn;
+		public bool trackMapOn;
 		public bool startLightsOn;
 		public bool voiceOfOn;
 		public bool subtitlesOn;
@@ -76,6 +75,7 @@ namespace iRacingTVController
 		public SortedDictionary<string, int> slantOptions = new();
 		public SortedDictionary<string, int> inAnimationOptions = new();
 		public SortedDictionary<string, int> outAnimationOptions = new();
+		public SortedDictionary<string, int> formatOptions = new();
 		public SortedDictionary<string, int> capitalizationOptions = new();
 
 		static MainWindow()
@@ -360,9 +360,17 @@ namespace iRacingTVController
 
 				// editor
 
+				formatOptions.Add( "Last name", 0 );
+				formatOptions.Add( "First three letters of the last name", 1 );
+
+				foreach ( var item in formatOptions )
+				{
+					iRacing_DriverNames_FormatOption.Items.Add( item.Key );
+				}
+
 				capitalizationOptions.Add( "Leave Names Alone", 0 );
 				capitalizationOptions.Add( "Change From All Uppercase To Uppercase First Letter Only", 1 );
-				capitalizationOptions.Add( "Change To All Uppercase Always", 1 );
+				capitalizationOptions.Add( "Change To All Uppercase Always", 2 );
 
 				foreach ( var item in capitalizationOptions )
 				{
@@ -399,6 +407,7 @@ namespace iRacingTVController
 			ControlPanel_Master_Button.IsChecked = masterOn = true;
 			ControlPanel_RaceStatus_Button.IsChecked = raceStatusOn = Settings.overlay.raceStatusEnabled;
 			ControlPanel_Leaderboard_Button.IsChecked = leaderboardOn = Settings.overlay.leaderboardEnabled;
+			ControlPanel_TrackMap_Button.IsChecked = trackMapOn = Settings.overlay.trackMapEnabled;
 			ControlPanel_StartLights_Button.IsChecked = startLightsOn = Settings.overlay.startLightsEnabled;
 			ControlPanel_VoiceOf_Button.IsChecked = voiceOfOn = Settings.overlay.voiceOfEnabled;
 			ControlPanel_Subtitles_Button.IsChecked = subtitlesOn = Settings.overlay.subtitleEnabled;
@@ -604,6 +613,27 @@ namespace iRacingTVController
 			Overlay_Leaderboard_UseClassColors_Override.IsChecked = Settings.overlay.leaderboardUseClassColors_Overridden;
 			Overlay_Leaderboard_ClassColorStrength_Override.IsChecked = Settings.overlay.leaderboardClassColorStrength_Overridden;
 
+			// overlay - track map
+
+			Overlay_TrackMap_Enable.IsChecked = Settings.overlay.trackMapEnabled;
+			Overlay_TrackMap_Position_X.Value = (int) Settings.overlay.trackMapPosition.x;
+			Overlay_TrackMap_Position_Y.Value = (int) Settings.overlay.trackMapPosition.y;
+			Overlay_TrackMap_Size_W.Value = (int) Settings.overlay.trackMapSize.x;
+			Overlay_TrackMap_Size_H.Value = (int) Settings.overlay.trackMapSize.y;
+			Overlay_TrackMap_TextureFilePath.Text = Settings.overlay.trackMapTextureFilePath;
+			Overlay_TrackMap_LineThickness.Value = Settings.overlay.trackMapLineThickness;
+			Overlay_TrackMap_LineColor_R.Value = Settings.overlay.trackMapLineColor.r;
+			Overlay_TrackMap_LineColor_G.Value = Settings.overlay.trackMapLineColor.g;
+			Overlay_TrackMap_LineColor_B.Value = Settings.overlay.trackMapLineColor.b;
+			Overlay_TrackMap_LineColor_A.Value = Settings.overlay.trackMapLineColor.a;
+
+			Overlay_TrackMap_Enable_Override.IsChecked = Settings.overlay.trackMapEnabled_Overridden;
+			Overlay_TrackMap_Position_Override.IsChecked = Settings.overlay.trackMapPosition_Overridden;
+			Overlay_TrackMap_Size_Override.IsChecked = Settings.overlay.trackMapSize_Overridden;
+			Overlay_TrackMap_TextureFilePath_Override.IsChecked = Settings.overlay.trackMapTextureFilePath_Overridden;
+			Overlay_TrackMap_LineThickness_Override.IsChecked = Settings.overlay.trackMapLineThickness_Overridden;
+			Overlay_TrackMap_LineColor_Override.IsChecked = Settings.overlay.trackMapLineColor_Overridden;
+
 			// overlay - voice of
 
 			Overlay_VoiceOf_Enable.IsChecked = Settings.overlay.voiceOfEnabled;
@@ -719,9 +749,13 @@ namespace iRacingTVController
 
 			iRacing_General_CommandRateLimit.Value = Settings.editor.iracingGeneralCommandRateLimit;
 
+			iRacing_Account_Username.Text = Settings.editor.iracingAccountUsername;
+			iRacing_Account_Password.Password = Settings.editor.iracingAccountPassword;
+
 			iRacing_CustomPaints_Directory.Text = Settings.editor.iracingCustomPaintsDirectory;
 
 			iRacing_DriverNames_Suffixes.Text = Settings.editor.iracingDriverNamesSuffixes;
+			iRacing_DriverNames_FormatOption.SelectedItem = formatOptions.FirstOrDefault( x => x.Value == Settings.editor.iracingDriverNameFormatOption ).Key;
 			iRacing_DriverNames_CapitalizationOption.SelectedItem = capitalizationOptions.FirstOrDefault( x => x.Value == Settings.editor.iracingDriverNameCapitalizationOption ).Key;
 
 			// editor
@@ -770,6 +804,7 @@ namespace iRacingTVController
 				Image_Frames_H.Value = (int) settings.frameSize.y;
 				Image_Frames_Count.Value = settings.frameCount;
 				Image_AnimationSpeed.Value = settings.animationSpeed;
+				Image_TilingEnabled.IsChecked = settings.tilingEnabled;
 
 				Image_ImageType_Override.IsChecked = settings.imageType_Overridden;
 				Image_FilePath_Override.IsChecked = settings.filePath_Overridden;
@@ -779,6 +814,7 @@ namespace iRacingTVController
 				Image_Border_Override.IsChecked = settings.border_Overridden;
 				Image_Frames_Override.IsChecked = settings.frames_Overridden;
 				Image_AnimationSpeed_Override.IsChecked = settings.animationSpeed_Overridden;
+				Image_TilingEnabled_Override.IsChecked = settings.tilingEnabled_Overridden;
 
 				initializing--;
 			}
@@ -1264,6 +1300,7 @@ namespace iRacingTVController
 			masterOn = ControlPanel_Master_Button.IsChecked ?? false;
 			raceStatusOn = ControlPanel_RaceStatus_Button.IsChecked ?? false;
 			leaderboardOn = ControlPanel_Leaderboard_Button.IsChecked ?? false;
+			trackMapOn = ControlPanel_TrackMap_Button.IsChecked ?? false;
 			startLightsOn = ControlPanel_StartLights_Button.IsChecked ?? false;
 			voiceOfOn = ControlPanel_VoiceOf_Button.IsChecked ?? false;
 			subtitlesOn = ControlPanel_Subtitles_Button.IsChecked ?? false;
@@ -2329,8 +2366,10 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overlaySettings = Settings.overlayLocal.imageSettingsDataDictionary[ (string) Overlay_Image_ID.SelectedItem ];
-				var globalSettings = Settings.overlayGlobal.imageSettingsDataDictionary[ (string) Overlay_Image_ID.SelectedItem ];
+				var id = (string) Overlay_Image_ID.SelectedItem;
+
+				var overlaySettings = Settings.overlayLocal.imageSettingsDataDictionary[ id ];
+				var globalSettings = Settings.overlayGlobal.imageSettingsDataDictionary[ id ];
 
 				var overridden = Image_ImageType_Override.IsChecked ?? false;
 
@@ -2345,6 +2384,40 @@ namespace iRacingTVController
 					var settings = overlaySettings.imageType_Overridden ? overlaySettings : globalSettings;
 
 					settings.imageType = (SettingsImage.ImageType) Image_ImageType.SelectedItem;
+				}
+
+				{
+					var settings = overlaySettings.imageType_Overridden ? overlaySettings : globalSettings;
+
+					if ( id == "CustomLayer1" )
+					{
+						ControlPanel_C1_Button.IsChecked = customLayerOn[ 0 ] = settings.imageType != SettingsImage.ImageType.None;
+					}
+
+					if ( id == "CustomLayer2" )
+					{
+						ControlPanel_C2_Button.IsChecked = customLayerOn[ 1 ] = settings.imageType != SettingsImage.ImageType.None;
+					}
+
+					if ( id == "CustomLayer3" )
+					{
+						ControlPanel_C3_Button.IsChecked = customLayerOn[ 2 ] = settings.imageType != SettingsImage.ImageType.None;
+					}
+
+					if ( id == "CustomLayer4" )
+					{
+						ControlPanel_C4_Button.IsChecked = customLayerOn[ 3 ] = settings.imageType != SettingsImage.ImageType.None;
+					}
+
+					if ( id == "CustomLayer5" )
+					{
+						ControlPanel_C5_Button.IsChecked = customLayerOn[ 4 ] = settings.imageType != SettingsImage.ImageType.None;
+					}
+
+					if ( id == "CustomLayer6" )
+					{
+						ControlPanel_C6_Button.IsChecked = customLayerOn[ 5 ] = settings.imageType != SettingsImage.ImageType.None;
+					}
 				}
 
 				overridden = Image_FilePath_Override.IsChecked ?? false;
@@ -2451,6 +2524,21 @@ namespace iRacingTVController
 					var settings = overlaySettings.animationSpeed_Overridden ? overlaySettings : globalSettings;
 
 					settings.animationSpeed = Image_AnimationSpeed.Value;
+				}
+
+				overridden = Image_TilingEnabled_Override.IsChecked ?? false;
+
+				if ( overlaySettings.tilingEnabled_Overridden != overridden )
+				{
+					overlaySettings.tilingEnabled_Overridden = overridden;
+
+					InitializeOverlayImage();
+				}
+				else
+				{
+					var settings = overlaySettings.tilingEnabled_Overridden ? overlaySettings : globalSettings;
+
+					settings.tilingEnabled = Image_TilingEnabled.IsChecked ?? false;
 				}
 
 				IPC.readyToSendSettings = true;
@@ -2789,6 +2877,163 @@ namespace iRacingTVController
 					var overlay = Settings.overlayLocal.leaderboardClassColorStrength_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
 
 					overlay.leaderboardClassColorStrength = (float) ( Overlay_Leaderboard_ClassColorStrength.Value / 255.0f );
+				}
+
+				IPC.readyToSendSettings = true;
+
+				Settings.saveOverlayToFileQueued = true;
+			}
+		}
+
+		private void Overlay_TrackMap_TextureFilePath_Button_Click( object sender, EventArgs e )
+		{
+			string currentFilePath = Overlay_TrackMap_TextureFilePath.Text;
+
+			var openFileDialog = new OpenFileDialog()
+			{
+				Title = "Select an Image File",
+				Filter = "Image Files (*.jpg; *.png; *.tif; *.bmp)|*.jpg;*.png;*.tif;*.bmp|All files (*.*)|*.*",
+				InitialDirectory = ( currentFilePath == string.Empty ) ? Program.documentsFolder : Path.GetDirectoryName( currentFilePath ),
+				FileName = currentFilePath,
+				ValidateNames = true,
+				CheckPathExists = true,
+				CheckFileExists = true
+			};
+
+			if ( openFileDialog.ShowDialog() == true )
+			{
+				Overlay_TrackMap_TextureFilePath.Text = openFileDialog.FileName;
+			}
+		}
+		private void Overlay_TrackMap_LineColor_Palette_Click( object sender, EventArgs e )
+		{
+			var color = new System.Windows.Media.Color()
+			{
+				ScR = Overlay_TrackMap_LineColor_R.Value,
+				ScG = Overlay_TrackMap_LineColor_G.Value,
+				ScB = Overlay_TrackMap_LineColor_B.Value,
+				ScA = Overlay_TrackMap_LineColor_A.Value
+			};
+
+			var colorPickerDialog = new ColorPickerDialog( color )
+			{
+				Owner = this
+			};
+
+			var result = colorPickerDialog.ShowDialog();
+
+			if ( result.HasValue && result.Value )
+			{
+				initializing++;
+
+				Overlay_TrackMap_LineColor_R.Value = colorPickerDialog.Color.ScR;
+				Overlay_TrackMap_LineColor_G.Value = colorPickerDialog.Color.ScG;
+				Overlay_TrackMap_LineColor_B.Value = colorPickerDialog.Color.ScB;
+				Overlay_TrackMap_LineColor_A.Value = colorPickerDialog.Color.ScA;
+
+				initializing--;
+
+				Overlay_TrackMap_Update( sender, e );
+			}
+		}
+
+		private void Overlay_TrackMap_Update( object sender, EventArgs e )
+		{
+			if ( initializing == 0 )
+			{
+				var overridden = Overlay_TrackMap_Enable_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.trackMapEnabled_Overridden != overridden )
+				{
+					Settings.overlayLocal.trackMapEnabled_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.trackMapEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.trackMapEnabled = Overlay_TrackMap_Enable.IsChecked ?? false;
+				}
+
+				overridden = Overlay_TrackMap_Position_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.trackMapPosition_Overridden != overridden )
+				{
+					Settings.overlayLocal.trackMapPosition_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.trackMapPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.trackMapPosition.x = Overlay_TrackMap_Position_X.Value;
+					overlay.trackMapPosition.y = Overlay_TrackMap_Position_Y.Value;
+				}
+
+				overridden = Overlay_TrackMap_Size_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.trackMapSize_Overridden != overridden )
+				{
+					Settings.overlayLocal.trackMapSize_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.trackMapSize_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.trackMapSize.x = Overlay_TrackMap_Size_W.Value;
+					overlay.trackMapSize.y = Overlay_TrackMap_Size_H.Value;
+				}
+
+				overridden = Overlay_TrackMap_TextureFilePath_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.trackMapTextureFilePath_Overridden != overridden )
+				{
+					Settings.overlayLocal.trackMapTextureFilePath_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.trackMapTextureFilePath_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.trackMapTextureFilePath = Overlay_TrackMap_TextureFilePath.Text;
+				}
+
+				overridden = Overlay_TrackMap_LineThickness_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.trackMapLineThickness_Overridden != overridden )
+				{
+					Settings.overlayLocal.trackMapLineThickness_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.trackMapLineThickness_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.trackMapLineThickness = Overlay_TrackMap_LineThickness.Value;
+				}
+
+				overridden = Overlay_TrackMap_LineColor_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.trackMapLineColor_Overridden != overridden )
+				{
+					Settings.overlayLocal.trackMapLineColor_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.trackMapLineColor_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.trackMapLineColor.r = Overlay_TrackMap_LineColor_R.Value;
+					overlay.trackMapLineColor.g = Overlay_TrackMap_LineColor_G.Value;
+					overlay.trackMapLineColor.b = Overlay_TrackMap_LineColor_B.Value;
+					overlay.trackMapLineColor.a = Overlay_TrackMap_LineColor_A.Value;
 				}
 
 				IPC.readyToSendSettings = true;
@@ -3145,6 +3390,8 @@ namespace iRacingTVController
 				}
 
 				IPC.readyToSendSettings = true;
+
+				Settings.UpdateCombinedOverlay();
 
 				Settings.saveOverlayToFileQueued = true;
 
@@ -3552,14 +3799,20 @@ namespace iRacingTVController
 			{
 				Settings.editor.iracingGeneralCommandRateLimit = iRacing_General_CommandRateLimit.Value;
 
+				Settings.editor.iracingAccountUsername = iRacing_Account_Username.Text;
+				Settings.editor.iracingAccountPassword = iRacing_Account_Password.Password;
+
 				Settings.editor.iracingCustomPaintsDirectory = iRacing_CustomPaints_Directory.Text;
 
 				Settings.editor.iracingDriverNamesSuffixes = iRacing_DriverNames_Suffixes.Text;
+				Settings.editor.iracingDriverNameFormatOption = formatOptions[ (string) iRacing_DriverNames_FormatOption.SelectedItem ];
 				Settings.editor.iracingDriverNameCapitalizationOption = capitalizationOptions[ (string) iRacing_DriverNames_CapitalizationOption.SelectedItem ];
 
 				Settings.saveEditorToFileQueued = true;
 
 				IRSDK.normalizedData.SessionUpdate( true );
+
+				DataApi.Initialize();
 			}
 		}
 

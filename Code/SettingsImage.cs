@@ -28,6 +28,7 @@ namespace iRacingTVController
 		public Vector2 frameSize = Vector2.zero;
 		public int frameCount = 1;
 		public float animationSpeed = 10;
+		public bool tilingEnabled = false;
 
 		public bool imageType_Overridden = false;
 		public bool filePath_Overridden = false;
@@ -37,5 +38,6 @@ namespace iRacingTVController
 		public bool border_Overridden = false;
 		public bool frames_Overridden = false;
 		public bool animationSpeed_Overridden = false;
+		public bool tilingEnabled_Overridden = false;
 	}
 }

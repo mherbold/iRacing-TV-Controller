@@ -8,9 +8,13 @@ namespace iRacingTVController
 	{
 		public float iracingGeneralCommandRateLimit = 2.0f;
 
+		public string iracingAccountUsername = string.Empty;
+		public string iracingAccountPassword = string.Empty;
+
 		public string iracingCustomPaintsDirectory = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ) + "\\iRacing\\paint";
 
 		public string iracingDriverNamesSuffixes = "jr, sr, jr., sr.";
+		public int iracingDriverNameFormatOption = 0;
 		public int iracingDriverNameCapitalizationOption = 0;
 
 		public float editorMousePositioningSpeedNormal = 0.25f;

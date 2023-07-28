@@ -66,6 +66,8 @@ namespace iRacingTVController
 					normalizedSession.SessionUpdate();
 
 					normalizedData.SessionUpdate();
+
+					TrackMap.Initialize();
 				}
 
 				if ( data.SessionNum != normalizedSession.sessionNumber )

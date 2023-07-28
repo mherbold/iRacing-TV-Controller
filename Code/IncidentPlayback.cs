@@ -46,7 +46,7 @@ namespace iRacingTVController
 
 		public static string GetFilePath()
 		{
-			return $"{Program.documentsFolder}Incidents\\{IRSDK.normalizedSession.sessionId}-{IRSDK.normalizedSession.subSessionId}.xml";
+			return $"{Program.documentsFolder}Incidents\\{IRSDK.normalizedSession.sessionID}-{IRSDK.normalizedSession.subSessionID}.xml";
 		}
 
 		public static IncidentData? GetCurrentIncidentData()

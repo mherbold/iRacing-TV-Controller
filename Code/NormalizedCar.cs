@@ -446,6 +446,14 @@ namespace iRacingTVController
 				}
 			}
 
+			if ( Settings.editor.iracingDriverNameFormatOption == 1 )
+			{
+				if ( abbrevName.Length > 3 )
+				{
+					abbrevName = $"{abbrevName[ ..3 ]}";
+				}
+			}
+
 			if ( Settings.editor.iracingDriverNameCapitalizationOption == 1 )
 			{
 				if ( abbrevName == abbrevName.ToUpper() )

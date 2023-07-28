@@ -21,7 +21,7 @@ namespace iRacingTVController
 
 		public static string GetFilePath()
 		{
-			return $"{Program.documentsFolder}Subtitles\\{IRSDK.normalizedSession.sessionId}-{IRSDK.normalizedSession.subSessionId}.xml";
+			return $"{Program.documentsFolder}Subtitles\\{IRSDK.normalizedSession.sessionID}-{IRSDK.normalizedSession.subSessionID}.xml";
 		}
 
 		public static SubtitleData? GetCurrentSubtitleData()

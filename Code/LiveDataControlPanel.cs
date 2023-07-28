@@ -9,6 +9,7 @@ namespace iRacingTVController
 		public bool masterOn;
 		public bool raceStatusOn;
 		public bool leaderboardOn;
+		public bool trackMapOn;
 		public bool startLightsOn;
 		public bool voiceOfOn;
 		public bool subtitlesOn;

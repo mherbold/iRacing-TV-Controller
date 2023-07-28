@@ -25,7 +25,7 @@ namespace iRacingTVController
 
 		public static string GetFilePath()
 		{
-			return $"{Program.documentsFolder}SessionFlags\\{IRSDK.normalizedSession.sessionId}-{IRSDK.normalizedSession.subSessionId}.csv";
+			return $"{Program.documentsFolder}SessionFlags\\{IRSDK.normalizedSession.sessionID}-{IRSDK.normalizedSession.subSessionID}.csv";
 		}
 
 		public static SessionFlagsData? GetCurrentSessionFlagsData()

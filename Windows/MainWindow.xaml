@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.15"
+        Title="iRacing-TV Controller v1.16"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="860" Height="550" MinWidth="860" MinHeight="550" Icon="/Assets/iRacing-TV-Icon.png">
     <Grid>
@@ -85,26 +85,28 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="35"/>
                         </Grid.ColumnDefinitions>
                         <ToggleButton x:Name="ControlPanel_Master_Button" Content="MASTER" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" />
                         <ToggleButton x:Name="ControlPanel_RaceStatus_Button" Content="Race Status" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="1" />
                         <ToggleButton x:Name="ControlPanel_Leaderboard_Button" Content="Leaderboard" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="2" />
-                        <ToggleButton x:Name="ControlPanel_StartLights_Button" Content="Start Lights" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="3" />
-                        <ToggleButton x:Name="ControlPanel_VoiceOf_Button" Content="Voice Of" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="4" />
-                        <ToggleButton x:Name="ControlPanel_Subtitles_Button" Content="Subtitles" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="5" />
-                        <ToggleButton x:Name="ControlPanel_Intro_Button" Content="Intro" Height="25.96" Padding="3,0,3,0" Margin="0,0,6,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="6" />
-                        <ToggleButton x:Name="ControlPanel_C1_Button" Content="C1" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="7" />
-                        <ToggleButton x:Name="ControlPanel_C2_Button" Content="C2" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="8" />
-                        <ToggleButton x:Name="ControlPanel_C3_Button" Content="C3" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="9"/>
-                        <ToggleButton x:Name="ControlPanel_C4_Button" Content="C4" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="10" />
-                        <ToggleButton x:Name="ControlPanel_C5_Button" Content="C5" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="11" />
-                        <ToggleButton x:Name="ControlPanel_C6_Button" Content="C6" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="12" />
+                        <ToggleButton x:Name="ControlPanel_TrackMap_Button" Content="Track Map" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="3" />
+                        <ToggleButton x:Name="ControlPanel_StartLights_Button" Content="Start Lights" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="4" />
+                        <ToggleButton x:Name="ControlPanel_VoiceOf_Button" Content="Voice Of" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="5" />
+                        <ToggleButton x:Name="ControlPanel_Subtitles_Button" Content="Subtitles" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="6" />
+                        <ToggleButton x:Name="ControlPanel_Intro_Button" Content="Intro" Height="25.96" Padding="3,0,3,0" Margin="0,0,6,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="7" />
+                        <ToggleButton x:Name="ControlPanel_C1_Button" Content="C1" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="8" />
+                        <ToggleButton x:Name="ControlPanel_C2_Button" Content="C2" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="9" />
+                        <ToggleButton x:Name="ControlPanel_C3_Button" Content="C3" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="10"/>
+                        <ToggleButton x:Name="ControlPanel_C4_Button" Content="C4" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="11" />
+                        <ToggleButton x:Name="ControlPanel_C5_Button" Content="C5" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="12" />
+                        <ToggleButton x:Name="ControlPanel_C6_Button" Content="C6" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="13" />
                     </Grid>
                 </Grid>
             </TabItem>
@@ -973,6 +975,16 @@
                                         <Label Content="FPS" HorizontalContentAlignment="Center" Grid.Column="2"/>
                                         <CheckBox x:Name="Image_AnimationSpeed_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Image_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Tiling Enabled"/>
+                                        <CheckBox x:Name="Image_TilingEnabled" VerticalAlignment="Center" Click="Overlay_Image_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Image_TilingEnabled_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Image_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
                                 </StackPanel>
                             </TabItem>
                             <TabItem Header="Text" Padding="12,6,12,6">
@@ -1264,6 +1276,105 @@
                                         <Label Content="CC Strength"/>
                                         <Slider x:Name="Overlay_Leaderboard_ClassColorStrength" Grid.Column="1" VerticalAlignment="Center" SmallChange="1" LargeChange="8" Maximum="255" Minimum="0" ValueChanged="Overlay_Leaderboard_Update" TickPlacement="TopLeft"/>
                                         <CheckBox x:Name="Overlay_Leaderboard_ClassColorStrength_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Leaderboard_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="Track Map" Padding="12,6,12,6">
+                                <StackPanel Margin="6,6,6,6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Enable"/>
+                                        <CheckBox x:Name="Overlay_TrackMap_Enable" VerticalAlignment="Center" Click="Overlay_TrackMap_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Overlay_TrackMap_Enable_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_TrackMap_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Position"/>
+                                        <local:Number x:Name="Overlay_TrackMap_Position_X" ValueChanged="Overlay_TrackMap_Update" Grid.Column="1" />
+                                        <Label Content="X" HorizontalContentAlignment="Center" Grid.Column="2" />
+                                        <local:Number x:Name="Overlay_TrackMap_Position_Y" ValueChanged="Overlay_TrackMap_Update" Grid.Column="3" />
+                                        <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
+                                        <CheckBox x:Name="Overlay_TrackMap_Position_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_TrackMap_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Size"/>
+                                        <local:Number x:Name="Overlay_TrackMap_Size_W" ValueChanged="Overlay_TrackMap_Update" Grid.Column="1" />
+                                        <Label Content="W" HorizontalContentAlignment="Center" Grid.Column="2" />
+                                        <local:Number x:Name="Overlay_TrackMap_Size_H" ValueChanged="Overlay_TrackMap_Update" Grid.Column="3" />
+                                        <Label Content="H" HorizontalContentAlignment="Center" Grid.Column="4" />
+                                        <CheckBox x:Name="Overlay_TrackMap_Size_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_TrackMap_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Texture File" Width="100"/>
+                                        <Grid Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox x:Name="Overlay_TrackMap_TextureFilePath" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Overlay_TrackMap_Update"/>
+                                            <Button Padding="6,0,6,0" Content="📁" Grid.Column="1" Margin="-1,0,0,0" Click="Overlay_TrackMap_TextureFilePath_Button_Click" />
+                                        </Grid>
+                                        <CheckBox x:Name="Overlay_TrackMap_TextureFilePath_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_TrackMap_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0"/>
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Line Thickness"/>
+                                        <local:Decimal x:Name="Overlay_TrackMap_LineThickness" ValueChanged="Overlay_TrackMap_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Overlay_TrackMap_LineThickness_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_TrackMap_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Line Color"/>
+                                        <local:Decimal x:Name="Overlay_TrackMap_LineColor_R" ValueChanged="Overlay_TrackMap_Update" Grid.Column="1" />
+                                        <Label Content="R" HorizontalContentAlignment="Center" Grid.Column="2"/>
+                                        <local:Decimal x:Name="Overlay_TrackMap_LineColor_G" ValueChanged="Overlay_TrackMap_Update" Grid.Column="3" />
+                                        <Label Content="G" HorizontalContentAlignment="Center" Grid.Column="4"/>
+                                        <local:Decimal x:Name="Overlay_TrackMap_LineColor_B" ValueChanged="Overlay_TrackMap_Update" Grid.Column="5" />
+                                        <Label Content="B" HorizontalContentAlignment="Center" Grid.Column="6"/>
+                                        <local:Decimal x:Name="Overlay_TrackMap_LineColor_A" ValueChanged="Overlay_TrackMap_Update" Grid.Column="7" />
+                                        <Label Content="A" HorizontalContentAlignment="Center" Grid.Column="8"/>
+                                        <Button x:Name="Overlay_TrackMap_LineColor_Palette" Padding="6,0,6,0" Content="🎨" Grid.Column="9" Margin="6,0,0,0" Click="Overlay_TrackMap_LineColor_Palette_Click" />
+                                        <CheckBox x:Name="Overlay_TrackMap_LineColor_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_TrackMap_Update" Grid.Column="10" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                 </StackPanel>
                             </TabItem>
@@ -1766,6 +1877,26 @@
                             </StackPanel>
                         </StackPanel>
                     </TabItem>
+                    <TabItem Header="Account" Padding="12,6,12,6">
+                        <StackPanel Margin="6,6,6,6">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Username" Width="100"/>
+                                <TextBox x:Name="iRacing_Account_Username" Grid.Column="1" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="iRacing_Update"/>
+                            </Grid>
+                            <Grid Margin="0,6,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Password" Width="100"/>
+                                <PasswordBox x:Name="iRacing_Account_Password" Grid.Column="1" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" PasswordChanged="iRacing_Update"/>
+                            </Grid>
+                        </StackPanel>
+                    </TabItem>
                     <TabItem Header="Custom Paints" Padding="12,6,12,6">
                         <StackPanel Margin="6,6,6,6">
                             <Grid>
@@ -1796,9 +1927,19 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
+                                <Label Content="Format" Width="100"/>
+                                <ComboBox x:Name="iRacing_DriverNames_FormatOption" Grid.Column="1" VerticalContentAlignment="Center" SelectionChanged="iRacing_Update" />
+                                <Label Content="(Changing This Value Requires Restarting Controller)" Grid.Column="2"/>
+                            </Grid>
+                            <Grid Margin="0,6,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
                                 <Label Content="Capitalization" Width="100"/>
                                 <ComboBox x:Name="iRacing_DriverNames_CapitalizationOption" Grid.Column="1" VerticalContentAlignment="Center" SelectionChanged="iRacing_Update" />
-                                <Label Content="(Requires Restarting Controller)" Grid.Column="2"/>
+                                <Label Content="(Changing This Value Requires Restarting Controller)" Grid.Column="2"/>
                             </Grid>
                         </StackPanel>
                     </TabItem>

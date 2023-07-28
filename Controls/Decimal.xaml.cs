@@ -17,7 +17,7 @@ namespace iRacingTVController
 		private Point startingPosition;
 		private float startingDecimal;
 
-		private static readonly Regex regex = new( @"^[-\d.]*$" );
+		private static readonly Regex regex = new( @"^[-\d.,]*$" );
 
 		public float Value
 		{

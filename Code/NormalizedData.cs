@@ -174,6 +174,11 @@ namespace iRacingTVController
 			sessionTimeDelta = Math.Round( ( IRSDK.data.SessionTime - sessionTime ) / ( 1.0f / 60.0f ) ) * ( 1.0f / 60.0f );
 			sessionTime = IRSDK.data.SessionTime;
 
+			if ( IRSDK.data.ReplayPlaySpeed >= 0 )
+			{
+				sessionTimeDelta = Math.Max( 0, sessionTimeDelta );
+			}
+
 			if ( IRSDK.normalizedSession.isReplay )
 			{
 				var sessionFlagsData = SessionFlagsPlayback.GetCurrentSessionFlagsData();

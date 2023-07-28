@@ -1,6 +1,6 @@
 ﻿
 using System;
-using System.Diagnostics.Eventing.Reader;
+
 using irsdkSharp.Serialization.Enums.Fastest;
 
 using static iRacingTVController.Unity;
@@ -21,6 +21,7 @@ namespace iRacingTVController
 		public LiveDataSubtitle liveDataSubtitle = new();
 		public LiveDataIntro liveDataIntro = new();
 		public LiveDataStartLights liveDataStartLights = new();
+		public LiveDataTrackMap liveDataTrackMap = new();
 
 		public string seriesLogoTextureUrl = string.Empty;
 
@@ -45,6 +46,7 @@ namespace iRacingTVController
 			UpdateControlPanel();
 			UpdateRaceStatus();
 			UpdateLeaderboard();
+			UpdateTrackMap();
 			UpdateVoiceOf();
 			UpdateSubtitle();
 			UpdateIntro();
@@ -60,6 +62,7 @@ namespace iRacingTVController
 			liveDataControlPanel.masterOn = MainWindow.Instance.masterOn;
 			liveDataControlPanel.raceStatusOn = MainWindow.Instance.raceStatusOn;
 			liveDataControlPanel.leaderboardOn = MainWindow.Instance.leaderboardOn;
+			liveDataControlPanel.trackMapOn = MainWindow.Instance.trackMapOn;
 			liveDataControlPanel.startLightsOn = MainWindow.Instance.startLightsOn;
 			liveDataControlPanel.voiceOfOn = MainWindow.Instance.voiceOfOn;
 			liveDataControlPanel.subtitlesOn = MainWindow.Instance.subtitlesOn;
@@ -477,6 +480,42 @@ namespace iRacingTVController
 			lastFrameBottomSplitFirstPosition = bottomSplitFirstSlotIndex;
 		}
 
+		public void UpdateTrackMap()
+		{
+			if ( TrackMap.initialized )
+			{
+				liveDataTrackMap.trackID = TrackMap.trackID;
+				liveDataTrackMap.width = TrackMap.width;
+				liveDataTrackMap.height = TrackMap.height;
+				liveDataTrackMap.drawVectorList = TrackMap.drawVectorList;
+
+				foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardIndexSortedNormalizedCars )
+				{
+					// get car
+
+					var liveDataTrackMapCar = liveDataTrackMap.liveDataTrackMapCars[ normalizedCar.carIdx ];
+
+					// skip pace car and spectators
+
+					liveDataTrackMapCar.show = normalizedCar.includeInLeaderboard && !normalizedCar.isOnPitRoad && !normalizedCar.isOutOfCar;
+
+					// skip cars not visible on the leaderboard
+
+					if ( liveDataTrackMapCar.show )
+					{
+						liveDataTrackMapCar.offset = TrackMap.GetPosition( normalizedCar.lapDistPct );
+					}
+				}
+			}
+			else
+			{
+				liveDataTrackMap.trackID = 0;
+				liveDataTrackMap.width = 0;
+				liveDataTrackMap.height = 0;
+				liveDataTrackMap.drawVectorList = null;
+			}
+		}
+
 		public void UpdateVoiceOf()
 		{
 			liveDataVoiceOf.show = ( IRSDK.normalizedData.radioTransmitCarIdx != -1 );
@@ -540,7 +579,7 @@ namespace iRacingTVController
 
 								liveDataIntroDriver.show = ( IRSDK.normalizedData.sessionTime >= rowStartTime ) && ( IRSDK.normalizedData.sessionTime < rowEndTime );
 								liveDataIntroDriver.carIdx = normalizedCar.carIdx;
-								liveDataIntroDriver.positionText = $"P{normalizedCar.qualifyingPosition}";
+								liveDataIntroDriver.positionText = $"P{normalizedCar.displayedPosition}";
 								liveDataIntroDriver.driverNameText = normalizedCar.userName;
 
 								if ( normalizedCar.qualifyingTime == -1 )

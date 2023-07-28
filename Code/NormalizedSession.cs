@@ -6,8 +6,8 @@ namespace iRacingTVController
 {
 	public class NormalizedSession
 	{
-		public int sessionId = 0;
-		public int subSessionId = 0;
+		public int sessionID = 0;
+		public int subSessionID = 0;
 
 		public int sessionCount = 0;
 		public int sessionNumber = -1;
@@ -18,6 +18,7 @@ namespace iRacingTVController
 		public bool isInQualifyingSession = false;
 		public bool isInRaceSession = false;
 
+		public int trackID = 0;
 		public float trackLengthInMeters = 0;
 
 		public string seriesLogoTextureUrl = string.Empty;
@@ -29,8 +30,8 @@ namespace iRacingTVController
 
 		public void Reset()
 		{
-			sessionId = 0;
-			subSessionId = 0;
+			sessionID = 0;
+			subSessionID = 0;
 
 			sessionCount = 0;
 			sessionNumber = -1;
@@ -41,6 +42,7 @@ namespace iRacingTVController
 			isInQualifyingSession = false;
 			isInRaceSession = false;
 
+			trackID = 0;
 			trackLengthInMeters = 0;
 
 			seriesLogoTextureUrl = string.Empty;
@@ -80,12 +82,14 @@ namespace iRacingTVController
 				return;
 			}
 
-			sessionId = IRSDK.session.WeekendInfo.SessionID;
-			subSessionId = IRSDK.session.WeekendInfo.SubSessionID;
+			sessionID = IRSDK.session.WeekendInfo.SessionID;
+			subSessionID = IRSDK.session.WeekendInfo.SubSessionID;
 
 			sessionCount = IRSDK.session.SessionInfo.Sessions.Count;
 
 			isReplay = IRSDK.session.WeekendInfo.SimMode == "replay";
+
+			trackID = IRSDK.session.WeekendInfo.TrackID;
 
 			var match = Regex.Match( IRSDK.session.WeekendInfo.TrackLength, "([-+]?[0-9]*\\.?[0-9]+)" );
 

@@ -286,6 +286,8 @@ namespace iRacingTVController
 				{ "StartLightsGo", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\lights-go.png" } },
 				{ "StartLightsReady", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\lights-ready.png" } },
 				{ "StartLightsSet", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\lights-set.png" } },
+				{ "TrackMapCarLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\trackmapcar.png", size = { x = 48, y = 48 } } },
+				{ "TrackMapCarLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.CarNumber, position = { x = 0, y = -6 }, size = { x = 40, y = 40 } } },
 				{ "VoiceOfBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\voice-of.png" } },
 				{ "VoiceOfLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.Car, position = { x = 220, y = -48 }, size = { x = 400, y = 200 } } },
 				{ "VoiceOfLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
@@ -536,6 +538,20 @@ namespace iRacingTVController
 				leaderboardUseClassColors_Overridden = overlayLocal.leaderboardUseClassColors_Overridden,
 				leaderboardClassColorStrength_Overridden = overlayLocal.leaderboardClassColorStrength_Overridden,
 
+				trackMapEnabled = overlayLocal.trackMapEnabled_Overridden ? overlayLocal.trackMapEnabled : overlayGlobal.trackMapEnabled,
+				trackMapPosition = overlayLocal.trackMapPosition_Overridden ? overlayLocal.trackMapPosition : overlayGlobal.trackMapPosition,
+				trackMapSize = overlayLocal.trackMapSize_Overridden ? overlayLocal.trackMapSize : overlayGlobal.trackMapSize,
+				trackMapTextureFilePath = overlayLocal.trackMapTextureFilePath_Overridden ? overlayLocal.trackMapTextureFilePath : overlayGlobal.trackMapTextureFilePath,
+				trackMapLineThickness = overlayLocal.trackMapLineThickness_Overridden ? overlayLocal.trackMapLineThickness : overlayGlobal.trackMapLineThickness,
+				trackMapLineColor = overlayLocal.trackMapLineColor_Overridden ? overlayLocal.trackMapLineColor : overlayGlobal.trackMapLineColor,
+
+				trackMapEnabled_Overridden = overlayLocal.trackMapEnabled_Overridden,
+				trackMapPosition_Overridden = overlayLocal.trackMapPosition_Overridden,
+				trackMapSize_Overridden = overlayLocal.trackMapSize_Overridden,
+				trackMapTextureFilePath_Overridden = overlayLocal.trackMapTextureFilePath_Overridden,
+				trackMapLineThickness_Overridden = overlayLocal.trackMapLineThickness_Overridden,
+				trackMapLineColor_Overridden = overlayLocal.trackMapLineColor_Overridden,
+
 				voiceOfEnabled = overlayLocal.voiceOfEnabled_Overridden ? overlayLocal.voiceOfEnabled : overlayGlobal.voiceOfEnabled,
 				voiceOfPosition = overlayLocal.voiceOfPosition_Overridden ? overlayLocal.voiceOfPosition : overlayGlobal.voiceOfPosition,
 
@@ -633,6 +649,7 @@ namespace iRacingTVController
 					frameSize = item.Value.frames_Overridden ? item.Value.frameSize : globalItem.frameSize,
 					frameCount = item.Value.frames_Overridden ? item.Value.frameCount : globalItem.frameCount,
 					animationSpeed = item.Value.animationSpeed_Overridden ? item.Value.animationSpeed : globalItem.animationSpeed,
+					tilingEnabled = item.Value.tilingEnabled_Overridden ? item.Value.tilingEnabled : globalItem.tilingEnabled,
 
 					imageType_Overridden = item.Value.imageType_Overridden,
 					filePath_Overridden = item.Value.filePath_Overridden,
@@ -642,6 +659,7 @@ namespace iRacingTVController
 					border_Overridden = item.Value.border_Overridden,
 					frames_Overridden = item.Value.frames_Overridden,
 					animationSpeed_Overridden = item.Value.animationSpeed_Overridden,
+					tilingEnabled_Overridden = item.Value.tilingEnabled_Overridden,
 				};
 			}
 

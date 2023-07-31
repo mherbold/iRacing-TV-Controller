@@ -53,7 +53,7 @@ namespace iRacingTVController
 
 			var preferredCarNumbersList = Settings.director.preferredCarNumbers.Split( "," ).ToList().Select( s => s.Trim() ).ToList();
 
-			foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardIndexSortedNormalizedCars )
+			foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardSortedNormalizedCars )
 			{
 				if ( normalizedCar.includeInLeaderboard )
 				{
@@ -112,7 +112,7 @@ namespace iRacingTVController
 			{
 				var highestLapPosition = 0.0f;
 
-				foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardIndexSortedNormalizedCars )
+				foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardSortedNormalizedCars )
 				{
 					if ( normalizedCar.includeInLeaderboard )
 					{

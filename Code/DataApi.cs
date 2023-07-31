@@ -9,50 +9,102 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Aydsko.iRacingData;
 using Aydsko.iRacingData.Tracks;
+using Aydsko.iRacingData.Common;
 
 namespace iRacingTVController
 {
 	public static class DataApi
 	{
-		public static string username = string.Empty;
-		public static string password = string.Empty;
-
 		public static IDataClient? dataClient = null;
 
 		public static IReadOnlyDictionary<string, TrackAssets>? trackAssetsDictionary = null;
+		public static CarClass[]? carClasses = null;
 
-		public static void Initialize()
+		public static void Initialize( bool showMessageBoxOnSuccess )
 		{
-			if ( ( username != Settings.editor.iracingAccountUsername ) || ( password != Settings.editor.iracingAccountPassword ) )
+			dataClient = null;
+			trackAssetsDictionary = null;
+			carClasses = null;
+
+			if ( ( Settings.editor.iracingAccountUsername != string.Empty ) && ( Settings.editor.iracingAccountPassword != string.Empty ) )
 			{
-				dataClient = null;
+				var serviceCollection = new ServiceCollection();
 
-				if ( ( Settings.editor.iracingAccountUsername != string.Empty ) && ( Settings.editor.iracingAccountPassword != string.Empty ) )
+				serviceCollection.AddIRacingDataApi( options =>
 				{
-					var serviceCollection = new ServiceCollection();
+					options.UserAgentProductName = Program.AppName;
+					options.UserAgentProductVersion = typeof( Program ).Assembly.GetName().Version;
+				} );
 
-					serviceCollection.AddIRacingDataApi( options =>
-					{
-						options.UserAgentProductName = Program.AppName;
-						options.UserAgentProductVersion = typeof( Program ).Assembly.GetName().Version;
-					} );
+				var serviceProvider = serviceCollection.BuildServiceProvider();
 
-					var serviceProvider = serviceCollection.BuildServiceProvider();
+				dataClient = serviceProvider.GetRequiredService<IDataClient>();
 
-					dataClient = serviceProvider.GetRequiredService<IDataClient>();
+				dataClient.UseUsernameAndPassword( Settings.editor.iracingAccountUsername, Settings.editor.iracingAccountPassword );
 
-					dataClient.UseUsernameAndPassword( Settings.editor.iracingAccountUsername, Settings.editor.iracingAccountPassword );
+				if ( !GetTrackAssetsDictionary() )
+				{
+					return;
 				}
 
-				username = Settings.editor.iracingAccountUsername;
-				password = Settings.editor.iracingAccountPassword;
+				if ( !GetCarClasses() )
+				{
+					return;
+				}
+
+				if ( showMessageBoxOnSuccess )
+				{
+					MessageBox.Show( MainWindow.Instance, $"All is good - we were able to connect to the iRacing Data API and retrieve the data we needed.", "iRacing Data API Connected Successfully!", MessageBoxButton.OK, MessageBoxImage.Information );
+				}
 			}
+		}
+
+		public static bool GetTrackAssetsDictionary()
+		{
+			if ( dataClient != null )
+			{
+				if ( trackAssetsDictionary == null )
+				{
+					try
+					{
+						trackAssetsDictionary = Task.Run( async () => await dataClient.GetTrackAssetsAsync() ).Result.Data;
+
+						return true;
+					}
+					catch ( Exception exception )
+					{
+						MessageBox.Show( MainWindow.Instance, $"Could not connect to iRacing Data API to get the track assets dictionary.\r\n\r\n{exception.Message}", "iRacing Data API Error", MessageBoxButton.OK, MessageBoxImage.Information );
+					}
+				}
+			}
+
+			return false;
+		}
+
+		public static bool GetCarClasses()
+		{
+			if ( dataClient != null )
+			{
+				if ( carClasses == null )
+				{
+					try
+					{
+						carClasses = Task.Run( async () => await dataClient.GetCarClassesAsync() ).Result.Data;
+
+						return true;
+					}
+					catch ( Exception exception )
+					{
+						MessageBox.Show( MainWindow.Instance, $"Could not connect to iRacing Data API to get the car classes.\r\n\r\n{exception.Message}", "iRacing Data API Error", MessageBoxButton.OK, MessageBoxImage.Information );
+					}
+				}
+			}
+
+			return false;
 		}
 
 		public static string? GetTrackMapLayerUrl( int trackID, string layerName )
 		{
-			GetTrackAssetsDictionary();
-
 			if ( trackAssetsDictionary != null )
 			{
 				foreach ( var trackAssetsManifestData in trackAssetsDictionary )
@@ -76,24 +128,6 @@ namespace iRacingTVController
 			return null;
 		}
 
-		public static void GetTrackAssetsDictionary()
-		{
-			if ( dataClient != null )
-			{
-				if ( trackAssetsDictionary == null )
-				{
-					try
-					{
-						trackAssetsDictionary = Task.Run( async () => await dataClient.GetTrackAssetsAsync() ).Result.Data;
-					}
-					catch ( Exception exception )
-					{
-						MessageBox.Show( MainWindow.Instance, $"Could not connect to iRacing Data API to get track assets dictionary.\r\n\r\n{exception.Message}", "iRacing Data API Error", MessageBoxButton.OK, MessageBoxImage.Information );
-					}
-				}
-			}
-		}
-
 		public static string? DownloadTrackAsset( string url )
 		{
 			try
@@ -110,6 +144,22 @@ namespace iRacingTVController
 
 				return null;
 			}
+		}
+
+		public static CarClass? GetCarClass( int classID )
+		{
+			if ( carClasses != null )
+			{
+				foreach ( var carClass in carClasses )
+				{
+					if ( carClass.CarClassId == classID )
+					{
+						return carClass;
+					}
+				}
+			}
+
+			return null;
 		}
 	}
 }

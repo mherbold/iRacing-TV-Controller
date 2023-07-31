@@ -73,6 +73,7 @@ namespace iRacingTVController
 
 		public SortedDictionary<string, int> patternOptions = new();
 		public SortedDictionary<string, int> slantOptions = new();
+		public SortedDictionary<string, int> leaderboardMultiClassOffsetTypeOptions = new();
 		public SortedDictionary<string, int> inAnimationOptions = new();
 		public SortedDictionary<string, int> outAnimationOptions = new();
 		public SortedDictionary<string, int> formatOptions = new();
@@ -323,6 +324,14 @@ namespace iRacingTVController
 				foreach ( var item in slantOptions )
 				{
 					Overlay_CarNumber_Slant.Items.Add( item.Key );
+				}
+
+				leaderboardMultiClassOffsetTypeOptions.Add( "From Bottom Left", 0 );
+				leaderboardMultiClassOffsetTypeOptions.Add( "From Top Left", 1 );
+
+				foreach ( var item in leaderboardMultiClassOffsetTypeOptions )
+				{
+					Overlay_Leaderboard_MultiClassOffset_Type.Items.Add( item.Key );
 				}
 
 				inAnimationOptions.Add( "Static (Use For Editing)", 0 );
@@ -602,8 +611,11 @@ namespace iRacingTVController
 			Overlay_Leaderboard_SlotCount.Value = Settings.overlay.leaderboardSlotCount;
 			Overlay_Leaderboard_SlotSpacing_X.Value = (int) Settings.overlay.leaderboardSlotSpacing.x;
 			Overlay_Leaderboard_SlotSpacing_Y.Value = (int) Settings.overlay.leaderboardSlotSpacing.y;
-			Overlay_Leaderboard_UseClassColors_Enable.IsChecked = Settings.overlay.leaderboardUseClassColors;
+			Overlay_Leaderboard_UseClassColors.IsChecked = Settings.overlay.leaderboardUseClassColors;
 			Overlay_Leaderboard_ClassColorStrength.Value = Settings.overlay.leaderboardClassColorStrength * 255.0f;
+			Overlay_Leaderboard_MultiClassOffset_X.Value = (int) Settings.overlay.leaderboardMultiClassOffset.x;
+			Overlay_Leaderboard_MultiClassOffset_Y.Value = (int) Settings.overlay.leaderboardMultiClassOffset.y;
+			Overlay_Leaderboard_MultiClassOffset_Type.SelectedItem = leaderboardMultiClassOffsetTypeOptions.FirstOrDefault( x => x.Value == Settings.overlay.leaderboardMultiClassOffsetType ).Key;
 
 			Overlay_Leaderboard_Enable_Override.IsChecked = Settings.overlay.leaderboardEnabled_Overridden;
 			Overlay_Leaderboard_Position_Override.IsChecked = Settings.overlay.leaderboardPosition_Overridden;
@@ -809,6 +821,8 @@ namespace iRacingTVController
 				Image_Frames_Count.Value = settings.frameCount;
 				Image_AnimationSpeed.Value = settings.animationSpeed;
 				Image_TilingEnabled.IsChecked = settings.tilingEnabled;
+				Image_UseClassColors.IsChecked = settings.useClassColors;
+				Image_ClassColorStrength.Value = settings.classColorStrength * 255.0f;
 
 				Image_ImageType_Override.IsChecked = settings.imageType_Overridden;
 				Image_FilePath_Override.IsChecked = settings.filePath_Overridden;
@@ -819,6 +833,8 @@ namespace iRacingTVController
 				Image_Frames_Override.IsChecked = settings.frames_Overridden;
 				Image_AnimationSpeed_Override.IsChecked = settings.animationSpeed_Overridden;
 				Image_TilingEnabled_Override.IsChecked = settings.tilingEnabled_Overridden;
+				Image_UseClassColors_Override.IsChecked = settings.useClassColors_Overridden;
+				Image_ClassColorStrength_Override.IsChecked = settings.classColorStrength_Overridden;
 
 				initializing--;
 			}
@@ -2545,6 +2561,36 @@ namespace iRacingTVController
 					settings.tilingEnabled = Image_TilingEnabled.IsChecked ?? false;
 				}
 
+				overridden = Image_UseClassColors_Override.IsChecked ?? false;
+
+				if ( overlaySettings.useClassColors_Overridden != overridden )
+				{
+					overlaySettings.useClassColors_Overridden = overridden;
+
+					InitializeOverlayImage();
+				}
+				else
+				{
+					var settings = overlaySettings.useClassColors_Overridden ? overlaySettings : globalSettings;
+
+					settings.useClassColors = Image_UseClassColors.IsChecked ?? false;
+				}
+
+				overridden = Image_ClassColorStrength_Override.IsChecked ?? false;
+
+				if ( overlaySettings.classColorStrength_Overridden != overridden )
+				{
+					overlaySettings.classColorStrength_Overridden = overridden;
+
+					InitializeOverlayImage();
+				}
+				else
+				{
+					var settings = overlaySettings.classColorStrength_Overridden ? overlaySettings : globalSettings;
+
+					settings.classColorStrength = (float) ( Image_ClassColorStrength.Value / 255.0f );
+				}
+
 				IPC.readyToSendSettings = true;
 
 				Settings.saveOverlayToFileQueued = true;
@@ -2865,7 +2911,7 @@ namespace iRacingTVController
 				{
 					var overlay = Settings.overlayLocal.leaderboardUseClassColors_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
 
-					overlay.leaderboardUseClassColors = Overlay_Leaderboard_UseClassColors_Enable.IsChecked ?? false;
+					overlay.leaderboardUseClassColors = Overlay_Leaderboard_UseClassColors.IsChecked ?? false;
 				}
 
 				overridden = Overlay_Leaderboard_ClassColorStrength_Override.IsChecked ?? false;
@@ -2881,6 +2927,22 @@ namespace iRacingTVController
 					var overlay = Settings.overlayLocal.leaderboardClassColorStrength_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
 
 					overlay.leaderboardClassColorStrength = (float) ( Overlay_Leaderboard_ClassColorStrength.Value / 255.0f );
+				}
+
+				overridden = Overlay_Leaderboard_MultiClassOffset_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.leaderboardMultiClassOffset_Overridden != overridden )
+				{
+					Settings.overlayLocal.leaderboardMultiClassOffset_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.leaderboardMultiClassOffset_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.leaderboardMultiClassOffset = new Vector2( Overlay_Leaderboard_MultiClassOffset_X.Value, Overlay_Leaderboard_MultiClassOffset_Y.Value );
+					overlay.leaderboardMultiClassOffsetType = leaderboardMultiClassOffsetTypeOptions[ (string) Overlay_Leaderboard_MultiClassOffset_Type.SelectedItem ];
 				}
 
 				IPC.readyToSendSettings = true;
@@ -3828,6 +3890,15 @@ namespace iRacingTVController
 			}
 		}
 
+		private void iRacing_DataApi_Connect( object sender, EventArgs e )
+		{
+			DataApi.Initialize( true );
+
+			IRSDK.normalizedData.SessionUpdate( true );
+
+			TrackMap.Initialize();
+		}
+
 		private void iRacing_Update( object sender, EventArgs e )
 		{
 			if ( initializing == 0 )
@@ -3846,8 +3917,6 @@ namespace iRacingTVController
 				Settings.saveEditorToFileQueued = true;
 
 				IRSDK.normalizedData.SessionUpdate( true );
-
-				DataApi.Initialize();
 			}
 		}
 

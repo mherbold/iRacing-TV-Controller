@@ -37,11 +37,13 @@ namespace iRacingTVController
 
 		public bool leaderboardEnabled = true;
 		public Vector2 leaderboardPosition = new( 44, 244 );
-		public Vector2 leaderboardFirstSlotPosition = new( 0, 0 );
-		public int leaderboardSlotCount = 20;
+		public Vector2 leaderboardFirstSlotPosition = new( 0, 41 );
+		public int leaderboardSlotCount = 19;
 		public Vector2 leaderboardSlotSpacing = new( 0, 41 );
 		public bool leaderboardUseClassColors = true;
 		public float leaderboardClassColorStrength = 0.5f;
+		public Vector2 leaderboardMultiClassOffset = new( 0, 49 );
+		public int leaderboardMultiClassOffsetType = 0;
 
 		public bool leaderboardEnabled_Overridden = false;
 		public bool leaderboardPosition_Overridden = false;
@@ -50,6 +52,7 @@ namespace iRacingTVController
 		public bool leaderboardSlotSpacing_Overridden = false;
 		public bool leaderboardUseClassColors_Overridden = false;
 		public bool leaderboardClassColorStrength_Overridden = false;
+		public bool leaderboardMultiClassOffset_Overridden = false;
 
 		public bool trackMapEnabled = true;
 		public bool trackMapReverse = false;

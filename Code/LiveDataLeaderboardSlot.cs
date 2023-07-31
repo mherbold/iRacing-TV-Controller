@@ -16,11 +16,6 @@ namespace iRacingTVController
 		public string positionText = string.Empty;
 		public Color positionColor = Color.white;
 
-		public string carNumberTextureUrl = string.Empty;
-		public string carTextureUrl = string.Empty;
-		public string helmetTextureUrl = string.Empty;
-		public string driverTextureUrl = string.Empty;
-
 		public string driverNameText = string.Empty;
 		public Color driverNameColor = Color.white;
 

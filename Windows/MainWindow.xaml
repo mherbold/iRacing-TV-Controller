@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.17"
+        Title="iRacing-TV Controller v1.18"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="860" Height="550" MinWidth="860" MinHeight="550" Icon="/Assets/iRacing-TV-Icon.png">
     <Grid>
@@ -985,6 +985,26 @@
                                         <CheckBox x:Name="Image_TilingEnabled" VerticalAlignment="Center" Click="Overlay_Image_Update" Grid.Column="1" />
                                         <CheckBox x:Name="Image_TilingEnabled_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Image_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Use Class Colors"/>
+                                        <CheckBox x:Name="Image_UseClassColors" VerticalAlignment="Center" Click="Overlay_Image_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Image_UseClassColors_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Image_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="80"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="CC Strength"/>
+                                        <Slider x:Name="Image_ClassColorStrength" Grid.Column="1" VerticalAlignment="Center" SmallChange="1" LargeChange="8" Maximum="255" Minimum="0" ValueChanged="Overlay_Image_Update" TickPlacement="TopLeft"/>
+                                        <CheckBox x:Name="Image_ClassColorStrength_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Image_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
                                 </StackPanel>
                             </TabItem>
                             <TabItem Header="Text" Padding="12,6,12,6">
@@ -1263,8 +1283,8 @@
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Label Content="Class Colors"/>
-                                        <CheckBox x:Name="Overlay_Leaderboard_UseClassColors_Enable" VerticalAlignment="Center" Click="Overlay_Leaderboard_Update" Grid.Column="1" />
+                                        <Label Content="Use Class Colors"/>
+                                        <CheckBox x:Name="Overlay_Leaderboard_UseClassColors" VerticalAlignment="Center" Click="Overlay_Leaderboard_Update" Grid.Column="1" />
                                         <CheckBox x:Name="Overlay_Leaderboard_UseClassColors_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Leaderboard_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
@@ -1276,6 +1296,24 @@
                                         <Label Content="CC Strength"/>
                                         <Slider x:Name="Overlay_Leaderboard_ClassColorStrength" Grid.Column="1" VerticalAlignment="Center" SmallChange="1" LargeChange="8" Maximum="255" Minimum="0" ValueChanged="Overlay_Leaderboard_Update" TickPlacement="TopLeft"/>
                                         <CheckBox x:Name="Overlay_Leaderboard_ClassColorStrength_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Leaderboard_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="80"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Multiclass Offset"/>
+                                        <local:Number x:Name="Overlay_Leaderboard_MultiClassOffset_X" ValueChanged="Overlay_Leaderboard_Update" Grid.Column="1" />
+                                        <Label Content="X" HorizontalContentAlignment="Center" Grid.Column="2" />
+                                        <local:Number x:Name="Overlay_Leaderboard_MultiClassOffset_Y" ValueChanged="Overlay_Leaderboard_Update" Grid.Column="3" />
+                                        <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
+                                        <ComboBox x:Name="Overlay_Leaderboard_MultiClassOffset_Type" Margin="6,0,0,0" VerticalContentAlignment="Center" Height="25.96" Grid.Column="5" SelectionChanged="Overlay_Leaderboard_Update"/>
+                                        <CheckBox x:Name="Overlay_Leaderboard_MultiClassOffset_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Leaderboard_Update" Grid.Column="6" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                 </StackPanel>
                             </TabItem>
@@ -1915,6 +1953,13 @@
                                 <Label Content="Password" Width="100"/>
                                 <PasswordBox x:Name="iRacing_Account_Password" Grid.Column="1" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" PasswordChanged="iRacing_Update"/>
                             </Grid>
+                            <Grid Margin="0,6,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Padding="6,0,6,0" Content="Connect" Grid.Column="1" Height="25.96" Click="iRacing_DataApi_Connect"/>
+                            </Grid>
                         </StackPanel>
                     </TabItem>
                     <TabItem Header="Custom Paints" Padding="12,6,12,6">
@@ -1945,21 +1990,17 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Format" Width="100"/>
                                 <ComboBox x:Name="iRacing_DriverNames_FormatOption" Grid.Column="1" VerticalContentAlignment="Center" SelectionChanged="iRacing_Update" />
-                                <Label Content="(Changing This Value Requires Restarting Controller)" Grid.Column="2"/>
                             </Grid>
                             <Grid Margin="0,6,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Capitalization" Width="100"/>
                                 <ComboBox x:Name="iRacing_DriverNames_CapitalizationOption" Grid.Column="1" VerticalContentAlignment="Center" SelectionChanged="iRacing_Update" />
-                                <Label Content="(Changing This Value Requires Restarting Controller)" Grid.Column="2"/>
                             </Grid>
                         </StackPanel>
                     </TabItem>

@@ -8,7 +8,7 @@ namespace iRacingTVController
 	{
 		public bool show = false;
 
-		public LiveDataIntroDriver[] liveDataIntroDrivers = new LiveDataIntroDriver[ LiveDataLeaderboard.MaxNumSlots ];
+		public LiveDataIntroDriver[] liveDataIntroDrivers = new LiveDataIntroDriver[ LiveData.MaxNumDrivers ];
 
 		public LiveDataIntro()
 		{

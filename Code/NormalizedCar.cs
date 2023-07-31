@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-
+using Aydsko.iRacingData.Common;
 using irsdkSharp.Serialization.Enums.Fastest;
 using irsdkSharp.Serialization.Models.Session.DriverInfo;
 
@@ -26,6 +26,7 @@ namespace iRacingTVController
 
 		public int classID = 0;
 		public Color classColor = Color.white;
+		public CarClass? carClass = null;
 
 		public bool includeInLeaderboard = false;
 		public bool hasCrossedStartLine = false;
@@ -214,6 +215,7 @@ namespace iRacingTVController
 
 					classID = driver.CarClassID;
 					classColor = new Color( driver.CarClassColor[ 2.. ] );
+					carClass = DataApi.GetCarClass( classID );
 
 					includeInLeaderboard = !isSpectator && !isPaceCar;
 
@@ -481,20 +483,21 @@ namespace iRacingTVController
 
 			if ( a.includeInLeaderboard && b.includeInLeaderboard )
 			{
-				if ( a.classID == b.classID )
+				if ( a.bestLapTime == b.bestLapTime )
 				{
-					if ( a.bestLapTime == b.bestLapTime )
-					{
-						result = a.carIdx.CompareTo( b.carIdx );
-					}
-					else
-					{
-						result = a.bestLapTime.CompareTo( b.bestLapTime );
-					}
+					result = a.carIdx.CompareTo( b.carIdx );
+				}
+				else if ( a.bestLapTime == 0 )
+				{
+					result = 1;
+				}
+				else if ( b.bestLapTime == 0 )
+				{
+					result = -1;
 				}
 				else
 				{
-					result = a.classID.CompareTo( b.classID );
+					result = a.bestLapTime.CompareTo( b.bestLapTime );
 				}
 			}
 			else if ( a.includeInLeaderboard )
@@ -519,20 +522,13 @@ namespace iRacingTVController
 
 			if ( a.includeInLeaderboard && b.includeInLeaderboard )
 			{
-				if ( a.classID == b.classID )
+				if ( a.qualifyingPosition == b.qualifyingPosition )
 				{
-					if ( a.qualifyingPosition == b.qualifyingPosition )
-					{
-						result = a.carIdx.CompareTo( b.carIdx );
-					}
-					else
-					{
-						result = a.qualifyingPosition.CompareTo( b.qualifyingPosition );
-					}
+					result = a.carIdx.CompareTo( b.carIdx );
 				}
 				else
 				{
-					result = a.classID.CompareTo( b.classID );
+					result = a.qualifyingPosition.CompareTo( b.qualifyingPosition );
 				}
 			}
 			else if ( a.includeInLeaderboard )
@@ -557,35 +553,28 @@ namespace iRacingTVController
 
 			if ( a.includeInLeaderboard && b.includeInLeaderboard )
 			{
-				if ( a.classID == b.classID )
+				if ( ( a.overallPosition >= 1 ) && ( b.overallPosition >= 1 ) )
 				{
-					if ( ( a.overallPosition >= 1 ) && ( b.overallPosition >= 1 ) )
-					{
-						if ( a.overallPosition == b.overallPosition )
-						{
-							result = a.carIdx.CompareTo( b.carIdx );
-						}
-						else
-						{
-							result = a.overallPosition.CompareTo( b.overallPosition );
-						}
-					}
-					else if ( a.overallPosition >= 1 )
-					{
-						result = -1;
-					}
-					else if ( b.overallPosition >= 1 )
-					{
-						result = 1;
-					}
-					else
+					if ( a.overallPosition == b.overallPosition )
 					{
 						result = a.carIdx.CompareTo( b.carIdx );
 					}
+					else
+					{
+						result = a.overallPosition.CompareTo( b.overallPosition );
+					}
+				}
+				else if ( a.overallPosition >= 1 )
+				{
+					result = -1;
+				}
+				else if ( b.overallPosition >= 1 )
+				{
+					result = 1;
 				}
 				else
 				{
-					result = a.classID.CompareTo( b.classID );
+					result = a.carIdx.CompareTo( b.carIdx );
 				}
 			}
 			else if ( a.includeInLeaderboard )
@@ -610,16 +599,51 @@ namespace iRacingTVController
 
 			if ( a.includeInLeaderboard && b.includeInLeaderboard )
 			{
+				if ( a.lapPosition == b.lapPosition )
+				{
+					result = a.carIdx.CompareTo( b.carIdx );
+				}
+				else
+				{
+					result = b.lapPosition.CompareTo( a.lapPosition );
+				}
+			}
+			else if ( a.includeInLeaderboard )
+			{
+				result = -1;
+			}
+			else if ( b.includeInLeaderboard )
+			{
+				result = 1;
+			}
+			else
+			{
+				result = a.carIdx.CompareTo( b.carIdx );
+			}
+
+			return result;
+		};
+
+		public static Comparison<NormalizedCar> ClassLeaderboardIndexComparison = delegate ( NormalizedCar a, NormalizedCar b )
+		{
+			int result;
+
+			if ( a.includeInLeaderboard && b.includeInLeaderboard )
+			{
 				if ( a.classID == b.classID )
 				{
-					if ( a.lapPosition == b.lapPosition )
+					if ( a.leaderboardIndex == b.leaderboardIndex )
 					{
 						result = a.carIdx.CompareTo( b.carIdx );
 					}
 					else
 					{
-						result = b.lapPosition.CompareTo( a.lapPosition );
+						result = a.leaderboardIndex.CompareTo( b.leaderboardIndex );
 					}
+				}
+				else if ( ( a.carClass != null ) && ( b.carClass != null ) )
+				{
+					result = b.carClass.RelativeSpeed.CompareTo( a.carClass.RelativeSpeed );
 				}
 				else
 				{
@@ -674,11 +698,6 @@ namespace iRacingTVController
 			}
 
 			return result;
-		};
-
-		public static Comparison<NormalizedCar> LeaderboardIndexComparison = delegate ( NormalizedCar a, NormalizedCar b )
-		{
-			return a.leaderboardIndex.CompareTo( b.leaderboardIndex );
 		};
 	}
 }

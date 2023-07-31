@@ -2,13 +2,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using irsdkSharp.Serialization.Enums.Fastest;
+
+using static iRacingTVController.Unity;
 
 namespace iRacingTVController
 {
 	public class NormalizedData
 	{
+		public class LeaderboardClass
+		{
+			public int numDrivers = 0;
+			public int classID = -1;
+			public Color color = Color.white;
+			public string name = string.Empty;
+			public string shortName = string.Empty;
+		}
+
 		public const int MaxNumCars = 63;
+		public const int MaxNumClasses = 8;
 
 		public double sessionTimeDelta;
 		public double sessionTime;
@@ -32,6 +45,8 @@ namespace iRacingTVController
 
 		public int currentLap;
 		public int numLeaderboardCars;
+		public int numLeaderboardClasses;
+		public LeaderboardClass[] leaderboardClass = new LeaderboardClass[ MaxNumClasses ];
 
 		public int camCarIdx;
 		public int camGroupNumber;
@@ -43,7 +58,8 @@ namespace iRacingTVController
 
 		public NormalizedCar[] normalizedCars = new NormalizedCar[ MaxNumCars ];
 
-		public List<NormalizedCar> leaderboardIndexSortedNormalizedCars = new( MaxNumCars );
+		public List<NormalizedCar> leaderboardSortedNormalizedCars = new( MaxNumCars );
+		public List<NormalizedCar> classLeaderboardSortedNormalizedCars = new( MaxNumCars );
 		public List<NormalizedCar> relativeLapPositionSortedNormalizedCars = new( MaxNumCars );
 
 		public NormalizedData()
@@ -52,8 +68,14 @@ namespace iRacingTVController
 			{
 				normalizedCars[ i ] = new NormalizedCar( i );
 
-				leaderboardIndexSortedNormalizedCars.Add( normalizedCars[ i ] );
+				leaderboardSortedNormalizedCars.Add( normalizedCars[ i ] );
+				classLeaderboardSortedNormalizedCars.Add( normalizedCars[ i ] );
 				relativeLapPositionSortedNormalizedCars.Add( normalizedCars[ i ] );
+			}
+
+			for ( var i = 0; i < MaxNumClasses; i++ )
+			{
+				leaderboardClass[ i ] = new LeaderboardClass();
 			}
 
 			Reset();
@@ -83,6 +105,16 @@ namespace iRacingTVController
 
 			currentLap = 0;
 			numLeaderboardCars = 0;
+			numLeaderboardClasses = 0;
+
+			for ( var classIndex = 0; classIndex < MaxNumClasses; classIndex++ )
+			{
+				leaderboardClass[ classIndex ].numDrivers = 0;
+				leaderboardClass[ classIndex ].classID = -1;
+				leaderboardClass[ classIndex ].color = Color.white;
+				leaderboardClass[ classIndex ].name = string.Empty;
+				leaderboardClass[ classIndex ].shortName = string.Empty;
+			}
 
 			camCarIdx = 0;
 			camGroupNumber = 0;
@@ -229,7 +261,6 @@ namespace iRacingTVController
 				{
 					normalizedCar.attackingHeat = 0;
 					normalizedCar.defendingHeat = 0;
-					normalizedCar.heatBias = 0;
 
 					normalizedCar.distanceToCarInFrontInMeters = float.MaxValue;
 					normalizedCar.distanceToCarBehindInMeters = float.MaxValue;
@@ -276,78 +307,92 @@ namespace iRacingTVController
 					}
 				}
 
-				// leaderboard indexing
-
-				var leaderboardIndex = 1;
+				// leaderboard sorting
 
 				if ( IRSDK.normalizedSession.isInPracticeSession || IRSDK.normalizedSession.isInQualifyingSession )
 				{
-					leaderboardIndexSortedNormalizedCars.Sort( NormalizedCar.BestLapTimeComparison );
-
-					var classID = 0;
-					var displayedPosition = 1;
-
-					foreach ( var normalizedCar in leaderboardIndexSortedNormalizedCars )
-					{
-						normalizedCar.leaderboardIndex = leaderboardIndex++;
-
-						if ( normalizedCar.bestLapTime == 0 )
-						{
-							normalizedCar.leaderboardIndex += MaxNumCars;
-							normalizedCar.displayedPosition = 0;
-						}
-						else
-						{
-							if ( classID != normalizedCar.classID )
-							{
-								classID = normalizedCar.classID;
-								displayedPosition = 1;
-							}
-
-							normalizedCar.displayedPosition = displayedPosition++;
-						}
-					}
-
-					leaderboardIndexSortedNormalizedCars.Sort( NormalizedCar.LeaderboardIndexComparison );
+					leaderboardSortedNormalizedCars.Sort( NormalizedCar.BestLapTimeComparison );
 				}
 				else if ( IRSDK.normalizedSession.isInRaceSession )
 				{
 					if ( IRSDK.normalizedData.sessionState <= SessionState.StateParadeLaps )
 					{
-						leaderboardIndexSortedNormalizedCars.Sort( NormalizedCar.QualifyingPositionComparison );
+						leaderboardSortedNormalizedCars.Sort( NormalizedCar.QualifyingPositionComparison );
 					}
 					else if ( isUnderCaution || ( IRSDK.normalizedData.sessionState >= SessionState.StateCheckered ) )
 					{
-						leaderboardIndexSortedNormalizedCars.Sort( NormalizedCar.OverallPositionComparison );
+						leaderboardSortedNormalizedCars.Sort( NormalizedCar.OverallPositionComparison );
 					}
 					else
 					{
-						leaderboardIndexSortedNormalizedCars.Sort( NormalizedCar.LapPositionComparison );
-					}
-
-					var classID = 0;
-					var displayedPosition = 1;
-
-					foreach ( var normalizedCar in leaderboardIndexSortedNormalizedCars )
-					{
-						if ( classID != normalizedCar.classID )
-						{
-							classID = normalizedCar.classID;
-							displayedPosition = 1;
-						}
-
-						normalizedCar.displayedPosition = displayedPosition++;
+						leaderboardSortedNormalizedCars.Sort( NormalizedCar.LapPositionComparison );
 					}
 				}
 
-				// clean up leaderboard index and set the heat bias of each car
+				// set leaderboard index
 
-				leaderboardIndex = 1;
+				var leaderboardIndex = 1;
 
-				foreach ( var normalizedCar in leaderboardIndexSortedNormalizedCars )
+				foreach ( var normalizedCar in leaderboardSortedNormalizedCars )
 				{
 					normalizedCar.leaderboardIndex = leaderboardIndex++;
+				}
 
+				// class leaderboard sorting
+
+				classLeaderboardSortedNormalizedCars.Sort( NormalizedCar.ClassLeaderboardIndexComparison );
+
+				// lap position relative to class leader for laps down telemetry, also count number of classes, and set displayed position
+
+				var classLeader = classLeaderboardSortedNormalizedCars[ 0 ];
+
+				leaderboardClass[ 0 ].numDrivers = 0;
+				leaderboardClass[ 0 ].classID = classLeader.classID;
+				leaderboardClass[ 0 ].color = classLeader.classColor;
+				leaderboardClass[ 0 ].name = classLeader.carClass?.Name ?? string.Empty;
+				leaderboardClass[ 0 ].shortName = classLeader.carClass?.ShortName ?? string.Empty;
+
+				numLeaderboardClasses = 1;
+
+				var displayedPosition = 1;
+
+				foreach ( var normalizedCar in classLeaderboardSortedNormalizedCars )
+				{
+					if ( !normalizedCar.includeInLeaderboard )
+					{
+						break;
+					}
+
+					if ( classLeader.classID != normalizedCar.classID )
+					{
+						classLeader = normalizedCar;
+
+						leaderboardClass[ numLeaderboardClasses ].numDrivers = 0;
+						leaderboardClass[ numLeaderboardClasses ].classID = classLeader.classID;
+						leaderboardClass[ numLeaderboardClasses ].color = classLeader.classColor;
+						leaderboardClass[ numLeaderboardClasses ].name = classLeader.carClass?.Name ?? string.Empty;
+						leaderboardClass[ numLeaderboardClasses ].shortName = classLeader.carClass?.ShortName ?? string.Empty;
+
+						numLeaderboardClasses++;
+
+						displayedPosition = 1;
+					}
+
+					normalizedCar.lapPositionRelativeToClassLeader = classLeader.lapPosition - normalizedCar.lapPosition;
+					normalizedCar.displayedPosition = displayedPosition++;
+
+					leaderboardClass[ numLeaderboardClasses - 1 ].numDrivers++;
+				}
+
+				for ( var i = numLeaderboardClasses; leaderboardIndex < MaxNumClasses; leaderboardIndex++ )
+				{
+					leaderboardClass[ i ].numDrivers = 0;
+				}
+
+				// set the heat bias of each car
+
+				foreach ( var normalizedCar in leaderboardSortedNormalizedCars )
+				{
 					if ( normalizedCar.includeInLeaderboard )
 					{
 						if ( normalizedCar.attackingHeat > 0 )
@@ -356,29 +401,25 @@ namespace iRacingTVController
 
 							normalizedCar.heatBias = Settings.director.heatBias * positionAsSignedPct + Math.Abs( Settings.director.heatBias );
 						}
+						else
+						{
+							normalizedCar.heatBias = 0;
+						}
 					}
 				}
 
-				// sort cars by relative lap position (relative to leader) for control panel
+				// sort cars by relative lap position for control panel
 
-				var leader = leaderboardIndexSortedNormalizedCars[ 0 ];
-				var classLeader = leaderboardIndexSortedNormalizedCars[ 0 ];
+				var leader = leaderboardSortedNormalizedCars[ 0 ];
 
-				foreach ( var normalizedCar in leaderboardIndexSortedNormalizedCars )
+				foreach ( var normalizedCar in leaderboardSortedNormalizedCars )
 				{
-					if ( classLeader.classID != normalizedCar.classID )
-					{
-						classLeader = normalizedCar;
-					}
-
 					normalizedCar.lapDistPctRelativeToLeader = leader.lapDistPct - normalizedCar.lapDistPct;
 
 					if ( normalizedCar.lapDistPctRelativeToLeader < 0 )
 					{
 						normalizedCar.lapDistPctRelativeToLeader += 1;
 					}
-
-					normalizedCar.lapPositionRelativeToClassLeader = classLeader.lapPosition - normalizedCar.lapPosition;
 				}
 
 				relativeLapPositionSortedNormalizedCars.Sort( NormalizedCar.RelativeLapPositionComparison );

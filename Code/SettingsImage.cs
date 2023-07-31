@@ -29,6 +29,8 @@ namespace iRacingTVController
 		public int frameCount = 1;
 		public float animationSpeed = 10;
 		public bool tilingEnabled = false;
+		public bool useClassColors = false;
+		public float classColorStrength = 0.5f;
 
 		public bool imageType_Overridden = false;
 		public bool filePath_Overridden = false;
@@ -39,5 +41,7 @@ namespace iRacingTVController
 		public bool frames_Overridden = false;
 		public bool animationSpeed_Overridden = false;
 		public bool tilingEnabled_Overridden = false;
+		public bool useClassColors_Overridden = false;
+		public bool classColorStrength_Overridden = false;
 	}
 }

@@ -6,7 +6,7 @@
     <RootNamespace>iRacingTVController</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <VersionPrefix>1.17</VersionPrefix>
+    <VersionPrefix>1.18</VersionPrefix>
     <ApplicationIcon>Assets\iRacing-TV-Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
@@ -45,6 +45,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Assets\car-number-space.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Assets\current-target.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -58,6 +61,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Assets\iRacing-TV-Icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\leaderboard-heading.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Assets\leaderboard.png">

@@ -25,7 +25,7 @@ namespace iRacingTVController
 			{
 				readerWriterLock.AcquireWriterLock( 250 );
 
-				File.AppendAllText( logFilePath, message );
+				File.AppendAllText( logFilePath, $"{DateTime.Now}   {message}" );
 			}
 			finally
 			{

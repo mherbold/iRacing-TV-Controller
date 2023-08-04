@@ -1,0 +1,970 @@
+﻿https://members-ng.iracing.com/data/league/get?league_id=8532
+
+{
+  "league_id": 8532,
+  "owner_id": 476528,
+  "league_name": "ORNL Cup Series",
+  "created": "2022-05-19T10:23:09Z",
+  "hidden": false,
+  "message": "None",
+  "url": "https://www.ornl.nl",
+  "recruiting": true,
+  "rules": "ORNL huisregels zijn van toepassing. Deze zijn te vinden boven aan de discord.",
+  "private_wall": false,
+  "private_roster": false,
+  "private_schedule": false,
+  "private_results": false,
+  "is_owner": false,
+  "is_admin": false,
+  "roster_count": 46,
+  "owner": {
+    "cust_id": 476528,
+    "display_name": "Pjor Schinkel",
+    "helmet": {
+      "pattern": 67,
+      "color1": "fa0573",
+      "color2": "000000",
+      "color3": "ffffff",
+      "face_type": 0,
+      "helmet_type": 0
+    },
+    "car_number": null,
+    "nick_name": null
+  },
+  "image": {
+    "small_logo": "https://members-leagueimages.iracing.com/8532/ornlcupseriesresize.png",
+    "large_logo": "https://members-leagueimages.iracing.com/8532/xfinitystart.jpg"
+  },
+  "tags": {
+    "categorized": [
+      {
+        "category_id": 2,
+        "name": "Type of Racing",
+        "limit": null,
+        "tags": [
+          {
+            "tag_id": 6,
+            "tag_name": "Oval"
+          },
+          {
+            "tag_id": 7,
+            "tag_name": "Short-Oval"
+          },
+          {
+            "tag_id": 8,
+            "tag_name": "Road"
+          },
+          {
+            "tag_id": 9,
+            "tag_name": "Super-Speedway"
+          }
+        ]
+      },
+      {
+        "category_id": 3,
+        "name": "Car Setup",
+        "limit": null,
+        "tags": [
+          {
+            "tag_id": 12,
+            "tag_name": "Open-Setup"
+          }
+        ]
+      },
+      {
+        "category_id": 4,
+        "name": "Size of League",
+        "limit": 1,
+        "tags": [
+          {
+            "tag_id": 15,
+            "tag_name": "20-50"
+          }
+        ]
+      }
+    ],
+    "not_categorized": []
+  },
+  "league_applications": [],
+  "pending_requests": [],
+  "is_member": false,
+  "is_applicant": false,
+  "is_invite": false,
+  "is_ignored": false,
+  "roster": [
+    {
+      "cust_id": 476528,
+      "display_name": "Pjor Schinkel",
+      "helmet": {
+        "pattern": 67,
+        "color1": "fa0573",
+        "color2": "000000",
+        "color3": "ffffff",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": true,
+      "admin": true,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-05-19T10:23:09Z",
+      "car_number": "83",
+      "nick_name": null
+    },
+    {
+      "cust_id": 631116,
+      "display_name": "Jordi Koller",
+      "helmet": {
+        "pattern": 24,
+        "color1": "030179",
+        "color2": "787878",
+        "color3": "ffffff",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": true,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-05-24T08:59:10Z",
+      "car_number": "182",
+      "nick_name": "Broadcasting"
+    },
+    {
+      "cust_id": 488654,
+      "display_name": "Andy Ten Siethof",
+      "helmet": {
+        "pattern": 28,
+        "color1": "d36a13",
+        "color2": "000000",
+        "color3": "000000",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-07-17T17:42:18Z",
+      "car_number": "17",
+      "nick_name": "LE Andy Ten Siethof"
+    },
+    {
+      "cust_id": 614214,
+      "display_name": "Anthony Dorlandt",
+      "helmet": {
+        "pattern": 8,
+        "color1": "353535",
+        "color2": "c20000",
+        "color3": "ffffff",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-12-20T09:53:51Z",
+      "car_number": "23",
+      "nick_name": null
+    },
+    {
+      "cust_id": 413868,
+      "display_name": "Arjan Rodenburg",
+      "helmet": {
+        "pattern": 45,
+        "color1": "0012ff",
+        "color2": "fffefe",
+        "color3": "fa0000",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-05-14T16:24:40Z",
+      "car_number": "069",
+      "nick_name": null
+    },
+    {
+      "cust_id": 451778,
+      "display_name": "Ayllas de Vries",
+      "helmet": {
+        "pattern": 20,
+        "color1": "ff0000",
+        "color2": "001b8b",
+        "color3": "000000",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-02-02T18:56:28Z",
+      "car_number": "92",
+      "nick_name": null
+    },
+    {
+      "cust_id": 454587,
+      "display_name": "Bart Feuerstein",
+      "helmet": {
+        "pattern": 66,
+        "color1": "d7162d",
+        "color2": "ffffff",
+        "color3": "3944c6",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-01-06T15:37:12Z",
+      "car_number": "29",
+      "nick_name": null
+    },
+    {
+      "cust_id": 345158,
+      "display_name": "Boy Borreman",
+      "helmet": {
+        "pattern": 56,
+        "color1": "000000",
+        "color2": "000000",
+        "color3": "00ff4e",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-01-19T21:21:09Z",
+      "car_number": "20",
+      "nick_name": null
+    },
+    {
+      "cust_id": 361402,
+      "display_name": "Brain Baltussen",
+      "helmet": {
+        "pattern": 45,
+        "color1": "ff0000",
+        "color2": "ddff00",
+        "color3": "000000",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-01-23T17:54:14Z",
+      "car_number": "911",
+      "nick_name": null
+    },
+    {
+      "cust_id": 402107,
+      "display_name": "Brian Booy",
+      "helmet": {
+        "pattern": 60,
+        "color1": "ffffff",
+        "color2": "091d52",
+        "color3": "520909",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-12-20T18:39:29Z",
+      "car_number": "98",
+      "nick_name": null
+    },
+    {
+      "cust_id": 333985,
+      "display_name": "Bryan Crauwels",
+      "helmet": {
+        "pattern": 42,
+        "color1": "000000",
+        "color2": "C0E60A",
+        "color3": "9C03D8",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-04-11T16:45:58Z",
+      "car_number": "148",
+      "nick_name": null
+    },
+    {
+      "cust_id": 392585,
+      "display_name": "Cas Brinckhuizen",
+      "helmet": {
+        "pattern": 9,
+        "color1": "030302",
+        "color2": "8d8f8a",
+        "color3": "a91b0a",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-07-10T18:16:03Z",
+      "car_number": "43",
+      "nick_name": "LE Cas Brinckhuizen"
+    },
+    {
+      "cust_id": 87309,
+      "display_name": "Casper van Zon",
+      "helmet": {
+        "pattern": 27,
+        "color1": "4e46fe",
+        "color2": "ffffff",
+        "color3": "fdbc24",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-04-11T16:29:41Z",
+      "car_number": "51",
+      "nick_name": null
+    },
+    {
+      "cust_id": 498853,
+      "display_name": "Daniel Bolman",
+      "helmet": {
+        "pattern": 8,
+        "color1": "0085ff",
+        "color2": "ff0000",
+        "color3": "ffffff",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-12-20T16:04:32Z",
+      "car_number": "13",
+      "nick_name": null
+    },
+    {
+      "cust_id": 589892,
+      "display_name": "Danny Mulder",
+      "helmet": {
+        "pattern": 1,
+        "color1": "135324",
+        "color2": "5e5e5e",
+        "color3": "111111",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-03-20T19:04:33Z",
+      "car_number": "25",
+      "nick_name": null
+    },
+    {
+      "cust_id": 585352,
+      "display_name": "Dave Kwakman",
+      "helmet": {
+        "pattern": 56,
+        "color1": "0026ff",
+        "color2": "ff0000",
+        "color3": "ffffff",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-01-09T17:54:36Z",
+      "car_number": "54",
+      "nick_name": null
+    },
+    {
+      "cust_id": 115803,
+      "display_name": "Eric Nannings",
+      "helmet": {
+        "pattern": 68,
+        "color1": "ffff00",
+        "color2": "ed2129",
+        "color3": "06cb17",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-06-26T07:44:49Z",
+      "car_number": "094",
+      "nick_name": "WC Eric Nannings"
+    },
+    {
+      "cust_id": 128644,
+      "display_name": "Frank van Brandwijk",
+      "helmet": {
+        "pattern": 10,
+        "color1": "000000",
+        "color2": "fb0909",
+        "color3": "eb9400",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-01-25T09:33:23Z",
+      "car_number": "08",
+      "nick_name": null
+    },
+    {
+      "cust_id": 155186,
+      "display_name": "Frederique Rijsdijk",
+      "helmet": {
+        "pattern": 28,
+        "color1": "000000",
+        "color2": "b20606",
+        "color3": "b4ae1f",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-12-20T10:51:21Z",
+      "car_number": "707",
+      "nick_name": null
+    },
+    {
+      "cust_id": 33148,
+      "display_name": "Gerben Kelly",
+      "helmet": {
+        "pattern": 14,
+        "color1": "38de1b",
+        "color2": "fd3f05",
+        "color3": "dddddd",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-07-03T21:02:01Z",
+      "car_number": "86",
+      "nick_name": "WC Gerben Kelly"
+    },
+    {
+      "cust_id": 532808,
+      "display_name": "Haaye R Hoeksma",
+      "helmet": {
+        "pattern": 26,
+        "color1": "e77d09",
+        "color2": "000000",
+        "color3": "e5e4e4",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-03-15T10:11:43Z",
+      "car_number": "11",
+      "nick_name": null
+    },
+    {
+      "cust_id": 440784,
+      "display_name": "Hendrik Renz",
+      "helmet": {
+        "pattern": 23,
+        "color1": "cecfce",
+        "color2": "ffffff",
+        "color3": "0db704",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-03-15T10:11:49Z",
+      "car_number": "888",
+      "nick_name": null
+    },
+    {
+      "cust_id": 94967,
+      "display_name": "Henk Douwe Van Der Vaart",
+      "helmet": {
+        "pattern": 30,
+        "color1": "0bff04",
+        "color2": "1d1d1e",
+        "color3": "0bff04",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-12-22T12:42:47Z",
+      "car_number": "244",
+      "nick_name": null
+    },
+    {
+      "cust_id": 72035,
+      "display_name": "J Jonckers",
+      "helmet": {
+        "pattern": 68,
+        "color1": "efe4cd",
+        "color2": "1628f8",
+        "color3": "607080",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-07-10T17:42:31Z",
+      "car_number": "017",
+      "nick_name": "LE Jeroen Jonckers"
+    },
+    {
+      "cust_id": 592269,
+      "display_name": "Jeroen Bosch2",
+      "helmet": {
+        "pattern": 58,
+        "color1": "1a4b9b",
+        "color2": "dff000",
+        "color3": "dce5e5",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-12-20T20:10:30Z",
+      "car_number": "81",
+      "nick_name": null
+    },
+    {
+      "cust_id": 285934,
+      "display_name": "Joeri van Koesveld",
+      "helmet": {
+        "pattern": 63,
+        "color1": "ffffff",
+        "color2": "000000",
+        "color3": "760252",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-01-27T20:24:29Z",
+      "car_number": "186",
+      "nick_name": null
+    },
+    {
+      "cust_id": 409240,
+      "display_name": "Joost J Bouwmeester",
+      "helmet": {
+        "pattern": 1,
+        "color1": "f06e34",
+        "color2": "111111",
+        "color3": "ffffff",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-12-20T19:07:15Z",
+      "car_number": "48",
+      "nick_name": null
+    },
+    {
+      "cust_id": 454376,
+      "display_name": "Justin Boonstra",
+      "helmet": {
+        "pattern": 58,
+        "color1": "232cfb",
+        "color2": "fdf517",
+        "color3": "1a24f4",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-01-02T13:15:15Z",
+      "car_number": "3",
+      "nick_name": null
+    },
+    {
+      "cust_id": 185910,
+      "display_name": "Justin Naaijer",
+      "helmet": {
+        "pattern": 3,
+        "color1": "1425ff",
+        "color2": "ee00ff",
+        "color3": "fa0024",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-01-29T21:44:29Z",
+      "car_number": "77",
+      "nick_name": null
+    },
+    {
+      "cust_id": 430345,
+      "display_name": "Kees de Ligt",
+      "helmet": {
+        "pattern": 47,
+        "color1": "ed2129",
+        "color2": "ffffff",
+        "color3": "2104f9",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-12-22T09:26:52Z",
+      "car_number": "61",
+      "nick_name": null
+    },
+    {
+      "cust_id": 768195,
+      "display_name": "Keith Doekhi",
+      "helmet": {
+        "pattern": 65,
+        "color1": "00b2ff",
+        "color2": "00334c",
+        "color3": "1a4b9b",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-12-20T20:18:01Z",
+      "car_number": "18",
+      "nick_name": null
+    },
+    {
+      "cust_id": 238475,
+      "display_name": "Kevin Poen",
+      "helmet": {
+        "pattern": 68,
+        "color1": "1cf817",
+        "color2": "f0f51e",
+        "color3": "090f09",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-02-13T20:29:15Z",
+      "car_number": "630",
+      "nick_name": null
+    },
+    {
+      "cust_id": 387099,
+      "display_name": "Kurt Van Aken",
+      "helmet": {
+        "pattern": 57,
+        "color1": "f9f9f9",
+        "color2": "000000",
+        "color3": "000000",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-12-20T09:53:54Z",
+      "car_number": "33",
+      "nick_name": null
+    },
+    {
+      "cust_id": 412489,
+      "display_name": "Lars Veling",
+      "helmet": {
+        "pattern": 0,
+        "color1": "ff8300",
+        "color2": "ff8300",
+        "color3": "ff8300",
+        "face_type": 2,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-06-04T18:33:21Z",
+      "car_number": "330",
+      "nick_name": null
+    },
+    {
+      "cust_id": 445809,
+      "display_name": "marco Dijsselbloem",
+      "helmet": {
+        "pattern": 19,
+        "color1": "111111",
+        "color2": "ffffff",
+        "color3": "5481fc",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-12-25T14:33:29Z",
+      "car_number": "26",
+      "nick_name": null
+    },
+    {
+      "cust_id": 675803,
+      "display_name": "Michael Bekkers",
+      "helmet": {
+        "pattern": 3,
+        "color1": "ffff00",
+        "color2": "ffffff",
+        "color3": "000000",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-03-15T10:11:53Z",
+      "car_number": "55",
+      "nick_name": null
+    },
+    {
+      "cust_id": 64876,
+      "display_name": "Niel Hekkens",
+      "helmet": {
+        "pattern": 65,
+        "color1": "000000",
+        "color2": "d4ff00",
+        "color3": "ffffff",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-12-20T10:53:50Z",
+      "car_number": "41",
+      "nick_name": null
+    },
+    {
+      "cust_id": 827949,
+      "display_name": "Raf Reijnders",
+      "helmet": {
+        "pattern": 35,
+        "color1": "ffffff",
+        "color2": "870707",
+        "color3": "870707",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-12-20T12:14:45Z",
+      "car_number": "383",
+      "nick_name": null
+    },
+    {
+      "cust_id": 29479,
+      "display_name": "Ricardo Michalewski",
+      "helmet": {
+        "pattern": 24,
+        "color1": "ffffff",
+        "color2": "005793",
+        "color3": "000000",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-05-08T20:51:59Z",
+      "car_number": "99",
+      "nick_name": null
+    },
+    {
+      "cust_id": 378126,
+      "display_name": "Ron Reek",
+      "helmet": {
+        "pattern": 0,
+        "color1": "1cff00",
+        "color2": "fffbfb",
+        "color3": "00ff12",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-01-08T21:06:16Z",
+      "car_number": "68",
+      "nick_name": null
+    },
+    {
+      "cust_id": 847138,
+      "display_name": "Rudy Vermeule",
+      "helmet": {
+        "pattern": 27,
+        "color1": "111111",
+        "color2": "12140c",
+        "color3": "391c83",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-05-08T20:39:28Z",
+      "car_number": "010",
+      "nick_name": null
+    },
+    {
+      "cust_id": 46006,
+      "display_name": "Ruud Mulders",
+      "helmet": {
+        "pattern": 6,
+        "color1": "ed2129",
+        "color2": "020202",
+        "color3": "ffffff",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-06-26T07:42:17Z",
+      "car_number": "2",
+      "nick_name": null
+    },
+    {
+      "cust_id": 608465,
+      "display_name": "Sam Van Coevorden",
+      "helmet": {
+        "pattern": 68,
+        "color1": "000000",
+        "color2": "cfae00",
+        "color3": "0002ab",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-12-20T12:15:01Z",
+      "car_number": "12",
+      "nick_name": null
+    },
+    {
+      "cust_id": 160606,
+      "display_name": "Sander Nijhof",
+      "helmet": {
+        "pattern": 3,
+        "color1": "ff0000",
+        "color2": "9b2626",
+        "color3": "f2eeee",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-01-06T21:48:47Z",
+      "car_number": "115",
+      "nick_name": null
+    },
+    {
+      "cust_id": 389687,
+      "display_name": "Shane Wilms",
+      "helmet": {
+        "pattern": 42,
+        "color1": "000000",
+        "color2": "69ff00",
+        "color3": "272727",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2022-12-20T16:04:50Z",
+      "car_number": "57",
+      "nick_name": null
+    },
+    {
+      "cust_id": 440903,
+      "display_name": "Sjaak Verhoog",
+      "helmet": {
+        "pattern": 13,
+        "color1": "05ff4b",
+        "color2": "000000",
+        "color3": "000000",
+        "face_type": 0,
+        "helmet_type": 0
+      },
+      "owner": false,
+      "admin": false,
+      "league_mail_opt_out": false,
+      "league_pm_opt_out": false,
+      "league_member_since": "2023-04-12T12:37:59Z",
+      "car_number": "85",
+      "nick_name": null
+    }
+  ]
+}

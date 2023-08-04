@@ -28,6 +28,8 @@ namespace iRacingTVController
 
 			if ( ( Settings.editor.iracingAccountUsername != string.Empty ) && ( Settings.editor.iracingAccountPassword != string.Empty ) )
 			{
+				LogFile.Write( $"Connecting to iRacing data API...\r\n" );
+
 				var serviceCollection = new ServiceCollection();
 
 				serviceCollection.AddIRacingDataApi( options =>
@@ -67,6 +69,8 @@ namespace iRacingTVController
 				{
 					try
 					{
+						LogFile.Write( "Fetching track assets dictionary...\r\n" );
+
 						trackAssetsDictionary = Task.Run( async () => await dataClient.GetTrackAssetsAsync() ).Result.Data;
 
 						return true;
@@ -89,6 +93,8 @@ namespace iRacingTVController
 				{
 					try
 					{
+						LogFile.Write( "Fetching car classes...\r\n" );
+
 						carClasses = Task.Run( async () => await dataClient.GetCarClassesAsync() ).Result.Data;
 
 						return true;
@@ -132,6 +138,8 @@ namespace iRacingTVController
 		{
 			try
 			{
+				LogFile.Write( $"Downloading track asset {url}...\r\n" );
+
 				var httpClient = new HttpClient();
 
 				var trackAsset = Task.Run( async () => await httpClient.GetStringAsync( url ) ).Result;

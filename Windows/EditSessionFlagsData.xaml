@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController.Windows"
         mc:Ignorable="d"
-        Title="Edit Session Flags Data" SizeToContent="WidthAndHeight" ResizeMode="CanMinimize" WindowStartupLocation="CenterOwner">
+        Title="Edit Session Flags Data" SizeToContent="WidthAndHeight" ResizeMode="CanMinimize" WindowStartupLocation="CenterOwner" Icon="/Assets/iracing-tv-icon-small-shadow.png">
     <Grid Margin="6,6,6,6">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

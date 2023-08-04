@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="Add Camera" Height="500" Width="200" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="Add Camera" Height="500" Width="200" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Icon="/Assets/iracing-tv-icon-small-shadow.png">
     <Grid Margin="6,6,6,6">
         <Grid>
             <Grid.RowDefinitions>

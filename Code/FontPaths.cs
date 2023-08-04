@@ -24,6 +24,8 @@ namespace iRacingTVController
 
 		public static void FindInFolder( string path, SortedDictionary<string, string> fontPaths )
 		{
+			LogFile.Write( $"Scanning for fonts in {path}.\r\n" );
+
 			var fontsInDirectory = Directory.EnumerateFiles( path );
 
 			foreach ( var fontPath in fontsInDirectory )

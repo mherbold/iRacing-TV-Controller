@@ -53,21 +53,29 @@ namespace iRacingTVController
 
 		public static void Initialize()
 		{
+			LogFile.Write( "Initializing settings...\r\n" );
+
 			FixSettings( overlayGlobal );
 			FixSettings( overlayLocal );
 
 			if ( !Directory.Exists( Program.documentsFolder ) )
 			{
+				LogFile.Write( $"Directory {Program.documentsFolder} does not exist, creating it...\r\n" );
+
 				Directory.CreateDirectory( Program.documentsFolder );
 			}
 
 			if ( !Directory.Exists( overlaySettingsFolder ) )
 			{
+				LogFile.Write( $"Directory {overlaySettingsFolder} does not exist, creating it...\r\n" );
+
 				Directory.CreateDirectory( overlaySettingsFolder );
 			}
 
 			if ( !Directory.Exists( directorSettingsFolder ) )
 			{
+				LogFile.Write( $"Directory {directorSettingsFolder} does not exist, creating it...\r\n" );
+
 				Directory.CreateDirectory( directorSettingsFolder );
 			}
 
@@ -114,14 +122,12 @@ namespace iRacingTVController
 					{
 						overlayGlobal = settings;
 					}
-					else
-					{
-						overlayList.Add( settings );
 
-						if ( settings.filePath == editor.lastActiveOverlayFilePath )
-						{
-							overlayLocal = settings;
-						}
+					overlayList.Add( settings );
+
+					if ( settings.filePath == editor.lastActiveOverlayFilePath )
+					{
+						overlayLocal = settings;
 					}
 				}
 				catch ( Exception exception )
@@ -129,21 +135,19 @@ namespace iRacingTVController
 					MessageBox.Show( MainWindow.Instance, $"We could not load the overlay settings file '{overlaySettingsFilePath}'.\r\n\r\nThe error message is as follows:\r\n\r\n{exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
 				}
 			}
+			
+			if ( overlayList.Count == 1 )
+			{
+				overlayLocal.filePath = overlaySettingsFolder + "My new overlay.xml";
+
+				overlayList.Add( overlayLocal );
+
+				saveOverlayToFileQueued = true;
+			}
 
 			if ( overlayLocal.filePath == string.Empty )
 			{
-				if ( overlayList.Count > 0 )
-				{
-					overlayLocal = overlayList[ 0 ];
-				}
-				else
-				{
-					overlayLocal.filePath = overlaySettingsFolder + "My new overlay.xml";
-
-					overlayList.Add( overlayLocal );
-
-					saveOverlayToFileQueued = true;
-				}
+				overlayLocal = overlayList[ 1 ];
 			}
 
 			// director
@@ -169,14 +173,12 @@ namespace iRacingTVController
 					{
 						directorGlobal = settings;
 					}
-					else
-					{
-						directorList.Add( settings );
 
-						if ( settings.filePath == editor.lastActiveDirectorFilePath )
-						{
-							directorLocal = settings;
-						}
+					directorList.Add( settings );
+
+					if ( settings.filePath == editor.lastActiveDirectorFilePath )
+					{
+						directorLocal = settings;
 					}
 				}
 				catch ( Exception exception )
@@ -185,20 +187,18 @@ namespace iRacingTVController
 				}
 			}
 
+			if ( directorList.Count == 1 )
+			{
+				directorLocal.filePath = directorSettingsFolder + "My new director.xml";
+
+				directorList.Add( directorLocal );
+
+				saveDirectorToFileQueued = true;
+			}
+
 			if ( directorLocal.filePath == string.Empty )
 			{
-				if ( directorList.Count > 0 )
-				{
-					directorLocal = directorList[ 0 ];
-				}
-				else
-				{
-					directorLocal.filePath = directorSettingsFolder + "My new director.xml";
-
-					directorList.Add( directorLocal );
-
-					saveDirectorToFileQueued = true;
-				}
+				directorLocal = directorList[ 1 ];
 			}
 
 			IPC.readyToSendSettings = true;
@@ -239,6 +239,8 @@ namespace iRacingTVController
 
 		public static void FixSettings( SettingsOverlay settings )
 		{
+			LogFile.Write( $"Fixing up overlay settings {settings.filePath}...\r\n" );
+
 			var defaultFontNames = new string[]
 			{
 				"Revolution Gothic",
@@ -278,12 +280,15 @@ namespace iRacingTVController
 				{ "LeaderboardPositionSplitter", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\position-splitter.png" } },
 				{ "RaceStatusBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\race-status.png" } },
 				{ "RaceStatusBlackLight", new SettingsImage(){ imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\light-black.png", position = { x = 280, y = 130 } } },
-				{ "RaceStatusCheckeredFlag", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\flag-checkered.png" } },
-				{ "RaceStatusGreenFlag", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\flag-green.png" } },
+				{ "RaceStatusCheckeredFlagLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\checkered-flag.png", size = { x = 319, y = 219 }, frameSize = { x = 319, y = 219 }, frameCount = 35, animationSpeed = 24 } },
+				{ "RaceStatusCheckeredFlagLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\checkered-flag-text.png", tintColor = { r = 0.9f, g = 0.9f, b = 0.9f } } },
+				{ "RaceStatusGreenFlagLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\white-flag.png", size = { x = 319, y = 219 }, tintColor = { r = 0.212f, g = 0.871f, b = 0.212f }, frameSize = { x = 319, y = 219 }, frameCount = 35, animationSpeed = 24 } },
+				{ "RaceStatusGreenFlagLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\green-flag-text.png" } },
 				{ "RaceStatusGreenLight", new SettingsImage(){ imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\light-green.png", position = { x = 280, y = 130 } } },
 				{ "RaceStatusSeriesLogo", new SettingsImage() { imageType = SettingsImage.ImageType.SeriesLogo, position = { x = 7, y = 7 }, size = { x = 305, y = 103 } } },
 				{ "RaceStatusWhiteLight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\light-white.png", position = { x = 280, y = 130 } } },
-				{ "RaceStatusYellowFlag", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\flag-yellow.png" } },
+				{ "RaceStatusYellowFlagLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\white-flag.png", size = { x = 319, y = 219 }, tintColor = { r = 1, g = 1, b = 0 }, frameSize = { x = 319, y = 219 }, frameCount = 35, animationSpeed = 24 } },
+				{ "RaceStatusYellowFlagLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\yellow-flag-text.png" } },
 				{ "RaceStatusYellowLight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\light-yellow.png", position = { x = 280, y = 130 } } },
 				{ "StartLightsGo", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\lights-go.png" } },
 				{ "StartLightsReady", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\lights-ready.png" } },
@@ -398,8 +403,11 @@ namespace iRacingTVController
 			var defaultTranslationSettings = new Dictionary<string, SettingsTranslation>()
 			{
 				{ "DidNotQualify", new SettingsTranslation() { translation = "DNQ" } },
+				{ "FEATURE", new SettingsTranslation() { translation = "RACE" } },
 				{ "FeetAbbreviation", new SettingsTranslation() { translation = "FT" } },
 				{ "FinalLap", new SettingsTranslation() { translation = "FINAL LAP" } },
+				{ "HEAT 1", new SettingsTranslation() { translation = "HEAT 1" } },
+				{ "HEAT 2", new SettingsTranslation() { translation = "HEAT 2" } },
 				{ "KPH", new SettingsTranslation() { translation = "KPH" } },
 				{ "Lap", new SettingsTranslation() { translation = "LAP" } },
 				{ "LapsAbbreviation", new SettingsTranslation() { translation = "L" } },
@@ -407,9 +415,12 @@ namespace iRacingTVController
 				{ "MPH", new SettingsTranslation() { translation = "MPH" } },
 				{ "Out", new SettingsTranslation() { translation = "OUT" } },
 				{ "Pit", new SettingsTranslation() { translation = "PIT" } },
+				{ "PRACTICE", new SettingsTranslation() { translation = "PRACTICE" } },
+				{ "QUALIFY", new SettingsTranslation() { translation = "QUALIFY" } },
 				{ "Time", new SettingsTranslation() { translation = "TIME" } },
 				{ "ToGo", new SettingsTranslation() { translation = "TO GO" } },
 				{ "VoiceOf", new SettingsTranslation() { translation = "VOICE OF" } },
+				{ "WARMUP", new SettingsTranslation() { translation = "WARM UP" } },
 			};
 
 			foreach ( var item in defaultTranslationSettings )
@@ -426,6 +437,8 @@ namespace iRacingTVController
 		public static object Load( string filePath, Type type )
 		{
 			loading++;
+
+			LogFile.Write( $"Loading {filePath}...\r\n" );
 
 			var xmlSerializer = new XmlSerializer( type );
 
@@ -487,6 +500,8 @@ namespace iRacingTVController
 
 		public static void Save( string filePath, object settingsData )
 		{
+			LogFile.Write( $"Saving {filePath}...\r\n" );
+
 			var xmlSerializer = new XmlSerializer( settingsData.GetType() );
 
 			var streamWriter = new StreamWriter( filePath );
@@ -723,6 +738,11 @@ namespace iRacingTVController
 				camerasPractice = directorLocal.camerasPractice_Overridden ? directorLocal.camerasPractice : directorGlobal.camerasPractice,
 				camerasQualifying = directorLocal.camerasQualifying_Overridden ? directorLocal.camerasQualifying : directorGlobal.camerasQualifying,
 				camerasIntro = directorLocal.camerasIntro_Overridden ? directorLocal.camerasIntro : directorGlobal.camerasIntro,
+
+				camerasScenic = directorLocal.camerasScenic_Overridden ? directorLocal.camerasScenic : directorGlobal.camerasScenic,
+				camerasPits = directorLocal.camerasPits_Overridden ? directorLocal.camerasPits : directorGlobal.camerasPits,
+				camerasStartFinish = directorLocal.camerasStartFinish_Overridden ? directorLocal.camerasStartFinish : directorGlobal.camerasStartFinish,
+
 				camerasInside = directorLocal.camerasInside_Overridden ? directorLocal.camerasInside : directorGlobal.camerasInside,
 				camerasClose = directorLocal.camerasClose_Overridden ? directorLocal.camerasClose : directorGlobal.camerasClose,
 				camerasMedium = directorLocal.camerasMedium_Overridden ? directorLocal.camerasMedium : directorGlobal.camerasMedium,
@@ -732,6 +752,11 @@ namespace iRacingTVController
 				camerasPractice_Overridden = directorLocal.camerasPractice_Overridden,
 				camerasQualifying_Overridden = directorLocal.camerasQualifying_Overridden,
 				camerasIntro_Overridden = directorLocal.camerasIntro_Overridden,
+
+				camerasScenic_Overridden = directorLocal.camerasScenic_Overridden,
+				camerasPits_Overridden = directorLocal.camerasPits_Overridden,
+				camerasStartFinish_Overridden = directorLocal.camerasStartFinish_Overridden,
+
 				camerasInside_Overridden = directorLocal.camerasInside_Overridden,
 				camerasClose_Overridden = directorLocal.camerasClose_Overridden,
 				camerasMedium_Overridden = directorLocal.camerasMedium_Overridden,

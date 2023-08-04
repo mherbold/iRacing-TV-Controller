@@ -43,12 +43,16 @@ namespace iRacingTVController
 
 			initialized = false;
 
+			LogFile.Write( "Building track map...\r\n" );
+
 			drawVectorList.Clear();
 
 			var startFinishPoint = GetStartFinishPoint();
 
 			if ( startFinishPoint == null )
 			{
+				LogFile.Write( "Start/Finish point could not be determined.\r\n" );
+
 				return;
 			}
 
@@ -56,6 +60,8 @@ namespace iRacingTVController
 
 			if ( rawSvgUrl == null )
 			{
+				LogFile.Write( "Active track map URL could not be determined.\r\n" );
+
 				return;
 			}
 
@@ -63,6 +69,8 @@ namespace iRacingTVController
 
 			if ( rawSvg == null )
 			{
+				LogFile.Write( "Active track map could not be fetched.\r\n" );
+
 				return;
 			}
 
@@ -70,6 +78,8 @@ namespace iRacingTVController
 
 			if ( splitSvgPathStringList.Count == 0 )
 			{
+				LogFile.Write( "Could not find a valid path in the active track map.\r\n" );
+
 				return;
 			}
 
@@ -209,6 +219,8 @@ namespace iRacingTVController
 				fullVectorList[ i ].y = -fullVectorList[ i ].y;
 			}
 
+			LogFile.Write( "Track map built!\r\n" );
+
 			initialized = true;
 		}
 
@@ -218,6 +230,8 @@ namespace iRacingTVController
 
 			if ( rawSvgUrl == null )
 			{
+				LogFile.Write( "Start/finish track map URL could not be determined.\r\n" );
+
 				return null;
 			}
 
@@ -225,6 +239,8 @@ namespace iRacingTVController
 
 			if ( rawSvg == null )
 			{
+				LogFile.Write( "Start/finish track map could not be fetched.\r\n" );
+
 				return null;
 			}
 
@@ -232,6 +248,8 @@ namespace iRacingTVController
 
 			if ( splitSvgPathStringList.Count == 0 )
 			{
+				LogFile.Write( "Could not find a valid path in the start/finish track map.\r\n" );
+
 				return null;
 			}
 

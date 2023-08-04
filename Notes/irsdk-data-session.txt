@@ -1,310 +1,2676 @@
-Session
 
--		session	{irsdkSharp.Serialization.Models.Session.IRacingSessionModel}	irsdkSharp.Serialization.Models.Session.IRacingSessionModel
--		CameraInfo	{irsdkSharp.Serialization.Models.Session.CameraInfo.CameraInfoModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.CameraInfoModel
--		Groups	Count = 20	System.Collections.Generic.List<irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel>
-+		[0]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[1]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[2]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[3]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[4]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[5]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[6]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[7]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[8]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[9]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
--		[10]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
--		Cameras	Count = 6	System.Collections.Generic.List<irsdkSharp.Serialization.Models.Session.CameraInfo.CameraModel>
--		[0]	{irsdkSharp.Serialization.Models.Session.CameraInfo.CameraModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.CameraModel
-		CameraName	"CamTV1_00"	string
-		CameraNum	1	int
-+		[1]	{irsdkSharp.Serialization.Models.Session.CameraInfo.CameraModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.CameraModel
-+		[2]	{irsdkSharp.Serialization.Models.Session.CameraInfo.CameraModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.CameraModel
-+		[3]	{irsdkSharp.Serialization.Models.Session.CameraInfo.CameraModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.CameraModel
-+		[4]	{irsdkSharp.Serialization.Models.Session.CameraInfo.CameraModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.CameraModel
-+		[5]	{irsdkSharp.Serialization.Models.Session.CameraInfo.CameraModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.CameraModel
-+		Raw View		
-		GroupName	"TV1"	string
-		GroupNum	11	int
-		IsScenic	false	bool
-+		[11]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[12]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[13]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[14]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[15]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[16]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[17]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[18]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		[19]	{irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel}	irsdkSharp.Serialization.Models.Session.CameraInfo.GroupModel
-+		Raw View		
--		DriverInfo	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverInfoModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverInfoModel
-		DriverCarEngCylinderCount	8	int
-		DriverCarEstLapTime	30.0832	float
-		DriverCarFuelKgPerLtr	0.75	float
-		DriverCarFuelMaxLtr	70.753	float
-		DriverCarGearNeutral	1	int
-		DriverCarGearNumForward	4	int
-		DriverCarGearReverse	1	int
-		DriverCarIdleRPM	2000	float
-		DriverCarIdx	1	int
-		DriverCarMaxFuelPct	0	float
-		DriverCarRedLine	9100	float
-		DriverCarSLBlinkRPM	9000	float
-		DriverCarSLFirstRPM	7500	float
-		DriverCarSLLastRPM	8300	float
-		DriverCarSLShiftRPM	8300	float
-		DriverCarVersion	null	string
-		DriverHeadPosX	-0.106	float
-		DriverHeadPosY	0.418	float
-		DriverHeadPosZ	0.578	float
-		DriverIncidentCount	0	int
-		DriverPitTrkPct	0.092536	float
-		DriverSetupIsModified	0	int
-		DriverSetupLoadTypeName	"invalid"	string
-		DriverSetupName	"INVALID_LOADTYPE"	string
-		DriverSetupPassedTech	0	int
-		DriverUserID	"854332"	string
--		Drivers	Count = 25	System.Collections.Generic.List<irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel>
-+		[0]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
--		[1]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-		AbbrevName	"Herbold, M"	string
-		CarClassColor	"0xffffff"	string
-		CarClassDryTireSetLimit	"0 %"	string
-		CarClassEstLapTime	30.0832	float
-		CarClassID	1455	int
-		CarClassLicenseLevel	0	int
-		CarClassMaxFuelPct	"0.000 %"	string
-		CarClassPowerAdjust	"0.000 %"	string
-		CarClassRelSpeed	0	int
-		CarClassShortName	null	string
-		CarClassWeightPenalty	"0.000 kg"	string
-		CarDesignStr	"1,17071c,3a1246,782490"	string
-		CarID	115	int
-		CarIdx	1	int
-		CarIsAI	"0"	string
-		CarIsPaceCar	"0"	string
-		CarNumber	"1"	string
-		CarNumberDesignStr	"27,0,ffffff,000000,000000"	string
-		CarNumberRaw	1	int
-		CarPath	"stockcars2 mustang2019"	string
-		CarScreenName	"Ford Mustang Class B"	string
-		CarScreenNameShort	"Ford Mustang Class B"	string
-		CarSponsor_1	0	int
-		CarSponsor_2	0	int
-		ClubID	0	int
-		ClubName	null	string
-		CurDriverIncidentCount	-1	int
-		DivisionID	0	int
-		DivisionName	null	string
-		HelmetDesignStr	"32,17071c,3a1246,782490"	string
-		IRating	920	int
-		Initials	"MH"	string
-		IsSpectator	0	int
-		LicColor	"0x00c702"	string
-		LicLevel	15	int
-		LicString	"B 3.60"	string
-		LicSubLevel	360	int
-		SuitDesignStr	"1,17071c,3a1246,782490"	string
-		TeamID	0	int
-		TeamIncidentCount	-1	int
-		TeamName	"Marvin Herbold"	string
-		UserID	854332	int
-		UserName	"Marvin Herbold"	string
-+		[2]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[3]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[4]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[5]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[6]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[7]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[8]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[9]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[10]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[11]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[12]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[13]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[14]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[15]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[16]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[17]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[18]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[19]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[20]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[21]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[22]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[23]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		[24]	{irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel}	irsdkSharp.Serialization.Models.Session.DriverInfo.DriverModel
-+		Raw View		
-		PaceCarIdx	0	int
-		QualifyResultsInfo	null	irsdkSharp.Serialization.Models.Session.QualifyResultsInfo.QualifyResultsInfoModel
--		RadioInfo	{irsdkSharp.Serialization.Models.Session.RadioInfo.RadioInfoModel}	irsdkSharp.Serialization.Models.Session.RadioInfo.RadioInfoModel
--		Radios	Count = 1	System.Collections.Generic.List<irsdkSharp.Serialization.Models.Session.RadioInfo.RadioModel>
--		[0]	{irsdkSharp.Serialization.Models.Session.RadioInfo.RadioModel}	irsdkSharp.Serialization.Models.Session.RadioInfo.RadioModel
-+		Frequencies	null	System.Collections.Generic.List<irsdkSharp.Serialization.Models.Session.RadioInfo.FrequencyModel>
-		HopCount	0	int
-		NumFrequencies	0	int
-		RadioNum	0	int
-		ScanningIsOn	1	int
-		TunedToFrequencyNum	0	int
-+		Raw View		
-		SelectedRadioNum	0	int
--		SessionInfo	{irsdkSharp.Serialization.Models.Session.SessionInfo.SessionInfoModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.SessionInfoModel
-		NumSessions	0	int
--		Sessions	Count = 3	System.Collections.Generic.List<irsdkSharp.Serialization.Models.Session.SessionInfo.SessionModel>
-+		[0]	{irsdkSharp.Serialization.Models.Session.SessionInfo.SessionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.SessionModel
-+		[1]	{irsdkSharp.Serialization.Models.Session.SessionInfo.SessionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.SessionModel
--		[2]	{irsdkSharp.Serialization.Models.Session.SessionInfo.SessionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.SessionModel
-		ResultsAverageLapTime	40.3466	float
--		ResultsFastestLap	Count = 1	System.Collections.Generic.List<irsdkSharp.Serialization.Models.Session.SessionInfo.FastestLapModel>
--		[0]	{irsdkSharp.Serialization.Models.Session.SessionInfo.FastestLapModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.FastestLapModel
-		CarIdx	12	int
-		FastestLap	7	int
-		FastestTime	30.658	float
-+		Raw View		
-		ResultsLapsComplete	49	int
-		ResultsNumCautionFlags	3	int
-		ResultsNumCautionLaps	8	int
-		ResultsNumLeadChanges	-2147483646	int
-		ResultsOfficial	1	int
--		ResultsPositions	Count = 24	System.Collections.Generic.List<irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel>
-+		[0]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
--		[1]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-		CarIdx	23	int
-		ClassPosition	1	int
-		FastestLap	18	int
-		FastestTime	31.527	float
-		Incidents	4	int
-		JokerLapsComplete	0	int
-		Lap	0	int
-		LapsComplete	49	int
-		LapsDriven	50.481	float
-		LapsLed	0	int
-		LastTime	47.2983	float
-		Position	2	int
-		ReasonOutId	0	int
-		ReasonOutStr	"Running"	string
-		Time	0.7154	float
-+		[2]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[3]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[4]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[5]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[6]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[7]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[8]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[9]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[10]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[11]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[12]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[13]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[14]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[15]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[16]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[17]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[18]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[19]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[20]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[21]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[22]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		[23]	{irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel}	irsdkSharp.Serialization.Models.Session.SessionInfo.PositionModel
-+		Raw View		
-		SessionLaps	"49"	string
-		SessionName	"RACE"	string
-		SessionNum	2	int
-		SessionNumLapsToAvg	0	int
-		SessionRunGroupsUsed	"0"	string
-		SessionSkipped	"0"	string
-		SessionSubType	null	string
-		SessionTime	"unlimited"	string
-		SessionTrackRubberState	"carry over"	string
-		SessionType	"Race"	string
-+		Raw View		
--		SplitTimeInfo	{irsdkSharp.Serialization.Models.Session.SplitTimeInfo.SplitTimeInfoModel}	irsdkSharp.Serialization.Models.Session.SplitTimeInfo.SplitTimeInfoModel
--		Sectors	Count = 2	System.Collections.Generic.List<irsdkSharp.Serialization.Models.Session.SplitTimeInfo.SectorModel>
--		[0]	{irsdkSharp.Serialization.Models.Session.SplitTimeInfo.SectorModel}	irsdkSharp.Serialization.Models.Session.SplitTimeInfo.SectorModel
-		SectorNum	0	int
-		SectorStartPct	0	float
--		[1]	{irsdkSharp.Serialization.Models.Session.SplitTimeInfo.SectorModel}	irsdkSharp.Serialization.Models.Session.SplitTimeInfo.SectorModel
-		SectorNum	1	int
-		SectorStartPct	0.5	float
-+		Raw View		
--		WeekendInfo	{irsdkSharp.Serialization.Models.Session.WeekendInfo.WeekendInfoModel}	irsdkSharp.Serialization.Models.Session.WeekendInfo.WeekendInfoModel
-		BuildTarget	"Members"	string
-		BuildType	"Release"	string
-		BuildVersion	null	string
-		Category	"Oval"	string
-		DCRuleSet	"None"	string
-		EventType	"Race"	string
-		HeatRacing	"0"	string
-		LeagueID	0	int
-		MaxDrivers	1	int
-		MinDrivers	0	int
-		NumCarClasses	1	int
-		NumCarTypes	4	int
-		Official	1	int
-		QualifierMustStartRace	0	int
-		RaceWeek	11	int
-		SeasonID	4027	int
-		SeriesID	103	int
-		SessionID	200285021	int
-		SimMode	"replay"	string
-		SubSessionID	60249262	int
-		TeamRacing	0	int
--		TelemetryOptions	{irsdkSharp.Serialization.Models.Session.WeekendInfo.TelemetryOptionsModel}	irsdkSharp.Serialization.Models.Session.WeekendInfo.TelemetryOptionsModel
-		TelemetryDiskFile	""	string
-		TrackAirPressure	"29.92 Hg"	string
-		TrackAirTemp	"25.56 C"	string
-		TrackAltitude	"595.86 m"	string
-		TrackCity	"Las Vegas"	string
-		TrackCleanup	1	int
-		TrackConfigName	"Oval"	string
-		TrackCountry	"USA"	string
-		TrackDirection	"left"	string
-		TrackDisplayName	"Las Vegas Motor Speedway"	string
-		TrackDisplayShortName	"Las Vegas"	string
-		TrackDynamicTrack	1	int
-		TrackFogLevel	"0 %"	string
-		TrackID	103	int
-		TrackLatitude	"36.274494 m"	string
-		TrackLength	"2.45 km"	string
-		TrackLongitude	"-115.012602 m"	string
-		TrackName	"vegas oval"	string
-		TrackNorthOffset	"4.0199 rad"	string
-		TrackNumTurns	4	int
-		TrackPitSpeedLimit	"80.47 kph"	string
-		TrackRelativeHumidity	"55 %"	string
-		TrackSkies	"Partly Cloudy"	string
-		TrackSurfaceTemp	"40.56 C"	string
-		TrackType	"medium oval"	string
-		TrackVersion	null	string
-		TrackWeatherType	"Specified / Static Sky"	string
-		TrackWindDir	"0.00 rad"	string
-		TrackWindVel	"2.00 m/s"	string
--		WeekendOptions	{irsdkSharp.Serialization.Models.Session.WeekendInfo.WeekendOptionsModel}	irsdkSharp.Serialization.Models.Session.WeekendInfo.WeekendOptionsModel
-		CommercialMode	"consumer"	string
-		CourseCautions	"full"	string
-		Date	"1970-01-01"	string
-		EarthRotationSpeedupFactor	"1"	string
-		FastRepairsLimit	"0"	string
-		FogLevel	"0 %"	string
-		GreenWhiteCheckeredLimit	1	int
-		HapSOpenRegistration	0	int
-		HardcoreLevel	0	int
-		HasOpenRegistration	"0"	string
-		IncidentLimit	"25"	string
-		IsFixedSetup	1	int
-		NightMode	"variable"	string
-		NumJokerLaps	0	int
-		NumStarters	26	int
-		QualifyScoring	"best lap"	string
-		RelativeHumidity	"55 %"	string
-		Restarts	"double file lapped cars behind"	string
-		ShortParadeLap	"0"	string
-		Skies	"Partly Cloudy"	string
-		StandingStart	0	int
-		StartingGrid	"2x2 inline pole on left"	string
-		StrictLapsChecking	"default"	string
-		TimeOfDay	"12:00 am"	string
-		Unofficial	0	int
-		WeatherTemp	"25.56 C"	string
-		WeatherType	"Specified / Dynamic Sky"	string
-		WindDirection	"N"	string
-		WindSpeed	"3.22 km/h"	string
+---
+WeekendInfo:
+ TrackName: charlotte 2018 oval
+ TrackID: 339
+ TrackLength: 2.34 km
+ TrackLengthOfficial: 2.41 km
+ TrackDisplayName: Charlotte Motor Speedway
+ TrackDisplayShortName: Charlotte
+ TrackConfigName: Oval
+ TrackCity: Concord
+ TrackCountry: USA
+ TrackAltitude: 206.06 m
+ TrackLatitude: 35.352269 m
+ TrackLongitude: -80.685591 m
+ TrackNorthOffset: 3.4218 rad
+ TrackNumTurns: 4
+ TrackPitSpeedLimit: 72.42 kph
+ TrackType: medium oval
+ TrackDirection: left
+ TrackWeatherType: Specified / Static Sky
+ TrackSkies: Partly Cloudy
+ TrackSurfaceTemp: 40.56 C
+ TrackAirTemp: 25.56 C
+ TrackAirPressure: 29.92 Hg
+ TrackWindVel: 2.00 m/s
+ TrackWindDir: 0.00 rad
+ TrackRelativeHumidity: 55 %
+ TrackFogLevel: 0 %
+ TrackCleanup: 0
+ TrackDynamicTrack: 1
+ TrackVersion: 
+ SeriesID: 0
+ SeasonID: 0
+ SessionID: 207172967
+ SubSessionID: 61773832
+ LeagueID: 8532
+ Official: 0
+ RaceWeek: 0
+ EventType: Race
+ Category: Oval
+ SimMode: replay
+ TeamRacing: 0
+ MinDrivers: 0
+ MaxDrivers: 1
+ DCRuleSet: None
+ QualifierMustStartRace: 0
+ NumCarClasses: 1
+ NumCarTypes: 4
+ HeatRacing: 0
+ BuildType: Release
+ BuildTarget: Members
+ BuildVersion: 
+ WeekendOptions:
+  NumStarters: 60
+  StartingGrid: single file
+  QualifyScoring: best lap
+  CourseCautions: full
+  StandingStart: 0
+  ShortParadeLap: 0
+  Restarts: double file lapped cars behind
+  WeatherType: Specified / Dynamic Sky
+  Skies: Mostly Cloudy
+  WindDirection: N
+  WindSpeed: 3.22 km/h
+  WeatherTemp: 21.11 C
+  RelativeHumidity: 40 %
+  FogLevel: 0 %
+  TimeOfDay: 12:00 am
+  Date: 1970-01-01
+  EarthRotationSpeedupFactor: 4
+  Unofficial: 1
+  CommercialMode: consumer
+  NightMode: variable
+  IsFixedSetup: 0
+  StrictLapsChecking: default
+  HasOpenRegistration: 1
+  HardcoreLevel: 0
+  NumJokerLaps: 0
+  IncidentLimit: 20
+  FastRepairsLimit: 0
+  GreenWhiteCheckeredLimit: 3
+ TelemetryOptions:
+  TelemetryDiskFile: ""
+
+SessionInfo:
+ Sessions:
+ - SessionNum: 0
+   SessionLaps: unlimited
+   SessionTime: 3300.0000 sec
+   SessionNumLapsToAvg: 0
+   SessionType: Practice
+   SessionTrackRubberState: clean
+   SessionName: PRACTICE
+   SessionSubType: 
+   SessionSkipped: 0
+   SessionRunGroupsUsed: 0
+   SessionEnforceTireCompoundChange: 0
+   ResultsPositions:
+   - Position: 1
+     ClassPosition: 0
+     CarIdx: 2
+     Lap: 6
+     Time: 29.3651
+     FastestLap: 6
+     FastestTime: 29.3651
+     LastTime: -1.0000
+     LapsLed: 0
+     LapsComplete: 39
+     JokerLapsComplete: 0
+     LapsDriven: 43.179
+     Incidents: 14
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 2
+     ClassPosition: 1
+     CarIdx: 17
+     Lap: 26
+     Time: 29.5258
+     FastestLap: 26
+     FastestTime: 29.5258
+     LastTime: 29.8820
+     LapsLed: 0
+     LapsComplete: 49
+     JokerLapsComplete: 0
+     LapsDriven: 52.029
+     Incidents: 22
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 3
+     ClassPosition: 2
+     CarIdx: 5
+     Lap: 3
+     Time: 29.5815
+     FastestLap: 3
+     FastestTime: 29.5815
+     LastTime: 29.7757
+     LapsLed: 0
+     LapsComplete: 12
+     JokerLapsComplete: 0
+     LapsDriven: 13.852
+     Incidents: 4
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 4
+     ClassPosition: 3
+     CarIdx: 3
+     Lap: 2
+     Time: 29.5835
+     FastestLap: 2
+     FastestTime: 29.5835
+     LastTime: 30.1280
+     LapsLed: 0
+     LapsComplete: 80
+     JokerLapsComplete: 0
+     LapsDriven: 84.529
+     Incidents: 16
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 5
+     ClassPosition: 4
+     CarIdx: 11
+     Lap: 3
+     Time: 29.6081
+     FastestLap: 3
+     FastestTime: 29.6081
+     LastTime: 29.7831
+     LapsLed: 0
+     LapsComplete: 35
+     JokerLapsComplete: 0
+     LapsDriven: 42.686
+     Incidents: 40
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 6
+     ClassPosition: 5
+     CarIdx: 15
+     Lap: 20
+     Time: 29.6122
+     FastestLap: 20
+     FastestTime: 29.6122
+     LastTime: 32.3033
+     LapsLed: 0
+     LapsComplete: 57
+     JokerLapsComplete: 0
+     LapsDriven: 64.758
+     Incidents: 31
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 7
+     ClassPosition: 6
+     CarIdx: 12
+     Lap: 27
+     Time: 29.6256
+     FastestLap: 27
+     FastestTime: 29.6256
+     LastTime: -1.0000
+     LapsLed: 0
+     LapsComplete: 45
+     JokerLapsComplete: 0
+     LapsDriven: 51.029
+     Incidents: 14
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 8
+     ClassPosition: 7
+     CarIdx: 1
+     Lap: 14
+     Time: 29.6801
+     FastestLap: 14
+     FastestTime: 29.6801
+     LastTime: 33.1332
+     LapsLed: 0
+     LapsComplete: 29
+     JokerLapsComplete: 0
+     LapsDriven: 30.879
+     Incidents: 5
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 9
+     ClassPosition: 8
+     CarIdx: 21
+     Lap: 11
+     Time: 29.8020
+     FastestLap: 11
+     FastestTime: 29.8020
+     LastTime: 30.5965
+     LapsLed: 0
+     LapsComplete: 52
+     JokerLapsComplete: 0
+     LapsDriven: 45.353
+     Incidents: 29
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 10
+     ClassPosition: 9
+     CarIdx: 14
+     Lap: 6
+     Time: 29.8140
+     FastestLap: 6
+     FastestTime: 29.8140
+     LastTime: 45.0030
+     LapsLed: 0
+     LapsComplete: 39
+     JokerLapsComplete: 0
+     LapsDriven: 42.007
+     Incidents: 5
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 11
+     ClassPosition: 10
+     CarIdx: 9
+     Lap: 38
+     Time: 29.8180
+     FastestLap: 38
+     FastestTime: 29.8180
+     LastTime: 31.3427
+     LapsLed: 0
+     LapsComplete: 62
+     JokerLapsComplete: 0
+     LapsDriven: 67.769
+     Incidents: 4
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 12
+     ClassPosition: 11
+     CarIdx: 19
+     Lap: 13
+     Time: 29.8215
+     FastestLap: 13
+     FastestTime: 29.8215
+     LastTime: 30.5256
+     LapsLed: 0
+     LapsComplete: 27
+     JokerLapsComplete: 0
+     LapsDriven: 29.153
+     Incidents: 6
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 13
+     ClassPosition: 12
+     CarIdx: 4
+     Lap: 26
+     Time: 29.8503
+     FastestLap: 26
+     FastestTime: 29.8503
+     LastTime: 30.1886
+     LapsLed: 0
+     LapsComplete: 68
+     JokerLapsComplete: 0
+     LapsDriven: 72.830
+     Incidents: 29
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 14
+     ClassPosition: 13
+     CarIdx: 6
+     Lap: 63
+     Time: 29.9191
+     FastestLap: 63
+     FastestTime: 29.9191
+     LastTime: 30.8644
+     LapsLed: 0
+     LapsComplete: 67
+     JokerLapsComplete: 0
+     LapsDriven: 71.481
+     Incidents: 21
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 15
+     ClassPosition: 14
+     CarIdx: 10
+     Lap: 33
+     Time: 29.9230
+     FastestLap: 33
+     FastestTime: 29.9230
+     LastTime: 30.6359
+     LapsLed: 0
+     LapsComplete: 54
+     JokerLapsComplete: 0
+     LapsDriven: 59.213
+     Incidents: 8
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 16
+     ClassPosition: 15
+     CarIdx: 8
+     Lap: 4
+     Time: 29.9420
+     FastestLap: 4
+     FastestTime: 29.9420
+     LastTime: 30.2310
+     LapsLed: 0
+     LapsComplete: 65
+     JokerLapsComplete: 0
+     LapsDriven: 68.621
+     Incidents: 4
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 17
+     ClassPosition: 16
+     CarIdx: 18
+     Lap: 10
+     Time: 29.9793
+     FastestLap: 10
+     FastestTime: 29.9793
+     LastTime: 29.9793
+     LapsLed: 0
+     LapsComplete: 10
+     JokerLapsComplete: 0
+     LapsDriven: 14.508
+     Incidents: 7
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 18
+     ClassPosition: 17
+     CarIdx: 23
+     Lap: 26
+     Time: 29.9888
+     FastestLap: 26
+     FastestTime: 29.9888
+     LastTime: -1.0000
+     LapsLed: 0
+     LapsComplete: 55
+     JokerLapsComplete: 0
+     LapsDriven: 52.328
+     Incidents: 22
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 19
+     ClassPosition: 18
+     CarIdx: 13
+     Lap: 4
+     Time: 30.0374
+     FastestLap: 4
+     FastestTime: 30.0374
+     LastTime: 30.8349
+     LapsLed: 0
+     LapsComplete: 48
+     JokerLapsComplete: 0
+     LapsDriven: 49.708
+     Incidents: 3
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 20
+     ClassPosition: 19
+     CarIdx: 7
+     Lap: 6
+     Time: 30.1906
+     FastestLap: 6
+     FastestTime: 30.1906
+     LastTime: 30.4114
+     LapsLed: 0
+     LapsComplete: 57
+     JokerLapsComplete: 0
+     LapsDriven: 59.127
+     Incidents: 3
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 21
+     ClassPosition: 20
+     CarIdx: 22
+     Lap: 33
+     Time: 30.1921
+     FastestLap: 33
+     FastestTime: 30.1921
+     LastTime: 30.8073
+     LapsLed: 0
+     LapsComplete: 40
+     JokerLapsComplete: 0
+     LapsDriven: 37.270
+     Incidents: 12
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 22
+     ClassPosition: 21
+     CarIdx: 25
+     Lap: 4
+     Time: 30.2323
+     FastestLap: 4
+     FastestTime: 30.2323
+     LastTime: 30.6143
+     LapsLed: 0
+     LapsComplete: 6
+     JokerLapsComplete: 0
+     LapsDriven: 6.112
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 23
+     ClassPosition: 22
+     CarIdx: 16
+     Lap: 9
+     Time: 30.2685
+     FastestLap: 9
+     FastestTime: 30.2685
+     LastTime: 31.1372
+     LapsLed: 0
+     LapsComplete: 54
+     JokerLapsComplete: 0
+     LapsDriven: 56.827
+     Incidents: 9
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 24
+     ClassPosition: 23
+     CarIdx: 24
+     Lap: 5
+     Time: 30.4138
+     FastestLap: 5
+     FastestTime: 30.4138
+     LastTime: 31.0728
+     LapsLed: 0
+     LapsComplete: 14
+     JokerLapsComplete: 0
+     LapsDriven: 15.043
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 25
+     ClassPosition: 24
+     CarIdx: 20
+     Lap: 5
+     Time: 30.6986
+     FastestLap: 5
+     FastestTime: 30.6986
+     LastTime: -1.0000
+     LapsLed: 0
+     LapsComplete: 11
+     JokerLapsComplete: 0
+     LapsDriven: 8.786
+     Incidents: 4
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   ResultsFastestLap:
+   - CarIdx: 2
+     FastestLap: 6
+     FastestTime: 29.3651
+   ResultsAverageLapTime: -1.0000
+   ResultsNumCautionFlags: 0
+   ResultsNumCautionLaps: 0
+   ResultsNumLeadChanges: -2147483648
+   ResultsLapsComplete: -1
+   ResultsOfficial: 1
+ - SessionNum: 1
+   SessionLaps: 2
+   SessionTime: 300.0000 sec
+   SessionNumLapsToAvg: 0
+   SessionType: Lone Qualify
+   SessionTrackRubberState: carry over
+   SessionName: QUALIFY
+   SessionSubType: 
+   SessionSkipped: 0
+   SessionRunGroupsUsed: 0
+   SessionEnforceTireCompoundChange: 0
+   ResultsPositions:
+   - Position: 1
+     ClassPosition: 0
+     CarIdx: 3
+     Lap: 2
+     Time: 29.6879
+     FastestLap: 2
+     FastestTime: 29.6879
+     LastTime: 29.6879
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.394
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 2
+     ClassPosition: 1
+     CarIdx: 17
+     Lap: 2
+     Time: 29.6989
+     FastestLap: 2
+     FastestTime: 29.6989
+     LastTime: 29.6989
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.861
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 3
+     ClassPosition: 2
+     CarIdx: 11
+     Lap: 2
+     Time: 29.7304
+     FastestLap: 2
+     FastestTime: 29.7304
+     LastTime: 29.7304
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.190
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 4
+     ClassPosition: 3
+     CarIdx: 5
+     Lap: 2
+     Time: 29.7968
+     FastestLap: 2
+     FastestTime: 29.7968
+     LastTime: 29.7968
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.250
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 5
+     ClassPosition: 4
+     CarIdx: 2
+     Lap: 2
+     Time: 29.8338
+     FastestLap: 2
+     FastestTime: 29.8338
+     LastTime: 29.8338
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.447
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 6
+     ClassPosition: 5
+     CarIdx: 21
+     Lap: 2
+     Time: 29.8543
+     FastestLap: 2
+     FastestTime: 29.8543
+     LastTime: 29.8543
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.435
+     Incidents: 2
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 7
+     ClassPosition: 6
+     CarIdx: 14
+     Lap: 2
+     Time: 29.9103
+     FastestLap: 2
+     FastestTime: 29.9103
+     LastTime: 29.9103
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.943
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 8
+     ClassPosition: 7
+     CarIdx: 25
+     Lap: 2
+     Time: 29.9397
+     FastestLap: 2
+     FastestTime: 29.9397
+     LastTime: 29.9397
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.212
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 9
+     ClassPosition: 8
+     CarIdx: 19
+     Lap: 2
+     Time: 29.9636
+     FastestLap: 2
+     FastestTime: 29.9636
+     LastTime: 29.9636
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.559
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 10
+     ClassPosition: 9
+     CarIdx: 9
+     Lap: 2
+     Time: 29.9755
+     FastestLap: 2
+     FastestTime: 29.9755
+     LastTime: 29.9755
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.970
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 11
+     ClassPosition: 10
+     CarIdx: 15
+     Lap: 2
+     Time: 30.0023
+     FastestLap: 2
+     FastestTime: 30.0023
+     LastTime: 30.0023
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.472
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 12
+     ClassPosition: 11
+     CarIdx: 1
+     Lap: 2
+     Time: 30.0133
+     FastestLap: 2
+     FastestTime: 30.0133
+     LastTime: 30.0133
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.110
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 13
+     ClassPosition: 12
+     CarIdx: 18
+     Lap: 2
+     Time: 30.0405
+     FastestLap: 2
+     FastestTime: 30.0405
+     LastTime: 30.0405
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.165
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 14
+     ClassPosition: 13
+     CarIdx: 6
+     Lap: 2
+     Time: 30.1365
+     FastestLap: 2
+     FastestTime: 30.1365
+     LastTime: 30.1365
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.863
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 15
+     ClassPosition: 14
+     CarIdx: 20
+     Lap: 2
+     Time: 30.2109
+     FastestLap: 2
+     FastestTime: 30.2109
+     LastTime: 30.2109
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.509
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 16
+     ClassPosition: 15
+     CarIdx: 23
+     Lap: 2
+     Time: 30.2360
+     FastestLap: 2
+     FastestTime: 30.2360
+     LastTime: 30.2360
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.156
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 17
+     ClassPosition: 16
+     CarIdx: 10
+     Lap: 2
+     Time: 30.2569
+     FastestLap: 2
+     FastestTime: 30.2569
+     LastTime: 30.2569
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 4.997
+     Incidents: 1
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 18
+     ClassPosition: 17
+     CarIdx: 8
+     Lap: 1
+     Time: 30.4403
+     FastestLap: 1
+     FastestTime: 30.4403
+     LastTime: -1.0000
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.960
+     Incidents: 2
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 19
+     ClassPosition: 18
+     CarIdx: 16
+     Lap: 1
+     Time: 30.4706
+     FastestLap: 1
+     FastestTime: 30.4706
+     LastTime: -1.0000
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.044
+     Incidents: 1
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 20
+     ClassPosition: 19
+     CarIdx: 22
+     Lap: 2
+     Time: 30.5163
+     FastestLap: 2
+     FastestTime: 30.5163
+     LastTime: 30.5163
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.792
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 21
+     ClassPosition: 20
+     CarIdx: 24
+     Lap: 2
+     Time: 30.5558
+     FastestLap: 2
+     FastestTime: 30.5558
+     LastTime: 30.5558
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.305
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 22
+     ClassPosition: 21
+     CarIdx: 7
+     Lap: 2
+     Time: 30.5574
+     FastestLap: 2
+     FastestTime: 30.5574
+     LastTime: 30.5574
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.962
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 23
+     ClassPosition: 22
+     CarIdx: 4
+     Lap: 1
+     Time: 30.6451
+     FastestLap: 1
+     FastestTime: 30.6451
+     LastTime: -1.0000
+     LapsLed: 0
+     LapsComplete: 2
+     JokerLapsComplete: 0
+     LapsDriven: 3.081
+     Incidents: 2
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 24
+     ClassPosition: 23
+     CarIdx: 12
+     Lap: 0
+     Time: -1.0000
+     FastestLap: -1
+     FastestTime: -1.0000
+     LastTime: -1.0000
+     LapsLed: 0
+     LapsComplete: 1
+     JokerLapsComplete: 0
+     LapsDriven: 1.963
+     Incidents: 2
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 25
+     ClassPosition: 24
+     CarIdx: 13
+     Lap: 0
+     Time: -1.0000
+     FastestLap: -1
+     FastestTime: -1.0000
+     LastTime: -1.0000
+     LapsLed: 0
+     LapsComplete: 0
+     JokerLapsComplete: 0
+     LapsDriven: 0.000
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   ResultsFastestLap:
+   - CarIdx: 3
+     FastestLap: 2
+     FastestTime: 29.6879
+   ResultsAverageLapTime: -1.0000
+   ResultsNumCautionFlags: 0
+   ResultsNumCautionLaps: 0
+   ResultsNumLeadChanges: -2147483648
+   ResultsLapsComplete: -1
+   ResultsOfficial: 1
+ - SessionNum: 2
+   SessionLaps: 200
+   SessionTime: 7200.0000 sec
+   SessionNumLapsToAvg: 0
+   SessionType: Race
+   SessionTrackRubberState: carry over
+   SessionName: RACE
+   SessionSubType: 
+   SessionSkipped: 0
+   SessionRunGroupsUsed: 0
+   SessionEnforceTireCompoundChange: 0
+   ResultsPositions:
+   - Position: 1
+     ClassPosition: 0
+     CarIdx: 4
+     Lap: 0
+     Time: 0.0000
+     FastestLap: 168
+     FastestTime: 29.9129
+     LastTime: 31.3810
+     LapsLed: 36
+     LapsComplete: 200
+     JokerLapsComplete: 0
+     LapsDriven: 202.634
+     Incidents: 1
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 2
+     ClassPosition: 1
+     CarIdx: 3
+     Lap: 0
+     Time: 0.2964
+     FastestLap: 159
+     FastestTime: 29.9474
+     LastTime: 31.2481
+     LapsLed: 83
+     LapsComplete: 200
+     JokerLapsComplete: 0
+     LapsDriven: 201.886
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 3
+     ClassPosition: 2
+     CarIdx: 2
+     Lap: 0
+     Time: 0.4877
+     FastestLap: 160
+     FastestTime: 29.8803
+     LastTime: 31.3931
+     LapsLed: 0
+     LapsComplete: 200
+     JokerLapsComplete: 0
+     LapsDriven: 203.129
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 4
+     ClassPosition: 3
+     CarIdx: 19
+     Lap: 0
+     Time: 4.3748
+     FastestLap: 159
+     FastestTime: 29.9244
+     LastTime: 31.7391
+     LapsLed: 74
+     LapsComplete: 200
+     JokerLapsComplete: 0
+     LapsDriven: 202.250
+     Incidents: 4
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 5
+     ClassPosition: 4
+     CarIdx: 9
+     Lap: 0
+     Time: 5.1854
+     FastestLap: 157
+     FastestTime: 29.9383
+     LastTime: 31.3786
+     LapsLed: 1
+     LapsComplete: 200
+     JokerLapsComplete: 0
+     LapsDriven: 203.066
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 6
+     ClassPosition: 5
+     CarIdx: 25
+     Lap: 0
+     Time: 8.6672
+     FastestLap: 163
+     FastestTime: 29.9445
+     LastTime: 31.3139
+     LapsLed: 1
+     LapsComplete: 200
+     JokerLapsComplete: 0
+     LapsDriven: 202.358
+     Incidents: 1
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 7
+     ClassPosition: 6
+     CarIdx: 5
+     Lap: 0
+     Time: 11.5297
+     FastestLap: 160
+     FastestTime: 29.9816
+     LastTime: 31.2484
+     LapsLed: 0
+     LapsComplete: 200
+     JokerLapsComplete: 0
+     LapsDriven: 202.367
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 8
+     ClassPosition: 7
+     CarIdx: 8
+     Lap: 0
+     Time: 31.0461
+     FastestLap: 152
+     FastestTime: 29.9747
+     LastTime: 32.0692
+     LapsLed: 0
+     LapsComplete: 200
+     JokerLapsComplete: 0
+     LapsDriven: 201.619
+     Incidents: 2
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 9
+     ClassPosition: 8
+     CarIdx: 10
+     Lap: 2
+     Time: 67.3569
+     FastestLap: 160
+     FastestTime: 30.0447
+     LastTime: 31.6701
+     LapsLed: 0
+     LapsComplete: 198
+     JokerLapsComplete: 0
+     LapsDriven: 200.688
+     Incidents: 8
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 10
+     ClassPosition: 9
+     CarIdx: 14
+     Lap: 2
+     Time: 94.3915
+     FastestLap: 161
+     FastestTime: 30.1740
+     LastTime: 32.2709
+     LapsLed: 0
+     LapsComplete: 198
+     JokerLapsComplete: 0
+     LapsDriven: 199.675
+     Incidents: 14
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 11
+     ClassPosition: 10
+     CarIdx: 13
+     Lap: 3
+     Time: 112.2184
+     FastestLap: 169
+     FastestTime: 30.4673
+     LastTime: 31.5835
+     LapsLed: 0
+     LapsComplete: 197
+     JokerLapsComplete: 0
+     LapsDriven: 198.626
+     Incidents: 0
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 12
+     ClassPosition: 11
+     CarIdx: 20
+     Lap: 3
+     Time: 123.5318
+     FastestLap: 156
+     FastestTime: 29.8883
+     LastTime: 32.6690
+     LapsLed: 0
+     LapsComplete: 197
+     JokerLapsComplete: 0
+     LapsDriven: 198.657
+     Incidents: 14
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 13
+     ClassPosition: 12
+     CarIdx: 24
+     Lap: 4
+     Time: 156.7810
+     FastestLap: 154
+     FastestTime: 30.2402
+     LastTime: 32.4099
+     LapsLed: 0
+     LapsComplete: 196
+     JokerLapsComplete: 0
+     LapsDriven: 198.120
+     Incidents: 2
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 14
+     ClassPosition: 13
+     CarIdx: 6
+     Lap: 5
+     Time: 177.3690
+     FastestLap: 69
+     FastestTime: 30.2563
+     LastTime: 31.4746
+     LapsLed: 0
+     LapsComplete: 195
+     JokerLapsComplete: 0
+     LapsDriven: 197.111
+     Incidents: 7
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 15
+     ClassPosition: 14
+     CarIdx: 15
+     Lap: 5
+     Time: 180.5741
+     FastestLap: 153
+     FastestTime: 30.0979
+     LastTime: 32.2236
+     LapsLed: 0
+     LapsComplete: 195
+     JokerLapsComplete: 0
+     LapsDriven: 197.169
+     Incidents: 4
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 16
+     ClassPosition: 15
+     CarIdx: 1
+     Lap: 12
+     Time: 377.2642
+     FastestLap: 10
+     FastestTime: 30.1371
+     LastTime: 31.5195
+     LapsLed: 0
+     LapsComplete: 188
+     JokerLapsComplete: 0
+     LapsDriven: 190.446
+     Incidents: 5
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 17
+     ClassPosition: 16
+     CarIdx: 16
+     Lap: 25
+     Time: 356.7286
+     FastestLap: 9
+     FastestTime: 30.5199
+     LastTime: -1.0000
+     LapsLed: 0
+     LapsComplete: 175
+     JokerLapsComplete: 0
+     LapsDriven: 176.023
+     Incidents: 7
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 18
+     ClassPosition: 17
+     CarIdx: 22
+     Lap: 41
+     Time: 0.0000
+     FastestLap: 3
+     FastestTime: 30.4258
+     LastTime: 31.5780
+     LapsLed: 2
+     LapsComplete: 159
+     JokerLapsComplete: 0
+     LapsDriven: 161.582
+     Incidents: 3
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 19
+     ClassPosition: 18
+     CarIdx: 23
+     Lap: 93
+     Time: 20.1384
+     FastestLap: 103
+     FastestTime: 30.0864
+     LastTime: -1.0000
+     LapsLed: 3
+     LapsComplete: 107
+     JokerLapsComplete: 0
+     LapsDriven: 108.290
+     Incidents: 2
+     ReasonOutId: 0
+     ReasonOutStr: Running
+   - Position: 20
+     ClassPosition: 19
+     CarIdx: 21
+     Lap: 104
+     Time: 109.3913
+     FastestLap: 4
+     FastestTime: 30.0495
+     LastTime: 96.8855
+     LapsLed: 0
+     LapsComplete: 96
+     JokerLapsComplete: 0
+     LapsDriven: 97.464
+     Incidents: 5
+     ReasonOutId: 32
+     ReasonOutStr: Disco
+   - Position: 21
+     ClassPosition: 20
+     CarIdx: 11
+     Lap: 114
+     Time: 55.5900
+     FastestLap: 5
+     FastestTime: 30.0207
+     LastTime: -1.0000
+     LapsLed: 0
+     LapsComplete: 86
+     JokerLapsComplete: 0
+     LapsDriven: 87.259
+     Incidents: 5
+     ReasonOutId: 32
+     ReasonOutStr: Disco
+   - Position: 22
+     ClassPosition: 21
+     CarIdx: 7
+     Lap: 117
+     Time: 96.6053
+     FastestLap: 5
+     FastestTime: 30.6568
+     LastTime: 31.8517
+     LapsLed: 0
+     LapsComplete: 83
+     JokerLapsComplete: 0
+     LapsDriven: 85.385
+     Incidents: 5
+     ReasonOutId: 32
+     ReasonOutStr: Disco
+   - Position: 23
+     ClassPosition: 22
+     CarIdx: 17
+     Lap: 145
+     Time: 35.5525
+     FastestLap: 4
+     FastestTime: 30.0294
+     LastTime: -1.0000
+     LapsLed: 0
+     LapsComplete: 55
+     JokerLapsComplete: 0
+     LapsDriven: 56.244
+     Incidents: 2
+     ReasonOutId: 32
+     ReasonOutStr: Disco
+   - Position: 24
+     ClassPosition: 23
+     CarIdx: 12
+     Lap: 160
+     Time: 10.7950
+     FastestLap: 11
+     FastestTime: 30.1728
+     LastTime: 31.6506
+     LapsLed: 0
+     LapsComplete: 40
+     JokerLapsComplete: 0
+     LapsDriven: 42.073
+     Incidents: 5
+     ReasonOutId: 32
+     ReasonOutStr: Disco
+   - Position: 25
+     ClassPosition: 24
+     CarIdx: 18
+     Lap: 188
+     Time: 10.8680
+     FastestLap: 4
+     FastestTime: 30.2369
+     LastTime: 31.8391
+     LapsLed: 0
+     LapsComplete: 12
+     JokerLapsComplete: 0
+     LapsDriven: 13.168
+     Incidents: 6
+     ReasonOutId: 32
+     ReasonOutStr: Disco
+   ResultsFastestLap:
+   - CarIdx: 2
+     FastestLap: 160
+     FastestTime: 29.8803
+   ResultsAverageLapTime: 34.7847
+   ResultsNumCautionFlags: 3
+   ResultsNumCautionLaps: 12
+   ResultsNumLeadChanges: -2147483637
+   ResultsLapsComplete: 200
+   ResultsOfficial: 1
+
+CameraInfo:
+ Groups:
+ - GroupNum: 1
+   GroupName: Nose
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamNose
+ - GroupNum: 2
+   GroupName: Gearbox
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamGearbox
+ - GroupNum: 3
+   GroupName: Roll Bar
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamRoll Bar
+ - GroupNum: 4
+   GroupName: LF Susp
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamLF Susp
+ - GroupNum: 5
+   GroupName: LR Susp
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamLR Susp
+ - GroupNum: 6
+   GroupName: Gyro
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamGyro
+ - GroupNum: 7
+   GroupName: RF Susp
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamRF Susp
+ - GroupNum: 8
+   GroupName: RR Susp
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamRR Susp
+ - GroupNum: 9
+   GroupName: Cockpit
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamCockpit
+ - GroupNum: 10
+   GroupName: Scenic
+   Cameras:
+   - CameraNum: 1
+     CameraName: Scenic_00
+   - CameraNum: 2
+     CameraName: Scenic_02
+   - CameraNum: 3
+     CameraName: Scenic_03
+   - CameraNum: 4
+     CameraName: Scenic_04
+ - GroupNum: 11
+   GroupName: TV1
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamTV1_00
+   - CameraNum: 2
+     CameraName: CamTV1_01
+   - CameraNum: 3
+     CameraName: CamTV1_03
+   - CameraNum: 4
+     CameraName: CamTV1_04
+ - GroupNum: 12
+   GroupName: TV2
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamTV2_00
+   - CameraNum: 2
+     CameraName: CamTV2_01
+   - CameraNum: 3
+     CameraName: CamTV2_02
+   - CameraNum: 4
+     CameraName: CamTV2_04
+   - CameraNum: 5
+     CameraName: CamTV2_05
+ - GroupNum: 13
+   GroupName: TV3
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamTV3_00
+ - GroupNum: 14
+   GroupName: Zoomed In
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamTV3_04
+ - GroupNum: 15
+   GroupName: Pit Lane
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamPit Lane
+   - CameraNum: 2
+     CameraName: CamPit Lane1
+ - GroupNum: 16
+   GroupName: Starter Cam
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamPit Lane 13
+ - GroupNum: 17
+   GroupName: S/F Line
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamPit Lane 4
+ - GroupNum: 18
+   GroupName: 1 Entry
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamPit Lane 14
+ - GroupNum: 19
+   GroupName: Turns 1-2
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamPit Lane 15
+ - GroupNum: 20
+   GroupName: 2 Exit
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamPit Lane 2
+ - GroupNum: 21
+   GroupName: Backstretch
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamPit Lane 3
+ - GroupNum: 22
+   GroupName: 3 Entry
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamPit Lane 5
+ - GroupNum: 23
+   GroupName: Digger 3
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamPit Lane 6
+ - GroupNum: 24
+   GroupName: Turns 3-4
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamPit Lane 16
+ - GroupNum: 25
+   GroupName: 4 Exit
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamPit Lane 17
+ - GroupNum: 26
+   GroupName: Chopper
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamChopper
+ - GroupNum: 27
+   GroupName: Blimp
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamBlimp
+ - GroupNum: 28
+   GroupName: Blimp Static
+   IsScenic: true
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamBlimp0
+ - GroupNum: 29
+   GroupName: Drone Cam
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamBlimp1
+ - GroupNum: 30
+   GroupName: Chase
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamChase
+ - GroupNum: 31
+   GroupName: Far Chase
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamFar Chase
+ - GroupNum: 32
+   GroupName: Rear Chase
+   Cameras:
+   - CameraNum: 1
+     CameraName: CamRear Chase
+
+RadioInfo:
+ SelectedRadioNum: 0
+ Radios:
+ - RadioNum: 0
+   HopCount: 0
+   NumFrequencies: 0
+   TunedToFrequencyNum: 0
+   ScanningIsOn: 1
+   Frequencies:
+
+DriverInfo:
+ DriverCarIdx: 63
+ DriverUserID: 631116
+ PaceCarIdx: 0
+ DriverHeadPosX: -0.394
+ DriverHeadPosY: 0.366
+ DriverHeadPosZ: 0.634
+ DriverCarIsElectric: 0
+ DriverCarIdleRPM: 2000.000
+ DriverCarRedLine: 9120.000
+ DriverCarEngCylinderCount: 8
+ DriverCarFuelKgPerLtr: 0.750
+ DriverCarFuelMaxLtr: 75.672
+ DriverCarMaxFuelPct: 0.000
+ DriverCarGearNumForward: 5
+ DriverCarGearNeutral: 1
+ DriverCarGearReverse: 1
+ DriverCarSLFirstRPM: 8000.000
+ DriverCarSLShiftRPM: 9000.000
+ DriverCarSLLastRPM: 9000.000
+ DriverCarSLBlinkRPM: 9200.000
+ DriverCarVersion: 
+ DriverPitTrkPct: 0.077305
+ DriverCarEstLapTime: 29.3983
+ DriverSetupName: INVALID_LOADTYPE
+ DriverSetupIsModified: 0
+ DriverSetupLoadTypeName: invalid
+ DriverSetupPassedTech: 0
+ DriverIncidentCount: 0
+ Drivers:
+ - CarIdx: 0
+   UserName: Pace Car
+   AbbrevName: 
+   Initials: 
+   UserID: -1
+   TeamID: 0
+   TeamName: Pace Car
+   CarNumber: "0"
+   CarNumberRaw: 0
+   CarPath: safety pctruck
+   CarClassID: 11
+   CarID: 90
+   CarIsPaceCar: 1
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: safety pctruck
+   CarScreenNameShort: safety pctruck
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 39.5240
+   IRating: 0
+   LicLevel: 1
+   LicSubLevel: 0
+   LicString: R 0.00
+   LicColor: 0xffffff
+   IsSpectator: 0
+   CarDesignStr: 0,ffffff,ffffff,ffffff
+   HelmetDesignStr: 0,ffffff,ffffff,ffffff
+   SuitDesignStr: 0,ffffff,ffffff,ffffff
+   BodyType: 0
+   FaceType: 0
+   HelmetType: 0
+   CarNumberDesignStr: 0,0,ffffff,ffffff,ffffff
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 1
+   UserName: Frederique Rijsdijk
+   AbbrevName: Rijsdijk, F
+   Initials: FR
+   UserID: 155186
+   TeamID: 0
+   TeamName: Frederique Rijsdijk
+   CarNumber: "707"
+   CarNumberRaw: 707
+   CarPath: stockcars toyotacamry2022
+   CarClassID: 2978
+   CarID: 141
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Toyota Camry
+   CarScreenNameShort: NASCAR Toyota Camry
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 1860
+   LicLevel: 10
+   LicSubLevel: 265
+   LicString: C 2.65
+   LicColor: 0xfeec04
+   IsSpectator: 0
+   CarDesignStr: 19,000000,1c1c1c,454645
+   HelmetDesignStr: 28,000000,b20606,b4ae1f
+   SuitDesignStr: 13,000000,000000,ff0000
+   BodyType: 1
+   FaceType: 11
+   HelmetType: 0
+   CarNumberDesignStr: 0,0,ffffff,777777,000000
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 2
+   UserName: Sjaak Verhoog
+   AbbrevName: Verhoog, S
+   Initials: SV
+   UserID: 440903
+   TeamID: 0
+   TeamName: Sjaak Verhoog
+   CarNumber: "85"
+   CarNumberRaw: 85
+   CarPath: stockcars chevycamarozl12022
+   CarClassID: 2978
+   CarID: 139
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Chevrolet Camaro ZL1
+   CarScreenNameShort: NASCAR Camaro ZL1
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 1722
+   LicLevel: 7
+   LicSubLevel: 339
+   LicString: D 3.39
+   LicColor: 0xfc8a27
+   IsSpectator: 0
+   CarDesignStr: 1,05ff4b,000000,000000;000000
+   HelmetDesignStr: 13,05ff4b,000000,000000
+   SuitDesignStr: 27,000000,ffd80a,ffffff
+   BodyType: 1
+   FaceType: 8
+   HelmetType: 0
+   CarNumberDesignStr: 0,0,ffffff,0b7b05,0cbc00
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 3
+   UserName: Justin Boonstra
+   AbbrevName: Boonstra, J
+   Initials: JB
+   UserID: 454376
+   TeamID: 0
+   TeamName: Justin Boonstra
+   CarNumber: "3"
+   CarNumberRaw: 3
+   CarPath: stockcars toyotacamry2022
+   CarClassID: 2978
+   CarID: 141
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Toyota Camry
+   CarScreenNameShort: NASCAR Toyota Camry
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 3362
+   LicLevel: 18
+   LicSubLevel: 233
+   LicString: A 2.33
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 1,232cfb,fdf517,1a24f4
+   HelmetDesignStr: 58,232cfb,fdf517,1a24f4
+   SuitDesignStr: 18,ffffff,feea01,fe2020
+   BodyType: 0
+   FaceType: 6
+   HelmetType: 0
+   CarNumberDesignStr: 0,0,ffffff,777777,000000
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 4
+   UserName: Daniel Bolman
+   AbbrevName: Bolman, D
+   Initials: DB
+   UserID: 498853
+   TeamID: 0
+   TeamName: Daniel Bolman
+   CarNumber: "13"
+   CarNumberRaw: 13
+   CarPath: stockcars toyotacamry2022
+   CarClassID: 2978
+   CarID: 141
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Toyota Camry
+   CarScreenNameShort: NASCAR Toyota Camry
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 1430
+   LicLevel: 18
+   LicSubLevel: 246
+   LicString: A 2.46
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 9,ffffff,ff0000,000000;c2c2c2
+   HelmetDesignStr: 8,0085ff,ff0000,ffffff
+   SuitDesignStr: 21,ffffff,ff0000,000000
+   BodyType: 0
+   FaceType: 4
+   HelmetType: 0
+   CarNumberDesignStr: 41,3,002e72,ffffff,cb0001
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 5
+   UserName: Kurt Van Aken
+   AbbrevName: Aken, K
+   Initials: KA
+   UserID: 387099
+   TeamID: 0
+   TeamName: Kurt Van Aken
+   CarNumber: "33"
+   CarNumberRaw: 33
+   CarPath: stockcars fordmustang2022
+   CarClassID: 2978
+   CarID: 140
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Ford Mustang
+   CarScreenNameShort: NASCAR Ford Mustang
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 3040
+   LicLevel: 20
+   LicSubLevel: 407
+   LicString: A 4.07
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 1,000000,aba3a3,040404.000000
+   HelmetDesignStr: 57,f9f9f9,000000,000000
+   SuitDesignStr: 15,000000,000000,fff9f9
+   BodyType: 0
+   FaceType: 8
+   HelmetType: 0
+   CarNumberDesignStr: 48,0,000000,790e24,ffffff
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 6
+   UserName: marco Dijsselbloem
+   AbbrevName: Dijsselbloem, m
+   Initials: mD
+   UserID: 445809
+   TeamID: 0
+   TeamName: marco Dijsselbloem
+   CarNumber: "26"
+   CarNumberRaw: 26
+   CarPath: stockcars toyotacamry2022
+   CarClassID: 2978
+   CarID: 141
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Toyota Camry
+   CarScreenNameShort: NASCAR Toyota Camry
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 802
+   LicLevel: 13
+   LicSubLevel: 156
+   LicString: B 1.56
+   LicColor: 0x00c702
+   IsSpectator: 0
+   CarDesignStr: 1,111111,ffffff,5481fc.78d7d1
+   HelmetDesignStr: 19,111111,ffffff,5481fc
+   SuitDesignStr: 1,111111,ffffff,5481fc
+   BodyType: 0
+   FaceType: 0
+   HelmetType: 0
+   CarNumberDesignStr: 20,4,2deee1,777777,2deee1
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 7
+   UserName: Dominiek Leliaert
+   AbbrevName: Leliaert, D
+   Initials: DL
+   UserID: 556473
+   TeamID: 0
+   TeamName: Dominiek Leliaert
+   CarNumber: "69"
+   CarNumberRaw: 69
+   CarPath: stockcars toyotacamry2022
+   CarClassID: 2978
+   CarID: 141
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Toyota Camry
+   CarScreenNameShort: NASCAR Toyota Camry
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 1137
+   LicLevel: 18
+   LicSubLevel: 265
+   LicString: A 2.65
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 0,535050,926c0b,0493bf.f2ff00
+   HelmetDesignStr: 49,535050,bfb137,0493bf
+   SuitDesignStr: 28,f7efef,ff4117,59ff00
+   BodyType: 1
+   FaceType: 8
+   HelmetType: 0
+   CarNumberDesignStr: 0,4,f2ff00,b36b0d,5c6709
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 8
+   UserName: Anthony Dorlandt
+   AbbrevName: Dorlandt, A
+   Initials: AD
+   UserID: 614214
+   TeamID: 0
+   TeamName: Anthony Dorlandt
+   CarNumber: "23"
+   CarNumberRaw: 23
+   CarPath: stockcars toyotacamry2022
+   CarClassID: 2978
+   CarID: 141
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Toyota Camry
+   CarScreenNameShort: NASCAR Toyota Camry
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 1448
+   LicLevel: 19
+   LicSubLevel: 329
+   LicString: A 3.29
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 0,00d7ff,777777,ffffff;dba53c
+   HelmetDesignStr: 8,353535,c20000,ffffff
+   SuitDesignStr: 21,ffffff,00abeb,000000
+   BodyType: 0
+   FaceType: 0
+   HelmetType: 0
+   CarNumberDesignStr: 32,0,00d7ff,777777,000000
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 9
+   UserName: Boy Borreman
+   AbbrevName: Borreman, B
+   Initials: BB
+   UserID: 345158
+   TeamID: 0
+   TeamName: Boy Borreman
+   CarNumber: "20"
+   CarNumberRaw: 20
+   CarPath: stockcars toyotacamry2022
+   CarClassID: 2978
+   CarID: 141
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Toyota Camry
+   CarScreenNameShort: NASCAR Toyota Camry
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 1838
+   LicLevel: 18
+   LicSubLevel: 249
+   LicString: A 2.49
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 1,000000,000000,00ff4e;551880
+   HelmetDesignStr: 56,000000,000000,00ff4e
+   SuitDesignStr: 22,000000,1eff00,00fa2a
+   BodyType: 0
+   FaceType: 4
+   HelmetType: 0
+   CarNumberDesignStr: 17,4,ffffff,000000,000000
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 10
+   UserName: WC Alaric van den Bos
+   AbbrevName: Bos, W
+   Initials: WB
+   UserID: 243965
+   TeamID: 0
+   TeamName: WC Alaric van den Bos
+   CarNumber: "72"
+   CarNumberRaw: 72
+   CarPath: stockcars chevycamarozl12022
+   CarClassID: 2978
+   CarID: 139
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Chevrolet Camaro ZL1
+   CarScreenNameShort: NASCAR Camaro ZL1
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 2734
+   LicLevel: 20
+   LicSubLevel: 456
+   LicString: A 4.56
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 1,000000,cccccc,e4e4dd
+   HelmetDesignStr: 56,000000,cccccc,e4e4dd
+   SuitDesignStr: 30,d80000,000000,060606
+   BodyType: 1
+   FaceType: 0
+   HelmetType: 0
+   CarNumberDesignStr: 0,0,ffffff,000000,ffffff
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 11
+   UserName: Justin Naaijer
+   AbbrevName: Naaijer, J
+   Initials: JN
+   UserID: 185910
+   TeamID: 0
+   TeamName: Justin Naaijer
+   CarNumber: "77"
+   CarNumberRaw: 77
+   CarPath: stockcars fordmustang2022
+   CarClassID: 2978
+   CarID: 140
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Ford Mustang
+   CarScreenNameShort: NASCAR Ford Mustang
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 1943
+   LicLevel: 19
+   LicSubLevel: 327
+   LicString: A 3.27
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 2,000000,ff0af2,000000
+   HelmetDesignStr: 3,1425ff,ee00ff,fa0024
+   SuitDesignStr: 27,da00fa,090ee1,1a2cff
+   BodyType: 0
+   FaceType: 4
+   HelmetType: 0
+   CarNumberDesignStr: 0,0,000000,fa00ff,f700e6
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 12
+   UserName: Raf Reijnders
+   AbbrevName: Reijnders, R
+   Initials: RR
+   UserID: 827949
+   TeamID: 0
+   TeamName: Raf Reijnders
+   CarNumber: "383"
+   CarNumberRaw: 383
+   CarPath: stockcars chevycamarozl12022
+   CarClassID: 2978
+   CarID: 139
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Chevrolet Camaro ZL1
+   CarScreenNameShort: NASCAR Camaro ZL1
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 2447
+   LicLevel: 18
+   LicSubLevel: 225
+   LicString: A 2.25
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 1,ffffff,870707,870707,ffffff
+   HelmetDesignStr: 35,ffffff,870707,870707
+   SuitDesignStr: 34,ff0000,ff0000,000000
+   BodyType: 0
+   FaceType: 4
+   HelmetType: 0
+   CarNumberDesignStr: 37,1,000000,ffffff,000000
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 13
+   UserName: WC Rudy Vermeule
+   AbbrevName: Vermeule, W
+   Initials: WV
+   UserID: 847138
+   TeamID: 0
+   TeamName: WC Rudy Vermeule
+   CarNumber: "010"
+   CarNumberRaw: 3010
+   CarPath: stockcars chevycamarozl12022
+   CarClassID: 2978
+   CarID: 139
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Chevrolet Camaro ZL1
+   CarScreenNameShort: NASCAR Camaro ZL1
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 1175
+   LicLevel: 18
+   LicSubLevel: 251
+   LicString: A 2.51
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 1,111111,12140c,391c83,1b4100
+   HelmetDesignStr: 27,111111,12140c,391c83
+   SuitDesignStr: 19,111111,3e48d5,391c83
+   BodyType: 0
+   FaceType: 2
+   HelmetType: 0
+   CarNumberDesignStr: 0,0,ffffff,000000,ffffff
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 14
+   UserName: Kees de Ligt
+   AbbrevName: Ligt, K
+   Initials: KL
+   UserID: 430345
+   TeamID: 0
+   TeamName: Kees de Ligt
+   CarNumber: "61"
+   CarNumberRaw: 61
+   CarPath: stockcars chevycamarozl12022
+   CarClassID: 2978
+   CarID: 139
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Chevrolet Camaro ZL1
+   CarScreenNameShort: NASCAR Camaro ZL1
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 964
+   LicLevel: 14
+   LicSubLevel: 247
+   LicString: B 2.47
+   LicColor: 0x00c702
+   IsSpectator: 0
+   CarDesignStr: 1,ed2129,ffffff,2104f9;005b94
+   HelmetDesignStr: 47,ed2129,ffffff,2104f9
+   SuitDesignStr: 4,f58605,1906f4,f3f2f0
+   BodyType: 0
+   FaceType: 3
+   HelmetType: 0
+   CarNumberDesignStr: 0,4,005b94,e73636,000000
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 15
+   UserName: Hendrik Renz
+   AbbrevName: Renz, H
+   Initials: HR
+   UserID: 440784
+   TeamID: 0
+   TeamName: Hendrik Renz
+   CarNumber: "888"
+   CarNumberRaw: 888
+   CarPath: stockcars chevycamarozl12022
+   CarClassID: 2978
+   CarID: 139
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Chevrolet Camaro ZL1
+   CarScreenNameShort: NASCAR Camaro ZL1
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 1458
+   LicLevel: 7
+   LicSubLevel: 355
+   LicString: D 3.55
+   LicColor: 0xfc8a27
+   IsSpectator: 0
+   CarDesignStr: 1,4bd3fd,ffffff,013990;545151
+   HelmetDesignStr: 23,cecfce,ffffff,0db704
+   SuitDesignStr: 19,06e2f7,f4f5f7,000000
+   BodyType: 0
+   FaceType: 0
+   HelmetType: 0
+   CarNumberDesignStr: 0,0,ffffff,777777,000000
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 16
+   UserName: Haaye R Hoeksma
+   AbbrevName: Hoeksma, H
+   Initials: HH
+   UserID: 532808
+   TeamID: 0
+   TeamName: Haaye R Hoeksma
+   CarNumber: "11"
+   CarNumberRaw: 11
+   CarPath: stockcars fordmustang2022
+   CarClassID: 2978
+   CarID: 140
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Ford Mustang
+   CarScreenNameShort: NASCAR Ford Mustang
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 1069
+   LicLevel: 11
+   LicSubLevel: 355
+   LicString: C 3.55
+   LicColor: 0xfeec04
+   IsSpectator: 0
+   CarDesignStr: 1,e77d09,000000,e5e4e4
+   HelmetDesignStr: 26,e77d09,000000,e5e4e4
+   SuitDesignStr: 25,e77d09,060606,d3d3d3
+   BodyType: 0
+   FaceType: 0
+   HelmetType: 0
+   CarNumberDesignStr: 0,0,ffffff,777777,000000
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 17
+   UserName: Bryan Crauwels
+   AbbrevName: Crauwels, B
+   Initials: BC
+   UserID: 333985
+   TeamID: 0
+   TeamName: Bryan Crauwels
+   CarNumber: "148"
+   CarNumberRaw: 148
+   CarPath: stockcars fordmustang2022
+   CarClassID: 2978
+   CarID: 140
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Ford Mustang
+   CarScreenNameShort: NASCAR Ford Mustang
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 2439
+   LicLevel: 19
+   LicSubLevel: 365
+   LicString: A 3.65
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 13,000000,0912e6,890000
+   HelmetDesignStr: 42,000000,c0e60a,9c03d8
+   SuitDesignStr: 29,0c0d0e,fa8205,066ae0
+   BodyType: 0
+   FaceType: 0
+   HelmetType: 0
+   CarNumberDesignStr: 40,1,ffffff,590404,000000
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 18
+   UserName: Shane Wilms
+   AbbrevName: Wilms, S
+   Initials: SW
+   UserID: 389687
+   TeamID: 0
+   TeamName: Shane Wilms
+   CarNumber: "57"
+   CarNumberRaw: 57
+   CarPath: stockcars toyotacamry2022
+   CarClassID: 2978
+   CarID: 141
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Toyota Camry
+   CarScreenNameShort: NASCAR Toyota Camry
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 2372
+   LicLevel: 20
+   LicSubLevel: 454
+   LicString: A 4.54
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 0,ffffff,ffffff,ffffff,000000
+   HelmetDesignStr: 42,000000,69ff00,272727
+   SuitDesignStr: 19,5b74fb,af0000,ffffff
+   BodyType: 0
+   FaceType: 8
+   HelmetType: 0
+   CarNumberDesignStr: 43,4,ffffff,000000,000000
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 19
+   UserName: Pjor Schinkel
+   AbbrevName: Schinkel, P
+   Initials: PS
+   UserID: 476528
+   TeamID: 0
+   TeamName: Pjor Schinkel
+   CarNumber: "83"
+   CarNumberRaw: 83
+   CarPath: stockcars chevycamarozl12022
+   CarClassID: 2978
+   CarID: 139
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Chevrolet Camaro ZL1
+   CarScreenNameShort: NASCAR Camaro ZL1
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 2458
+   LicLevel: 19
+   LicSubLevel: 316
+   LicString: A 3.16
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 23,000000,e409ff,9e00bc;e3107c
+   HelmetDesignStr: 66,ffffff,faa705,000000
+   SuitDesignStr: 17,000000,f6a200,000000
+   BodyType: 0
+   FaceType: 6
+   HelmetType: 0
+   CarNumberDesignStr: 17,4,e3107c,ffffff,000000
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 20
+   UserName: Jeroen Bosch2
+   AbbrevName: Bosch2, J
+   Initials: JB
+   UserID: 592269
+   TeamID: 0
+   TeamName: Jeroen Bosch2
+   CarNumber: "81"
+   CarNumberRaw: 81
+   CarPath: stockcars toyotacamry2022
+   CarClassID: 2978
+   CarID: 141
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Toyota Camry
+   CarScreenNameShort: NASCAR Toyota Camry
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 1304
+   LicLevel: 18
+   LicSubLevel: 214
+   LicString: A 2.14
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 1,1a4b9b,dff000,dce5e5,dfff00
+   HelmetDesignStr: 58,1a4b9b,dff000,dce5e5
+   SuitDesignStr: 25,1a4b9b,dff000,ffffff
+   BodyType: 0
+   FaceType: 4
+   HelmetType: 0
+   CarNumberDesignStr: 9,0,dfff00,000000,e80023
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 21
+   UserName: Sam Van Coevorden
+   AbbrevName: Coevorden, S
+   Initials: SC
+   UserID: 608465
+   TeamID: 0
+   TeamName: Sam Van Coevorden
+   CarNumber: "12"
+   CarNumberRaw: 12
+   CarPath: stockcars chevycamarozl12022
+   CarClassID: 2978
+   CarID: 139
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Chevrolet Camaro ZL1
+   CarScreenNameShort: NASCAR Camaro ZL1
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 2512
+   LicLevel: 14
+   LicSubLevel: 237
+   LicString: B 2.37
+   LicColor: 0x00c702
+   IsSpectator: 0
+   CarDesignStr: 1,faff00,77ff47,000000.000000
+   HelmetDesignStr: 68,000000,cfae00,0002ab
+   SuitDesignStr: 29,1b6b03,ccff00,ffffff
+   BodyType: 0
+   FaceType: 6
+   HelmetType: 0
+   CarNumberDesignStr: 0,0,ffed00,000000,000000
+   CarSponsor_1: 167
+   CarSponsor_2: 147
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 22
+   UserName: Casper van Zon
+   AbbrevName: Zon, C
+   Initials: CZ
+   UserID: 87309
+   TeamID: 0
+   TeamName: Casper van Zon
+   CarNumber: "51"
+   CarNumberRaw: 51
+   CarPath: stockcars toyotacamry2022
+   CarClassID: 2978
+   CarID: 141
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Toyota Camry
+   CarScreenNameShort: NASCAR Toyota Camry
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 1109
+   LicLevel: 19
+   LicSubLevel: 325
+   LicString: A 3.25
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 1,4e46fe,ffffff,fdbc24
+   HelmetDesignStr: 27,4e46fe,ffffff,fdbc24
+   SuitDesignStr: 3,06c296,ffffff,031adc
+   BodyType: 0
+   FaceType: 0
+   HelmetType: 0
+   CarNumberDesignStr: 0,0,ffffff,777777,000000
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 23
+   UserName: Brain Baltussen
+   AbbrevName: Baltussen, B
+   Initials: BB
+   UserID: 361402
+   TeamID: 0
+   TeamName: Brain Baltussen
+   CarNumber: "22"
+   CarNumberRaw: 22
+   CarPath: stockcars fordmustang2022
+   CarClassID: 2978
+   CarID: 140
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Ford Mustang
+   CarScreenNameShort: NASCAR Ford Mustang
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 1049
+   LicLevel: 13
+   LicSubLevel: 154
+   LicString: B 1.54
+   LicColor: 0x00c702
+   IsSpectator: 0
+   CarDesignStr: 7,ff0000,ddff00,000000
+   HelmetDesignStr: 45,ff0000,ddff00,000000
+   SuitDesignStr: 8,d76516,000000,d76516
+   BodyType: 0
+   FaceType: 0
+   HelmetType: 0
+   CarNumberDesignStr: 0,0,ffffff,777777,000000
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 24
+   UserName: Bart Feuerstein
+   AbbrevName: Feuerstein, B
+   Initials: BF
+   UserID: 454587
+   TeamID: 0
+   TeamName: Bart Feuerstein
+   CarNumber: "29"
+   CarNumberRaw: 29
+   CarPath: stockcars fordmustang2022
+   CarClassID: 2978
+   CarID: 140
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Ford Mustang
+   CarScreenNameShort: NASCAR Ford Mustang
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 1796
+   LicLevel: 20
+   LicSubLevel: 456
+   LicString: A 4.56
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 1,d7162d,ffffff,3944c6.00ffd7
+   HelmetDesignStr: 66,d7162d,ffffff,3944c6
+   SuitDesignStr: 27,d7162d,ffffff,495bca
+   BodyType: 0
+   FaceType: 0
+   HelmetType: 0
+   CarNumberDesignStr: 43,2,e6ac0f,000000,000000
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 25
+   UserName: Henk Douwe Van Der Vaart
+   AbbrevName: Vaart, H
+   Initials: HV
+   UserID: 94967
+   TeamID: 0
+   TeamName: Henk Douwe Van Der Vaart
+   CarNumber: "244"
+   CarNumberRaw: 244
+   CarPath: stockcars fordmustang2022
+   CarClassID: 2978
+   CarID: 140
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Ford Mustang
+   CarScreenNameShort: NASCAR Ford Mustang
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 2188
+   LicLevel: 18
+   LicSubLevel: 264
+   LicString: A 2.64
+   LicColor: 0x0153db
+   IsSpectator: 0
+   CarDesignStr: 0,0bff04,1d1d1e,0bff04.000000
+   HelmetDesignStr: 30,0bff04,1d1d1e,0bff04
+   SuitDesignStr: 12,000000,ffffff,ffffff
+   BodyType: 0
+   FaceType: 0
+   HelmetType: 0
+   CarNumberDesignStr: 7,0,ffffff,000000,000000
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+ - CarIdx: 63
+   UserName: Broadcasting
+   AbbrevName: 
+   Initials: 
+   UserID: 631116
+   TeamID: 0
+   TeamName: Jordi Koller
+   CarNumber: ""
+   CarNumberRaw: -1
+   CarPath: stockcars toyotacamry2022
+   CarClassID: 2978
+   CarID: 141
+   CarIsPaceCar: 0
+   CarIsAI: 0
+   CarIsElectric: 0
+   CarScreenName: NASCAR Toyota Camry
+   CarScreenNameShort: NASCAR Toyota Camry
+   CarClassShortName: 
+   CarClassRelSpeed: 0
+   CarClassLicenseLevel: 0
+   CarClassMaxFuelPct: 0.000 %
+   CarClassWeightPenalty: 0.000 kg
+   CarClassPowerAdjust: 0.000 %
+   CarClassDryTireSetLimit: 0 %
+   CarClassColor: 0xffffff
+   CarClassEstLapTime: 29.3983
+   IRating: 1784
+   LicLevel: 18
+   LicSubLevel: 230
+   LicString: A 2.30
+   LicColor: 0x0153db
+   IsSpectator: 1
+   CarDesignStr: 1,030179,787878,ffffff
+   HelmetDesignStr: 24,030179,787878,ffffff
+   SuitDesignStr: 27,5c5c5c,0c006b,ffffff
+   BodyType: 0
+   FaceType: 0
+   HelmetType: 0
+   CarNumberDesignStr: 0,0,ffffff,777777,000000
+   CarSponsor_1: 0
+   CarSponsor_2: 0
+   CurDriverIncidentCount: -1
+   TeamIncidentCount: -1
+
+SplitTimeInfo:
+ Sectors:
+ - SectorNum: 0
+   SectorStartPct: 0.000000
+ - SectorNum: 1
+   SectorStartPct: 0.500000
+
+
+...

@@ -36,6 +36,14 @@ namespace iRacingTVController
 			}
 		}
 
+		public bool Translation_IsEnabled
+		{
+			get
+			{
+				return ( Settings.overlayLocal.filePath == Settings.globalOverlaySettingsFilePath ) || ( Settings.overlayLocal.translationDictionary[ id ].translation_Overridden );
+			}
+		}
+
 		public bool Translation_Overridden
 		{
 			get
@@ -57,6 +65,14 @@ namespace iRacingTVController
 
 					Settings.saveOverlayToFileQueued = true;
 				}
+			}
+		}
+
+		public bool Translation_Overridden_IsEnabled
+		{
+			get
+			{
+				return ( Settings.overlayLocal.filePath != Settings.globalOverlaySettingsFilePath );
 			}
 		}
 	}

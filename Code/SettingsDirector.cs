@@ -12,6 +12,9 @@ namespace iRacingTVController
 			Practice,
 			Qualifying,
 			Intro,
+			Scenic,
+			Pits,
+			StartFinish,
 			Inside,
 			Close,
 			Medium,
@@ -25,15 +28,25 @@ namespace iRacingTVController
 		public string camerasPractice = "tv3";
 		public string camerasQualifying = "tv3";
 		public string camerasIntro = "scenic";
+
+		public string camerasScenic = "scenic";
+		public string camerasPits = "pit lane, tv2";
+		public string camerasStartFinish = "starter cam, tv2";
+
 		public string camerasInside = "roll bar";
-		public string camerasClose = "tv1";
+		public string camerasClose = "zoomed in, tv1";
 		public string camerasMedium = "tv2";
-		public string camerasFar = "tv3, spectator";
-		public string camerasVeryFar = "spectator, blimp";
+		public string camerasFar = "tv3, spectator, spectator cam";
+		public string camerasVeryFar = "spectator, spectator cam, blimp";
 
 		public bool camerasPractice_Overridden = false;
 		public bool camerasQualifying_Overridden = false;
 		public bool camerasIntro_Overridden = false;
+
+		public bool camerasScenic_Overridden = false;
+		public bool camerasPits_Overridden = false;
+		public bool camerasStartFinish_Overridden = false;
+
 		public bool camerasInside_Overridden = false;
 		public bool camerasClose_Overridden = false;
 		public bool camerasMedium_Overridden = false;
@@ -71,17 +84,17 @@ namespace iRacingTVController
 		public bool rule2_Enabled = true;
 		public CameraType rule2_Camera = CameraType.AutoCam;
 		public bool rule3_Enabled = true;
-		public CameraType rule3_Camera = CameraType.Medium;
+		public CameraType rule3_Camera = CameraType.StartFinish;
 		public bool rule4_Enabled = true;
 		public CameraType rule4_Camera = CameraType.Medium;
 		public bool rule5_Enabled = true;
-		public CameraType rule5_Camera = CameraType.Far;
+		public CameraType rule5_Camera = CameraType.StartFinish;
 		public bool rule6_Enabled = true;
 		public CameraType rule6_Camera = CameraType.Close;
 		public bool rule7_Enabled = true;
-		public CameraType rule7_Camera = CameraType.Medium;
+		public CameraType rule7_Camera = CameraType.Practice;
 		public bool rule8_Enabled = true;
-		public CameraType rule8_Camera = CameraType.Medium;
+		public CameraType rule8_Camera = CameraType.Qualifying;
 		public bool rule9_Enabled = true;
 		public CameraType rule9_Camera = CameraType.VeryFar;
 		public bool rule10_Enabled = true;

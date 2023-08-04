@@ -1,0 +1,94 @@
+﻿https://members-ng.iracing.com/data/league/seasons?league_id=8532
+
+{
+  "subscribed": false,
+  "seasons": [
+    {
+      "league_id": 8532,
+      "season_id": 87425,
+      "points_system_id": 12,
+      "season_name": "ORNL Cup Series '23",
+      "active": true,
+      "hidden": false,
+      "num_drops": 0,
+      "no_drops_on_or_after_race_num": -1,
+      "points_cars": [
+        {
+          "car_id": 139,
+          "car_name": "NASCAR Cup Series Next Gen Chevrolet Camaro ZL1"
+        },
+        {
+          "car_id": 140,
+          "car_name": "NASCAR Cup Series Next Gen Ford Mustang"
+        },
+        {
+          "car_id": 141,
+          "car_name": "NASCAR Cup Series Next Gen Toyota Camry"
+        }
+      ],
+      "driver_points_car_classes": [
+        {
+          "car_class_id": 0,
+          "name": "All Car Classes",
+          "cars_in_class": [
+            {
+              "car_id": 0,
+              "car_name": "All Cars"
+            },
+            {
+              "car_id": 139,
+              "car_name": "NASCAR Cup Series Next Gen Chevrolet Camaro ZL1"
+            },
+            {
+              "car_id": 140,
+              "car_name": "NASCAR Cup Series Next Gen Ford Mustang"
+            },
+            {
+              "car_id": 141,
+              "car_name": "NASCAR Cup Series Next Gen Toyota Camry"
+            }
+          ]
+        },
+        {
+          "car_class_id": 2978,
+          "name": "NASCAR 2022 NG",
+          "cars_in_class": [
+            {
+              "car_id": 0,
+              "car_name": "All Cars"
+            },
+            {
+              "car_id": 139,
+              "car_name": "NASCAR Cup Series Next Gen Chevrolet Camaro ZL1"
+            },
+            {
+              "car_id": 140,
+              "car_name": "NASCAR Cup Series Next Gen Ford Mustang"
+            },
+            {
+              "car_id": 141,
+              "car_name": "NASCAR Cup Series Next Gen Toyota Camry"
+            }
+          ]
+        }
+      ],
+      "team_points_car_classes": [
+        {
+          "car_class_id": 0,
+          "name": "All Car Classes",
+          "cars_in_class": [
+            {
+              "car_id": 0,
+              "car_name": "All Cars"
+            }
+          ]
+        }
+      ],
+      "points_system_name": "ARCA",
+      "points_system_desc": "1st through 43rd earn points. Pole Position awards 1 point. Leading a Lap awards 1 point. Leading the Most Laps awards 1 point."
+    }
+  ],
+  "success": true,
+  "retired": false,
+  "league_id": 8532
+}

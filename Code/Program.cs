@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -57,6 +58,8 @@ namespace iRacingTVController
 		{
 			try
 			{
+				LogFile.Write( $"Starting async thread...\r\n" );
+
 				stopwatch.Start();
 
 				dispatcherTimer.Tick += ( sender, e ) => Tick( sender, e );
@@ -71,6 +74,8 @@ namespace iRacingTVController
 				dispatcherTimer.Stop();
 
 				stopwatch.Stop();
+
+				LogFile.Write( $"Async thread finished.\r\n" );
 			}
 			catch ( Exception exception )
 			{

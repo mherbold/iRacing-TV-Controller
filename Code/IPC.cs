@@ -22,7 +22,12 @@ namespace iRacingTVController
 
 		public static void Initialize()
 		{
+			LogFile.Write( "Initializing settings IPC...\r\n" );
+
 			memoryMappedFileSettings = MemoryMappedFile.CreateOrOpen( Program.IpcNameSettings, MAX_MEMORY_MAPPED_FILE_SIZE );
+
+			LogFile.Write( "Initializing live data IPC...\r\n" );
+
 			memoryMappedFileLiveData = MemoryMappedFile.CreateOrOpen( Program.IpcNameLiveData, MAX_MEMORY_MAPPED_FILE_SIZE );
 		}
 

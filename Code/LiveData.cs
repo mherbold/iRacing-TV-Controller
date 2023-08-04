@@ -95,7 +95,14 @@ namespace iRacingTVController
 		{
 			// session name
 
-			liveDataRaceStatus.sessionNameText = IRSDK.normalizedSession.sessionName;
+			if ( Settings.overlay.translationDictionary.ContainsKey( IRSDK.normalizedSession.sessionName ) )
+			{
+				liveDataRaceStatus.sessionNameText = Settings.overlay.translationDictionary[ IRSDK.normalizedSession.sessionName ].translation;
+			}
+			else
+			{
+				liveDataRaceStatus.sessionNameText = IRSDK.normalizedSession.sessionName;
+			}
 
 			// laps remaining
 
@@ -638,6 +645,10 @@ namespace iRacingTVController
 								if ( normalizedCar.qualifyingTime == -1 )
 								{
 									liveDataIntroDriver.qualifyingTimeText = Settings.overlay.translationDictionary[ "DidNotQualify" ].translation;
+								}
+								else if ( normalizedCar.qualifyingTime == 0 )
+								{
+									liveDataIntroDriver.qualifyingTimeText = "";
 								}
 								else
 								{

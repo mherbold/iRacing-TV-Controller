@@ -346,6 +346,8 @@ namespace iRacingTVController
 
 				if ( File.Exists( filePath ) )
 				{
+					LogFile.Write( $"Loading incidents from {filePath}...\r\n" );
+
 					var xmlSerializer = new XmlSerializer( incidentDataList.GetType() );
 
 					var fileStream = new FileStream( filePath, FileMode.Open );
@@ -358,6 +360,10 @@ namespace iRacingTVController
 					{
 						MainWindow.Instance.Incidents_ListView.Items.Add( incidentData );
 					}
+				}
+				else
+				{
+					LogFile.Write( $"Incidents file {filePath} does not exist.\r\n" );
 				}
 			}
 		}

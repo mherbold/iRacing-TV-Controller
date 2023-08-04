@@ -1,6 +1,6 @@
 [Setup]
 AppName=iRacing-TV
-AppVersion=1.18
+AppVersion=1.21
 AppCopyright=Created by Marvin Herbold
 AppPublisher=Marvin Herbold
 AppPublisherURL=https://herboldracing.com/iracing-tv
@@ -13,7 +13,7 @@ SolidCompression=yes
 OutputBaseFilename=iRacing-TV-Setup
 OutputDir=userdocs:iRacing-TV
 PrivilegesRequired=lowest
-SetupIconFile="C:\Users\marvi\Desktop\iRacing-TV Controller\Assets\iRacing-TV-Icon.ico"
+SetupIconFile="C:\Users\marvi\Desktop\iRacing-TV Controller\Assets\iracing-tv-icon-small-shadow.ico"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}";

@@ -17,6 +17,8 @@ namespace iRacingTVController
 		public int iracingDriverNameFormatOption = 0;
 		public int iracingDriverNameCapitalizationOption = 0;
 
+		public bool editorAlwaysOnTop = false;
+
 		public float editorMousePositioningSpeedNormal = 0.25f;
 		public float editorMousePositioningSpeedFast = 1.0f;
 		public float editorMousePositioningSpeedSlow = 0.01f;

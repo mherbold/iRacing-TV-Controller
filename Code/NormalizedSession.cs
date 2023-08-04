@@ -12,6 +12,7 @@ namespace iRacingTVController
 		public int sessionCount = 0;
 		public int sessionNumber = -1;
 		public string sessionName = string.Empty;
+		public string sessionType = string.Empty;
 
 		public bool isReplay = false;
 		public bool isInPracticeSession = false;
@@ -36,6 +37,7 @@ namespace iRacingTVController
 			sessionCount = 0;
 			sessionNumber = -1;
 			sessionName = string.Empty;
+			sessionType = string.Empty;
 
 			isReplay = false;
 			isInPracticeSession = false;
@@ -59,11 +61,14 @@ namespace iRacingTVController
 
 			if ( sessionNumber >= 0 )
 			{
-				sessionName = IRSDK.session.SessionInfo.Sessions[ sessionNumber ].SessionName;
+				var session = IRSDK.session.SessionInfo.Sessions[ sessionNumber ];
 
-				isInPracticeSession = ( sessionName == "PRACTICE" );
-				isInQualifyingSession = ( sessionName == "QUALIFY" );
-				isInRaceSession = ( sessionName == "RACE" );
+				sessionName = session.SessionName;
+				sessionType = session.SessionType;
+
+				isInPracticeSession = ( sessionType == "Practice" ) || ( sessionType == "Warmup" );
+				isInQualifyingSession = ( sessionType == "Lone Qualify" );
+				isInRaceSession = ( sessionType == "Race" );
 			}
 			else
 			{
@@ -73,6 +78,8 @@ namespace iRacingTVController
 				isInQualifyingSession = false;
 				isInRaceSession = false;
 			}
+
+			LogFile.Write( $"Session number:{sessionNumber}, Session name:{sessionName}.\r\n" );
 		}
 
 		public void SessionUpdate()
@@ -99,6 +106,8 @@ namespace iRacingTVController
 
 				trackLengthInMeters = trackLengthInKilometers * 1000;
 			}
+
+			LogFile.Write( $"Session ID:{sessionID}, Subsession ID:{subSessionID}, Session count:{sessionCount}, Is replay?{isReplay}, Track ID:{trackID}, Track length:{trackLengthInMeters}.\r\n" );
 
 			if ( isReplay )
 			{

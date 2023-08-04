@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="Rename Overlay" Width="400" SizeToContent="Height" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="Rename Overlay" Width="400" SizeToContent="Height" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Icon="/Assets/iracing-tv-icon-small-shadow.png">
     <Grid Margin="6,6,6,6">
         <StackPanel>
             <Label Content="Overlay Name" />

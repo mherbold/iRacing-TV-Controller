@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.18"
+        Title="iRacing-TV Controller v1.21"
         WindowStartupLocation="CenterScreen"
-        Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="860" Height="550" MinWidth="860" MinHeight="550" Icon="/Assets/iRacing-TV-Icon.png">
+        Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="860" Height="550" MinWidth="860" MinHeight="550" Icon="/Assets/iracing-tv-icon-small-shadow.png">
     <Grid>
         <TabControl>
             <TabItem Header="Control Panel" Padding="12,6,12,6">
@@ -41,18 +41,24 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6" />
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6" />
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="ControlPanel_Camera_Intro_Button" Content="Intro" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Intro_Button_Click" />
-                        <Button x:Name="ControlPanel_Camera_Inside_Button" Content="Inside" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Inside_Button_Click" Grid.Column="1" />
-                        <Button x:Name="ControlPanel_Camera_Close_Button" Content="Close" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Close_Button_Click" Grid.Column="2"/>
-                        <Button x:Name="ControlPanel_Camera_Medium_Button" Content="Medium" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Medium_Button_Click" Grid.Column="3" />
-                        <Button x:Name="ControlPanel_Camera_Far_Button" Content="Far" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Far_Button_Click" Grid.Column="4" />
-                        <Button x:Name="ControlPanel_Camera_VeryFar_Button" Content="Very Far" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_VeryFar_Button_Click" Grid.Column="5" />
-                        <Button x:Name="ControlPanel_Camera_AutoCam_Button" Content="AutoCam" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_AutoCam_Button_Click" Grid.Column="6" />
+                        <Button x:Name="ControlPanel_Camera_Scenic_Button" Content="Scenic" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Scenic_Button_Click" />
+                        <Button x:Name="ControlPanel_Camera_Pits_Button" Content="Pits" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Pits_Button_Click" Grid.Column="1" />
+                        <Button x:Name="ControlPanel_Camera_StartFinish_Button" Content="S/F" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_StartFinish_Button_Click" Grid.Column="2" />
+                        <Button x:Name="ControlPanel_Camera_Inside_Button" Content="Inside" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Inside_Button_Click" Grid.Column="4" />
+                        <Button x:Name="ControlPanel_Camera_Close_Button" Content="Close" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Close_Button_Click" Grid.Column="5"/>
+                        <Button x:Name="ControlPanel_Camera_Medium_Button" Content="Medium" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Medium_Button_Click" Grid.Column="6" />
+                        <Button x:Name="ControlPanel_Camera_Far_Button" Content="Far" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Far_Button_Click" Grid.Column="7" />
+                        <Button x:Name="ControlPanel_Camera_VeryFar_Button" Content="Very Far" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_VeryFar_Button_Click" Grid.Column="8" />
+                        <Button x:Name="ControlPanel_Camera_AutoCam_Button" Content="AutoCam" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_AutoCam_Button_Click" Grid.Column="10" />
                     </Grid>
                     <Grid x:Name="ControlPanel_ButtonGrid" Margin="0,6,0,0" Grid.Row="2">
                         <Grid.RowDefinitions>
@@ -387,7 +393,43 @@
                                         <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Intro_Button_Click" Grid.Column="2"/>
                                         <CheckBox x:Name="Director_Cameras_Intro_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
+                                    <Grid Margin="0,32,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="90"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Scenic"/>
+                                        <TextBox x:Name="Director_Cameras_Scenic" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                        <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Scenic_Button_Click" Grid.Column="2"/>
+                                        <CheckBox x:Name="Director_Cameras_Scenic_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
                                     <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="90"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Pits"/>
+                                        <TextBox x:Name="Director_Cameras_Pits" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                        <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Pits_Button_Click" Grid.Column="2"/>
+                                        <CheckBox x:Name="Director_Cameras_Pits_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="90"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Start/Finish"/>
+                                        <TextBox x:Name="Director_Cameras_StartFinish" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                        <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_StartFinish_Button_Click" Grid.Column="2"/>
+                                        <CheckBox x:Name="Director_Cameras_StartFinish_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,32,0,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="*"/>
@@ -857,7 +899,7 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBox x:Name="Image_FilePath" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Overlay_Image_Update"/>
-                                            <Button Padding="6,0,6,0" Content="📁" Grid.Column="1" Margin="-1,0,0,0" Click="Overlay_Image_FilePath_Button_Click" />
+                                            <Button x:Name="Image_FilePath_Button" Padding="6,0,6,0" Content="📁" Grid.Column="1" Margin="-1,0,0,0" Click="Overlay_Image_FilePath_Button_Click" />
                                         </Grid>
                                         <CheckBox x:Name="Image_FilePath_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Image_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0"/>
                                     </Grid>
@@ -1122,14 +1164,14 @@
                                                 <GridViewColumn Header="Translation" Width="450">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <TextBox Text="{Binding Value.Translation}" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center"/>
+                                                            <TextBox Text="{Binding Value.Translation}" IsEnabled="{Binding Value.Translation_IsEnabled}" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center"/>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
                                                 <GridViewColumn Header="Override" Width="100">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <CheckBox IsChecked="{Binding Value.Translation_Overridden}"/>
+                                                            <CheckBox IsChecked="{Binding Value.Translation_Overridden}" IsEnabled="{Binding Value.Translation_Overridden_IsEnabled}"/>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
@@ -1384,7 +1426,7 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBox x:Name="Overlay_TrackMap_TextureFilePath" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Overlay_TrackMap_Update"/>
-                                            <Button Padding="6,0,6,0" Content="📁" Grid.Column="1" Margin="-1,0,0,0" Click="Overlay_TrackMap_TextureFilePath_Button_Click" />
+                                            <Button x:Name="Overlay_TrackMap_TextureFilePath_Button" Padding="6,0,6,0" Content="📁" Grid.Column="1" Margin="-1,0,0,0" Click="Overlay_TrackMap_TextureFilePath_Button_Click" />
                                         </Grid>
                                         <CheckBox x:Name="Overlay_TrackMap_TextureFilePath_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_TrackMap_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0"/>
                                     </Grid>
@@ -2006,8 +2048,16 @@
                     </TabItem>
                 </TabControl>
             </TabItem>
-            <TabItem Header="Editor" Padding="12,6,12,6">
+            <TabItem Header="Settings" Padding="12,6,12,6">
                 <TabControl TabStripPlacement="Left">
+                    <TabItem Header="Window" Padding="12,6,12,6">
+                        <StackPanel Margin="6,6,6,6">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Topmost" Width="100"/>
+                                <CheckBox x:Name="Editor_AlwaysOnTop" VerticalAlignment="Center" Content="Always On Top" Click="Editor_Update" />
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
                     <TabItem Header="Mouse" Padding="12,6,12,6">
                         <StackPanel Margin="6,6,6,6">
                             <StackPanel Orientation="Horizontal">

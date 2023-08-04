@@ -129,6 +129,8 @@ namespace iRacingTVController
 
 				if ( File.Exists( filePath ) )
 				{
+					LogFile.Write( $"Loading session flags from {filePath}...\r\n" );
+
 					var streamReader = File.OpenText( filePath );
 
 					while ( true )
@@ -157,6 +159,10 @@ namespace iRacingTVController
 							sessionFlagsDataList.Add( sessionFlagsData );
 						}
 					}
+				}
+				else
+				{
+					LogFile.Write( $"Session flags file {filePath} does not exist.\r\n" );
 				}
 
 				Refresh();

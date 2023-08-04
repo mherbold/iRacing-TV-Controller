@@ -282,31 +282,38 @@ namespace iRacingTVController
 		{
 			int camGroupNumber;
 
-			var inCautionButNotWaving = IRSDK.normalizedData.isUnderCaution && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.CautionWaving | (uint) SessionFlags.YellowWaving ) ) == 0 );
-
-			if ( !inCautionButNotWaving && ( normalizedCar.distanceToCarInFrontInMeters >= Settings.director.autoCamInsideMinimum ) && ( normalizedCar.distanceToCarInFrontInMeters <= Settings.director.autoCamInsideMaximum ) && ( IRSDK.camCarIdx == normalizedCar.carIdx ) )
+			if ( normalizedCar.isOnPitRoad )
 			{
-				camGroupNumber = IRSDK.GetCamGroupNumber( Settings.director.camerasInside );
+				camGroupNumber = IRSDK.GetCamGroupNumber( Settings.director.camerasPits, false );
 			}
 			else
 			{
-				var nearestCarDistance = Math.Min( normalizedCar.distanceToCarInFrontInMeters, normalizedCar.distanceToCarBehindInMeters );
+				var inCautionButNotWaving = IRSDK.normalizedData.isUnderCaution && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.CautionWaving | (uint) SessionFlags.YellowWaving ) ) == 0 );
 
-				if ( nearestCarDistance <= Settings.director.autoCamCloseMaximum )
+				if ( !inCautionButNotWaving && ( normalizedCar.distanceToCarInFrontInMeters >= Settings.director.autoCamInsideMinimum ) && ( normalizedCar.distanceToCarInFrontInMeters <= Settings.director.autoCamInsideMaximum ) && ( IRSDK.camCarIdx == normalizedCar.carIdx ) )
 				{
-					camGroupNumber = IRSDK.GetCamGroupNumber( Settings.director.camerasClose );
-				}
-				else if ( nearestCarDistance <= Settings.director.autoCamMediumMaximum )
-				{
-					camGroupNumber = IRSDK.GetCamGroupNumber( Settings.director.camerasMedium );
-				}
-				else if ( nearestCarDistance <= Settings.director.autoCamFarMaximum )
-				{
-					camGroupNumber = IRSDK.GetCamGroupNumber( Settings.director.camerasFar );
+					camGroupNumber = IRSDK.GetCamGroupNumber( Settings.director.camerasInside );
 				}
 				else
 				{
-					camGroupNumber = IRSDK.GetCamGroupNumber( Settings.director.camerasVeryFar );
+					var nearestCarDistance = Math.Min( normalizedCar.distanceToCarInFrontInMeters, normalizedCar.distanceToCarBehindInMeters );
+
+					if ( nearestCarDistance <= Settings.director.autoCamCloseMaximum )
+					{
+						camGroupNumber = IRSDK.GetCamGroupNumber( Settings.director.camerasClose );
+					}
+					else if ( nearestCarDistance <= Settings.director.autoCamMediumMaximum )
+					{
+						camGroupNumber = IRSDK.GetCamGroupNumber( Settings.director.camerasMedium );
+					}
+					else if ( nearestCarDistance <= Settings.director.autoCamFarMaximum )
+					{
+						camGroupNumber = IRSDK.GetCamGroupNumber( Settings.director.camerasFar );
+					}
+					else
+					{
+						camGroupNumber = IRSDK.GetCamGroupNumber( Settings.director.camerasVeryFar );
+					}
 				}
 			}
 

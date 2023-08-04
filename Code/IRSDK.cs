@@ -59,6 +59,8 @@ namespace iRacingTVController
 
 				if ( ( session == null ) || ( iRacingSdk.Header.SessionInfoUpdate != sessionInfoUpdate ) )
 				{
+					LogFile.Write( "Getting updated session information...\r\n" );
+
 					sessionInfoUpdate = iRacingSdk.Header.SessionInfoUpdate;
 
 					session = iRacingSdk.GetSerializedSessionInfo();
@@ -264,7 +266,7 @@ namespace iRacingTVController
 			}
 		}
 
-		public static int GetCamGroupNumber( SettingsDirector.CameraType cameraType, bool shuffleCamerasInList = true )
+		public static int GetCamGroupNumber( SettingsDirector.CameraType cameraType )
 		{
 			string? cameraGroupNames = null;
 
@@ -280,6 +282,18 @@ namespace iRacingTVController
 
 				case SettingsDirector.CameraType.Intro:
 					cameraGroupNames = Settings.director.camerasIntro;
+					break;
+
+				case SettingsDirector.CameraType.Scenic:
+					cameraGroupNames = Settings.director.camerasScenic;
+					break;
+
+				case SettingsDirector.CameraType.Pits:
+					cameraGroupNames = Settings.director.camerasPits;
+					break;
+
+				case SettingsDirector.CameraType.StartFinish:
+					cameraGroupNames = Settings.director.camerasStartFinish;
 					break;
 
 				case SettingsDirector.CameraType.Inside:
@@ -302,6 +316,8 @@ namespace iRacingTVController
 					cameraGroupNames = Settings.director.camerasVeryFar;
 					break;
 			}
+
+			bool shuffleCamerasInList = ( ( cameraType != SettingsDirector.CameraType.Pits ) && ( cameraType != SettingsDirector.CameraType.StartFinish ) );
 
 			return ( cameraGroupNames == null ) ? 0 : GetCamGroupNumber( cameraGroupNames, shuffleCamerasInList );
 		}

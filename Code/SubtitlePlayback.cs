@@ -212,6 +212,8 @@ namespace iRacingTVController
 
 				if ( File.Exists( filePath ) )
 				{
+					LogFile.Write( $"Loading subtitles from {filePath}...\r\n" );
+
 					var xmlSerializer = new XmlSerializer( subtitleDataList.GetType() );
 
 					var fileStream = new FileStream( filePath, FileMode.Open );
@@ -224,6 +226,10 @@ namespace iRacingTVController
 					{
 						MainWindow.Instance.Subtitles_ListView.Items.Add( subtitleData );
 					}
+				}
+				else
+				{
+					LogFile.Write( $"Subtitles file {filePath} does not exist.\r\n" );
 				}
 			}
 		}

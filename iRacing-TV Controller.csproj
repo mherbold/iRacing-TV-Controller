@@ -6,12 +6,16 @@
     <RootNamespace>iRacingTVController</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <VersionPrefix>1.21</VersionPrefix>
-    <ApplicationIcon>Assets\iracing-tv-icon-small-shadow.ico</ApplicationIcon>
+    <VersionPrefix>1.22</VersionPrefix>
+    <ApplicationIcon>Assets\icon\iracing-tv.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Assets\iracing-tv-icon-small-shadow.ico" />
+    <None Remove="Assets\icon\iracing-tv.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\icon\iracing-tv.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,11 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\iracing-tv-icon-shadow.ico" />
-    <Resource Include="Assets\iracing-tv-icon-shadow.png" />
-    <Resource Include="Assets\iracing-tv-icon-small-shadow.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Assets\icon\iracing-tv.ico" />
     <Resource Include="Assets\status-connected.png" />
     <Resource Include="Assets\status-disconnected.png" />
   </ItemGroup>
@@ -43,16 +43,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Assets\car-number-space.png">
+    <None Update="Assets\default\leaderboard-car-number-space.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\checkered-flag-text.png">
+    <None Update="Assets\default\race-status-checkered-flag-text.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\checkered-flag.png">
+    <None Update="Assets\default\race-status-checkered-flag.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\current-target.png">
+    <None Update="Assets\default\leaderboard-current-target.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Assets\flag-checkered.png">
@@ -64,292 +64,334 @@
     <None Update="Assets\flag-yellow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\green-flag-text.png">
+    <None Update="Assets\default\race-status-green-flag-text.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\iracing-tv-icon-small-shadow.ico">
+    <None Update="Assets\icon\iracing-tv-icon-016.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\iRacing-TV-Icon.ico">
+    <None Update="Assets\icon\iracing-tv-icon-shadow-016.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\leaderboard-heading.png">
+    <None Update="Assets\icon\iracing-tv-icon-shadow-024.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\leaderboard.png">
+    <None Update="Assets\icon\iracing-tv-icon-shadow-032.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\light-black.png">
+    <None Update="Assets\icon\iracing-tv-icon-shadow-048.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\light-green.png">
+    <None Update="Assets\icon\iracing-tv-icon-shadow-064.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\light-white.png">
+    <None Update="Assets\icon\iracing-tv-icon-shadow-072.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\light-yellow.png">
+    <None Update="Assets\icon\iracing-tv-icon-shadow-080.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\lights-go.png">
+    <None Update="Assets\icon\iracing-tv-icon-shadow-096.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\lights-ready.png">
+    <None Update="Assets\icon\iracing-tv-icon-shadow-128.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\lights-set.png">
+    <None Update="Assets\icon\iracing-tv-icon-shadow-256.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\Overlay.ai">
+    <None Update="Assets\icon\iracing-tv-icon-shadow-999.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\position-splitter.png">
+    <None Update="Assets\default\leaderboard-heading.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\race-status.png">
+    <None Update="Assets\default\generic-background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag00.png">
+    <None Update="Assets\default\race-status-light-black.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag01.png">
+    <None Update="Assets\default\race-status-light-green.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag02.png">
+    <None Update="Assets\default\race-status-light-white.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag03.png">
+    <None Update="Assets\default\race-status-light-yellow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag04.png">
+    <None Update="Assets\default\start-lights-go.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag05.png">
+    <None Update="Assets\default\start-lights-ready.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag06.png">
+    <None Update="Assets\default\start-lights-set.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag07.png">
+    <None Update="Assets\logo\iracing-tv-logo-black.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag08.png">
+    <None Update="Assets\logo\iracing-tv-logo-white-shadow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag09.png">
+    <None Update="Assets\logo\iracing-tv-logo-white.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag10.png">
+    <None Update="Assets\source\default-iracing-overlay-parts.ai">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag11.png">
+    <None Update="Assets\default\leaderboard-position-splitter.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag12.png">
+    <None Update="Assets\default\race-status-background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag13.png">
+    <None Update="Assets\source\default-iracing-overlay-parts.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag14.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag00.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag15.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag01.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag16.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag02.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag17.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag03.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag18.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag04.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag19.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag05.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag20.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag06.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag21.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag07.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag22.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag08.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag23.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag09.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag24.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag10.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag25.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag11.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag26.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag12.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag27.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag13.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag28.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag14.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag29.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag15.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag30.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag31.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag17.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag32.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag18.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag33.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag19.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag34.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag20.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\Checkered\checkered-flag35.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag21.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag00.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag22.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag01.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag23.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag02.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag24.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag03.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag25.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag04.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag26.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag05.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag27.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag06.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag28.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag07.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag08.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag30.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag09.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag31.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag10.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag32.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag11.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag33.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag12.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag34.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag13.png">
+    <None Update="Assets\source\race-status-animated-flag\checkered\checkered-flag35.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag14.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag00.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag15.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag01.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag16.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag02.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag17.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag03.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag18.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag04.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag19.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag05.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag20.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag06.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag21.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag07.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag22.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag08.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag23.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag09.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag24.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag10.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag25.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag11.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag26.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag12.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag27.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag13.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag28.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag14.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag29.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag15.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag30.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag31.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag17.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag32.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag18.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag33.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag19.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag34.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag20.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\raw-waving-flag-images\White\white-flag35.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag21.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\RevolutionGothic_ExtraBold.otf">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag22.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\RevolutionGothic_ExtraBold_It.otf">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag23.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\start-lights.psd">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag24.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\trackmap.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag25.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\trackmapcar.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag26.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\trackmaptarget.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag27.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\voice-of.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag28.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\white-flag.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\yellow-flag-text.png">
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag30.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag31.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag33.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag34.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\source\race-status-animated-flag\white\white-flag35.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\fonts\RevolutionGothic_ExtraBold.otf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\fonts\RevolutionGothic_ExtraBold_It.otf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\source\start-lights.psd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\default\track-map-road.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\default\track-map-car.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\default\track-map-target.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\default\voice-of-background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\default\race-status-white-flag.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\default\race-status-yellow-flag-text.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -58,7 +58,7 @@ namespace iRacingTVController
 		public bool trackMapReverse = false;
 		public Vector2 trackMapPosition = new( 1380, 168 );
 		public Vector2 trackMapSize = new( 440, 440 );
-		public string trackMapTextureFilePath = Program.documentsFolder + "Assets\\trackmap.png";
+		public string trackMapTextureFilePath = Program.documentsFolder + "Assets\\default\\track-map-road.png";
 		public float trackMapLineThickness = 0.025f;
 		public Color trackMapLineColor = new( 0.485f, 0.485f, 0.485f, 1.0f );
 		public int trackMapStartFinishOffset = 0;
@@ -119,19 +119,19 @@ namespace iRacingTVController
 		public bool telemetryShowAsNegativeNumbers_Overridden = false;
 
 		public bool introEnabled = true;
-		public Vector2 introLeftPosition = new( 567, 453 );
-		public float introLeftScale = 1.7f;
-		public Vector2 introRightPosition = new( 1331, 529 );
-		public float introRightScale = 1.7f;
+		public Vector2 introLeftPosition = new( 502, 430 );
+		public float introLeftScale = 2;
+		public Vector2 introRightPosition = new( 1415, 672 );
+		public float introRightScale = 2;
 		public float introLeftStartTime = 10;
-		public float introRightStartTime = 10.5f;
-		public float introStartInterval = 5;
+		public float introRightStartTime = 11f;
+		public float introStartInterval = 8;
 		public int introLeftInAnimationNumber = 5;
 		public int introRightInAnimationNumber = 4;
 		public int introLeftOutAnimationNumber = 3;
 		public int introRightOutAnimationNumber = 2;
 		public float introInTime = 2;
-		public float introHoldTime = 5;
+		public float introHoldTime = 8;
 		public float introOutTime = 1;
 
 		public bool introEnabled_Overridden = false;

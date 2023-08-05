@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.21"
+        Title="iRacing-TV Controller v1.22"
         WindowStartupLocation="CenterScreen"
-        Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="860" Height="550" MinWidth="860" MinHeight="550" Icon="/Assets/iracing-tv-icon-small-shadow.png">
+        Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="860" Height="550" MinWidth="860" MinHeight="550" Icon="/Assets/icon/iracing-tv.ico">
     <Grid>
         <TabControl>
             <TabItem Header="Control Panel" Padding="12,6,12,6">
@@ -1830,9 +1830,9 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Left Position"/>
-                                        <local:Decimal x:Name="Overlay_Intro_LeftPosition_X" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
+                                        <local:Number x:Name="Overlay_Intro_LeftPosition_X" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
                                         <Label Content="X" HorizontalContentAlignment="Center" Grid.Column="2" />
-                                        <local:Decimal x:Name="Overlay_Intro_LeftPosition_Y" ValueChanged="Overlay_Intro_Update" Grid.Column="3" />
+                                        <local:Number x:Name="Overlay_Intro_LeftPosition_Y" ValueChanged="Overlay_Intro_Update" Grid.Column="3" />
                                         <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
                                         <CheckBox x:Name="Overlay_Intro_LeftPosition_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
@@ -1856,9 +1856,9 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Right Position"/>
-                                        <local:Decimal x:Name="Overlay_Intro_RightPosition_X" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
+                                        <local:Number x:Name="Overlay_Intro_RightPosition_X" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
                                         <Label Content="X" HorizontalContentAlignment="Center" Grid.Column="2" />
-                                        <local:Decimal x:Name="Overlay_Intro_RightPosition_Y" ValueChanged="Overlay_Intro_Update" Grid.Column="3" />
+                                        <local:Number x:Name="Overlay_Intro_RightPosition_Y" ValueChanged="Overlay_Intro_Update" Grid.Column="3" />
                                         <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
                                         <CheckBox x:Name="Overlay_Intro_RightPosition_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>

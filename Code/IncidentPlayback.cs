@@ -91,7 +91,7 @@ namespace iRacingTVController
 
 					case IncidentScanStateEnum.FindStartOfRace:
 
-						if ( currentSession < IRSDK.normalizedSession.sessionCount )
+						if ( !IRSDK.normalizedSession.isInRaceSession )
 						{
 							LogFile.Write( "Jumping to the next session...\r\n" );
 
@@ -172,8 +172,8 @@ namespace iRacingTVController
 									FrameNumber = IRSDK.normalizedData.replayFrameNum,
 									CarNumber = normalizedCar.carNumber,
 									DriverName = normalizedCar.userName,
-									StartFrame = IRSDK.normalizedData.replayFrameNum,
-									EndFrame = IRSDK.normalizedData.replayFrameNum,
+									StartFrame = IRSDK.normalizedData.replayFrameNum - 60,
+									EndFrame = IRSDK.normalizedData.replayFrameNum + 60,
 									Ignore = false
 								};
 
@@ -208,7 +208,7 @@ namespace iRacingTVController
 
 					case IncidentScanStateEnum.FindStartOfRaceAgain:
 
-						if ( currentSession < IRSDK.normalizedSession.sessionCount )
+						if ( !IRSDK.normalizedSession.isInRaceSession )
 						{
 							LogFile.Write( "Jumping to the next session...\r\n" );
 

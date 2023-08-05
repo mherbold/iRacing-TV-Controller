@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.7.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1920 1080" style="enable-background:new 0 0 1920 1080;" xml:space="preserve">
+<style type="text/css">
+	.st0{opacity:0.85;}
+	.st1{fill:#5E5F5F;}
+	.st2{fill:#181818;}
+	.st3{fill:#FFFFFF;}
+	.st4{fill:#181818;fill-opacity:0.85;stroke:#000000;stroke-width:5;stroke-miterlimit:10;}
+	.st5{fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
+	.st6{fill:#F9EF69;}
+	.st7{fill:#60BB46;}
+	.st8{fill:none;stroke:#5E5F5F;stroke-width:3;stroke-miterlimit:10;}
+	.st9{fill:none;stroke:#5E5F5F;stroke-width:7;stroke-miterlimit:10;}
+	.st10{fill:none;stroke:#5E5F5F;stroke-width:7;stroke-miterlimit:10;stroke-dasharray:12.28,12.28;}
+	.st11{fill:#5E6060;}
+	.st12{opacity:0.85;fill:#231F20;}
+	.st13{fill:#39B54A;}
+	.st14{fill:#FFFFFF;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
+	.st15{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-miterlimit:10;}
+	
+		.st16{fill:url(#voice-of-background_00000123441842443629604390000014823710579346497981_);fill-opacity:0.85;stroke:url(#voice-of-background_00000141441598605562554940000009998080558591558572_);stroke-width:5;stroke-miterlimit:10;}
+</style>
+<g id="Misc">
+	<g id="generic-background">
+		<polygon class="st0" points="502.5,625.5 502.5,520.96 519.11,502.5 625.52,502.5 625.52,607.56 608.93,625.5 		"/>
+		<path class="st1" d="M623.02,505v101.58L607.83,623H505V521.92L520.23,505H623.02 M628.02,500H518l-18,20v108h110.02l18-19.46V500
+			L628.02,500z"/>
+	</g>
+</g>
+<g id="Race_Status">
+	<g id="race-status-background">
+		<g id="Background">
+			<polygon class="st2" points="46.5,225.5 46.5,11.5 360.5,11.5 360.5,207.37 343.91,225.5 			"/>
+			<path d="M358,14v192.4L342.81,223H49V14H358 M363,9H44v219h301.01L363,208.34V9L363,9z"/>
+		</g>
+		<g id="Series_Background">
+			<rect x="49" y="13" class="st3" width="309" height="105"/>
+		</g>
+		<line id="Big_Divider" class="st4" x1="44" y1="121" x2="363" y2="121"/>
+		<g id="Small_Divider">
+			<line class="st5" x1="348" y1="175" x2="59" y2="175"/>
+		</g>
+	</g>
+	<g id="race-status-white-light">
+		<circle class="st3" cx="334.5" cy="150.5" r="10.5"/>
+	</g>
+	<g id="race-status-yellow-light">
+		<circle class="st6" cx="334.5" cy="150.5" r="10.5"/>
+	</g>
+	<g id="race-status-green-light">
+		<circle class="st7" cx="334.5" cy="150.5" r="10.5"/>
+	</g>
+	<g id="race-status-black-light">
+		<circle cx="334.5" cy="150.5" r="10"/>
+		<path class="st3" d="M334.5,141c5.24,0,9.5,4.26,9.5,9.5s-4.26,9.5-9.5,9.5s-9.5-4.26-9.5-9.5S329.26,141,334.5,141 M334.5,140
+			c-5.8,0-10.5,4.7-10.5,10.5s4.7,10.5,10.5,10.5s10.5-4.7,10.5-10.5S340.3,140,334.5,140L334.5,140z"/>
+	</g>
+</g>
+<g id="Leaderboard_Overlay">
+	<g id="leaderboard-position-splitter">
+		<g id="Position_Splitter_00000044144644301241049060000000494847145522205862_">
+			<line class="st8" x1="44" y1="658" x2="363" y2="658"/>
+		</g>
+		<g id="Position_Splitter">
+			<g>
+				<line class="st9" x1="44" y1="658" x2="50" y2="658"/>
+				<line class="st10" x1="62.28" y1="658" x2="350.86" y2="658"/>
+				<line class="st9" x1="357" y1="658" x2="363" y2="658"/>
+			</g>
+		</g>
+	</g>
+	<g id="leaderboard-heading">
+		<polygon class="st3" points="46.5,290.5 46.5,264.96 63.11,246.5 360.5,246.5 360.5,272.04 343.89,290.5 		"/>
+		<path class="st11" d="M358,249v22.08L342.77,288H49v-22.08L64.23,249H358 M363,244H62l-18,20v29h301l18-20V244L363,244z"/>
+	</g>
+	<g id="leaderboard-current-target">
+		<g id="leaderboard-current-target-speed">
+			<path class="st12" d="M343.65,372.5l16.85-18.53V328.5h88.96c7.19,0,13.04,5.94,13.04,13.24v17.53c0,7.3-5.85,13.24-13.04,13.24
+				H343.65z"/>
+			<path class="st11" d="M449.46,331c5.81,0,10.54,4.82,10.54,10.74v17.53c0,5.92-4.73,10.74-10.54,10.74H349.3l12.4-13.64l1.3-1.43
+				V353v-22H449.46 M449.46,326H358v27l-20,22h111.46c8.58,0,15.54-7.05,15.54-15.74v-17.53C465,333.05,458.04,326,449.46,326
+				L449.46,326z"/>
+		</g>
+		<g id="leaderboard-current-target-outline">
+			<path class="st13" d="M358,331v22.08L342.77,370H49v-22.08L64.23,331H358 M363,326H62l-18,20v29h301l18-20V326L363,326z"/>
+		</g>
+	</g>
+	<path id="leaderboard-car-number-space" class="st3" d="M140.63,364H99.37c-2.41,0-4.37-1.96-4.37-4.37v-19.26
+		c0-2.41,1.96-4.37,4.37-4.37h41.26c2.41,0,4.37,1.96,4.37,4.37v19.26C145,362.04,143.04,364,140.63,364z"/>
+</g>
+<g id="Track_Map_Overlay">
+	<circle id="track-map-car_00000065042329446255562980000016965892359670012070_" class="st14" cx="1716" cy="216" r="16"/>
+	<circle id="track-map-target_00000179641946246250401240000017151977930488662200_" class="st15" cx="1761.93" cy="216" r="16"/>
+</g>
+<g id="Voice_Of_Overlay">
+	
+		<linearGradient id="voice-of-background_00000098207304605882677270000001010057704735364230_" gradientUnits="userSpaceOnUse" x1="540.8962" y1="86.5" x2="1007.8962" y2="86.5">
+		<stop  offset="0" style="stop-color:#FFFFFF"/>
+		<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0"/>
+	</linearGradient>
+	
+		<linearGradient id="voice-of-background_00000159470730608446146070000014847108577140663704_" gradientUnits="userSpaceOnUse" x1="538.3962" y1="86.5" x2="1010.3962" y2="86.5">
+		<stop  offset="0" style="stop-color:#231F20"/>
+		<stop  offset="1" style="stop-color:#231F20;stop-opacity:0"/>
+	</linearGradient>
+	
+		<polygon id="voice-of-background" style="fill:url(#voice-of-background_00000098207304605882677270000001010057704735364230_);fill-opacity:0.85;stroke:url(#voice-of-background_00000159470730608446146070000014847108577140663704_);stroke-width:5;stroke-miterlimit:10;" points="
+		540.9,132 540.9,61 558.9,41 1007.9,41 1007.9,112 989.89,132 	"/>
+</g>
+</svg>

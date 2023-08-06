@@ -535,8 +535,8 @@ namespace iRacingTVController
 			Settings.UpdateCombinedDirector();
 			Settings.UpdateCombinedOverlay();
 
-			var directorIsGlobal = Settings.directorLocal.filePath == Settings.globalDirectorSettingsFilePath;
-			var overlayIsGlobal = Settings.overlayLocal.filePath == Settings.globalOverlaySettingsFilePath;
+			var directorIsGlobal = Settings.directorLocal.filePath == Settings.relativeGlobalDirectorSettingsFilePath;
+			var overlayIsGlobal = Settings.overlayLocal.filePath == Settings.relativeGlobalOverlaySettingsFilePath;
 
 			// control panel
 
@@ -649,10 +649,10 @@ namespace iRacingTVController
 
 			// overlay - fonts
 
-			Initialize( Overlay_Font_FontA_Name, fontOptions.FirstOrDefault( x => x.Value == Settings.overlay.fontPaths[ 0 ] ).Key, Overlay_Font_FontA_Name_Override, overlayIsGlobal, Settings.overlay.fontNames_Overridden[ 0 ] );
-			Initialize( Overlay_Font_FontB_Name, fontOptions.FirstOrDefault( x => x.Value == Settings.overlay.fontPaths[ 1 ] ).Key, Overlay_Font_FontB_Name_Override, overlayIsGlobal, Settings.overlay.fontNames_Overridden[ 1 ] );
-			Initialize( Overlay_Font_FontC_Name, fontOptions.FirstOrDefault( x => x.Value == Settings.overlay.fontPaths[ 2 ] ).Key, Overlay_Font_FontC_Name_Override, overlayIsGlobal, Settings.overlay.fontNames_Overridden[ 2 ] );
-			Initialize( Overlay_Font_FontD_Name, fontOptions.FirstOrDefault( x => x.Value == Settings.overlay.fontPaths[ 3 ] ).Key, Overlay_Font_FontD_Name_Override, overlayIsGlobal, Settings.overlay.fontNames_Overridden[ 3 ] );
+			Initialize( Overlay_Font_FontA_Name, Settings.overlay.fontNames[ 0 ], Overlay_Font_FontA_Name_Override, overlayIsGlobal, Settings.overlay.fontNames_Overridden[ 0 ] );
+			Initialize( Overlay_Font_FontB_Name, Settings.overlay.fontNames[ 1 ], Overlay_Font_FontB_Name_Override, overlayIsGlobal, Settings.overlay.fontNames_Overridden[ 1 ] );
+			Initialize( Overlay_Font_FontC_Name, Settings.overlay.fontNames[ 2 ], Overlay_Font_FontC_Name_Override, overlayIsGlobal, Settings.overlay.fontNames_Overridden[ 2 ] );
+			Initialize( Overlay_Font_FontD_Name, Settings.overlay.fontNames[ 3 ], Overlay_Font_FontD_Name_Override, overlayIsGlobal, Settings.overlay.fontNames_Overridden[ 3 ] );
 
 			// overlay - images
 
@@ -805,7 +805,7 @@ namespace iRacingTVController
 
 				Settings.UpdateCombinedOverlay();
 
-				var overlayIsGlobal = Settings.overlayLocal.filePath == Settings.globalOverlaySettingsFilePath;
+				var overlayIsGlobal = Settings.overlayLocal.filePath == Settings.relativeGlobalOverlaySettingsFilePath;
 
 				var settings = Settings.overlay.imageSettingsDataDictionary[ id ];
 
@@ -836,7 +836,7 @@ namespace iRacingTVController
 
 				Settings.UpdateCombinedOverlay();
 
-				var overlayIsGlobal = Settings.overlayLocal.filePath == Settings.globalOverlaySettingsFilePath;
+				var overlayIsGlobal = Settings.overlayLocal.filePath == Settings.relativeGlobalOverlaySettingsFilePath;
 
 				var settings = Settings.overlay.textSettingsDataDictionary[ id ];
 
@@ -1370,7 +1370,7 @@ namespace iRacingTVController
 
 		private void Director_DirectorFile_Create_Click( object sender, EventArgs e )
 		{
-			var directorFilePath = Settings.directorSettingsFolder + "My new director.xml";
+			var directorFilePath = Settings.GetRelativePath( Settings.directorSettingsFolder + "My new director.xml" );
 
 			if ( File.Exists( directorFilePath ) )
 			{
@@ -2202,7 +2202,7 @@ namespace iRacingTVController
 
 		private void Overlay_OverlayFile_Create_Click( object sender, EventArgs e )
 		{
-			var overlayFilePath = Settings.overlaySettingsFolder + "My new overlay.xml";
+			var overlayFilePath = Settings.GetRelativePath( Settings.overlaySettingsFolder + "My new overlay.xml" );
 
 			if ( File.Exists( overlayFilePath ) )
 			{
@@ -2316,12 +2316,14 @@ namespace iRacingTVController
 
 					if ( Overlay_Font_FontA_Name.SelectedItem == null )
 					{
+						overlay.fontNames[ 0 ] = string.Empty;
 						overlay.fontPaths[ 0 ] = string.Empty;
 					}
 					else
 					{
 						var fontName = (string) Overlay_Font_FontA_Name.SelectedItem;
 
+						overlay.fontNames[ 0 ] = fontName;
 						overlay.fontPaths[ 0 ] = fontOptions[ fontName ];
 					}
 				}
@@ -2340,12 +2342,14 @@ namespace iRacingTVController
 
 					if ( Overlay_Font_FontB_Name.SelectedItem == null )
 					{
+						overlay.fontNames[ 1 ] = string.Empty;
 						overlay.fontPaths[ 1 ] = string.Empty;
 					}
 					else
 					{
 						var fontName = (string) Overlay_Font_FontB_Name.SelectedItem;
 
+						overlay.fontNames[ 1 ] = fontName;
 						overlay.fontPaths[ 1 ] = fontOptions[ fontName ];
 					}
 				}
@@ -2364,12 +2368,14 @@ namespace iRacingTVController
 
 					if ( Overlay_Font_FontC_Name.SelectedItem == null )
 					{
+						overlay.fontNames[ 2 ] = string.Empty;
 						overlay.fontPaths[ 2 ] = string.Empty;
 					}
 					else
 					{
 						var fontName = (string) Overlay_Font_FontC_Name.SelectedItem;
 
+						overlay.fontNames[ 2 ] = fontName;
 						overlay.fontPaths[ 2 ] = fontOptions[ fontName ];
 					}
 				}
@@ -2388,12 +2394,14 @@ namespace iRacingTVController
 
 					if ( Overlay_Font_FontD_Name.SelectedItem == null )
 					{
+						overlay.fontNames[ 3 ] = string.Empty;
 						overlay.fontPaths[ 3 ] = string.Empty;
 					}
 					else
 					{
 						var fontName = (string) Overlay_Font_FontD_Name.SelectedItem;
 
+						overlay.fontNames[ 3 ] = fontName;
 						overlay.fontPaths[ 3 ] = fontOptions[ fontName ];
 					}
 				}
@@ -2429,7 +2437,7 @@ namespace iRacingTVController
 
 			if ( openFileDialog.ShowDialog() == true )
 			{
-				Image_FilePath.Text = openFileDialog.FileName;
+				Image_FilePath.Text = Settings.GetRelativePath( openFileDialog.FileName );
 			}
 		}
 
@@ -3051,7 +3059,7 @@ namespace iRacingTVController
 
 			if ( openFileDialog.ShowDialog() == true )
 			{
-				Overlay_TrackMap_TextureFilePath.Text = openFileDialog.FileName;
+				Overlay_TrackMap_TextureFilePath.Text = Settings.GetRelativePath( openFileDialog.FileName );
 			}
 		}
 

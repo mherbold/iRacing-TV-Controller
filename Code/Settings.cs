@@ -23,9 +23,9 @@ namespace iRacingTVController
 		public static string overlaySettingsFolder = Program.documentsFolder + OverlaySettingsFolderName + "\\";
 		public static string directorSettingsFolder = Program.documentsFolder + DirectorSettingsFolderName + "\\";
 
-		public static string editorSettingsFilePath = editorSettingsFolder + EditorSettingsFileName;
-		public static string globalOverlaySettingsFilePath = overlaySettingsFolder + GlobalSettingsFileName;
-		public static string globalDirectorSettingsFilePath = directorSettingsFolder + GlobalSettingsFileName;
+		public static string relativeEditorSettingsFilePath = GetRelativePath( editorSettingsFolder + EditorSettingsFileName );
+		public static string relativeGlobalOverlaySettingsFilePath = GetRelativePath( overlaySettingsFolder + GlobalSettingsFileName );
+		public static string relativeGlobalDirectorSettingsFilePath = GetRelativePath( directorSettingsFolder + GlobalSettingsFileName );
 
 		public static SettingsEditor editor = new();
 
@@ -81,29 +81,29 @@ namespace iRacingTVController
 
 			// editor
 
-			if ( File.Exists( editorSettingsFilePath ) )
+			if ( File.Exists( relativeEditorSettingsFilePath ) )
 			{
 				try
 				{
-					editor = (SettingsEditor) Load( editorSettingsFilePath, typeof( SettingsEditor ) );
+					editor = (SettingsEditor) Load( relativeEditorSettingsFilePath, typeof( SettingsEditor ) );
 				}
 				catch ( Exception exception )
 				{
-					MessageBox.Show( MainWindow.Instance, $"We could not load the editor settings file '{editorSettingsFilePath}'.\r\n\r\nThe error message is as follows:\r\n\r\n{exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
+					MessageBox.Show( MainWindow.Instance, $"We could not load the editor settings file '{relativeEditorSettingsFilePath}'.\r\n\r\nThe error message is as follows:\r\n\r\n{exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
 				}
 			}
 			else
 			{
-				Save( editorSettingsFilePath, editor );
+				Save( relativeEditorSettingsFilePath, editor );
 			}
 
 			// overlay
 
-			if ( !File.Exists( globalOverlaySettingsFilePath ) )
+			if ( !File.Exists( relativeGlobalOverlaySettingsFilePath ) )
 			{
-				overlayGlobal.filePath = globalOverlaySettingsFilePath;
+				overlayGlobal.filePath = relativeGlobalOverlaySettingsFilePath;
 
-				Save( globalOverlaySettingsFilePath, overlayGlobal );
+				Save( relativeGlobalOverlaySettingsFilePath, overlayGlobal );
 			}
 
 			var overlaySettingsFilePaths = Directory.EnumerateFiles( overlaySettingsFolder );
@@ -112,13 +112,15 @@ namespace iRacingTVController
 			{
 				try
 				{
-					var settings = (SettingsOverlay) Load( overlaySettingsFilePath, typeof( SettingsOverlay ) );
+					var relativeOverlaySettingsFilePath = GetRelativePath( overlaySettingsFilePath );
 
-					settings.filePath = overlaySettingsFilePath;
+					var settings = (SettingsOverlay) Load( relativeOverlaySettingsFilePath, typeof( SettingsOverlay ) );
+
+					settings.filePath = relativeOverlaySettingsFilePath;
 
 					FixSettings( settings );
 
-					if ( overlaySettingsFilePath == globalOverlaySettingsFilePath )
+					if ( relativeOverlaySettingsFilePath == relativeGlobalOverlaySettingsFilePath )
 					{
 						overlayGlobal = settings;
 					}
@@ -135,10 +137,10 @@ namespace iRacingTVController
 					MessageBox.Show( MainWindow.Instance, $"We could not load the overlay settings file '{overlaySettingsFilePath}'.\r\n\r\nThe error message is as follows:\r\n\r\n{exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
 				}
 			}
-			
+
 			if ( overlayList.Count == 1 )
 			{
-				overlayLocal.filePath = overlaySettingsFolder + "My new overlay.xml";
+				overlayLocal.filePath = GetRelativePath( overlaySettingsFolder + "My new overlay.xml" );
 
 				overlayList.Add( overlayLocal );
 
@@ -152,11 +154,11 @@ namespace iRacingTVController
 
 			// director
 
-			if ( !File.Exists( globalDirectorSettingsFilePath ) )
+			if ( !File.Exists( relativeGlobalDirectorSettingsFilePath ) )
 			{
-				directorGlobal.filePath = globalDirectorSettingsFilePath;
+				directorGlobal.filePath = relativeGlobalDirectorSettingsFilePath;
 
-				Save( globalDirectorSettingsFilePath, directorGlobal );
+				Save( relativeGlobalDirectorSettingsFilePath, directorGlobal );
 			}
 
 			var directorSettingsFilePaths = Directory.EnumerateFiles( directorSettingsFolder );
@@ -165,11 +167,13 @@ namespace iRacingTVController
 			{
 				try
 				{
-					var settings = (SettingsDirector) Load( directorSettingsFilePath, typeof( SettingsDirector ) );
+					var relativeDirectorSettingsFilePath = GetRelativePath( directorSettingsFilePath );
 
-					settings.filePath = directorSettingsFilePath;
+					var settings = (SettingsDirector) Load( relativeDirectorSettingsFilePath, typeof( SettingsDirector ) );
 
-					if ( directorSettingsFilePath == globalDirectorSettingsFilePath )
+					settings.filePath = relativeDirectorSettingsFilePath;
+
+					if ( relativeDirectorSettingsFilePath == relativeGlobalDirectorSettingsFilePath )
 					{
 						directorGlobal = settings;
 					}
@@ -189,7 +193,7 @@ namespace iRacingTVController
 
 			if ( directorList.Count == 1 )
 			{
-				directorLocal.filePath = directorSettingsFolder + "My new director.xml";
+				directorLocal.filePath = GetRelativePath( directorSettingsFolder + "My new director.xml" );
 
 				directorList.Add( directorLocal );
 
@@ -249,12 +253,17 @@ namespace iRacingTVController
 				"Arial"
 			};
 
-			for ( var fontPathIndex = 0; fontPathIndex < settings.fontPaths.Length; fontPathIndex++ )
+			for ( var fontIndex = 0; fontIndex < settings.fontNames.Length; fontIndex++ )
 			{
-				if ( ( settings.fontPaths[ fontPathIndex ] == null ) || ( settings.fontPaths[ fontPathIndex ] == string.Empty ) )
+				if ( ( settings.fontNames[ fontIndex ] == null ) || ( settings.fontNames[ fontIndex ] == string.Empty ) )
 				{
-					settings.fontPaths[ fontPathIndex ] = MainWindow.Instance.fontOptions[ defaultFontNames[ fontPathIndex ] ];
+					settings.fontNames[ fontIndex ] = defaultFontNames[ fontIndex ];
 				}
+			}
+
+			for ( var fontIndex = 0; fontIndex < settings.fontPaths.Length; fontIndex++ )
+			{
+				settings.fontPaths[ fontIndex ] = MainWindow.Instance.fontOptions[ settings.fontNames[ fontIndex ] ];
 			}
 
 			var defaultImageSettings = new Dictionary<string, SettingsImage>() {
@@ -277,6 +286,7 @@ namespace iRacingTVController
 				{ "LeaderboardLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
 				{ "LeaderboardPositionLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.CarNumber, position = { x = 48, y = 10 }, size = { x = 56, y = 28 } } },
 				{ "LeaderboardPositionLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
+				{ "LeaderboardPositionLayer3", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
 				{ "LeaderboardPositionSplitter", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\leaderboard-position-splitter.png" } },
 				{ "RaceStatusBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\race-status-background.png" } },
 				{ "RaceStatusBlackLight", new SettingsImage(){ imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\race-status-light-black.png", position = { x = 280, y = 130 } } },
@@ -345,6 +355,11 @@ namespace iRacingTVController
 				{
 					settings.imageSettingsDataDictionary[ item.Key ] = item.Value;
 				}
+			}
+
+			foreach ( var item in settings.imageSettingsDataDictionary )
+			{
+				item.Value.filePath = GetRelativePath( item.Value.filePath );
 			}
 
 			var defaultTextSettings = new Dictionary<string, SettingsText>()
@@ -457,7 +472,7 @@ namespace iRacingTVController
 		{
 			try
 			{
-				Save( editorSettingsFilePath, editor );
+				Save( relativeEditorSettingsFilePath, editor );
 			}
 			catch ( IOException )
 			{
@@ -520,6 +535,13 @@ namespace iRacingTVController
 
 				position_Overridden = overlayLocal.position_Overridden,
 				size_Overridden = overlayLocal.size_Overridden,
+
+				fontNames = new string[ SettingsOverlay.MaxNumFonts ] {
+					overlayLocal.fontNames_Overridden[ 0 ] ? overlayLocal.fontNames[ 0 ] : overlayGlobal.fontNames[ 0 ],
+					overlayLocal.fontNames_Overridden[ 1 ] ? overlayLocal.fontNames[ 1 ] : overlayGlobal.fontNames[ 1 ],
+					overlayLocal.fontNames_Overridden[ 2 ] ? overlayLocal.fontNames[ 2 ] : overlayGlobal.fontNames[ 2 ],
+					overlayLocal.fontNames_Overridden[ 3 ] ? overlayLocal.fontNames[ 3 ] : overlayGlobal.fontNames[ 3 ]
+				},
 
 				fontPaths = new string[ SettingsOverlay.MaxNumFonts ] {
 					overlayLocal.fontNames_Overridden[ 0 ] ? overlayLocal.fontPaths[ 0 ] : overlayGlobal.fontPaths[ 0 ],
@@ -826,6 +848,30 @@ namespace iRacingTVController
 
 				autoCam_Overridden = directorLocal.autoCam_Overridden
 			};
+		}
+
+		public static string GetFullPath( string relativePath )
+		{
+			if ( Path.IsPathFullyQualified( relativePath ) )
+			{
+				return relativePath;
+			}
+			else
+			{
+				return Path.GetFullPath( relativePath, Program.documentsFolder );
+			}
+		}
+
+		public static string GetRelativePath( string fullPath )
+		{
+			if ( fullPath == string.Empty )
+			{
+				return string.Empty;
+			}
+			else
+			{
+				return Path.GetRelativePath( Program.documentsFolder, fullPath );
+			}
 		}
 	}
 }

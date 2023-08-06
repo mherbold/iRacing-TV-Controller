@@ -40,7 +40,7 @@ namespace iRacingTVController
 		{
 			get
 			{
-				return ( Settings.overlayLocal.filePath == Settings.globalOverlaySettingsFilePath ) || ( Settings.overlayLocal.translationDictionary[ id ].translation_Overridden );
+				return ( Settings.overlayLocal.filePath == Settings.relativeGlobalOverlaySettingsFilePath ) || ( Settings.overlayLocal.translationDictionary[ id ].translation_Overridden );
 			}
 		}
 
@@ -72,7 +72,7 @@ namespace iRacingTVController
 		{
 			get
 			{
-				return ( Settings.overlayLocal.filePath != Settings.globalOverlaySettingsFilePath );
+				return ( Settings.overlayLocal.filePath != Settings.relativeGlobalOverlaySettingsFilePath );
 			}
 		}
 	}

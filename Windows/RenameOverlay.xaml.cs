@@ -34,7 +34,7 @@ namespace iRacingTVController
 			}
 			else
 			{
-				var overlayFilePath = Settings.overlaySettingsFolder + overlayName + ".xml";
+				var overlayFilePath = Settings.GetRelativePath( Settings.overlaySettingsFolder + overlayName + ".xml" );
 
 				if ( Settings.overlayLocal.filePath == overlayFilePath )
 				{

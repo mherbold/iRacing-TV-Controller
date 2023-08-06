@@ -18,10 +18,8 @@ namespace iRacingTVController
 		public const string MutexNameLiveData = "iRacing-TV Mutex Live Data";
 
 		public const string AppName = "iRacing-TV";
-		public const string AppNameSTT = "iRacing-STT-VR";
 
 		public static readonly string documentsFolder = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ) + $"\\{AppName}\\";
-		public static readonly string documentsFolderSTT = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ) + $"\\{AppNameSTT}\\";
 
 		public static DispatcherTimer dispatcherTimer = new( DispatcherPriority.Render );
 		public static Stopwatch stopwatch = new();
@@ -40,6 +38,8 @@ namespace iRacingTVController
 			{
 				Directory.CreateDirectory( documentsFolder );
 			}
+
+			Directory.SetCurrentDirectory( documentsFolder );
 
 			LogFile.Initialize();
 

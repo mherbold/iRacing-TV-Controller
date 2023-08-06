@@ -34,7 +34,7 @@ namespace iRacingTVController
 			}
 			else
 			{
-				var directorFilePath = Settings.directorSettingsFolder + directorName + ".xml";
+				var directorFilePath = Settings.GetRelativePath( Settings.directorSettingsFolder + directorName + ".xml" );
 
 				if ( Settings.directorLocal.filePath == directorFilePath )
 				{

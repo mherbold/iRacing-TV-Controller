@@ -25,6 +25,7 @@ namespace iRacingTVController
 		public bool position_Overridden = false;
 		public bool size_Overridden = false;
 
+		public string[] fontNames = new string[ MaxNumFonts ];
 		public string[] fontPaths = new string[ MaxNumFonts ];
 
 		public bool[] fontNames_Overridden = new bool[ MaxNumFonts ];
@@ -58,7 +59,7 @@ namespace iRacingTVController
 		public bool trackMapReverse = false;
 		public Vector2 trackMapPosition = new( 1380, 168 );
 		public Vector2 trackMapSize = new( 440, 440 );
-		public string trackMapTextureFilePath = Program.documentsFolder + "Assets\\default\\track-map-road.png";
+		public string trackMapTextureFilePath = Settings.GetRelativePath( Program.documentsFolder + "Assets\\default\\track-map-road.png" );
 		public float trackMapLineThickness = 0.025f;
 		public Color trackMapLineColor = new( 0.485f, 0.485f, 0.485f, 1.0f );
 		public int trackMapStartFinishOffset = 0;

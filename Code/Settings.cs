@@ -245,6 +245,8 @@ namespace iRacingTVController
 		{
 			LogFile.Write( $"Fixing up overlay settings {settings.filePath}...\r\n" );
 
+			settings.trackMapTextureFilePath = GetRelativePath( settings.trackMapTextureFilePath );
+
 			var defaultFontNames = new string[]
 			{
 				"Revolution Gothic",
@@ -771,6 +773,13 @@ namespace iRacingTVController
 				camerasFar = directorLocal.camerasFar_Overridden ? directorLocal.camerasFar : directorGlobal.camerasFar,
 				camerasVeryFar = directorLocal.camerasVeryFar_Overridden ? directorLocal.camerasVeryFar : directorGlobal.camerasVeryFar,
 
+				camerasCustom1 = directorLocal.camerasCustom1_Overridden ? directorLocal.camerasCustom1 : directorGlobal.camerasCustom1,
+				camerasCustom2 = directorLocal.camerasCustom2_Overridden ? directorLocal.camerasCustom2 : directorGlobal.camerasCustom2,
+				camerasCustom3 = directorLocal.camerasCustom3_Overridden ? directorLocal.camerasCustom3 : directorGlobal.camerasCustom3,
+				camerasCustom4 = directorLocal.camerasCustom4_Overridden ? directorLocal.camerasCustom4 : directorGlobal.camerasCustom4,
+				camerasCustom5 = directorLocal.camerasCustom5_Overridden ? directorLocal.camerasCustom5 : directorGlobal.camerasCustom5,
+				camerasCustom6 = directorLocal.camerasCustom6_Overridden ? directorLocal.camerasCustom6 : directorGlobal.camerasCustom6,
+
 				camerasPractice_Overridden = directorLocal.camerasPractice_Overridden,
 				camerasQualifying_Overridden = directorLocal.camerasQualifying_Overridden,
 				camerasIntro_Overridden = directorLocal.camerasIntro_Overridden,
@@ -784,6 +793,13 @@ namespace iRacingTVController
 				camerasMedium_Overridden = directorLocal.camerasMedium_Overridden,
 				camerasFar_Overridden = directorLocal.camerasFar_Overridden,
 				camerasVeryFar_Overridden = directorLocal.camerasVeryFar_Overridden,
+
+				camerasCustom1_Overridden = directorLocal.camerasCustom1_Overridden,
+				camerasCustom2_Overridden = directorLocal.camerasCustom2_Overridden,
+				camerasCustom3_Overridden = directorLocal.camerasCustom3_Overridden,
+				camerasCustom4_Overridden = directorLocal.camerasCustom4_Overridden,
+				camerasCustom5_Overridden = directorLocal.camerasCustom5_Overridden,
+				camerasCustom6_Overridden = directorLocal.camerasCustom6_Overridden,
 
 				switchDelayDirector = directorLocal.switchDelayDirector_Overridden ? directorLocal.switchDelayDirector : directorGlobal.switchDelayDirector,
 				switchDelayIracing = directorLocal.switchDelayIracing_Overridden ? directorLocal.switchDelayIracing : directorGlobal.switchDelayIracing,

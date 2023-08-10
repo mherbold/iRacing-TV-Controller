@@ -581,6 +581,12 @@ namespace iRacingTVController
 			Initialize( Director_Cameras_Medium, Settings.director.camerasMedium, Director_Cameras_Medium_Override, directorIsGlobal, Settings.director.camerasMedium_Overridden );
 			Initialize( Director_Cameras_Far, Settings.director.camerasFar, Director_Cameras_Far_Override, directorIsGlobal, Settings.director.camerasFar_Overridden );
 			Initialize( Director_Cameras_VeryFar, Settings.director.camerasVeryFar, Director_Cameras_VeryFar_Override, directorIsGlobal, Settings.director.camerasVeryFar_Overridden );
+			Initialize( Director_Cameras_Custom1, Settings.director.camerasCustom1, Director_Cameras_Custom1_Override, directorIsGlobal, Settings.director.camerasCustom1_Overridden );
+			Initialize( Director_Cameras_Custom2, Settings.director.camerasCustom2, Director_Cameras_Custom2_Override, directorIsGlobal, Settings.director.camerasCustom2_Overridden );
+			Initialize( Director_Cameras_Custom3, Settings.director.camerasCustom3, Director_Cameras_Custom3_Override, directorIsGlobal, Settings.director.camerasCustom3_Overridden );
+			Initialize( Director_Cameras_Custom4, Settings.director.camerasCustom4, Director_Cameras_Custom4_Override, directorIsGlobal, Settings.director.camerasCustom4_Overridden );
+			Initialize( Director_Cameras_Custom5, Settings.director.camerasCustom5, Director_Cameras_Custom5_Override, directorIsGlobal, Settings.director.camerasCustom5_Overridden );
+			Initialize( Director_Cameras_Custom6, Settings.director.camerasCustom6, Director_Cameras_Custom6_Override, directorIsGlobal, Settings.director.camerasCustom6_Overridden );
 
 			Initialize( Director_SwitchDelay_Director, Settings.director.switchDelayDirector, Director_SwitchDelay_Director_Override, directorIsGlobal, Settings.director.switchDelayDirector_Overridden );
 			Initialize( Director_SwitchDelay_iRacing, Settings.director.switchDelayIracing, Director_SwitchDelay_iRacing_Override, directorIsGlobal, Settings.director.switchDelayIracing_Overridden );
@@ -1131,6 +1137,13 @@ namespace iRacingTVController
 					UpdateCameraButton( ControlPanel_Camera_VeryFar_Button, cameraType == SettingsDirector.CameraType.VeryFar );
 
 					UpdateCameraButton( ControlPanel_Camera_AutoCam_Button, cameraType == SettingsDirector.CameraType.AutoCam );
+
+					UpdateCameraButton( ControlPanel_Camera_C1_Button, cameraType == SettingsDirector.CameraType.Custom1 );
+					UpdateCameraButton( ControlPanel_Camera_C2_Button, cameraType == SettingsDirector.CameraType.Custom2 );
+					UpdateCameraButton( ControlPanel_Camera_C3_Button, cameraType == SettingsDirector.CameraType.Custom3 );
+					UpdateCameraButton( ControlPanel_Camera_C4_Button, cameraType == SettingsDirector.CameraType.Custom4 );
+					UpdateCameraButton( ControlPanel_Camera_C5_Button, cameraType == SettingsDirector.CameraType.Custom5 );
+					UpdateCameraButton( ControlPanel_Camera_C6_Button, cameraType == SettingsDirector.CameraType.Custom6 );
 				} );
 			}
 		}
@@ -1298,6 +1311,90 @@ namespace iRacingTVController
 			else
 			{
 				cameraType = SettingsDirector.CameraType.AutoCam;
+
+				UpdateManualCamera();
+			}
+		}
+
+		private void ControlPanel_Camera_C1_Button_Click( object sender, RoutedEventArgs e )
+		{
+			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Custom1 ) )
+			{
+				Director.isOverridden = false;
+			}
+			else
+			{
+				cameraType = SettingsDirector.CameraType.Custom1;
+
+				UpdateManualCamera();
+			}
+		}
+
+		private void ControlPanel_Camera_C2_Button_Click( object sender, RoutedEventArgs e )
+		{
+			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Custom2 ) )
+			{
+				Director.isOverridden = false;
+			}
+			else
+			{
+				cameraType = SettingsDirector.CameraType.Custom2;
+
+				UpdateManualCamera();
+			}
+		}
+
+		private void ControlPanel_Camera_C3_Button_Click( object sender, RoutedEventArgs e )
+		{
+			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Custom3 ) )
+			{
+				Director.isOverridden = false;
+			}
+			else
+			{
+				cameraType = SettingsDirector.CameraType.Custom3;
+
+				UpdateManualCamera();
+			}
+		}
+
+		private void ControlPanel_Camera_C4_Button_Click( object sender, RoutedEventArgs e )
+		{
+			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Custom4 ) )
+			{
+				Director.isOverridden = false;
+			}
+			else
+			{
+				cameraType = SettingsDirector.CameraType.Custom4;
+
+				UpdateManualCamera();
+			}
+		}
+
+		private void ControlPanel_Camera_C5_Button_Click( object sender, RoutedEventArgs e )
+		{
+			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Custom5 ) )
+			{
+				Director.isOverridden = false;
+			}
+			else
+			{
+				cameraType = SettingsDirector.CameraType.Custom5;
+
+				UpdateManualCamera();
+			}
+		}
+
+		private void ControlPanel_Camera_C6_Button_Click( object sender, RoutedEventArgs e )
+		{
+			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Custom6 ) )
+			{
+				Director.isOverridden = false;
+			}
+			else
+			{
+				cameraType = SettingsDirector.CameraType.Custom6;
 
 				UpdateManualCamera();
 			}
@@ -1532,6 +1629,66 @@ namespace iRacingTVController
 			cameraSelector.ShowDialog();
 		}
 
+		private void Director_Cameras_Custom1_Button_Click( object sender, EventArgs e )
+		{
+			var cameraSelector = new CameraSelector( Director_Cameras_Custom1 )
+			{
+				Owner = this
+			};
+
+			cameraSelector.ShowDialog();
+		}
+
+		private void Director_Cameras_Custom2_Button_Click( object sender, EventArgs e )
+		{
+			var cameraSelector = new CameraSelector( Director_Cameras_Custom2 )
+			{
+				Owner = this
+			};
+
+			cameraSelector.ShowDialog();
+		}
+
+		private void Director_Cameras_Custom3_Button_Click( object sender, EventArgs e )
+		{
+			var cameraSelector = new CameraSelector( Director_Cameras_Custom3 )
+			{
+				Owner = this
+			};
+
+			cameraSelector.ShowDialog();
+		}
+
+		private void Director_Cameras_Custom4_Button_Click( object sender, EventArgs e )
+		{
+			var cameraSelector = new CameraSelector( Director_Cameras_Custom4 )
+			{
+				Owner = this
+			};
+
+			cameraSelector.ShowDialog();
+		}
+
+		private void Director_Cameras_Custom5_Button_Click( object sender, EventArgs e )
+		{
+			var cameraSelector = new CameraSelector( Director_Cameras_Custom5 )
+			{
+				Owner = this
+			};
+
+			cameraSelector.ShowDialog();
+		}
+
+		private void Director_Cameras_Custom6_Button_Click( object sender, EventArgs e )
+		{
+			var cameraSelector = new CameraSelector( Director_Cameras_Custom6 )
+			{
+				Owner = this
+			};
+
+			cameraSelector.ShowDialog();
+		}
+
 		private void Director_Update( object sender, EventArgs e )
 		{
 			if ( initializing == 0 )
@@ -1699,6 +1856,96 @@ namespace iRacingTVController
 					var director = Settings.directorLocal.camerasVeryFar_Overridden ? Settings.directorLocal : Settings.directorGlobal;
 
 					director.camerasVeryFar = Director_Cameras_VeryFar.Text;
+				}
+
+				overridden = Director_Cameras_Custom1_Override.IsChecked ?? false;
+
+				if ( Settings.directorLocal.camerasCustom1_Overridden != overridden )
+				{
+					Settings.directorLocal.camerasCustom1_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var director = Settings.directorLocal.camerasCustom1_Overridden ? Settings.directorLocal : Settings.directorGlobal;
+
+					director.camerasCustom1 = Director_Cameras_Custom1.Text;
+				}
+				
+				overridden = Director_Cameras_Custom2_Override.IsChecked ?? false;
+
+				if ( Settings.directorLocal.camerasCustom2_Overridden != overridden )
+				{
+					Settings.directorLocal.camerasCustom2_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var director = Settings.directorLocal.camerasCustom2_Overridden ? Settings.directorLocal : Settings.directorGlobal;
+
+					director.camerasCustom2 = Director_Cameras_Custom2.Text;
+				}
+
+				overridden = Director_Cameras_Custom3_Override.IsChecked ?? false;
+
+				if ( Settings.directorLocal.camerasCustom3_Overridden != overridden )
+				{
+					Settings.directorLocal.camerasCustom3_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var director = Settings.directorLocal.camerasCustom3_Overridden ? Settings.directorLocal : Settings.directorGlobal;
+
+					director.camerasCustom3 = Director_Cameras_Custom3.Text;
+				}
+
+				overridden = Director_Cameras_Custom4_Override.IsChecked ?? false;
+
+				if ( Settings.directorLocal.camerasCustom4_Overridden != overridden )
+				{
+					Settings.directorLocal.camerasCustom4_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var director = Settings.directorLocal.camerasCustom4_Overridden ? Settings.directorLocal : Settings.directorGlobal;
+
+					director.camerasCustom4 = Director_Cameras_Custom4.Text;
+				}
+
+				overridden = Director_Cameras_Custom5_Override.IsChecked ?? false;
+
+				if ( Settings.directorLocal.camerasCustom5_Overridden != overridden )
+				{
+					Settings.directorLocal.camerasCustom5_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var director = Settings.directorLocal.camerasCustom5_Overridden ? Settings.directorLocal : Settings.directorGlobal;
+
+					director.camerasCustom5 = Director_Cameras_Custom5.Text;
+				}
+
+				overridden = Director_Cameras_Custom6_Override.IsChecked ?? false;
+
+				if ( Settings.directorLocal.camerasCustom6_Overridden != overridden )
+				{
+					Settings.directorLocal.camerasCustom6_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var director = Settings.directorLocal.camerasCustom6_Overridden ? Settings.directorLocal : Settings.directorGlobal;
+
+					director.camerasCustom6 = Director_Cameras_Custom6.Text;
 				}
 
 				overridden = Director_SwitchDelay_Director_Override.IsChecked ?? false;
@@ -2424,6 +2671,8 @@ namespace iRacingTVController
 		{
 			string currentFilePath = Image_FilePath.Text;
 
+			currentFilePath = Settings.GetFullPath( currentFilePath );
+
 			var openFileDialog = new OpenFileDialog()
 			{
 				Title = "Select an Image File",
@@ -3045,6 +3294,8 @@ namespace iRacingTVController
 		private void Overlay_TrackMap_TextureFilePath_Button_Click( object sender, EventArgs e )
 		{
 			string currentFilePath = Overlay_TrackMap_TextureFilePath.Text;
+
+			currentFilePath = Settings.GetFullPath( currentFilePath );
 
 			var openFileDialog = new OpenFileDialog()
 			{

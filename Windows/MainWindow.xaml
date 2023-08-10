@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.23"
+        Title="iRacing-TV Controller v1.24"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="860" Height="550" MinWidth="860" MinHeight="550" Icon="/Assets/icon/iracing-tv.ico">
     <Grid>
@@ -49,6 +49,13 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="6" />
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6" />
+                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="35"/>
                         </Grid.ColumnDefinitions>
                         <Button x:Name="ControlPanel_Camera_Scenic_Button" Content="Scenic" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Scenic_Button_Click" />
                         <Button x:Name="ControlPanel_Camera_Pits_Button" Content="Pits" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Pits_Button_Click" Grid.Column="1" />
@@ -59,6 +66,12 @@
                         <Button x:Name="ControlPanel_Camera_Far_Button" Content="Far" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Far_Button_Click" Grid.Column="7" />
                         <Button x:Name="ControlPanel_Camera_VeryFar_Button" Content="Very Far" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_VeryFar_Button_Click" Grid.Column="8" />
                         <Button x:Name="ControlPanel_Camera_AutoCam_Button" Content="AutoCam" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_AutoCam_Button_Click" Grid.Column="10" />
+                        <Button x:Name="ControlPanel_Camera_C1_Button" Content="C1" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_C1_Button_Click" Grid.Column="12" />
+                        <Button x:Name="ControlPanel_Camera_C2_Button" Content="C2" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_C2_Button_Click" Grid.Column="13" />
+                        <Button x:Name="ControlPanel_Camera_C3_Button" Content="C3" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_C3_Button_Click" Grid.Column="14" />
+                        <Button x:Name="ControlPanel_Camera_C4_Button" Content="C4" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_C4_Button_Click" Grid.Column="15" />
+                        <Button x:Name="ControlPanel_Camera_C5_Button" Content="C5" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_C5_Button_Click" Grid.Column="16" />
+                        <Button x:Name="ControlPanel_Camera_C6_Button" Content="C6" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_C6_Button_Click" Grid.Column="17" />
                     </Grid>
                     <Grid x:Name="ControlPanel_ButtonGrid" Margin="0,6,0,0" Grid.Row="2">
                         <Grid.RowDefinitions>
@@ -109,7 +122,7 @@
                         <ToggleButton x:Name="ControlPanel_Intro_Button" Content="Intro" Height="25.96" Padding="3,0,3,0" Margin="0,0,6,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="7" />
                         <ToggleButton x:Name="ControlPanel_C1_Button" Content="C1" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="8" />
                         <ToggleButton x:Name="ControlPanel_C2_Button" Content="C2" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="9" />
-                        <ToggleButton x:Name="ControlPanel_C3_Button" Content="C3" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="10"/>
+                        <ToggleButton x:Name="ControlPanel_C3_Button" Content="C3" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="10" />
                         <ToggleButton x:Name="ControlPanel_C4_Button" Content="C4" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="11" />
                         <ToggleButton x:Name="ControlPanel_C5_Button" Content="C5" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="12" />
                         <ToggleButton x:Name="ControlPanel_C6_Button" Content="C6" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="13" />
@@ -356,140 +369,214 @@
                     <Grid Grid.Row="1">
                         <TabControl TabStripPlacement="Left">
                             <TabItem Header="Cameras" Padding="12,6,12,6">
-                                <StackPanel Margin="6,6,6,6">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="90"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Practice"/>
-                                        <TextBox x:Name="Director_Cameras_Practice" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
-                                        <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Practice_Button_Click" Grid.Column="2"/>
-                                        <CheckBox x:Name="Director_Cameras_Practice_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
-                                    <Grid Margin="0,6,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="90"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Qualifying"/>
-                                        <TextBox x:Name="Director_Cameras_Qualifying" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
-                                        <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Qualifying_Button_Click" Grid.Column="2"/>
-                                        <CheckBox x:Name="Director_Cameras_Qualifying_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
-                                    <Grid Margin="0,6,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="90"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Intro"/>
-                                        <TextBox x:Name="Director_Cameras_Intro" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
-                                        <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Intro_Button_Click" Grid.Column="2"/>
-                                        <CheckBox x:Name="Director_Cameras_Intro_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
-                                    <Grid Margin="0,32,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="90"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Scenic"/>
-                                        <TextBox x:Name="Director_Cameras_Scenic" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
-                                        <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Scenic_Button_Click" Grid.Column="2"/>
-                                        <CheckBox x:Name="Director_Cameras_Scenic_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
-                                    <Grid Margin="0,6,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="90"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Pits"/>
-                                        <TextBox x:Name="Director_Cameras_Pits" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
-                                        <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Pits_Button_Click" Grid.Column="2"/>
-                                        <CheckBox x:Name="Director_Cameras_Pits_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
-                                    <Grid Margin="0,6,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="90"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Start/Finish"/>
-                                        <TextBox x:Name="Director_Cameras_StartFinish" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
-                                        <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_StartFinish_Button_Click" Grid.Column="2"/>
-                                        <CheckBox x:Name="Director_Cameras_StartFinish_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
-                                    <Grid Margin="0,32,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="90"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Inside"/>
-                                        <TextBox x:Name="Director_Cameras_Inside" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
-                                        <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Inside_Button_Click" Grid.Column="2"/>
-                                        <CheckBox x:Name="Director_Cameras_Inside_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
-                                    <Grid Margin="0,6,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="90"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Close"/>
-                                        <TextBox x:Name="Director_Cameras_Close" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
-                                        <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Close_Button_Click" Grid.Column="2"/>
-                                        <CheckBox x:Name="Director_Cameras_Close_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
-                                    <Grid Margin="0,6,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="90"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Medium"/>
-                                        <TextBox x:Name="Director_Cameras_Medium" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
-                                        <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Medium_Button_Click" Grid.Column="2"/>
-                                        <CheckBox x:Name="Director_Cameras_Medium_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
-                                    <Grid Margin="0,6,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="90"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Far"/>
-                                        <TextBox x:Name="Director_Cameras_Far" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
-                                        <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Far_Button_Click" Grid.Column="2"/>
-                                        <CheckBox x:Name="Director_Cameras_Far_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
-                                    <Grid Margin="0,6,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="90"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Very Far"/>
-                                        <TextBox x:Name="Director_Cameras_VeryFar" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
-                                        <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_VeryFar_Button_Click" Grid.Column="2" VerticalContentAlignment="Center"/>
-                                        <CheckBox x:Name="Director_Cameras_VeryFar_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
-                                </StackPanel>
+                                <ScrollViewer>
+                                    <StackPanel Margin="6,6,6,6">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Practice"/>
+                                            <TextBox x:Name="Director_Cameras_Practice" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Practice_Button_Click" Grid.Column="2"/>
+                                            <CheckBox x:Name="Director_Cameras_Practice_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                        <Grid Margin="0,6,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Qualifying"/>
+                                            <TextBox x:Name="Director_Cameras_Qualifying" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Qualifying_Button_Click" Grid.Column="2"/>
+                                            <CheckBox x:Name="Director_Cameras_Qualifying_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                        <Grid Margin="0,6,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Intro"/>
+                                            <TextBox x:Name="Director_Cameras_Intro" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Intro_Button_Click" Grid.Column="2"/>
+                                            <CheckBox x:Name="Director_Cameras_Intro_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                        <Grid Margin="0,32,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Scenic"/>
+                                            <TextBox x:Name="Director_Cameras_Scenic" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Scenic_Button_Click" Grid.Column="2"/>
+                                            <CheckBox x:Name="Director_Cameras_Scenic_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                        <Grid Margin="0,6,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Pits"/>
+                                            <TextBox x:Name="Director_Cameras_Pits" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Pits_Button_Click" Grid.Column="2"/>
+                                            <CheckBox x:Name="Director_Cameras_Pits_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                        <Grid Margin="0,6,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Start/Finish"/>
+                                            <TextBox x:Name="Director_Cameras_StartFinish" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_StartFinish_Button_Click" Grid.Column="2"/>
+                                            <CheckBox x:Name="Director_Cameras_StartFinish_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                        <Grid Margin="0,32,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Inside"/>
+                                            <TextBox x:Name="Director_Cameras_Inside" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Inside_Button_Click" Grid.Column="2"/>
+                                            <CheckBox x:Name="Director_Cameras_Inside_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                        <Grid Margin="0,6,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Close"/>
+                                            <TextBox x:Name="Director_Cameras_Close" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Close_Button_Click" Grid.Column="2"/>
+                                            <CheckBox x:Name="Director_Cameras_Close_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                        <Grid Margin="0,6,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Medium"/>
+                                            <TextBox x:Name="Director_Cameras_Medium" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Medium_Button_Click" Grid.Column="2"/>
+                                            <CheckBox x:Name="Director_Cameras_Medium_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                        <Grid Margin="0,6,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Far"/>
+                                            <TextBox x:Name="Director_Cameras_Far" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Far_Button_Click" Grid.Column="2"/>
+                                            <CheckBox x:Name="Director_Cameras_Far_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                        <Grid Margin="0,6,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Very Far"/>
+                                            <TextBox x:Name="Director_Cameras_VeryFar" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_VeryFar_Button_Click" Grid.Column="2" VerticalContentAlignment="Center"/>
+                                            <CheckBox x:Name="Director_Cameras_VeryFar_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                        <Grid Margin="0,32,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Custom 1"/>
+                                            <TextBox x:Name="Director_Cameras_Custom1" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Custom1_Button_Click" Grid.Column="2"/>
+                                            <CheckBox x:Name="Director_Cameras_Custom1_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                        <Grid Margin="0,6,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Custom 2"/>
+                                            <TextBox x:Name="Director_Cameras_Custom2" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Custom2_Button_Click" Grid.Column="2"/>
+                                            <CheckBox x:Name="Director_Cameras_Custom2_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                        <Grid Margin="0,6,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Custom 3"/>
+                                            <TextBox x:Name="Director_Cameras_Custom3" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Custom3_Button_Click" Grid.Column="2"/>
+                                            <CheckBox x:Name="Director_Cameras_Custom3_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                        <Grid Margin="0,6,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Custom 4"/>
+                                            <TextBox x:Name="Director_Cameras_Custom4" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Custom4_Button_Click" Grid.Column="2"/>
+                                            <CheckBox x:Name="Director_Cameras_Custom4_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                        <Grid Margin="0,6,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Custom 5"/>
+                                            <TextBox x:Name="Director_Cameras_Custom5" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Custom5_Button_Click" Grid.Column="2" VerticalContentAlignment="Center"/>
+                                            <CheckBox x:Name="Director_Cameras_Custom5_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                        <Grid Margin="0,6,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Custom 6"/>
+                                            <TextBox x:Name="Director_Cameras_Custom6" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Custom6_Button_Click" Grid.Column="2" VerticalContentAlignment="Center"/>
+                                            <CheckBox x:Name="Director_Cameras_Custom6_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
+                                    </StackPanel>
+                                </ScrollViewer>
                             </TabItem>
                             <TabItem Header="Switch Delay" Padding="12,6,12,6">
                                 <StackPanel Margin="6,6,6,6">

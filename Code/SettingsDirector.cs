@@ -20,6 +20,12 @@ namespace iRacingTVController
 			Medium,
 			Far,
 			VeryFar,
+			Custom1,
+			Custom2,
+			Custom3,
+			Custom4,
+			Custom5,
+			Custom6,
 			AutoCam
 		}
 
@@ -31,13 +37,20 @@ namespace iRacingTVController
 
 		public string camerasScenic = "scenic";
 		public string camerasPits = "pit lane, tv2";
-		public string camerasStartFinish = "starter cam, tv2";
+		public string camerasStartFinish = "s/f line, starter cam, tv2";
 
 		public string camerasInside = "roll bar";
 		public string camerasClose = "zoomed in, tv1";
 		public string camerasMedium = "tv2";
 		public string camerasFar = "tv3, spectator, spectator cam";
 		public string camerasVeryFar = "spectator, spectator cam, blimp";
+
+		public string camerasCustom1 = "1 entry";
+		public string camerasCustom2 = "turns 1-2";
+		public string camerasCustom3 = "2 exit";
+		public string camerasCustom4 = "3 entry";
+		public string camerasCustom5 = "turns 3-4";
+		public string camerasCustom6 = "4 exit";
 
 		public bool camerasPractice_Overridden = false;
 		public bool camerasQualifying_Overridden = false;
@@ -53,7 +66,14 @@ namespace iRacingTVController
 		public bool camerasFar_Overridden = false;
 		public bool camerasVeryFar_Overridden = false;
 
-		public float switchDelayDirector = 5;
+		public bool camerasCustom1_Overridden = false;
+		public bool camerasCustom2_Overridden = false;
+		public bool camerasCustom3_Overridden = false;
+		public bool camerasCustom4_Overridden = false;
+		public bool camerasCustom5_Overridden = false;
+		public bool camerasCustom6_Overridden = false;
+
+		public float switchDelayDirector = 8;
 		public float switchDelayIracing = 2;
 		public float switchDelayRadioChatter = 1;
 		public float switchDelayNotInRace = 10;
@@ -109,7 +129,7 @@ namespace iRacingTVController
 		public bool rules_Overridden = false;
 
 		public float autoCamInsideMinimum = 2.5f;
-		public float autoCamInsideMaximum = 12.0f;
+		public float autoCamInsideMaximum = 15.0f;
 		public float autoCamCloseMaximum = 10.0f;
 		public float autoCamMediumMaximum = 20.0f;
 		public float autoCamFarMaximum = 30.0f;

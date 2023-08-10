@@ -315,6 +315,30 @@ namespace iRacingTVController
 				case SettingsDirector.CameraType.VeryFar:
 					cameraGroupNames = Settings.director.camerasVeryFar;
 					break;
+
+				case SettingsDirector.CameraType.Custom1:
+					cameraGroupNames = Settings.director.camerasCustom1;
+					break;
+
+				case SettingsDirector.CameraType.Custom2:
+					cameraGroupNames = Settings.director.camerasCustom2;
+					break;
+
+				case SettingsDirector.CameraType.Custom3:
+					cameraGroupNames = Settings.director.camerasCustom3;
+					break;
+
+				case SettingsDirector.CameraType.Custom4:
+					cameraGroupNames = Settings.director.camerasCustom4;
+					break;
+
+				case SettingsDirector.CameraType.Custom5:
+					cameraGroupNames = Settings.director.camerasCustom5;
+					break;
+
+				case SettingsDirector.CameraType.Custom6:
+					cameraGroupNames = Settings.director.camerasCustom6;
+					break;
 			}
 
 			bool shuffleCamerasInList = ( ( cameraType != SettingsDirector.CameraType.Pits ) && ( cameraType != SettingsDirector.CameraType.StartFinish ) );

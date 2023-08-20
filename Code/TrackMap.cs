@@ -116,7 +116,7 @@ namespace iRacingTVController
 				minX = vector.x;
 				minY = vector.y;
 				maxX = vector.x;
-				maxY = vector.x;
+				maxY = vector.y;
 
 				fullVectorList[ 0 ] = vector;
 

@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><!-- title --></title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="live-data-container" data-update-interval="<!-- update interval -->">
+        <div class="leaderboard-template leaderboard d-none">
+            <div class="leaderboard-class-name"></div>
+            <div class="leaderboard-positions-container"></div>
+        </div>
+        <div class="leaderboard-position-template leaderboard-position d-none">
+            <div class="leaderboard-position-text"></div>
+            <div class="leaderboard-car-number-text"></div>
+            <div class="leaderboard-driver-name-text"></div>
+            <div class="leaderboard-telemetry-text"></div>
+            <div class="leaderboard-speed-text"></div>
+        </div>
+        <div class="leaderboards-container">
+        </div>
+        <div class="race-status-container">
+            <div class="race-status-black-light"></div>
+            <div class="race-status-green-light">Green</div>
+            <div class="race-status-yellow-light">Yellow</div>
+            <div class="race-status-white-light">White</div>
+            <div class="race-status-green-flag">Green Flag</div>
+            <div class="race-status-yellow-flag">Yellow Flag</div>
+            <div class="race-status-checkered-flag">Checkered Flag</div>
+            <div class="race-status-session-name"></div>
+            <div class="race-status-laps-remaining"></div>
+            <div class="race-status-current-lap-container">
+                <div class="race-status-units"></div>
+                <div class="race-status-current-lap"></div>
+            </div>
+        </div>
+        <div class="track-map-container">
+            <canvas class="track-map-canvas" width=512 height=512 data-line-width=15 data-stroke-style="#000" data-start-finish-size=5 data-start-finish-fill-style="#E00" data-car-size=8 data-car-fill-style="#FFF" data-car-stroke-style="#000"></canvas>
+        </div>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>

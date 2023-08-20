@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Text.Json.Serialization;
 
 using static iRacingTVController.Unity;
 
@@ -8,20 +9,23 @@ namespace iRacingTVController
 	[Serializable]
 	public class LiveDataLeaderboardSlot
 	{
-		public bool show = false;
+		[JsonInclude] public bool show = false;
 		public bool showHighlight = false;
 
 		public Vector2 offset = Vector2.zero;
 
-		public string positionText = string.Empty;
+		[JsonInclude] public string positionText = string.Empty;
 		public Color positionColor = Color.white;
 
-		public string driverNameText = string.Empty;
+		[JsonInclude] public string carNumberText = string.Empty;
+		public Color carNumberTextColor = Color.white;
+
+		[JsonInclude] public string driverNameText = string.Empty;
 		public Color driverNameColor = Color.white;
 
-		public string telemetryText = string.Empty;
+		[JsonInclude] public string telemetryText = string.Empty;
 		public Color telemetryColor = Color.white;
 
-		public string speedText = string.Empty;
+		[JsonInclude] public string speedText = string.Empty;
 	}
 }

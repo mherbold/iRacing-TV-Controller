@@ -42,14 +42,12 @@ namespace iRacingTVController
 			Directory.SetCurrentDirectory( documentsFolder );
 
 			LogFile.Initialize();
-
 			LogFile.Write( $"{MainWindow.Instance.Title} is starting up!\r\n\r\n" );
 
 			Settings.Initialize();
-
 			IPC.Initialize();
-
 			DataApi.Initialize( false );
+			WebPage.Initialize();
 
 			Task.Run( () => ProgramAsync() );
 		}
@@ -107,6 +105,8 @@ namespace iRacingTVController
 
 					LiveData.Instance.Update();
 
+					WebPage.Update();
+
 					IPC.UpdateSettings();
 					IPC.UpdateLiveData();
 
@@ -123,6 +123,31 @@ namespace iRacingTVController
 			}
 
 			Interlocked.Decrement( ref Program.tickMutex );
+		}
+
+		public static string GetTimeString( double timeInSeconds, bool includeMilliseconds )
+		{
+			TimeSpan time = TimeSpan.FromSeconds( timeInSeconds );
+
+			if ( time.Hours > 0 )
+			{
+				return time.ToString( @"h\:mm\:ss" );
+			}
+			else if ( includeMilliseconds )
+			{
+				if ( time.Minutes > 0 )
+				{
+					return time.ToString( @"m\:ss\.fff" );
+				}
+				else
+				{
+					return time.ToString( @"ss\.fff" );
+				}
+			}
+			else
+			{
+				return time.ToString( @"m\:ss" );
+			}
 		}
 	}
 }

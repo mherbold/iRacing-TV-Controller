@@ -1,6 +1,6 @@
 ﻿
 using System;
-
+using System.Text.Json.Serialization;
 using irsdkSharp.Serialization.Enums.Fastest;
 
 using static iRacingTVController.Unity;
@@ -15,17 +15,17 @@ namespace iRacingTVController
 
 		public static LiveData Instance { get; private set; }
 
-		public bool isConnected = false;
+		[JsonInclude] public bool isConnected = false;
 
 		public LiveDataControlPanel liveDataControlPanel = new();
 		public LiveDataDriver[] liveDataDrivers = new LiveDataDriver[ MaxNumDrivers ];
-		public LiveDataRaceStatus liveDataRaceStatus = new();
-		public LiveDataLeaderboard[]? liveDataLeaderboard = null;
+		[JsonInclude] public LiveDataRaceStatus liveDataRaceStatus = new();
+		[JsonInclude] public LiveDataLeaderboard[]? liveDataLeaderboards = null;
 		public LiveDataVoiceOf liveDataVoiceOf = new();
 		public LiveDataSubtitle liveDataSubtitle = new();
 		public LiveDataIntro liveDataIntro = new();
 		public LiveDataStartLights liveDataStartLights = new();
-		public LiveDataTrackMap liveDataTrackMap = new();
+		[JsonInclude] public LiveDataTrackMap liveDataTrackMap = new();
 
 		public string seriesLogoTextureUrl = string.Empty;
 
@@ -108,7 +108,7 @@ namespace iRacingTVController
 
 			if ( IRSDK.normalizedData.isInTimedRace || !IRSDK.normalizedSession.isInRaceSession )
 			{
-				liveDataRaceStatus.lapsRemainingText = GetTimeString( IRSDK.normalizedData.sessionTimeRemaining, false );
+				liveDataRaceStatus.lapsRemainingText = Program.GetTimeString( IRSDK.normalizedData.sessionTimeRemaining, false );
 			}
 			else if ( IRSDK.normalizedData.sessionLapsRemaining == 0 )
 			{
@@ -160,7 +160,7 @@ namespace iRacingTVController
 
 			if ( IRSDK.normalizedData.isInTimedRace || !IRSDK.normalizedSession.isInRaceSession )
 			{
-				liveDataRaceStatus.currentLapText = GetTimeString( Math.Ceiling( IRSDK.normalizedData.sessionTimeTotal - IRSDK.normalizedData.sessionTimeRemaining ), false ) + " | " + GetTimeString( IRSDK.normalizedData.sessionTimeTotal, false );
+				liveDataRaceStatus.currentLapText = Program.GetTimeString( Math.Ceiling( IRSDK.normalizedData.sessionTimeTotal - IRSDK.normalizedData.sessionTimeRemaining ), false ) + " | " + Program.GetTimeString( IRSDK.normalizedData.sessionTimeTotal, false );
 			}
 			else
 			{
@@ -194,13 +194,13 @@ namespace iRacingTVController
 		{
 			// allocate leaderboards
 
-			if ( ( liveDataLeaderboard == null ) || ( liveDataLeaderboard.Length != IRSDK.normalizedData.numLeaderboardClasses ) )
+			if ( ( liveDataLeaderboards == null ) || ( liveDataLeaderboards.Length != IRSDK.normalizedData.numLeaderboardClasses ) )
 			{
-				liveDataLeaderboard = new LiveDataLeaderboard[ IRSDK.normalizedData.numLeaderboardClasses ];
+				liveDataLeaderboards = new LiveDataLeaderboard[ IRSDK.normalizedData.numLeaderboardClasses ];
 
-				for ( var leaderboardIndex = 0; leaderboardIndex < liveDataLeaderboard.Length; leaderboardIndex++ )
+				for ( var leaderboardIndex = 0; leaderboardIndex < liveDataLeaderboards.Length; leaderboardIndex++ )
 				{
-					liveDataLeaderboard[ leaderboardIndex ] = new LiveDataLeaderboard();
+					liveDataLeaderboards[ leaderboardIndex ] = new LiveDataLeaderboard();
 				}
 			}
 
@@ -210,7 +210,7 @@ namespace iRacingTVController
 
 			for ( var classIndex = 0; classIndex < IRSDK.normalizedData.numLeaderboardClasses; classIndex++ )
 			{
-				var currentLiveDataLeaderboard = liveDataLeaderboard[ classIndex ];
+				var currentLiveDataLeaderboard = liveDataLeaderboards[ classIndex ];
 
 				var currentLeaderboardClass = IRSDK.normalizedData.leaderboardClass[ classIndex ];
 
@@ -367,6 +367,12 @@ namespace iRacingTVController
 							liveDataLeaderboardSlot.positionColor = tintColor;
 						}
 
+						// car number text
+
+						liveDataLeaderboardSlot.carNumberText = normalizedCar.carNumber;
+
+						// car number text color not implemented yet
+
 						// driver name
 
 						liveDataLeaderboardSlot.driverNameText = normalizedCar.abbrevName;
@@ -397,7 +403,7 @@ namespace iRacingTVController
 							{
 								if ( leadCarBestLapTime == normalizedCar.bestLapTime )
 								{
-									liveDataLeaderboardSlot.telemetryText = GetTimeString( leadCarBestLapTime, true );
+									liveDataLeaderboardSlot.telemetryText = Program.GetTimeString( leadCarBestLapTime, true );
 								}
 								else
 								{
@@ -652,7 +658,7 @@ namespace iRacingTVController
 								}
 								else
 								{
-									liveDataIntroDriver.qualifyingTimeText = GetTimeString( normalizedCar.qualifyingTime, true );
+									liveDataIntroDriver.qualifyingTimeText = Program.GetTimeString( normalizedCar.qualifyingTime, true );
 								}
 							}
 							else
@@ -692,31 +698,6 @@ namespace iRacingTVController
 				{
 					liveDataStartLights.showReady = true;
 				}
-			}
-		}
-
-		public static string GetTimeString( double timeInSeconds, bool includeMilliseconds )
-		{
-			TimeSpan time = TimeSpan.FromSeconds( timeInSeconds );
-
-			if ( time.Hours > 0 )
-			{
-				return time.ToString( @"h\:mm\:ss" );
-			}
-			else if ( includeMilliseconds )
-			{
-				if ( time.Minutes > 0 )
-				{
-					return time.ToString( @"m\:ss\.fff" );
-				}
-				else
-				{
-					return time.ToString( @"ss\.fff" );
-				}
-			}
-			else
-			{
-				return time.ToString( @"m\:ss" );
 			}
 		}
 	}

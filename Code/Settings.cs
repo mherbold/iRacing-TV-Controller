@@ -97,6 +97,15 @@ namespace iRacingTVController
 				Save( relativeEditorSettingsFilePath, editor );
 			}
 
+			// web page folder
+
+			if ( !Directory.Exists( editor.webpageGeneralOutputFolder ) )
+			{
+				LogFile.Write( $"Directory {editor.webpageGeneralOutputFolder} does not exist, creating it...\r\n" );
+
+				Directory.CreateDirectory( editor.webpageGeneralOutputFolder );
+			}
+
 			// overlay
 
 			if ( !File.Exists( relativeGlobalOverlaySettingsFilePath ) )

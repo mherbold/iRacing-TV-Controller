@@ -1,6 +1,6 @@
 ﻿
 using System;
-
+using System.Text.Json.Serialization;
 using static iRacingTVController.Unity;
 
 namespace iRacingTVController
@@ -15,11 +15,11 @@ namespace iRacingTVController
 		public Vector2 backgroundSize = Vector2.zero;
 		public Vector2 splitterPosition = Vector2.zero;
 
-		public Color classColor = Color.white;
-		public string className = string.Empty;
+		[JsonInclude] public Color classColor = Color.white;
+		[JsonInclude] public string className = string.Empty;
 		public string classNameShort = string.Empty;
 
-		public LiveDataLeaderboardSlot[] liveDataLeaderboardSlots = new LiveDataLeaderboardSlot[ LiveData.MaxNumDrivers ];
+		[JsonInclude] public LiveDataLeaderboardSlot[] liveDataLeaderboardSlots = new LiveDataLeaderboardSlot[ LiveData.MaxNumDrivers ];
 
 		public LiveDataLeaderboard()
 		{

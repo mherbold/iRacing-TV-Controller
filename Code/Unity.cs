@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace iRacingTVController
@@ -119,9 +120,9 @@ namespace iRacingTVController
 		[Serializable]
 		public class Vector3
 		{
-			public float x;
-			public float y;
-			public float z;
+			[JsonInclude] public float x;
+			[JsonInclude] public float y;
+			[JsonInclude] public float z;
 
 			public Vector3()
 			{

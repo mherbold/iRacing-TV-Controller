@@ -84,6 +84,8 @@ namespace iRacingTVController
 				if ( data.SessionNum >= 0 )
 				{
 					normalizedData.Update();
+
+					WebPage.saveToFileQueued = true;
 				}
 			}
 			else if ( wasConnected )
@@ -247,7 +249,6 @@ namespace iRacingTVController
 						}
 						else
 						{
-							targetCamEnabled = false;
 							targetCamFastSwitchEnabled = false;
 						}
 					}
@@ -258,7 +259,6 @@ namespace iRacingTVController
 				sendMessageWaitTimeRemaining = 0;
 				cameraSwitchWaitTimeRemaining = 0;
 
-				targetCamEnabled = false;
 				targetReplayStartFrameNumberEnabled = false;
 				targetReplayStopFrameNumberEnabled = false;
 

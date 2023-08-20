@@ -6,6 +6,13 @@ namespace iRacingTVController
 	[Serializable]
 	public class SettingsEditor
 	{
+		public bool webpageGeneralEnabled = false;
+		public string webpageGeneralSourceFolder = Program.documentsFolder + "Assets\\webpage";
+		public string webpageGeneralOutputFolder = Program.documentsFolder + "WebPage\\";
+		public float webpageGeneralUpdateInterval = 2.0f;
+
+		public string webpageTextTitle = "iRacing-TV Live Telemetry";
+
 		public float iracingGeneralCommandRateLimit = 2.0f;
 
 		public string iracingAccountUsername = string.Empty;

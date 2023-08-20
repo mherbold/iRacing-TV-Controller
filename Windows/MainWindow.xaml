@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.24"
+        Title="iRacing-TV Controller v1.25"
         WindowStartupLocation="CenterScreen"
-        Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="860" Height="550" MinWidth="860" MinHeight="550" Icon="/Assets/icon/iracing-tv.ico">
+        Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="900" Height="700" MinWidth="900" MinHeight="700" Icon="/Assets/icon/iracing-tv.ico">
     <Grid>
         <TabControl>
             <TabItem Header="Control Panel" Padding="12,6,12,6">
@@ -15,89 +15,170 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="90"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Label Content="Target"/>
-                        <TextBox x:Name="ControlPanel_TargetCamCarNumber" Width="50" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" Grid.Column="1" HorizontalContentAlignment="Center" IsEnabled="False"/>
-                        <TextBox x:Name="ControlPanel_TargetDriverName" Width="150" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" Margin="6,0,0,0" Grid.Column="2" IsEnabled="False"/>
-                        <TextBox x:Name="ControlPanel_TargetCamGroupNumber" Width="50" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" Margin="6,0,0,0" Grid.Column="3" HorizontalContentAlignment="Center" IsEnabled="False"/>
-                        <TextBox x:Name="ControlPanel_TargetCamReason" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" Margin="6,0,0,0" Grid.Column="4" IsEnabled="False"/>
-                        <TextBox x:Name="ControlPanel_CameraSwitchTimer" Width="50" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" Margin="6,0,0,0" Grid.Column="5" HorizontalContentAlignment="Center" IsEnabled="False" FontFamily="Courier New"/>
-                        <Button x:Name="ControlPanel_EnableDirector_Button" Width="130" Height="25.96" Padding="3,0,3,0" Content="🎥 Enable Director" Click="ControlPanel_EnableDirector_Click" Margin="6,0,0,0" Grid.Column="6" BorderThickness="1,1,1,1"/>
+                        <Label Content="Race Status" FontSize="10" FontWeight="Bold" />
+                        <Separator Margin="6,0,0,0" Grid.Column="1"/>
                     </Grid>
                     <Grid Margin="0,6,0,0" Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="6" />
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="6" />
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="6" />
-                            <ColumnDefinition Width="35"/>
-                            <ColumnDefinition Width="35"/>
-                            <ColumnDefinition Width="35"/>
-                            <ColumnDefinition Width="35"/>
-                            <ColumnDefinition Width="35"/>
-                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="ControlPanel_Camera_Scenic_Button" Content="Scenic" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Scenic_Button_Click" />
-                        <Button x:Name="ControlPanel_Camera_Pits_Button" Content="Pits" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Pits_Button_Click" Grid.Column="1" />
-                        <Button x:Name="ControlPanel_Camera_StartFinish_Button" Content="S/F" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_StartFinish_Button_Click" Grid.Column="2" />
-                        <Button x:Name="ControlPanel_Camera_Inside_Button" Content="Inside" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Inside_Button_Click" Grid.Column="4" />
-                        <Button x:Name="ControlPanel_Camera_Close_Button" Content="Close" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Close_Button_Click" Grid.Column="5"/>
-                        <Button x:Name="ControlPanel_Camera_Medium_Button" Content="Medium" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Medium_Button_Click" Grid.Column="6" />
-                        <Button x:Name="ControlPanel_Camera_Far_Button" Content="Far" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_Far_Button_Click" Grid.Column="7" />
-                        <Button x:Name="ControlPanel_Camera_VeryFar_Button" Content="Very Far" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_VeryFar_Button_Click" Grid.Column="8" />
-                        <Button x:Name="ControlPanel_Camera_AutoCam_Button" Content="AutoCam" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_AutoCam_Button_Click" Grid.Column="10" />
-                        <Button x:Name="ControlPanel_Camera_C1_Button" Content="C1" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_C1_Button_Click" Grid.Column="12" />
-                        <Button x:Name="ControlPanel_Camera_C2_Button" Content="C2" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_C2_Button_Click" Grid.Column="13" />
-                        <Button x:Name="ControlPanel_Camera_C3_Button" Content="C3" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_C3_Button_Click" Grid.Column="14" />
-                        <Button x:Name="ControlPanel_Camera_C4_Button" Content="C4" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_C4_Button_Click" Grid.Column="15" />
-                        <Button x:Name="ControlPanel_Camera_C5_Button" Content="C5" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_C5_Button_Click" Grid.Column="16" />
-                        <Button x:Name="ControlPanel_Camera_C6_Button" Content="C6" Height="25.96" Padding="3,0,3,0" Click="ControlPanel_Camera_C6_Button_Click" Grid.Column="17" />
+                        <StackPanel Width="90" Margin="0,0,3,0">
+                            <TextBox x:Name="ControlPanel_RaceStatus_SimFrame" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                            <Label Content="Sim Frame" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                        </StackPanel>
+                        <StackPanel Width="120" Margin="3,0,0,0" Grid.Column="1">
+                            <TextBox x:Name="ControlPanel_RaceStatus_SessionName" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                            <Label Content="Session Name" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                        </StackPanel>
+                        <StackPanel Width="120" Margin="3,0,0,0" Grid.Column="2">
+                            <TextBox x:Name="ControlPanel_RaceStatus_SessionType" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                            <Label Content="Session Type" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                        </StackPanel>
+                        <StackPanel Width="120" Margin="3,0,0,0" Grid.Column="3">
+                            <TextBox x:Name="ControlPanel_RaceStatus_SessionState" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                            <Label Content="Session State" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                        </StackPanel>
+                        <StackPanel Width="60" Margin="3,0,3,0" Grid.Column="4">
+                            <TextBox x:Name="ControlPanel_RaceStatus_SimTime" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                            <Label Content="Sim Time" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                        </StackPanel>
+                        <StackPanel Width="60" Margin="3,0,3,0" Grid.Column="5">
+                            <TextBox x:Name="ControlPanel_RaceStatus_RemainingTime" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                            <Label Content="Rem. Time" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                        </StackPanel>
+                        <StackPanel Width="60" Margin="3,0,3,0" Grid.Column="6">
+                            <TextBox x:Name="ControlPanel_RaceStatus_RemainingLaps" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                            <Label Content="Rem. Laps" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                        </StackPanel>
                     </Grid>
-                    <Grid x:Name="ControlPanel_ButtonGrid" Margin="0,6,0,0" Grid.Row="2">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                    <Grid Margin="0,6,0,0" Grid.Row="2">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="90"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
+                        <Label Content="Camera Control" FontSize="10" FontWeight="Bold" />
+                        <Separator Margin="6,0,0,0" Grid.Column="1"/>
                     </Grid>
                     <Grid Margin="0,6,0,0" Grid.Row="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Margin="0,0,3,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Width="60" Margin="0,0,3,0">
+                                    <TextBox x:Name="ControlPanel_CameraControl_Timer" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontFamily="Courier New" FontSize="11"/>
+                                    <Label Content="Timer" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                                </StackPanel>
+                                <StackPanel Width="60" Margin="3,0,3,0" Grid.Column="1">
+                                    <TextBox x:Name="ControlPanel_CameraControl_CarNumber" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                                    <Label Content="Car Number" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                                </StackPanel>
+                                <StackPanel Width="150" Margin="3,0,3,0" Grid.Column="2">
+                                    <TextBox x:Name="ControlPanel_CameraControl_DriverName" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                                    <Label Content="Driver Name" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                                </StackPanel>
+                                <StackPanel Width="90" Margin="3,0,3,0" Grid.Column="3">
+                                    <TextBox x:Name="ControlPanel_CameraControl_CameraGroup" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                                    <Label Content="Camera Group" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                                </StackPanel>
+                                <StackPanel Width="360" Margin="3,0,0,0" Grid.Column="4">
+                                    <TextBox x:Name="ControlPanel_CameraControl_Reason" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                                    <Label Content="Reason" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                                </StackPanel>
+                            </Grid>
+                            <Grid x:Name="ControlPanel_ButtonGrid" Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                        </Grid>
+                        <StackPanel Width="90" Margin="3,0,0,0" Grid.Column="1">
+                            <Button x:Name="ControlPanel_CameraControl_Enable_Button" Height="25" Padding="3,0,3,0" Content="🎥 Enable" Click="ControlPanel_CameraControl_Enable_Button_Click"/>
+                            <Separator Margin="0,6,0,6"/>
+                            <Button x:Name="ControlPanel_CameraControl_Director_Button" Height="25" Padding="3,0,3,0" Content="Director" Click="ControlPanel_CameraControl_Director_Button_Click"/>
+                            <Button x:Name="ControlPanel_CameraControl_Manual_Button" Height="25" Padding="3,0,3,0" Content="Manual" Click="ControlPanel_CameraControl_Manual_Button_Click"/>
+                            <Separator Margin="0,6,0,6"/>
+                            <Button x:Name="ControlPanel_Camera_Scenic_Button" Content="Scenic" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_Scenic_Button_Click"/>
+                            <Button x:Name="ControlPanel_Camera_Pits_Button" Content="Pits" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_Pits_Button_Click"/>
+                            <Button x:Name="ControlPanel_Camera_StartFinish_Button" Content="S/F" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_StartFinish_Button_Click"/>
+                            <Button x:Name="ControlPanel_Camera_Inside_Button" Content="Inside" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_Inside_Button_Click"/>
+                            <Button x:Name="ControlPanel_Camera_Close_Button" Content="Close" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_Close_Button_Click"/>
+                            <Button x:Name="ControlPanel_Camera_Medium_Button" Content="Medium" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_Medium_Button_Click"/>
+                            <Button x:Name="ControlPanel_Camera_Far_Button" Content="Far" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_Far_Button_Click"/>
+                            <Button x:Name="ControlPanel_Camera_VeryFar_Button" Content="Very Far" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_VeryFar_Button_Click"/>
+                            <Button x:Name="ControlPanel_Camera_AutoCam_Button" Content="AutoCam" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_AutoCam_Button_Click"/>
+                            <Separator Margin="0,6,0,6"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="ControlPanel_Camera_C1_Button" Content="C1" Width="45" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_C1_Button_Click"/>
+                                <Button x:Name="ControlPanel_Camera_C2_Button" Content="C2" Width="45" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_C2_Button_Click"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="ControlPanel_Camera_C3_Button" Content="C3" Width="45" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_C3_Button_Click"/>
+                                <Button x:Name="ControlPanel_Camera_C4_Button" Content="C4" Width="45" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_C4_Button_Click"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="ControlPanel_Camera_C5_Button" Content="C5" Width="45" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_C5_Button_Click"/>
+                                <Button x:Name="ControlPanel_Camera_C6_Button" Content="C6" Width="45" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_C6_Button_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Margin="0,6,0,0" Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Overlay Control" FontSize="10" FontWeight="Bold" />
+                        <Separator Margin="6,0,0,0" Grid.Column="1"/>
+                    </Grid>
+                    <Grid Margin="0,6,0,0" Grid.Row="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
@@ -112,20 +193,20 @@
                             <ColumnDefinition Width="35"/>
                             <ColumnDefinition Width="35"/>
                         </Grid.ColumnDefinitions>
-                        <ToggleButton x:Name="ControlPanel_Master_Button" Content="MASTER" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" />
-                        <ToggleButton x:Name="ControlPanel_RaceStatus_Button" Content="Race Status" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="1" />
-                        <ToggleButton x:Name="ControlPanel_Leaderboard_Button" Content="Leaderboard" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="2" />
-                        <ToggleButton x:Name="ControlPanel_TrackMap_Button" Content="Track Map" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="3" />
-                        <ToggleButton x:Name="ControlPanel_StartLights_Button" Content="Start Lights" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="4" />
-                        <ToggleButton x:Name="ControlPanel_VoiceOf_Button" Content="Voice Of" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="5" />
-                        <ToggleButton x:Name="ControlPanel_Subtitles_Button" Content="Subtitles" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="6" />
-                        <ToggleButton x:Name="ControlPanel_Intro_Button" Content="Intro" Height="25.96" Padding="3,0,3,0" Margin="0,0,6,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="7" />
-                        <ToggleButton x:Name="ControlPanel_C1_Button" Content="C1" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="8" />
-                        <ToggleButton x:Name="ControlPanel_C2_Button" Content="C2" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="9" />
-                        <ToggleButton x:Name="ControlPanel_C3_Button" Content="C3" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="10" />
-                        <ToggleButton x:Name="ControlPanel_C4_Button" Content="C4" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="11" />
-                        <ToggleButton x:Name="ControlPanel_C5_Button" Content="C5" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="12" />
-                        <ToggleButton x:Name="ControlPanel_C6_Button" Content="C6" Height="25.96" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="13" />
+                        <ToggleButton x:Name="ControlPanel_Master_Button" Content="MASTER" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" />
+                        <ToggleButton x:Name="ControlPanel_RaceStatus_Button" Content="Race Status" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="1" />
+                        <ToggleButton x:Name="ControlPanel_Leaderboard_Button" Content="Leaderboard" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="2" />
+                        <ToggleButton x:Name="ControlPanel_TrackMap_Button" Content="Track Map" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="3" />
+                        <ToggleButton x:Name="ControlPanel_StartLights_Button" Content="Start Lights" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="4" />
+                        <ToggleButton x:Name="ControlPanel_VoiceOf_Button" Content="Voice Of" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="5" />
+                        <ToggleButton x:Name="ControlPanel_Subtitles_Button" Content="Subtitles" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="6" />
+                        <ToggleButton x:Name="ControlPanel_Intro_Button" Content="Intro" Height="25" Padding="3,0,3,0" Margin="0,0,6,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="7" />
+                        <ToggleButton x:Name="ControlPanel_C1_Button" Content="C1" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="8" />
+                        <ToggleButton x:Name="ControlPanel_C2_Button" Content="C2" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="9" />
+                        <ToggleButton x:Name="ControlPanel_C3_Button" Content="C3" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="10" />
+                        <ToggleButton x:Name="ControlPanel_C4_Button" Content="C4" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="11" />
+                        <ToggleButton x:Name="ControlPanel_C5_Button" Content="C5" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="12" />
+                        <ToggleButton x:Name="ControlPanel_C6_Button" Content="C6" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="13" />
                     </Grid>
                 </Grid>
             </TabItem>
@@ -232,14 +313,14 @@
                                     <GridViewColumn Header="Start" Width="100">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <local:Number Value="{Binding StartFrame}" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" ValueChanged="Incidents_StartFrame_ValueChanged"/>
+                                                <local:Number Value="{Binding StartFrame}" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" ValueChanged="Incidents_StartFrame_ValueChanged"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
                                     <GridViewColumn Header="End" Width="100">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <local:Number Value="{Binding EndFrame}" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" ValueChanged="Incidents_EndFrame_ValueChanged"/>
+                                                <local:Number Value="{Binding EndFrame}" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" ValueChanged="Incidents_EndFrame_ValueChanged"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
@@ -379,7 +460,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Practice"/>
-                                            <TextBox x:Name="Director_Cameras_Practice" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_Practice" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Practice_Button_Click" Grid.Column="2"/>
                                             <CheckBox x:Name="Director_Cameras_Practice_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -391,7 +472,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Qualifying"/>
-                                            <TextBox x:Name="Director_Cameras_Qualifying" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_Qualifying" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Qualifying_Button_Click" Grid.Column="2"/>
                                             <CheckBox x:Name="Director_Cameras_Qualifying_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -403,7 +484,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Intro"/>
-                                            <TextBox x:Name="Director_Cameras_Intro" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_Intro" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Intro_Button_Click" Grid.Column="2"/>
                                             <CheckBox x:Name="Director_Cameras_Intro_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -415,7 +496,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Scenic"/>
-                                            <TextBox x:Name="Director_Cameras_Scenic" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_Scenic" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Scenic_Button_Click" Grid.Column="2"/>
                                             <CheckBox x:Name="Director_Cameras_Scenic_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -427,7 +508,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Pits"/>
-                                            <TextBox x:Name="Director_Cameras_Pits" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_Pits" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Pits_Button_Click" Grid.Column="2"/>
                                             <CheckBox x:Name="Director_Cameras_Pits_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -439,7 +520,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Start/Finish"/>
-                                            <TextBox x:Name="Director_Cameras_StartFinish" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_StartFinish" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_StartFinish_Button_Click" Grid.Column="2"/>
                                             <CheckBox x:Name="Director_Cameras_StartFinish_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -451,7 +532,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Inside"/>
-                                            <TextBox x:Name="Director_Cameras_Inside" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_Inside" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Inside_Button_Click" Grid.Column="2"/>
                                             <CheckBox x:Name="Director_Cameras_Inside_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -463,7 +544,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Close"/>
-                                            <TextBox x:Name="Director_Cameras_Close" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_Close" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Close_Button_Click" Grid.Column="2"/>
                                             <CheckBox x:Name="Director_Cameras_Close_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -475,7 +556,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Medium"/>
-                                            <TextBox x:Name="Director_Cameras_Medium" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_Medium" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Medium_Button_Click" Grid.Column="2"/>
                                             <CheckBox x:Name="Director_Cameras_Medium_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -487,7 +568,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Far"/>
-                                            <TextBox x:Name="Director_Cameras_Far" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_Far" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Far_Button_Click" Grid.Column="2"/>
                                             <CheckBox x:Name="Director_Cameras_Far_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -499,7 +580,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Very Far"/>
-                                            <TextBox x:Name="Director_Cameras_VeryFar" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_VeryFar" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_VeryFar_Button_Click" Grid.Column="2" VerticalContentAlignment="Center"/>
                                             <CheckBox x:Name="Director_Cameras_VeryFar_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -511,7 +592,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Custom 1"/>
-                                            <TextBox x:Name="Director_Cameras_Custom1" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_Custom1" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Custom1_Button_Click" Grid.Column="2"/>
                                             <CheckBox x:Name="Director_Cameras_Custom1_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -523,7 +604,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Custom 2"/>
-                                            <TextBox x:Name="Director_Cameras_Custom2" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_Custom2" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Custom2_Button_Click" Grid.Column="2"/>
                                             <CheckBox x:Name="Director_Cameras_Custom2_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -535,7 +616,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Custom 3"/>
-                                            <TextBox x:Name="Director_Cameras_Custom3" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_Custom3" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Custom3_Button_Click" Grid.Column="2"/>
                                             <CheckBox x:Name="Director_Cameras_Custom3_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -547,7 +628,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Custom 4"/>
-                                            <TextBox x:Name="Director_Cameras_Custom4" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_Custom4" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Custom4_Button_Click" Grid.Column="2"/>
                                             <CheckBox x:Name="Director_Cameras_Custom4_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -559,7 +640,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Custom 5"/>
-                                            <TextBox x:Name="Director_Cameras_Custom5" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_Custom5" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Custom5_Button_Click" Grid.Column="2" VerticalContentAlignment="Center"/>
                                             <CheckBox x:Name="Director_Cameras_Custom5_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -571,7 +652,7 @@
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Custom 6"/>
-                                            <TextBox x:Name="Director_Cameras_Custom6" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <TextBox x:Name="Director_Cameras_Custom6" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Custom6_Button_Click" Grid.Column="2" VerticalContentAlignment="Center"/>
                                             <CheckBox x:Name="Director_Cameras_Custom6_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
@@ -673,7 +754,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Numbers"/>
-                                        <TextBox x:Name="Director_PreferredCar_Number" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                        <TextBox x:Name="Director_PreferredCar_Number" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
                                         <CheckBox x:Name="Director_PreferredCar_Number_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
@@ -874,7 +955,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Font A" Width="100"/>
-                                        <ComboBox x:Name="Overlay_Font_FontA_Name" VerticalContentAlignment="Center" Height="25.96" Grid.Column="1" SelectionChanged="Overlay_Font_Update">
+                                        <ComboBox x:Name="Overlay_Font_FontA_Name" VerticalContentAlignment="Center" Height="25" Grid.Column="1" SelectionChanged="Overlay_Font_Update">
                                             <ComboBox.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <VirtualizingStackPanel />
@@ -882,7 +963,7 @@
                                             </ComboBox.ItemsPanel>
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding}" FontFamily="{Binding}" Height="25.96" FontSize="18"/>
+                                                    <TextBlock Text="{Binding}" FontFamily="{Binding}" Height="25" FontSize="18"/>
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
@@ -895,7 +976,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Font B" Width="100"/>
-                                        <ComboBox x:Name="Overlay_Font_FontB_Name" VerticalContentAlignment="Center" Height="25.96" Grid.Column="1" SelectionChanged="Overlay_Font_Update">
+                                        <ComboBox x:Name="Overlay_Font_FontB_Name" VerticalContentAlignment="Center" Height="25" Grid.Column="1" SelectionChanged="Overlay_Font_Update">
                                             <ComboBox.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <VirtualizingStackPanel />
@@ -903,7 +984,7 @@
                                             </ComboBox.ItemsPanel>
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding}" FontFamily="{Binding}" Height="25.96" FontSize="18"/>
+                                                    <TextBlock Text="{Binding}" FontFamily="{Binding}" Height="25" FontSize="18"/>
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
@@ -916,7 +997,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Font C" Width="100"/>
-                                        <ComboBox x:Name="Overlay_Font_FontC_Name" VerticalContentAlignment="Center" Height="25.96" Grid.Column="1" SelectionChanged="Overlay_Font_Update">
+                                        <ComboBox x:Name="Overlay_Font_FontC_Name" VerticalContentAlignment="Center" Height="25" Grid.Column="1" SelectionChanged="Overlay_Font_Update">
                                             <ComboBox.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <VirtualizingStackPanel />
@@ -924,7 +1005,7 @@
                                             </ComboBox.ItemsPanel>
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding}" FontFamily="{Binding}" Height="25.96" FontSize="18"/>
+                                                    <TextBlock Text="{Binding}" FontFamily="{Binding}" Height="25" FontSize="18"/>
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
@@ -937,7 +1018,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Font D" Width="100"/>
-                                        <ComboBox x:Name="Overlay_Font_FontD_Name" VerticalContentAlignment="Center" Height="25.96" Grid.Column="1" SelectionChanged="Overlay_Font_Update">
+                                        <ComboBox x:Name="Overlay_Font_FontD_Name" VerticalContentAlignment="Center" Height="25" Grid.Column="1" SelectionChanged="Overlay_Font_Update">
                                             <ComboBox.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <VirtualizingStackPanel />
@@ -945,7 +1026,7 @@
                                             </ComboBox.ItemsPanel>
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding}" FontFamily="{Binding}" Height="25.96" FontSize="18"/>
+                                                    <TextBlock Text="{Binding}" FontFamily="{Binding}" Height="25" FontSize="18"/>
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
@@ -961,7 +1042,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Image ID"/>
-                                        <ComboBox x:Name="Overlay_Image_ID" VerticalContentAlignment="Center" Height="25.96" Grid.Column="1" SelectionChanged="Overlay_Image_ID_SelectionChanged"/>
+                                        <ComboBox x:Name="Overlay_Image_ID" VerticalContentAlignment="Center" Height="25" Grid.Column="1" SelectionChanged="Overlay_Image_ID_SelectionChanged"/>
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
@@ -970,7 +1051,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Image Type"/>
-                                        <ComboBox x:Name="Image_ImageType" VerticalContentAlignment="Center" Height="25.96" Grid.Column="1" SelectionChanged="Overlay_Image_Update"/>
+                                        <ComboBox x:Name="Image_ImageType" VerticalContentAlignment="Center" Height="25" Grid.Column="1" SelectionChanged="Overlay_Image_Update"/>
                                         <CheckBox x:Name="Image_ImageType_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Image_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0"/>
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
@@ -985,7 +1066,7 @@
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <TextBox x:Name="Image_FilePath" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Overlay_Image_Update"/>
+                                            <TextBox x:Name="Image_FilePath" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Overlay_Image_Update"/>
                                             <Button x:Name="Image_FilePath_Button" Padding="6,0,6,0" Content="📁" Grid.Column="1" Margin="-1,0,0,0" Click="Overlay_Image_FilePath_Button_Click" />
                                         </Grid>
                                         <CheckBox x:Name="Image_FilePath_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Image_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0"/>
@@ -1144,7 +1225,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Text ID"/>
-                                        <ComboBox x:Name="Overlay_Text_ID" VerticalContentAlignment="Center" Height="25.96" Grid.Column="1" SelectionChanged="Overlay_Text_ID_SelectionChanged"/>
+                                        <ComboBox x:Name="Overlay_Text_ID" VerticalContentAlignment="Center" Height="25" Grid.Column="1" SelectionChanged="Overlay_Text_ID_SelectionChanged"/>
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
@@ -1153,7 +1234,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Font"/>
-                                        <ComboBox x:Name="Text_FontIndex" VerticalContentAlignment="Center" Height="25.96" Grid.Column="1" SelectionChanged="Overlay_Text_Update"/>
+                                        <ComboBox x:Name="Text_FontIndex" VerticalContentAlignment="Center" Height="25" Grid.Column="1" SelectionChanged="Overlay_Text_Update"/>
                                         <CheckBox x:Name="Text_FontIndex_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Text_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0"/>
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
@@ -1173,7 +1254,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Alignment"/>
-                                        <ComboBox x:Name="Text_Alignment" VerticalContentAlignment="Center" Height="25.96" Grid.Column="1" SelectionChanged="Overlay_Text_Update"/>
+                                        <ComboBox x:Name="Text_Alignment" VerticalContentAlignment="Center" Height="25" Grid.Column="1" SelectionChanged="Overlay_Text_Update"/>
                                         <CheckBox x:Name="Text_Alignment_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Text_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
@@ -1251,7 +1332,7 @@
                                                 <GridViewColumn Header="Translation" Width="450">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <TextBox Text="{Binding Value.Translation}" IsEnabled="{Binding Value.Translation_IsEnabled}" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center"/>
+                                                            <TextBox Text="{Binding Value.Translation}" IsEnabled="{Binding Value.Translation_IsEnabled}" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center"/>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
@@ -1441,7 +1522,7 @@
                                         <Label Content="X" HorizontalContentAlignment="Center" Grid.Column="2" />
                                         <local:Number x:Name="Overlay_Leaderboard_MultiClassOffset_Y" ValueChanged="Overlay_Leaderboard_Update" Grid.Column="3" />
                                         <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
-                                        <ComboBox x:Name="Overlay_Leaderboard_MultiClassOffset_Type" Margin="6,0,0,0" VerticalContentAlignment="Center" Height="25.96" Grid.Column="5" SelectionChanged="Overlay_Leaderboard_Update"/>
+                                        <ComboBox x:Name="Overlay_Leaderboard_MultiClassOffset_Type" Margin="6,0,0,0" VerticalContentAlignment="Center" Height="25" Grid.Column="5" SelectionChanged="Overlay_Leaderboard_Update"/>
                                         <CheckBox x:Name="Overlay_Leaderboard_MultiClassOffset_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Leaderboard_Update" Grid.Column="6" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                 </StackPanel>
@@ -1512,7 +1593,7 @@
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <TextBox x:Name="Overlay_TrackMap_TextureFilePath" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Overlay_TrackMap_Update"/>
+                                            <TextBox x:Name="Overlay_TrackMap_TextureFilePath" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Overlay_TrackMap_Update"/>
                                             <Button x:Name="Overlay_TrackMap_TextureFilePath_Button" Padding="6,0,6,0" Content="📁" Grid.Column="1" Margin="-1,0,0,0" Click="Overlay_TrackMap_TextureFilePath_Button_Click" />
                                         </Grid>
                                         <CheckBox x:Name="Overlay_TrackMap_TextureFilePath_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_TrackMap_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0"/>
@@ -1780,7 +1861,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Font" Width="100"/>
-                                        <ComboBox x:Name="Overlay_CarNumber_Pattern" VerticalContentAlignment="Center" Height="25.96" Grid.Column="1" SelectionChanged="Overlay_CarNumber_Update" />
+                                        <ComboBox x:Name="Overlay_CarNumber_Pattern" VerticalContentAlignment="Center" Height="25" Grid.Column="1" SelectionChanged="Overlay_CarNumber_Update" />
                                         <CheckBox x:Name="Overlay_CarNumber_Pattern_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_CarNumber_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0"/>
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
@@ -1790,7 +1871,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Slant" Width="100"/>
-                                        <ComboBox x:Name="Overlay_CarNumber_Slant" VerticalContentAlignment="Center" Height="25.96" Grid.Column="1" SelectionChanged="Overlay_CarNumber_Update" />
+                                        <ComboBox x:Name="Overlay_CarNumber_Slant" VerticalContentAlignment="Center" Height="25" Grid.Column="1" SelectionChanged="Overlay_CarNumber_Update" />
                                         <CheckBox x:Name="Overlay_CarNumber_Slant_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_CarNumber_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0"/>
                                     </Grid>
                                 </StackPanel>
@@ -2053,6 +2134,62 @@
                     </Grid>
                 </Grid>
             </TabItem>
+            <TabItem Header="Web Page" Padding="12,6,12,6">
+                <TabControl TabStripPlacement="Left">
+                    <TabItem Header="General" Padding="12,6,12,6">
+                        <StackPanel Margin="6,6,6,6">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Enable" Width="100"/>
+                                <CheckBox x:Name="WebPage_General_Enabled" VerticalAlignment="Center" Click="WebPage_Update" />
+                            </StackPanel>
+                            <Grid Margin="0,6,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Source Folder" Width="100"/>
+                                <Grid Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="WebPage_General_SourceFolder" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="WebPage_Update"/>
+                                    <Button x:Name="WebPage_General_SourceFolder_Button" Padding="6,0,6,0" Content="📁" Grid.Column="1" Margin="-1,0,0,0" Click="WebPage_General_SourceFolder_Button_Click" />
+                                </Grid>
+                            </Grid>
+                            <Grid Margin="0,6,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Output Folder" Width="100"/>
+                                <Grid Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="WebPage_General_OutputFolder" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="WebPage_Update"/>
+                                    <Button x:Name="WebPage_General_OutputFolder_Button" Padding="6,0,6,0" Content="📁" Grid.Column="1" Margin="-1,0,0,0" Click="WebPage_General_OutputFolder_Button_Click" />
+                                </Grid>
+                            </Grid>
+                            <StackPanel Margin="0,6,0,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Interval" Width="100"/>
+                                    <local:Decimal x:Name="WebPage_General_UpdateInterval" Width="100" ValueChanged="WebPage_Update" />
+                                    <Label Content="Seconds"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <Grid Margin="0,6,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="150"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Padding="6,0,6,0" Content="Reload Template" Grid.Column="1" Height="25" Click="WebPage_General_ReloadTemplate"/>
+                            </Grid>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+            </TabItem>
             <TabItem Header="iRacing" Padding="12,6,12,6">
                 <TabControl TabStripPlacement="Left">
                     <TabItem Header="General" Padding="12,6,12,6">
@@ -2072,7 +2209,7 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Username" Width="100"/>
-                                <TextBox x:Name="iRacing_Account_Username" Grid.Column="1" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="iRacing_Update"/>
+                                <TextBox x:Name="iRacing_Account_Username" Grid.Column="1" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="iRacing_Update"/>
                             </Grid>
                             <Grid Margin="0,6,0,0">
                                 <Grid.ColumnDefinitions>
@@ -2080,14 +2217,14 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Password" Width="100"/>
-                                <PasswordBox x:Name="iRacing_Account_Password" Grid.Column="1" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" PasswordChanged="iRacing_Update"/>
+                                <PasswordBox x:Name="iRacing_Account_Password" Grid.Column="1" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" PasswordChanged="iRacing_Update"/>
                             </Grid>
                             <Grid Margin="0,6,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="100"/>
                                 </Grid.ColumnDefinitions>
-                                <Button Padding="6,0,6,0" Content="Connect" Grid.Column="1" Height="25.96" Click="iRacing_DataApi_Connect"/>
+                                <Button Padding="6,0,6,0" Content="Connect" Grid.Column="1" Height="25" Click="iRacing_DataApi_Connect"/>
                             </Grid>
                         </StackPanel>
                     </TabItem>
@@ -2100,7 +2237,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Directory" Width="100"/>
-                                <TextBox x:Name="iRacing_CustomPaints_Directory" Grid.Column="1" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="iRacing_Update"/>
+                                <TextBox x:Name="iRacing_CustomPaints_Directory" Grid.Column="1" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="iRacing_Update"/>
                                 <Button Padding="6,0,6,0" Content="📁" Grid.Column="2" Margin="-1,0,0,0" Click="iRacing_CustomPaintsDirectory_Button_Click" />
                             </Grid>
                         </StackPanel>
@@ -2113,7 +2250,7 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Suffixes" Width="100"/>
-                                <TextBox x:Name="iRacing_DriverNames_Suffixes" Grid.Column="1" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="iRacing_Update"/>
+                                <TextBox x:Name="iRacing_DriverNames_Suffixes" Grid.Column="1" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="iRacing_Update"/>
                             </Grid>
                             <Grid Margin="0,6,0,0">
                                 <Grid.ColumnDefinitions>
@@ -2162,12 +2299,12 @@
                         <StackPanel Margin="6,6,6,6">
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Scenic Cameras" Width="100"/>
-                                <TextBox x:Name="Editor_Incidents_ScenicCameras" Width="590" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Editor_Update"/>
+                                <TextBox x:Name="Editor_Incidents_ScenicCameras" Width="590" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Editor_Update"/>
                                 <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Editor_Incident_ScenicCameras_Button_Click" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                 <Label Content="Edit Cameras" Width="100"/>
-                                <TextBox x:Name="Editor_Incidents_EditCameras" Width="590" Height="25.96" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Editor_Update"/>
+                                <TextBox x:Name="Editor_Incidents_EditCameras" Width="590" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Editor_Update"/>
                                 <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Editor_Incident_EditCameras_Button_Click" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
@@ -2186,10 +2323,7 @@
             </TabItem>
         </TabControl>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,6,6,0">
-            <Label x:Name="Status" VerticalContentAlignment="Center"/>
-            <Label x:Name="FrameNumber" FontFamily="Courier New" VerticalContentAlignment="Bottom"/>
-            <Image x:Name="ConnectionStatusImage" Source="/Assets/status-disconnected.png" Width="16" Height="16" Margin="6,0,0,0" ToolTip="iRacing Connection Status"/>
-            <Image x:Name="DirectorStatusImage" Source="/Assets/status-disconnected.png" Width="16" Height="16" Margin="6,0,0,0"  ToolTip="Director Status"/>
+            <Image x:Name="ConnectionStatusImage" Source="/Assets/status-disconnected.png" Width="16" Height="16" ToolTip="iRacing Connection Status"/>
         </StackPanel>
     </Grid>
 </Window>

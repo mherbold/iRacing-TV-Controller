@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 using static iRacingTVController.Unity;
 
@@ -15,14 +16,14 @@ namespace iRacingTVController
 
 		public int trackID;
 
-		public float width;
-		public float height;
+		[JsonInclude] public float width;
+		[JsonInclude] public float height;
 
-		public Vector3 startFinishLine = Vector3.zero;
+		[JsonInclude] public Vector3 startFinishLine = Vector3.zero;
 
-		public List<Vector3>? drawVectorList;
+		[JsonInclude] public List<Vector3>? drawVectorList;
 
-		public LiveDataTrackMapCar[] liveDataTrackMapCars = new LiveDataTrackMapCar[ MaxNumCars ];
+		[JsonInclude] public LiveDataTrackMapCar[] liveDataTrackMapCars = new LiveDataTrackMapCar[ MaxNumCars ];
 
 		public LiveDataTrackMap()
 		{

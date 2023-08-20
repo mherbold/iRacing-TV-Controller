@@ -1,26 +1,27 @@
 ﻿
 using System;
+using System.Text.Json.Serialization;
 
 namespace iRacingTVController
 {
 	[Serializable]
 	public class LiveDataRaceStatus
 	{
-		public bool showGreenFlag = false;
-		public bool showYellowFlag = false;
-		public bool showCheckeredFlag = false;
+		[JsonInclude] public bool showGreenFlag = false;
+		[JsonInclude] public bool showYellowFlag = false;
+		[JsonInclude] public bool showCheckeredFlag = false;
 
-		public string sessionNameText = string.Empty;
+		[JsonInclude] public string sessionNameText = string.Empty;
 
-		public string lapsRemainingText = string.Empty;
+		[JsonInclude] public string lapsRemainingText = string.Empty;
 
-		public bool showBlackLight = false;
-		public bool showGreenLight = false;
-		public bool showWhiteLight = false;
-		public bool showYellowLight = false;
+		[JsonInclude] public bool showBlackLight = false;
+		[JsonInclude] public bool showGreenLight = false;
+		[JsonInclude] public bool showWhiteLight = false;
+		[JsonInclude] public bool showYellowLight = false;
 
-		public string unitsText = string.Empty;
+		[JsonInclude] public string unitsText = string.Empty;
 
-		public string currentLapText = string.Empty;
+		[JsonInclude] public string currentLapText = string.Empty;
 	}
 }

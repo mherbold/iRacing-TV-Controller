@@ -9,8 +9,7 @@ namespace iRacingTVController
 {
 	public static class Director
 	{
-		public static bool isEnabled = false;
-		public static bool isOverridden = false;
+		public static bool isEnabled = true;
 		public static bool driverWasTalking = false;
 
 		public static int targetCamCarIdx = 0;
@@ -20,23 +19,14 @@ namespace iRacingTVController
 
 		public static void Update()
 		{
-			if ( !IRSDK.isConnected )
+			if ( !IRSDK.isConnected || !IRSDK.targetCamEnabled )
 			{
-				IRSDK.targetCamReason = "Not connected to iRacing.";
-
-				return;
-			}
-
-			if ( isOverridden )
-			{
-				IRSDK.targetCamReason = "Manual override.";
-
 				return;
 			}
 
 			if ( !isEnabled )
 			{
-				IRSDK.targetCamReason = "Director is not enabled.";
+				IRSDK.targetCamReason = "Manual camera control.";
 
 				return;
 			}
@@ -257,12 +247,13 @@ namespace iRacingTVController
 				Director.targetCamCarIdx = targetCamCarIdx;
 				Director.targetCamType = targetCamType;
 
-				IRSDK.targetCamEnabled = true;
 				IRSDK.targetCamFastSwitchEnabled = targetCamFastSwitchEnabled;
 				IRSDK.targetCamSlowSwitchEnabled = targetCamSlowSwitchEnabled;
 				IRSDK.targetCamCarIdx = targetCamCarIdx;
 				IRSDK.targetCamGroupNumber = GetCamGroupNumber( IRSDK.normalizedData.normalizedCars[ targetCamCarIdx ], targetCamType );
 				IRSDK.targetCamReason = targetCamReason;
+
+				MainWindow.Instance.cameraType = targetCamType;
 			}
 		}
 

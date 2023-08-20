@@ -1,0 +1,48 @@
+.d-none {
+    display: none !important;
+}
+
+.live-data-container {
+    display: flex;
+    gap: 1rem;
+}
+
+.leaderboards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.leaderboard-position {
+    display: flex;
+    gap: 1rem;
+}
+
+.leaderboard-position-text {
+    width: 1.25rem;
+    text-align: right;
+}
+
+.leaderboard-car-number-text {
+    width: 2rem;
+    text-align: center;
+}
+
+.leaderboard-driver-name-text {
+    width: 6rem;
+}
+
+.leaderboard-telemetry-text {
+    width: 4rem;
+    text-align: right;
+}
+
+.leaderboard-speed-text {
+    width: 4rem;
+    text-align: right;
+}
+
+.race-status-current-lap-container {
+    display: flex;
+    gap: 0.25rem;
+}

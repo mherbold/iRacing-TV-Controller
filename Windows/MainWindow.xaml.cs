@@ -41,7 +41,7 @@ namespace iRacingTVController
 			}
 		}
 
-		public const float UpdateIntervalTime = 0.1f;
+		public const float UpdateIntervalTime = 1f / 15f;
 
 		public const string StatusDisconnectedImageFileName = "Assets\\status-disconnected.png";
 		public const string StatusConnectedImageFileName = "Assets\\status-connected.png";
@@ -55,7 +55,7 @@ namespace iRacingTVController
 		public float updateTimeRemaining = 0;
 
 		public SettingsDirector.CameraType cameraType = SettingsDirector.CameraType.AutoCam;
-		public NormalizedCar? normalizedCar;
+		public NormalizedCar? normalizedCar = null;
 
 		public ControlPanelButton[] controlPanelButton = new ControlPanelButton[ 64 ];
 
@@ -766,6 +766,13 @@ namespace iRacingTVController
 			Initialize( Overlay_Intro_HoldTime, Settings.overlay.introHoldTime, Overlay_Intro_HoldTime_Override, overlayIsGlobal, Settings.overlay.introHoldTime_Overridden );
 			Initialize( Overlay_Intro_OutTime, Settings.overlay.introOutTime, Overlay_Intro_OutTime_Override, overlayIsGlobal, Settings.overlay.introOutTime_Overridden );
 
+			// web page
+
+			WebPage_General_Enabled.IsChecked = Settings.editor.webpageGeneralEnabled;
+			WebPage_General_SourceFolder.Text = Settings.editor.webpageGeneralSourceFolder;
+			WebPage_General_OutputFolder.Text = Settings.editor.webpageGeneralOutputFolder;
+			WebPage_General_UpdateInterval.Value = Settings.editor.webpageGeneralUpdateInterval;
+
 			// iracing
 
 			iRacing_General_CommandRateLimit.Value = Settings.editor.iracingGeneralCommandRateLimit;
@@ -894,49 +901,94 @@ namespace iRacingTVController
 				{
 					if ( IRSDK.isConnected )
 					{
-						Status.Content = $"{IRSDK.normalizedSession.sessionName} - {IRSDK.normalizedData.sessionState}";
-						FrameNumber.Content = IRSDK.normalizedData.replayFrameNum;
+						ControlPanel_RaceStatus_SimFrame.Text = IRSDK.normalizedData.replayFrameNum.ToString();
+						ControlPanel_RaceStatus_SessionName.Text = IRSDK.normalizedSession.sessionName;
+						ControlPanel_RaceStatus_SessionType.Text = IRSDK.normalizedSession.sessionType;
+						ControlPanel_RaceStatus_SessionState.Text = IRSDK.normalizedData.sessionState.ToString();
+						ControlPanel_RaceStatus_SimTime.Text = Program.GetTimeString( IRSDK.normalizedData.sessionTime, false );
+						ControlPanel_RaceStatus_RemainingTime.Text = Program.GetTimeString( IRSDK.normalizedData.sessionTimeRemaining, false );
+
+						if ( IRSDK.normalizedData.sessionLapsRemaining == 32767 )
+						{
+							ControlPanel_RaceStatus_RemainingLaps.Text = "---";
+						}
+						else
+						{
+							ControlPanel_RaceStatus_RemainingLaps.Text = IRSDK.normalizedData.sessionLapsRemaining.ToString();
+						}
 
 						ConnectionStatusImage.Source = statusConnectedBitmapImage;
 					}
 					else
 					{
-						Status.Content = string.Empty;
-						FrameNumber.Content = string.Empty;
+						ControlPanel_RaceStatus_SimFrame.Text = string.Empty;
+						ControlPanel_RaceStatus_SessionName.Text = string.Empty;
+						ControlPanel_RaceStatus_SessionType.Text = string.Empty;
+						ControlPanel_RaceStatus_SessionState.Text = string.Empty;
+						ControlPanel_RaceStatus_SimTime.Text = string.Empty;
+						ControlPanel_RaceStatus_RemainingTime.Text = string.Empty;
+						ControlPanel_RaceStatus_RemainingLaps.Text = string.Empty;
 
 						ConnectionStatusImage.Source = statusDisconnectedBitmapImage;
 					}
 
-					if ( Director.isEnabled )
+					if ( IRSDK.targetCamEnabled )
 					{
-						DirectorStatusImage.Source = statusConnectedBitmapImage;
+						ControlPanel_CameraControl_Enable_Button.Content = "🎥 Enabled";
+						ControlPanel_CameraControl_Enable_Button.BorderBrush = System.Windows.Media.Brushes.Green;
+						ControlPanel_CameraControl_Enable_Button.BorderThickness = new Thickness( 3.0 );
+
+						if ( Director.isEnabled )
+						{
+							ControlPanel_CameraControl_Director_Button.BorderBrush = System.Windows.Media.Brushes.Green;
+							ControlPanel_CameraControl_Director_Button.BorderThickness = new Thickness( 3.0 );
+
+							ControlPanel_CameraControl_Manual_Button.BorderBrush = System.Windows.Media.Brushes.Gray;
+							ControlPanel_CameraControl_Manual_Button.BorderThickness = new Thickness( 0.5 );
+						}
+						else
+						{
+							ControlPanel_CameraControl_Director_Button.BorderBrush = System.Windows.Media.Brushes.Gray;
+							ControlPanel_CameraControl_Director_Button.BorderThickness = new Thickness( 0.5 );
+
+							ControlPanel_CameraControl_Manual_Button.BorderBrush = System.Windows.Media.Brushes.Green;
+							ControlPanel_CameraControl_Manual_Button.BorderThickness = new Thickness( 3.0 );
+						}
 
 						var normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.targetCamCarIdx );
 
 						if ( normalizedCar != null )
 						{
-							ControlPanel_TargetCamCarNumber.Text = $"#{normalizedCar.carNumber}";
-							ControlPanel_TargetDriverName.Text = normalizedCar.userName;
+							ControlPanel_CameraControl_CarNumber.Text = normalizedCar.carNumber;
+							ControlPanel_CameraControl_DriverName.Text = normalizedCar.userName;
 						}
 						else
 						{
-							ControlPanel_TargetCamCarNumber.Text = string.Empty;
-							ControlPanel_TargetDriverName.Text = string.Empty;
+							ControlPanel_CameraControl_CarNumber.Text = string.Empty;
+							ControlPanel_CameraControl_DriverName.Text = string.Empty;
 						}
 
-						ControlPanel_TargetCamGroupNumber.Text = IRSDK.GetCamGroupName( IRSDK.targetCamGroupNumber );
-						ControlPanel_TargetCamReason.Text = IRSDK.targetCamReason;
-						ControlPanel_CameraSwitchTimer.Text = $"{IRSDK.cameraSwitchWaitTimeRemaining:0.0}";
+						ControlPanel_CameraControl_CameraGroup.Text = IRSDK.GetCamGroupName( IRSDK.targetCamGroupNumber );
+						ControlPanel_CameraControl_Reason.Text = IRSDK.targetCamReason;
+						ControlPanel_CameraControl_Timer.Text = $"{IRSDK.cameraSwitchWaitTimeRemaining:0.0}";
 					}
 					else
 					{
-						DirectorStatusImage.Source = statusDisconnectedBitmapImage;
+						ControlPanel_CameraControl_Enable_Button.Content = "🎥 Enable";
+						ControlPanel_CameraControl_Enable_Button.BorderBrush = System.Windows.Media.Brushes.Gray;
+						ControlPanel_CameraControl_Enable_Button.BorderThickness = new Thickness( 0.5 );
 
-						ControlPanel_TargetCamCarNumber.Text = string.Empty;
-						ControlPanel_TargetDriverName.Text = string.Empty;
-						ControlPanel_TargetCamGroupNumber.Text = string.Empty;
-						ControlPanel_TargetCamReason.Text = string.Empty;
-						ControlPanel_CameraSwitchTimer.Text = string.Empty;
+						ControlPanel_CameraControl_Director_Button.BorderBrush = System.Windows.Media.Brushes.Gray;
+						ControlPanel_CameraControl_Director_Button.BorderThickness = new Thickness( 0.5 );
+
+						ControlPanel_CameraControl_Manual_Button.BorderBrush = System.Windows.Media.Brushes.Gray;
+						ControlPanel_CameraControl_Manual_Button.BorderThickness = new Thickness( 0.5 );
+
+						ControlPanel_CameraControl_CarNumber.Text = string.Empty;
+						ControlPanel_CameraControl_DriverName.Text = string.Empty;
+						ControlPanel_CameraControl_CameraGroup.Text = string.Empty;
+						ControlPanel_CameraControl_Reason.Text = string.Empty;
+						ControlPanel_CameraControl_Timer.Text = string.Empty;
 					}
 
 					var widthScale = ActualWidth / 860;
@@ -963,20 +1015,7 @@ namespace iRacingTVController
 						{
 							cpb = controlPanelButton[ 63 ];
 
-							if ( Director.isOverridden && ( IRSDK.targetCamCarIdx == normalizedCar.carIdx ) )
-							{
-								if ( ( Program.stopwatch.ElapsedMilliseconds / 500 % 2 ) == 0 )
-								{
-									cpb.button.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
-								}
-								else
-								{
-									cpb.button.BorderBrush = System.Windows.Media.Brushes.SkyBlue;
-								}
-
-								cpb.button.BorderThickness = new Thickness( 3.0 );
-							}
-							else if ( normalizedCar.carIdx == IRSDK.normalizedData.camCarIdx )
+							if ( IRSDK.targetCamEnabled && ( IRSDK.targetCamCarIdx == normalizedCar.carIdx ) )
 							{
 								cpb.button.BorderBrush = System.Windows.Media.Brushes.Green;
 								cpb.button.BorderThickness = new Thickness( 3.0 );
@@ -1089,20 +1128,7 @@ namespace iRacingTVController
 								cpb.label[ 3 ].Foreground = System.Windows.Media.Brushes.Black;
 							}
 
-							if ( Director.isOverridden && ( IRSDK.targetCamCarIdx == normalizedCar.carIdx ) )
-							{
-								if ( ( Program.stopwatch.ElapsedMilliseconds / 500 % 2 ) == 0 )
-								{
-									cpb.button.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
-								}
-								else
-								{
-									cpb.button.BorderBrush = System.Windows.Media.Brushes.SkyBlue;
-								}
-
-								cpb.button.BorderThickness = new Thickness( 3.0 );
-							}
-							else if ( normalizedCar.carIdx == IRSDK.normalizedData.camCarIdx )
+							if ( IRSDK.targetCamEnabled && ( IRSDK.targetCamCarIdx == normalizedCar.carIdx ) )
 							{
 								cpb.button.BorderBrush = System.Windows.Media.Brushes.Green;
 								cpb.button.BorderThickness = new Thickness( 3.0 );
@@ -1150,17 +1176,9 @@ namespace iRacingTVController
 
 		private void UpdateCameraButton( Button button, bool isActive )
 		{
-			if ( isActive )
+			if ( IRSDK.targetCamEnabled && isActive )
 			{
-				if ( Director.isOverridden && ( ( Program.stopwatch.ElapsedMilliseconds / 500 % 2 ) == 0 ) )
-				{
-					button.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
-				}
-				else
-				{
-					button.BorderBrush = System.Windows.Media.Brushes.SkyBlue;
-				}
-
+				button.BorderBrush = System.Windows.Media.Brushes.Green;
 				button.BorderThickness = new Thickness( 3.0 );
 			}
 			else
@@ -1170,253 +1188,134 @@ namespace iRacingTVController
 			}
 		}
 
-		private void UpdateManualCamera()
+		private void SetManualCamera( SettingsDirector.CameraType newCameraType )
 		{
-			if ( Director.isOverridden && ( normalizedCar != null ) )
+			if ( IRSDK.targetCamEnabled )
 			{
-				IRSDK.targetCamEnabled = true;
+				cameraType = newCameraType;
+
+				if ( normalizedCar == null )
+				{
+					normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.camCarIdx ) ?? IRSDK.normalizedData.normalizedCars[ 0 ];
+				}
+
 				IRSDK.targetCamFastSwitchEnabled = true;
 				IRSDK.targetCamSlowSwitchEnabled = false;
 				IRSDK.targetCamCarIdx = normalizedCar.carIdx;
 				IRSDK.targetCamGroupNumber = Director.GetCamGroupNumber( normalizedCar, cameraType );
-				IRSDK.targetCamReason = "Manual override.";
+				IRSDK.targetCamReason = "Manual camera control.";
+
+				Director.isEnabled = false;
 			}
 		}
 
-		private void ControlPanel_EnableDirector_Click( object sender, RoutedEventArgs e )
+		private void ControlPanel_CameraControl_Enable_Button_Click( object sender, RoutedEventArgs e )
 		{
-			Director.isEnabled = !Director.isEnabled;
+			IRSDK.targetCamEnabled = !IRSDK.targetCamEnabled;
+		}
 
-			ControlPanel_EnableDirector_Button.Content = ( Director.isEnabled ) ? "🎥 Disable Director" : "🎥 Enable Director";
+		private void ControlPanel_CameraControl_Director_Button_Click( object sender, RoutedEventArgs e )
+		{
+			Director.isEnabled = true;
+
+			IRSDK.targetCamFastSwitchEnabled = true;
+
+			normalizedCar = null;
+		}
+
+		private void ControlPanel_CameraControl_Manual_Button_Click( object sender, RoutedEventArgs e )
+		{
+			Director.isEnabled = false;
+
+			IRSDK.targetCamFastSwitchEnabled = true;
 		}
 
 		private void ControlPanel_Camera_Scenic_Button_Click( object sender, RoutedEventArgs e )
 		{
-			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Scenic ) )
-			{
-				Director.isOverridden = false;
-			}
-			else
-			{
-				cameraType = SettingsDirector.CameraType.Scenic;
-
-				UpdateManualCamera();
-			}
+			SetManualCamera( SettingsDirector.CameraType.Scenic );
 		}
 
 		private void ControlPanel_Camera_Pits_Button_Click( object sender, RoutedEventArgs e )
 		{
-			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Pits ) )
-			{
-				Director.isOverridden = false;
-			}
-			else
-			{
-				cameraType = SettingsDirector.CameraType.Pits;
-
-				UpdateManualCamera();
-			}
+			SetManualCamera( SettingsDirector.CameraType.Pits );
 		}
 
 		private void ControlPanel_Camera_StartFinish_Button_Click( object sender, RoutedEventArgs e )
 		{
-			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.StartFinish ) )
-			{
-				Director.isOverridden = false;
-			}
-			else
-			{
-				cameraType = SettingsDirector.CameraType.StartFinish;
-
-				UpdateManualCamera();
-			}
+			SetManualCamera( SettingsDirector.CameraType.StartFinish );
 		}
 
 		private void ControlPanel_Camera_Inside_Button_Click( object sender, RoutedEventArgs e )
 		{
-			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Inside ) )
-			{
-				Director.isOverridden = false;
-			}
-			else
-			{
-				cameraType = SettingsDirector.CameraType.Inside;
-
-				UpdateManualCamera();
-			}
+			SetManualCamera( SettingsDirector.CameraType.Inside );
 		}
 
 		private void ControlPanel_Camera_Close_Button_Click( object sender, RoutedEventArgs e )
 		{
-			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Close ) )
-			{
-				Director.isOverridden = false;
-			}
-			else
-			{
-				cameraType = SettingsDirector.CameraType.Close;
-
-				UpdateManualCamera();
-			}
+			SetManualCamera( SettingsDirector.CameraType.Close );
 		}
 
 		private void ControlPanel_Camera_Medium_Button_Click( object sender, RoutedEventArgs e )
 		{
-			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Medium ) )
-			{
-				Director.isOverridden = false;
-			}
-			else
-			{
-				cameraType = SettingsDirector.CameraType.Medium;
-
-				UpdateManualCamera();
-			}
+			SetManualCamera( SettingsDirector.CameraType.Medium );
 		}
 
 		private void ControlPanel_Camera_Far_Button_Click( object sender, RoutedEventArgs e )
 		{
-			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Far ) )
-			{
-				Director.isOverridden = false;
-			}
-			else
-			{
-				cameraType = SettingsDirector.CameraType.Far;
-
-				UpdateManualCamera();
-			}
+			SetManualCamera( SettingsDirector.CameraType.Far );
 		}
 
 		private void ControlPanel_Camera_VeryFar_Button_Click( object sender, RoutedEventArgs e )
 		{
-			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.VeryFar ) )
-			{
-				Director.isOverridden = false;
-			}
-			else
-			{
-				cameraType = SettingsDirector.CameraType.VeryFar;
-
-				UpdateManualCamera();
-			}
+			SetManualCamera( SettingsDirector.CameraType.VeryFar );
 		}
 
 		private void ControlPanel_Camera_AutoCam_Button_Click( object sender, RoutedEventArgs e )
 		{
-			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.AutoCam ) )
-			{
-				Director.isOverridden = false;
-			}
-			else
-			{
-				cameraType = SettingsDirector.CameraType.AutoCam;
-
-				UpdateManualCamera();
-			}
+			SetManualCamera( SettingsDirector.CameraType.AutoCam );
 		}
 
 		private void ControlPanel_Camera_C1_Button_Click( object sender, RoutedEventArgs e )
 		{
-			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Custom1 ) )
-			{
-				Director.isOverridden = false;
-			}
-			else
-			{
-				cameraType = SettingsDirector.CameraType.Custom1;
-
-				UpdateManualCamera();
-			}
+			SetManualCamera( SettingsDirector.CameraType.Custom1 );
 		}
 
 		private void ControlPanel_Camera_C2_Button_Click( object sender, RoutedEventArgs e )
 		{
-			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Custom2 ) )
-			{
-				Director.isOverridden = false;
-			}
-			else
-			{
-				cameraType = SettingsDirector.CameraType.Custom2;
-
-				UpdateManualCamera();
-			}
+			SetManualCamera( SettingsDirector.CameraType.Custom2 );
 		}
 
 		private void ControlPanel_Camera_C3_Button_Click( object sender, RoutedEventArgs e )
 		{
-			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Custom3 ) )
-			{
-				Director.isOverridden = false;
-			}
-			else
-			{
-				cameraType = SettingsDirector.CameraType.Custom3;
-
-				UpdateManualCamera();
-			}
+			SetManualCamera( SettingsDirector.CameraType.Custom3 );
 		}
 
 		private void ControlPanel_Camera_C4_Button_Click( object sender, RoutedEventArgs e )
 		{
-			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Custom4 ) )
-			{
-				Director.isOverridden = false;
-			}
-			else
-			{
-				cameraType = SettingsDirector.CameraType.Custom4;
-
-				UpdateManualCamera();
-			}
+			SetManualCamera( SettingsDirector.CameraType.Custom4 );
 		}
 
 		private void ControlPanel_Camera_C5_Button_Click( object sender, RoutedEventArgs e )
 		{
-			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Custom5 ) )
-			{
-				Director.isOverridden = false;
-			}
-			else
-			{
-				cameraType = SettingsDirector.CameraType.Custom5;
-
-				UpdateManualCamera();
-			}
+			SetManualCamera( SettingsDirector.CameraType.Custom5 );
 		}
 
 		private void ControlPanel_Camera_C6_Button_Click( object sender, RoutedEventArgs e )
 		{
-			if ( Director.isOverridden && ( cameraType == SettingsDirector.CameraType.Custom6 ) )
-			{
-				Director.isOverridden = false;
-			}
-			else
-			{
-				cameraType = SettingsDirector.CameraType.Custom6;
-
-				UpdateManualCamera();
-			}
+			SetManualCamera( SettingsDirector.CameraType.Custom6 );
 		}
 
 		private void ControlPanel_Grid_Button_Click( object sender, RoutedEventArgs e )
 		{
-			var button = (Button) sender;
-
-			int carIdx = ( button.Name == "PACE" ) ? 0 : int.Parse( button.Name[ 1.. ] );
-
-			if ( Director.isOverridden && ( normalizedCar != null ) && ( normalizedCar.carIdx == carIdx ) )
+			if ( IRSDK.targetCamEnabled )
 			{
-				Director.isOverridden = false;
-			}
-			else
-			{
-				Director.isOverridden = true;
+				var button = (Button) sender;
+
+				int carIdx = ( button.Name == "PACE" ) ? 0 : int.Parse( button.Name[ 1.. ] );
 
 				normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( carIdx );
 
-				UpdateManualCamera();
+				SetManualCamera( cameraType );
 			}
 		}
 
@@ -1872,7 +1771,7 @@ namespace iRacingTVController
 
 					director.camerasCustom1 = Director_Cameras_Custom1.Text;
 				}
-				
+
 				overridden = Director_Cameras_Custom2_Override.IsChecked ?? false;
 
 				if ( Settings.directorLocal.camerasCustom2_Overridden != overridden )
@@ -2289,6 +2188,8 @@ namespace iRacingTVController
 		{
 			if ( ( (FrameworkElement) e.OriginalSource ).DataContext is IncidentData item )
 			{
+				Director.isEnabled = false;
+
 				IRSDK.targetCamEnabled = true;
 				IRSDK.targetCamFastSwitchEnabled = true;
 				IRSDK.targetCamCarIdx = item.CarIdx;
@@ -4201,6 +4102,78 @@ namespace iRacingTVController
 				IPC.readyToSendSettings = true;
 
 				Settings.saveOverlayToFileQueued = true;
+			}
+		}
+
+		// web page
+
+		private void WebPage_General_SourceFolder_Button_Click( object sender, EventArgs e )
+		{
+			var commonOpenFileDialog = new CommonOpenFileDialog
+			{
+				Title = "Choose the Folder to Load Web Page Files From",
+				IsFolderPicker = true,
+				InitialDirectory = Settings.editor.webpageGeneralSourceFolder,
+				AddToMostRecentlyUsedList = false,
+				AllowNonFileSystemItems = false,
+				DefaultDirectory = Settings.editor.webpageGeneralSourceFolder,
+				EnsureFileExists = true,
+				EnsurePathExists = true,
+				EnsureReadOnly = false,
+				EnsureValidNames = true,
+				Multiselect = false,
+				ShowPlacesList = true
+			};
+
+			if ( commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok )
+			{
+				Settings.editor.webpageGeneralSourceFolder = commonOpenFileDialog.FileName;
+
+				WebPage_General_SourceFolder.Text = Settings.editor.webpageGeneralSourceFolder;
+			}
+		}
+
+		private void WebPage_General_OutputFolder_Button_Click( object sender, EventArgs e )
+		{
+			var commonOpenFileDialog = new CommonOpenFileDialog
+			{
+				Title = "Choose the Folder to Save Web Page Files To",
+				IsFolderPicker = true,
+				InitialDirectory = Settings.editor.webpageGeneralOutputFolder,
+				AddToMostRecentlyUsedList = false,
+				AllowNonFileSystemItems = false,
+				DefaultDirectory = Settings.editor.webpageGeneralOutputFolder,
+				EnsureFileExists = true,
+				EnsurePathExists = true,
+				EnsureReadOnly = false,
+				EnsureValidNames = true,
+				Multiselect = false,
+				ShowPlacesList = true
+			};
+
+			if ( commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok )
+			{
+				Settings.editor.webpageGeneralOutputFolder = commonOpenFileDialog.FileName;
+
+				WebPage_General_OutputFolder.Text = Settings.editor.webpageGeneralOutputFolder;
+			}
+		}
+
+		private void WebPage_General_ReloadTemplate( object sender, EventArgs e )
+		{
+			WebPage.Initialize();
+		}
+
+		private void WebPage_Update( object sender, EventArgs e )
+		{
+			if ( initializing == 0 )
+			{
+				Settings.editor.webpageGeneralEnabled = WebPage_General_Enabled.IsChecked ?? false;
+				Settings.editor.webpageGeneralSourceFolder = WebPage_General_SourceFolder.Text;
+				Settings.editor.webpageGeneralOutputFolder = WebPage_General_OutputFolder.Text;
+				Settings.editor.webpageGeneralUpdateInterval = WebPage_General_UpdateInterval.Value;
+
+				Settings.saveEditorToFileQueued = true;
 			}
 		}
 

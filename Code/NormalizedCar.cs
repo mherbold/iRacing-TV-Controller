@@ -2,8 +2,11 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+
 using Aydsko.iRacingData.Common;
+
 using irsdkSharp.Serialization.Enums.Fastest;
 using irsdkSharp.Serialization.Models.Session.DriverInfo;
 
@@ -156,13 +159,38 @@ namespace iRacingTVController
 			var car = IRSDK.data.Cars[ carIdx ];
 
 			hasCrossedStartLine = false;
+			isOnPitRoad = false;
+			isOutOfCar = false;
+
+			leaderboardIndex = 0;
+
+			overallPosition = 0;
+			classPosition = 0;
+			displayedPosition = 0;
+
+			bestLapTime = 0;
+
+			lapDistPctDelta = 0;
+			lapDistPct = Math.Max( 0, car.CarIdxLapDistPct );
 
 			lapPositionErrorCount = 0;
 			lapPosition = 0;
-
-			lapDistPct = Math.Max( 0, car.CarIdxLapDistPct );
+			lapDistPctRelativeToLeader = 0;
 
 			checkpointIdx = -1;
+			checkpointTime = 0;
+
+			attackingHeat = 0;
+			defendingHeat = 0;
+
+			distanceToCarInFrontInMeters = 0;
+			distanceToCarBehindInMeters = 0;
+
+			distanceMovedInMeters = 0;
+			speedInMetersPerSecond = 0;
+
+			leaderboardSlotOffset = Vector2.zero;
+			wasVisibleOnLeaderboard = false;
 
 			for ( var i = 0; i < checkpoints.Length; i++ )
 			{
@@ -251,16 +279,19 @@ namespace iRacingTVController
 						{
 							var licColor = driver.LicColor[ 2.. ];
 							var carPath = driver.CarPath.Replace( " ", "%5C" );
-							var customCarTgaFilePath = $"{Settings.editor.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_{driver.UserID}.tga";
+							var customCarTgaFilePath = $"{Settings.editor.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_num_{driver.UserID}.tga";
 
 							if ( !File.Exists( customCarTgaFilePath ) )
 							{
-								customCarTgaFilePath = string.Empty;
+								customCarTgaFilePath = $"{Settings.editor.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_{driver.UserID}.tga";
+
+								if ( !File.Exists( customCarTgaFilePath ) )
+								{
+									customCarTgaFilePath = string.Empty;
+								}
 							}
-							else
-							{
-								customCarTgaFilePath = customCarTgaFilePath.Replace( " ", "%20" );
-							}
+
+							customCarTgaFilePath = customCarTgaFilePath.Replace( " ", "%20" );
 
 							carTextureUrl = $"http://localhost:32034/pk_car.png?size=2&view=1&licCol={licColor}&club={driver.ClubID}&sponsors={driver.CarSponsor_1},{driver.CarSponsor_2}&numPat={numberDesignMatch.Groups[ 1 ].Value}&numCol={numberDesignMatch.Groups[ 3 ].Value},{numberDesignMatch.Groups[ 4 ].Value},{numberDesignMatch.Groups[ 5 ].Value}&numSlnt={numberDesignMatch.Groups[ 2 ].Value}&number={carNumber}&carPath={carPath}&carPat={carDesignMatch.Groups[ 1 ].Value}&carCol={carDesignMatch.Groups[ 2 ].Value},{carDesignMatch.Groups[ 3 ].Value},{carDesignMatch.Groups[ 4 ].Value}&carRimType=2&carRimCol={carDesignMatch.Groups[ 5 ].Value}&carCustPaint={customCarTgaFilePath}";
 						}
@@ -277,10 +308,8 @@ namespace iRacingTVController
 							{
 								customHelmetTgaFileName = string.Empty;
 							}
-							else
-							{
-								customHelmetTgaFileName = customHelmetTgaFileName.Replace( " ", "%20" );
-							}
+
+							customHelmetTgaFileName = customHelmetTgaFileName.Replace( " ", "%20" );
 
 							helmetTextureUrl = $"http://localhost:32034/pk_helmet.png?size=7&hlmtPat={helmetDesignMatch.Groups[ 1 ].Value}&licCol={licColor}&hlmtCol={helmetDesignMatch.Groups[ 2 ].Value},{helmetDesignMatch.Groups[ 3 ].Value},{helmetDesignMatch.Groups[ 4 ].Value}&view=1&hlmtType={helmetType}&hlmtCustPaint={customHelmetTgaFileName}";
 						}
@@ -298,10 +327,8 @@ namespace iRacingTVController
 							{
 								customSuitTgaFileName = string.Empty;
 							}
-							else
-							{
-								customSuitTgaFileName = customSuitTgaFileName.Replace( " ", "%20" );
-							}
+
+							customSuitTgaFileName = customSuitTgaFileName.Replace( " ", "%20" );
 
 							driverTextureUrl = $"http://localhost:32034/pk_body.png?size=1&view=2&bodyType={suitType}&suitPat={driverDesignMatch.Groups[ 1 ].Value}&suitCol={driverDesignMatch.Groups[ 2 ].Value},{driverDesignMatch.Groups[ 3 ].Value},{driverDesignMatch.Groups[ 4 ].Value}&hlmtType={helmetType}&hlmtPat={helmetDesignMatch.Groups[ 1 ].Value}&hlmtCol={helmetDesignMatch.Groups[ 2 ].Value},{helmetDesignMatch.Groups[ 3 ].Value},{helmetDesignMatch.Groups[ 4 ].Value}&faceType={faceType}&suitCustPaint={customSuitTgaFileName}";
 						}
@@ -332,7 +359,21 @@ namespace iRacingTVController
 			overallPosition = car.CarIdxPosition;
 			classPosition = car.CarIdxClassPosition;
 
-			bestLapTime = IRSDK.normalizedSession.isInQualifyingSession ? Math.Max( 0, car.CarIdxF2Time ) : Math.Max( 0, car.CarIdxBestLapTime );
+			float newBestLapTime;
+
+			if ( IRSDK.normalizedSession.isInQualifyingSession )
+			{
+				newBestLapTime = Math.Max( 0, car.CarIdxF2Time );
+			}
+			else
+			{
+				newBestLapTime = Math.Max( 0, car.CarIdxBestLapTime );
+			}
+
+			if ( newBestLapTime > 0 )
+			{
+				bestLapTime = newBestLapTime;
+			}
 
 			var newCarIdxLapDistPct = Math.Max( 0, car.CarIdxLapDistPct );
 

@@ -91,11 +91,13 @@ namespace iRacingTVController
 		public bool heatFalloff_Overridden = false;
 		public bool heatBias_Overridden = false;
 
-		public string preferredCarNumbers = string.Empty;
+		public string preferredCarUserIds = string.Empty;
+		public string preferredCarCarNumbers = string.Empty;
 		public bool preferredCarLockOnEnabled = false;
 		public float preferredCarLockOnMinimumHeat = 0;
 
-		public bool preferredCarNumber_Overridden = false;
+		public bool preferredCarUserIds_Overridden = false;
+		public bool preferredCarCarNumbers_Overridden = false;
 		public bool preferredCarLockOnEnabled_Overridden = false;
 		public bool preferredCarLockOnMinimumHeat_Overridden = false;
 

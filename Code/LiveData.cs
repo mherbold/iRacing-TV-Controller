@@ -110,13 +110,13 @@ namespace iRacingTVController
 			{
 				liveDataRaceStatus.lapsRemainingText = Program.GetTimeString( IRSDK.normalizedData.sessionTimeRemaining, false );
 			}
-			else if ( IRSDK.normalizedData.sessionLapsRemaining == 0 )
+			else if ( IRSDK.normalizedData.sessionLapsRemaining == 1 )
 			{
 				liveDataRaceStatus.lapsRemainingText = Settings.overlay.translationDictionary[ "FinalLap" ].translation;
 			}
 			else
 			{
-				var lapsRemaining = Math.Min( IRSDK.normalizedData.sessionLapsTotal, IRSDK.normalizedData.sessionLapsRemaining + 1 );
+				var lapsRemaining = Math.Min( IRSDK.normalizedData.sessionLapsTotal, IRSDK.normalizedData.sessionLapsRemaining );
 
 				liveDataRaceStatus.lapsRemainingText = lapsRemaining.ToString() + " " + Settings.overlay.translationDictionary[ "ToGo" ].translation;
 			}
@@ -136,7 +136,7 @@ namespace iRacingTVController
 			{
 				liveDataRaceStatus.showBlackLight = true;
 			}
-			else if ( IRSDK.normalizedSession.isInRaceSession && ( ( IRSDK.normalizedData.sessionLapsRemaining == 0 ) || ( ( IRSDK.normalizedData.sessionFlags & (uint) SessionFlags.White ) != 0 ) ) )
+			else if ( IRSDK.normalizedSession.isInRaceSession && ( ( IRSDK.normalizedData.sessionLapsRemaining == 1 ) || ( ( IRSDK.normalizedData.sessionFlags & (uint) SessionFlags.White ) != 0 ) ) )
 			{
 				liveDataRaceStatus.showWhiteLight = true;
 			}

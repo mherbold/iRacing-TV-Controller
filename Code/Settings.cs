@@ -828,11 +828,13 @@ namespace iRacingTVController
 				heatFalloff_Overridden = directorLocal.heatFalloff_Overridden,
 				heatBias_Overridden = directorLocal.heatBias_Overridden,
 
-				preferredCarNumbers = directorLocal.preferredCarNumber_Overridden ? directorLocal.preferredCarNumbers : directorGlobal.preferredCarNumbers,
+				preferredCarUserIds = directorLocal.preferredCarUserIds_Overridden ? directorLocal.preferredCarUserIds : directorGlobal.preferredCarUserIds,
+				preferredCarCarNumbers = directorLocal.preferredCarCarNumbers_Overridden ? directorLocal.preferredCarCarNumbers : directorGlobal.preferredCarCarNumbers,
 				preferredCarLockOnEnabled = directorLocal.preferredCarLockOnEnabled_Overridden ? directorLocal.preferredCarLockOnEnabled : directorGlobal.preferredCarLockOnEnabled,
 				preferredCarLockOnMinimumHeat = directorLocal.preferredCarLockOnMinimumHeat_Overridden ? directorLocal.preferredCarLockOnMinimumHeat : directorGlobal.preferredCarLockOnMinimumHeat,
 
-				preferredCarNumber_Overridden = directorLocal.preferredCarNumber_Overridden,
+				preferredCarUserIds_Overridden = directorLocal.preferredCarUserIds_Overridden,
+				preferredCarCarNumbers_Overridden = directorLocal.preferredCarCarNumbers_Overridden,
 				preferredCarLockOnEnabled_Overridden = directorLocal.preferredCarLockOnEnabled_Overridden,
 				preferredCarLockOnMinimumHeat_Overridden = directorLocal.preferredCarLockOnMinimumHeat_Overridden,
 

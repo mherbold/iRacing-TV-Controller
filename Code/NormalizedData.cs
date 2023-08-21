@@ -236,9 +236,9 @@ namespace iRacingTVController
 			sessionTimeRemaining = Math.Max( 0, IRSDK.data.SessionTimeRemain );
 
 			sessionLapsTotal = IRSDK.data.SessionLapsTotal;
-			sessionLapsRemaining = Math.Max( 0, IRSDK.data.SessionLapsRemain );
+			sessionLapsRemaining = Math.Min( sessionLapsTotal, Math.Max( 0, IRSDK.data.SessionLapsRemain ) + 1 );
 
-			currentLap = sessionLapsTotal - sessionLapsRemaining;
+			currentLap = sessionLapsTotal - sessionLapsRemaining + 1;
 
 			camCarIdx = IRSDK.data.CamCarIdx;
 			camGroupNumber = IRSDK.data.CamGroupNumber;

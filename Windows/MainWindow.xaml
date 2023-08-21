@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.25"
+        Title="iRacing-TV Controller v1.26"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="900" Height="700" MinWidth="900" MinHeight="700" Icon="/Assets/icon/iracing-tv.ico">
     <Grid>
@@ -39,31 +39,31 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Width="90" Margin="0,0,3,0">
-                            <TextBox x:Name="ControlPanel_RaceStatus_SimFrame" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                            <TextBox x:Name="ControlPanel_RaceStatus_SimFrame" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontFamily="Courier New" FontSize="11"/>
                             <Label Content="Sim Frame" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                         </StackPanel>
                         <StackPanel Width="120" Margin="3,0,0,0" Grid.Column="1">
-                            <TextBox x:Name="ControlPanel_RaceStatus_SessionName" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                            <TextBox x:Name="ControlPanel_RaceStatus_SessionName" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
                             <Label Content="Session Name" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                         </StackPanel>
                         <StackPanel Width="120" Margin="3,0,0,0" Grid.Column="2">
-                            <TextBox x:Name="ControlPanel_RaceStatus_SessionType" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                            <TextBox x:Name="ControlPanel_RaceStatus_SessionType" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
                             <Label Content="Session Type" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                         </StackPanel>
                         <StackPanel Width="120" Margin="3,0,0,0" Grid.Column="3">
-                            <TextBox x:Name="ControlPanel_RaceStatus_SessionState" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                            <TextBox x:Name="ControlPanel_RaceStatus_SessionState" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
                             <Label Content="Session State" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                         </StackPanel>
                         <StackPanel Width="60" Margin="3,0,3,0" Grid.Column="4">
-                            <TextBox x:Name="ControlPanel_RaceStatus_SimTime" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                            <TextBox x:Name="ControlPanel_RaceStatus_SimTime" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
                             <Label Content="Sim Time" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                         </StackPanel>
                         <StackPanel Width="60" Margin="3,0,3,0" Grid.Column="5">
-                            <TextBox x:Name="ControlPanel_RaceStatus_RemainingTime" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                            <TextBox x:Name="ControlPanel_RaceStatus_RemainingTime" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontFamily="Courier New" FontSize="11"/>
                             <Label Content="Rem. Time" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                         </StackPanel>
                         <StackPanel Width="60" Margin="3,0,3,0" Grid.Column="6">
-                            <TextBox x:Name="ControlPanel_RaceStatus_RemainingLaps" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                            <TextBox x:Name="ControlPanel_RaceStatus_RemainingLaps" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontFamily="Courier New" FontSize="11"/>
                             <Label Content="Rem. Laps" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                         </StackPanel>
                     </Grid>
@@ -95,23 +95,23 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Width="60" Margin="0,0,3,0">
-                                    <TextBox x:Name="ControlPanel_CameraControl_Timer" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontFamily="Courier New" FontSize="11"/>
+                                    <TextBox x:Name="ControlPanel_CameraControl_Timer" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontFamily="Courier New" FontSize="11"/>
                                     <Label Content="Timer" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                                 </StackPanel>
                                 <StackPanel Width="60" Margin="3,0,3,0" Grid.Column="1">
-                                    <TextBox x:Name="ControlPanel_CameraControl_CarNumber" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                                    <TextBox x:Name="ControlPanel_CameraControl_CarNumber" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
                                     <Label Content="Car Number" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                                 </StackPanel>
                                 <StackPanel Width="150" Margin="3,0,3,0" Grid.Column="2">
-                                    <TextBox x:Name="ControlPanel_CameraControl_DriverName" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                                    <TextBox x:Name="ControlPanel_CameraControl_DriverName" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
                                     <Label Content="Driver Name" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                                 </StackPanel>
                                 <StackPanel Width="90" Margin="3,0,3,0" Grid.Column="3">
-                                    <TextBox x:Name="ControlPanel_CameraControl_CameraGroup" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                                    <TextBox x:Name="ControlPanel_CameraControl_CameraGroup" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
                                     <Label Content="Camera Group" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                                 </StackPanel>
                                 <StackPanel Width="360" Margin="3,0,0,0" Grid.Column="4">
-                                    <TextBox x:Name="ControlPanel_CameraControl_Reason" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" FontSize="11"/>
+                                    <TextBox x:Name="ControlPanel_CameraControl_Reason" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
                                     <Label Content="Reason" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                                 </StackPanel>
                             </Grid>
@@ -750,12 +750,22 @@
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="300"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Label Content="Numbers"/>
-                                        <TextBox x:Name="Director_PreferredCar_Number" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
-                                        <CheckBox x:Name="Director_PreferredCar_Number_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        <Label Content="User IDs"/>
+                                        <TextBox x:Name="Director_PreferredCar_UserIds" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                        <CheckBox x:Name="Director_PreferredCar_UserIds_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="300"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Car Numbers"/>
+                                        <TextBox x:Name="Director_PreferredCar_CarNumbers" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                        <CheckBox x:Name="Director_PreferredCar_CarNumbers_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>

@@ -41,7 +41,8 @@ namespace iRacingTVController
 			NormalizedCar? talkingCar = ( IRSDK.normalizedData.radioTransmitCarIdx != -1 ) ? IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.normalizedData.radioTransmitCarIdx ) : null;
 			NormalizedCar? randomCar = GetRandomNormalizedCar();
 
-			var preferredCarNumbersList = Settings.director.preferredCarNumbers.Split( "," ).ToList().Select( s => s.Trim() ).ToList();
+			var preferredCarUserIdsList = Settings.director.preferredCarUserIds.Split( "," ).ToList().Select( s => s.Trim() ).ToList();
+			var preferredCarCarNumbersList = Settings.director.preferredCarCarNumbers.Split( "," ).ToList().Select( s => s.Trim() ).ToList();
 
 			foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardSortedNormalizedCars )
 			{
@@ -64,7 +65,7 @@ namespace iRacingTVController
 						hottestCar = normalizedCar;
 					}
 
-					if ( preferredCarNumbersList.Contains( normalizedCar.carNumber ) )
+					if ( preferredCarUserIdsList.Contains( normalizedCar.userId.ToString() ) || preferredCarCarNumbersList.Contains( normalizedCar.carNumber ) )
 					{
 						preferredCarList.Add( normalizedCar );
 					}

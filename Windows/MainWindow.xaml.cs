@@ -597,7 +597,8 @@ namespace iRacingTVController
 			Initialize( Director_Heat_Falloff, Settings.director.heatFalloff, Director_Heat_Falloff_Override, directorIsGlobal, Settings.director.heatFalloff_Overridden );
 			Initialize( Director_Heat_Bias, Settings.director.heatBias, Director_Heat_Bias_Override, directorIsGlobal, Settings.director.heatBias_Overridden );
 
-			Initialize( Director_PreferredCar_Number, Settings.director.preferredCarNumbers, Director_PreferredCar_Number_Override, directorIsGlobal, Settings.director.preferredCarNumber_Overridden );
+			Initialize( Director_PreferredCar_UserIds, Settings.director.preferredCarUserIds, Director_PreferredCar_UserIds_Override, directorIsGlobal, Settings.director.preferredCarUserIds_Overridden );
+			Initialize( Director_PreferredCar_CarNumbers, Settings.director.preferredCarCarNumbers, Director_PreferredCar_CarNumbers_Override, directorIsGlobal, Settings.director.preferredCarCarNumbers_Overridden );
 			Initialize( Director_PreferredCar_LockOnEnabled, Settings.director.preferredCarLockOnEnabled, Director_PreferredCar_LockOnEnabled_Override, directorIsGlobal, Settings.director.preferredCarLockOnEnabled_Overridden );
 			Initialize( Director_PreferredCar_LockOnMinimumHeat, Settings.director.preferredCarLockOnMinimumHeat, Director_PreferredCar_LockOnMinimumHeat_Override, directorIsGlobal, Settings.director.preferredCarLockOnMinimumHeat_Overridden );
 
@@ -1952,19 +1953,34 @@ namespace iRacingTVController
 					director.heatBias = (float) Director_Heat_Bias.Value;
 				}
 
-				overridden = Director_PreferredCar_Number_Override.IsChecked ?? false;
+				overridden = Director_PreferredCar_UserIds_Override.IsChecked ?? false;
 
-				if ( Settings.directorLocal.preferredCarNumber_Overridden != overridden )
+				if ( Settings.directorLocal.preferredCarUserIds_Overridden != overridden )
 				{
-					Settings.directorLocal.preferredCarNumber_Overridden = overridden;
+					Settings.directorLocal.preferredCarUserIds_Overridden = overridden;
 
 					Initialize();
 				}
 				else
 				{
-					var director = Settings.directorLocal.preferredCarNumber_Overridden ? Settings.directorLocal : Settings.directorGlobal;
+					var director = Settings.directorLocal.preferredCarUserIds_Overridden ? Settings.directorLocal : Settings.directorGlobal;
 
-					director.preferredCarNumbers = Director_PreferredCar_Number.Text;
+					director.preferredCarUserIds = Director_PreferredCar_UserIds.Text;
+				}
+
+				overridden = Director_PreferredCar_CarNumbers_Override.IsChecked ?? false;
+
+				if ( Settings.directorLocal.preferredCarCarNumbers_Overridden != overridden )
+				{
+					Settings.directorLocal.preferredCarCarNumbers_Overridden = overridden;
+
+					Initialize();
+				}
+				else
+				{
+					var director = Settings.directorLocal.preferredCarCarNumbers_Overridden ? Settings.directorLocal : Settings.directorGlobal;
+
+					director.preferredCarCarNumbers = Director_PreferredCar_CarNumbers.Text;
 				}
 
 				overridden = Director_PreferredCar_LockOnEnabled_Override.IsChecked ?? false;

@@ -2,7 +2,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 using Aydsko.iRacingData.Common;
@@ -19,7 +18,7 @@ namespace iRacingTVController
 		public const int MAX_NUM_CHECKPOINTS = 300;
 
 		public int carIdx = 0;
-		public int driverIdx = 0;
+		public int driverIdx = -1;
 
 		public int userId = 0;
 
@@ -36,7 +35,9 @@ namespace iRacingTVController
 		public bool includeInLeaderboard = false;
 		public bool hasCrossedStartLine = false;
 		public bool isOnPitRoad = false;
+		public bool wasOnPitRoad = false;
 		public bool isOutOfCar = false;
+		public bool wasOutOfCar = false;
 		public bool isPaceCar = false;
 		public bool isSpectator = false;
 
@@ -83,6 +84,11 @@ namespace iRacingTVController
 		public bool wasVisibleOnLeaderboard = false;
 		public Vector2 leaderboardSlotOffset = Vector2.zero;
 
+		public int currentIncidentPoints = 0;
+		public int previousIncidentPoints = 0;
+		public int activeIncidentPoints = 0;
+		public float activeIncidentTimer = 0;
+
 		public NormalizedCar( int carIdx )
 		{
 			this.carIdx = carIdx;
@@ -106,9 +112,15 @@ namespace iRacingTVController
 			classColor = Color.white;
 
 			includeInLeaderboard = false;
+
 			hasCrossedStartLine = false;
+
 			isOnPitRoad = false;
+			wasOnPitRoad = false;
+
 			isOutOfCar = false;
+			wasOutOfCar = false;
+
 			isPaceCar = false;
 			isSpectator = false;
 
@@ -147,6 +159,11 @@ namespace iRacingTVController
 			leaderboardSlotOffset = Vector2.zero;
 			wasVisibleOnLeaderboard = false;
 
+			currentIncidentPoints = 0;
+			previousIncidentPoints = 0;
+			activeIncidentPoints = 0;
+			activeIncidentTimer = 0;
+
 			for ( var i = 0; i < checkpoints.Length; i++ )
 			{
 				checkpoints[ i ] = 0;
@@ -155,7 +172,7 @@ namespace iRacingTVController
 
 		public void SessionNumberChange()
 		{
-			if ( IRSDK.data == null )
+			if ( ( IRSDK.data == null ) || ( IRSDK.session == null ) )
 			{
 				return;
 			}
@@ -163,8 +180,12 @@ namespace iRacingTVController
 			var car = IRSDK.data.Cars[ carIdx ];
 
 			hasCrossedStartLine = false;
-			isOnPitRoad = false;
-			isOutOfCar = false;
+
+			isOnPitRoad = car.CarIdxOnPitRoad;
+			wasOnPitRoad = isOnPitRoad;
+
+			isOutOfCar = car.CarIdxLapDistPct == -1;
+			wasOutOfCar = isOutOfCar;
 
 			leaderboardIndex = 0;
 
@@ -196,6 +217,21 @@ namespace iRacingTVController
 			leaderboardSlotOffset = Vector2.zero;
 			wasVisibleOnLeaderboard = false;
 
+			if ( driverIdx != -1 )
+			{
+				var driver = IRSDK.session.DriverInfo.Drivers[ driverIdx ];
+
+				currentIncidentPoints = driver.CurDriverIncidentCount;
+			}
+			else
+			{
+				currentIncidentPoints = 0;
+			}
+
+			previousIncidentPoints = 0;
+			activeIncidentPoints = 0;
+			activeIncidentTimer = 0;
+
 			for ( var i = 0; i < checkpoints.Length; i++ )
 			{
 				checkpoints[ i ] = 0;
@@ -209,11 +245,11 @@ namespace iRacingTVController
 				return;
 			}
 
+			DriverModel? driver = null;
+
 			if ( ( driverIdx == -1 ) || forceUpdate )
 			{
 				includeInLeaderboard = false;
-
-				DriverModel? driver = null;
 
 				for ( var driverIdx = 0; driverIdx < IRSDK.session.DriverInfo.Drivers.Count; driverIdx++ )
 				{
@@ -343,18 +379,39 @@ namespace iRacingTVController
 					}
 				}
 			}
+
+			if ( driverIdx != -1 )
+			{
+				driver = IRSDK.session.DriverInfo.Drivers[ driverIdx ];
+
+				if ( driver.CurDriverIncidentCount > currentIncidentPoints )
+				{
+					if ( activeIncidentPoints == 0 )
+					{
+						previousIncidentPoints = currentIncidentPoints;
+					}
+
+					activeIncidentPoints = Math.Max( IRSDK.normalizedSession.isDirtTrack ? 2 : 4, driver.CurDriverIncidentCount - previousIncidentPoints );
+					activeIncidentTimer = 0;
+				}
+
+				currentIncidentPoints = driver.CurDriverIncidentCount;
+			}
 		}
 
 		public void Update()
 		{
-			if ( IRSDK.data == null )
+			if ( ( IRSDK.data == null ) || ( IRSDK.session == null ) )
 			{
 				return;
 			}
 
 			var car = IRSDK.data.Cars[ carIdx ];
 
+			wasOnPitRoad = isOnPitRoad;
 			isOnPitRoad = car.CarIdxOnPitRoad;
+
+			wasOutOfCar = isOutOfCar;
 			isOutOfCar = car.CarIdxLapDistPct == -1;
 
 			if ( !includeInLeaderboard )
@@ -468,6 +525,22 @@ namespace iRacingTVController
 
 			distanceMovedInMeters = lapDistPctDelta * IRSDK.normalizedSession.trackLengthInMeters;
 			speedInMetersPerSecond = distanceMovedInMeters / (float) IRSDK.normalizedData.sessionTimeDelta;
+
+			if ( activeIncidentPoints > 0 )
+			{
+				activeIncidentTimer += Program.deltaTime;
+
+				if ( activeIncidentTimer > 5 )
+				{
+					var driver = IRSDK.session.DriverInfo.Drivers[ driverIdx ];
+
+					currentIncidentPoints = driver.CurDriverIncidentCount;
+
+					previousIncidentPoints = 0;
+					activeIncidentPoints = 0;
+					activeIncidentTimer = 0;
+				}
+			}
 		}
 
 		public void GenerateAbbrevName( bool includeFirstNameInitial )

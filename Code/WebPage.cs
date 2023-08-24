@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Globalization;
 using System.IO;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -20,7 +21,8 @@ namespace iRacingTVController
 				var indexHtml = File.ReadAllText( Settings.editor.webpageGeneralSourceFolder + "\\index.html" );
 
 				indexHtml = Replace( indexHtml, "title", Settings.editor.webpageTextTitle );
-				indexHtml = Replace( indexHtml, "update interval", Settings.editor.webpageGeneralUpdateInterval.ToString() );
+				indexHtml = Replace( indexHtml, "update interval", Settings.editor.webpageGeneralUpdateInterval.ToString( CultureInfo.InvariantCulture ) );
+				indexHtml = Replace( indexHtml, "iracing-tv version", MainWindow.Instance.Title );
 
 				var indexHtmlFilePath = $"{Settings.editor.webpageGeneralOutputFolder}index.html";
 

@@ -26,6 +26,7 @@ namespace iRacingTVController
 		public LiveDataIntro liveDataIntro = new();
 		public LiveDataStartLights liveDataStartLights = new();
 		[JsonInclude] public LiveDataTrackMap liveDataTrackMap = new();
+		[JsonInclude] public LiveDataEventLog liveDataEventLog = new();
 
 		public string seriesLogoTextureUrl = string.Empty;
 
@@ -61,6 +62,7 @@ namespace iRacingTVController
 			UpdateSubtitle();
 			UpdateIntro();
 			UpdateStartLights();
+			UpdateEventLog();
 
 			seriesLogoTextureUrl = IRSDK.normalizedSession.seriesLogoTextureUrl;
 
@@ -699,6 +701,11 @@ namespace iRacingTVController
 					liveDataStartLights.showReady = true;
 				}
 			}
+		}
+
+		public void UpdateEventLog()
+		{
+			liveDataEventLog.messages = EventLog.messages;
 		}
 	}
 }

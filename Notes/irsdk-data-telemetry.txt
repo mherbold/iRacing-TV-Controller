@@ -1,279 +1,280 @@
-Data
-
-		AirDensity	1.17373717	float
-		AirPressure	29.92	float
-		AirTemp	25.5555553	float
-		Brake	0	float
-		BrakeABSactive	false	bool
-		BrakeRaw	0	float
-		CamCameraNumber	4	int
-		CamCameraState	81	int
-		CamCarIdx	1	int
-		CamGroupNumber	11	int
-		CarLeftRight	0	int
-+		Cars	{irsdkSharp.Serialization.Models.Data.CarModel[64]}	irsdkSharp.Serialization.Models.Data.CarModel[]
-		ChanAvgLatency	0	float
-		ChanClockSkew	0	float
-		ChanLatency	0	float
-		ChanPartnerQuality	0	float
-		ChanQuality	0	float
-		Clutch	1	float
-		CpuUsageBG	0.06700016	float
-		CpuUsageFG	0.6487993	float
-		DCDriversSoFar	0	int
-		DCLapStatus	0	int
-		DisplayUnits	0	int
-		DriverMarker	false	bool
-		EngineWarnings	0	int
-		EnterExitReset	0	int
-		FastRepairAvailable	0	int
-		FastRepairUsed	0	int
-		FogLevel	0	float
-		FrameRate	89.76691	float
-		FrontTireSetsAvailable	0	int
-		FrontTireSetsUsed	0	int
-		FuelLevel	0	float
-		FuelLevelPct	0	float
-		FuelPress	0	float
-		FuelUsePerHour	0	float
-		Gear	4	int
-		GpuUsage	0.6193449	float
-		HandbrakeRaw	0	float
-		IsDiskLoggingActive	false	bool
-		IsDiskLoggingEnabled	false	bool
-		IsInGarage	false	bool
-		IsOnTrack	false	bool
-		IsOnTrackCar	false	bool
-		IsReplayPlaying	true	bool
-		LFTiresAvailable	0	int
-		LFTiresUsed	0	int
-		LFbrakeLinePress	0	float
-		LFcoldPressure	155.0511	float
-		LFshockDefl	0	float
-		LFshockDefl_ST	null	float[]
-		LFshockVel	0	float
-		LFshockVel_ST	null	float[]
-		LFtempCL	39.90216	float
-		LFtempCM	39.90216	float
-		LFtempCR	39.90216	float
-		LFwearL	1	float
-		LFwearM	1	float
-		LFwearR	1	float
-		LRTiresAvailable	0	int
-		LRTiresUsed	0	int
-		LRbrakeLinePress	0	float
-		LRcoldPressure	155.0511	float
-		LRshockDefl	0	float
-		LRshockDefl_ST	null	float[]
-		LRshockVel	0	float
-		LRshockVel_ST	null	float[]
-		LRtempCL	39.90216	float
-		LRtempCM	39.90216	float
-		LRtempCR	39.90216	float
-		LRwearL	1	float
-		LRwearM	1	float
-		LRwearR	1	float
-		Lap	39	int
-		LapBestLap	0	int
-		LapBestLapTime	0	float
-		LapBestNLapLap	0	int
-		LapBestNLapTime	0	float
-		LapCompleted	38	int
-		LapCurrentLapTime	0	float
-		LapDeltaToBestLap	0	float
-		LapDeltaToBestLap_DD	0	float
-		LapDeltaToBestLap_OK	false	bool
-		LapDeltaToOptimalLap	0	float
-		LapDeltaToOptimalLap_DD	0	float
-		LapDeltaToOptimalLap_OK	false	bool
-		LapDeltaToSessionBestLap	0	float
-		LapDeltaToSessionBestLap_DD	0	float
-		LapDeltaToSessionBestLap_OK	false	bool
-		LapDeltaToSessionLastLap	0	float
-		LapDeltaToSessionLastLap_DD	0	float
-		LapDeltaToSessionLastLap_OK	false	bool
-		LapDeltaToSessionOptimalLap	0	float
-		LapDeltaToSessionOptimalLap_DD	0	float
-		LapDeltaToSessionOptimalLap_OK	false	bool
-		LapDist	1504.1189	float
-		LapDistPct	0.6140747	float
-		LapLasNLapSeq	0	int
-		LapLastLapTime	0	float
-		LapLastNLapTime	0	float
-		LatAccel	14.5044165	float
-+		LatAccel_ST	{float[6]}	float[]
-		LeftTireSetsAvailable	0	int
-		LeftTireSetsUsed	0	int
-		LoadNumTextures	false	bool
-		LongAccel	-2.443528	float
-+		LongAccel_ST	{float[6]}	float[]
-		ManifoldPress	1	float
-		ManualBoost	false	bool
-		ManualNoBoost	false	bool
-		MemPageFaultSec	0	float
-		OilLevel	9.5	float
-		OilPress	0	float
-		OilTemp	77	float
-		OkToReloadTextures	true	bool
-		OnPitRoad	false	bool
-		PaceMode	4	int
-		PitOptRepairLeft	0	float
-		PitRepairLeft	0	float
-		PitSvFlags	0	int
-		PitSvFuel	0	float
-		PitSvLFP	0	float
-		PitSvLRP	0	float
-		PitSvRFP	0	float
-		PitSvRRP	0	float
-		PitSvTireCompound	0	int
-		Pitch	0.02741372	float
-		PitchRate	-0.032497	float
-+		PitchRate_ST	{float[6]}	float[]
-		PitsOpen	true	bool
-		PitstopActive	false	bool
-		PlayerCarClass	1455	int
-		PlayerCarClassPosition	5	int
-		PlayerCarDriverIncidentCount	9	int
-		PlayerCarDryTireSetLimit	0	int
-		PlayerCarIdx	1	int
-		PlayerCarInPitStall	false	bool
-		PlayerCarMyIncidentCount	9	int
-		PlayerCarPitSvStatus	0	int
-		PlayerCarPosition	5	int
-		PlayerCarPowerAdjust	0	float
-		PlayerCarTeamIncidentCount	9	int
-		PlayerCarTowTime	0	float
-		PlayerCarWeightPenalty	0	float
-		PlayerFastRepairsUsed	0	int
-		PlayerTireCompound	-1	int
-		PlayerTrackSurface	3	int
-		PlayerTrackSurfaceMaterial	1	int
-		PushToPass	false	bool
-		RFTiresAvailable	0	int
-		RFTiresUsed	0	int
-		RFbrakeLinePress	0	float
-		RFcoldPressure	310.1022	float
-		RFshockDefl	0	float
-		RFshockDefl_ST	null	float[]
-		RFshockVel	0	float
-		RFshockVel_ST	null	float[]
-		RFtempCL	39.9335022	float
-		RFtempCM	39.9335022	float
-		RFtempCR	39.9335022	float
-		RFwearL	1	float
-		RFwearM	1	float
-		RFwearR	1	float
-		RPM	7307.194	float
-		RRTiresAvailable	0	int
-		RRTiresUsed	0	int
-		RRbrakeLinePress	0	float
-		RRcoldPressure	310.1022	float
-		RRshockDefl	0	float
-		RRshockDefl_ST	null	float[]
-		RRshockVel	0	float
-		RRshockVel_ST	null	float[]
-		RRtempCL	39.9335022	float
-		RRtempCM	39.9335022	float
-		RRtempCR	39.9335022	float
-		RRwearL	1	float
-		RRwearM	1	float
-		RRwearR	1	float
-		RaceLaps	39	int
-		RadioTransmitCarIdx	-1	int
-		RadioTransmitFrequencyIdx	0	int
-		RadioTransmitRadioIdx	0	int
-		RearTireSetsAvailable	0	int
-		RearTireSetsUsed	0	int
-		RelativeHumidity	0.55	float
-		ReplayFrameNum	123407	int
-		ReplayFrameNumEnd	41127	int
-		ReplayPlaySlowMotion	false	bool
-		ReplayPlaySpeed	1	int
-		ReplaySessionNum	2	int
-		ReplaySessionTime	1622.0465738932292	double
-		RightTireSetsAvailable	0	int
-		RightTireSetsUsed	0	int
-		Roll	-0.250405252	float
-		RollRate	-0.156897575	float
-+		RollRate_ST	{float[6]}	float[]
-		SessionFlags	0	int
-		SessionJokerLapsRemain	0	int
-		SessionLapsRemain	10	int
-		SessionLapsRemainEx	11	int
-		SessionLapsTotal	49	int
-		SessionNum	2	int
-		SessionOnJokerLap	false	bool
-		SessionState	4	int
-		SessionTick	42922	int
-		SessionTime	1622.0465738932292	double
-		SessionTimeOfDay	0	float
-		SessionTimeRemain	604800	double
-		SessionTimeTotal	604800	double
-		SessionUniqueID	3	int
-		ShiftGrindRPM	0	float
-		ShiftIndicatorPct	0	float
-		ShiftPowerPct	0	float
-		Skies	1	int
-		Speed	76.07976	float
-		SteeringWheelAngle	0.465188563	float
-		SteeringWheelAngleMax	15.2257357	float
-		SteeringWheelLimiter	0	float
-		SteeringWheelMaxForceNm	42.28856	float
-		SteeringWheelPctDamper	0	float
-		SteeringWheelPctTorque	0	float
-		SteeringWheelPctTorqueSign	0	float
-		SteeringWheelPctTorqueSignStops	0	float
-		SteeringWheelPeakForceNm	-1	float
-		SteeringWheelTorque	0	float
-+		SteeringWheelTorque_ST	{float[6]}	float[]
-		SteeringWheelUseLinear	true	bool
-		Throttle	0	float
-		ThrottleRaw	0	float
-		TireLF_RumblePitch	0	float
-		TireLR_RumblePitch	0	float
-		TireRF_RumblePitch	0	float
-		TireRR_RumblePitch	0	float
-		TireSetsAvailable	0	int
-		TireSetsUsed	0	int
-		TrackTemp	27.777771	float
-		TrackTempCrew	27.777771	float
-		VelocityX	75.9222641	float
-+		VelocityX_ST	{float[6]}	float[]
-		VelocityY	-4.89277124	float
-+		VelocityY_ST	{float[6]}	float[]
-		VelocityZ	0.9121873	float
-+		VelocityZ_ST	{float[6]}	float[]
-		VertAccel	17.3953323	float
-+		VertAccel_ST	{float[6]}	float[]
-		VidCapActive	false	bool
-		VidCapEnabled	false	bool
-		Voltage	13.4000006	float
-		WaterLevel	9.5	float
-		WaterTemp	77	float
-		WeatherType	0	int
-		WindDir	0	float
-		WindVel	2	float
-		Yaw	-2.85027814	float
-		YawNorth	0.587029934	float
-		YawRate	0.2318948	float
-+		YawRate_ST	{float[6]}	float[]
-		_replaySessionTime	1622.0465738932292	double?
-		_sessionTime	1622.0465738932292	double?
-		_sessionTimeRemain	604800	double?
-		dcAntiRollFront	0	float
-		dcAntiRollRear	0	float
-		dcBrakeBias	0	float
-		dcStarter	false	bool
-		dcTearOffVisor	false	bool
-		dpFastRepair	0	float
-		dpFuelAddKg	0	float
-		dpFuelFill	0	float
-		dpLFTireChange	0	float
-		dpLFTireColdPress	0	float
-		dpLRTireChange	0	float
-		dpLRTireColdPress	0	float
-		dpRFTireChange	0	float
-		dpRFTireColdPress	0	float
-		dpRRTireChange	0	float
-		dpRRTireColdPress	0	float
-		dpWindshieldTearoff	0	float
+AirDensity                     | System.Single                  |                       1,173737 | Density of air at start/finish line
+AirPressure                    | System.Single                  |                          29,92 | Pressure of air at start/finish line
+AirTemp                        | System.Single                  |                       25,55556 | Temperature of air at start/finish line
+Brake                          | System.Single                  |                              0 | 0=brake released to 1=max pedal force
+BrakeABSactive                 | System.Boolean                 |                          False | true if abs is currently reducing brake force pressure
+BrakeRaw                       | System.Single                  |                              0 | Raw brake input 0=brake released to 1=max pedal force
+CamCameraNumber                | System.Int32                   |                              1 | Active camera number
+CamCameraState                 | System.Int32                   |                             83 | State of camera system
+CamCarIdx                      | System.Int32                   |                             63 | Active camera's focus car index
+CamGroupNumber                 | System.Int32                   |                             28 | Active camera group number
+CarLeftRight                   | System.Int32                   |                              0 | Notify if car is to the left or right of driver
+ChanAvgLatency                 | System.Single                  |                              0 | Communications average latency
+ChanClockSkew                  | System.Single                  |                              0 | Communications server clock skew
+ChanLatency                    | System.Single                  |                              0 | Communications latency
+ChanPartnerQuality             | System.Single                  |                              0 | Partner communications quality
+ChanQuality                    | System.Single                  |                              0 | Communications quality
+Clutch                         | System.Single                  |                              0 | 0=disengaged to 1=fully engaged
+ClutchRaw                      | System.Single                  |                              0 | Raw clutch input 0=disengaged to 1=fully engaged
+CpuUsageBG                     | System.Single                  |                      0,4009993 | Percent of available time bg thread took with a 1 sec avg
+CpuUsageFG                     | System.Single                  |                      0,3682269 | Percent of available time fg thread took with a 1 sec avg
+dcBrakeBias                    | System.Single                  |                              0 | In car brake bias adjustment
+dcDashPage                     | System.Single                  |                              0 | In car dash display page adjustment
+DCDriversSoFar                 | System.Int32                   |                              0 | Number of team drivers who have run a stint
+DCLapStatus                    | System.Int32                   |                              0 | Status of driver change lap requirements
+dcStarter                      | System.Boolean                 |                          False | In car trigger car starter
+DisplayUnits                   | iRacingSDK.DisplayUnits        |                EnglishImperial | Default units for the user interface 0 = english 1 = metric
+dpFastRepair                   | System.Single                  |                              0 | Pitstop fast repair set
+dpFuelAddKg                    | System.Single                  |                              0 | Pitstop fuel add amount
+dpFuelFill                     | System.Single                  |                              0 | Pitstop fuel fill flag
+dpLFTireColdPress              | System.Single                  |                              0 | Pitstop lf tire cold pressure adjustment
+dpLRTireColdPress              | System.Single                  |                              0 | Pitstop lr tire cold pressure adjustment
+dpLTireChange                  | System.Single                  |                              0 | Pitstop left tire change request
+dpRFTireColdPress              | System.Single                  |                              0 | Pitstop rf cold tire pressure adjustment
+dpRRTireColdPress              | System.Single                  |                              0 | Pitstop rr cold tire pressure adjustment
+dpRTireChange                  | System.Single                  |                              0 | Pitstop right tire change request
+dpWeightJackerLeft             | System.Single                  |                              0 | Pitstop left wedge/weight jacker adjustment
+dpWeightJackerRight            | System.Single                  |                              0 | Pitstop right wedge/weight jacker adjustment
+dpWindshieldTearoff            | System.Single                  |                              0 | Pitstop windshield tearoff
+DriverMarker                   | System.Boolean                 |                          False | Driver activated flag
+Engine0_RPM                    | System.Single                  |                     0,04127011 | Engine0Engine rpm
+EngineWarnings                 | iRacingSDK.EngineWarnings      |                           None | Bitfield for warning lights
+EnterExitReset                 | System.Int32                   |                              0 | Indicate action the reset key will take 0 enter 1 exit 2 reset
+FastRepairAvailable            | System.Int32                   |                              0 | How many fast repairs left  255 is unlimited
+FastRepairUsed                 | System.Int32                   |                              0 | How many fast repairs used so far
+FogLevel                       | System.Single                  |                              0 | Fog level
+FrameRate                      | System.Single                  |                       65,37746 | Average frames per second
+FrontTireSetsAvailable         | System.Int32                   |                              0 | How many front tire sets are remaining  255 is unlimited
+FrontTireSetsUsed              | System.Int32                   |                              0 | How many front tire sets used so far
+FuelLevel                      | System.Single                  |                              0 | Liters of fuel remaining
+FuelLevelPct                   | System.Single                  |                              0 | Percent fuel remaining
+FuelPress                      | System.Single                  |                              0 | Engine fuel pressure
+FuelUsePerHour                 | System.Single                  |                              0 | Engine fuel used instantaneous
+Gear                           | System.Int32                   |                             -1 | -1=reverse  0=neutral  1..n=current gear
+GpuUsage                       | System.Single                  |                      0,6108642 | Percent of available time gpu took with a 1 sec avg
+HandbrakeRaw                   | System.Single                  |                              0 | Raw handbrake input 0=handbrake released to 1=max force
+IsDiskLoggingActive            | System.Boolean                 |                          False | 0=disk based telemetry file not being written  1=being written
+IsDiskLoggingEnabled           | System.Boolean                 |                          False | 0=disk based telemetry turned off  1=turned on
+IsGarageVisible                | System.Boolean                 |                          False | 1=Garage screen is visible
+IsInGarage                     | System.Boolean                 |                          False | 1=Car in garage physics running
+IsOnTrack                      | System.Boolean                 |                          False | 1=Car on track physics running with player in car
+IsOnTrackCar                   | System.Boolean                 |                          False | 1=Car on track physics running
+IsReplayPlaying                | System.Boolean                 |                           True | 0=replay not playing  1=replay playing
+Lap                            | System.Int32                   |                              0 | Laps started count
+LapBestLap                     | System.Int32                   |                              0 | Players best lap number
+LapBestLapTime                 | System.Single                  |                              0 | Players best lap time
+LapBestNLapLap                 | System.Int32                   |                              0 | Player last lap in best N average lap time
+LapBestNLapTime                | System.Single                  |                              0 | Player best N average lap time
+LapCompleted                   | System.Int32                   |                              0 | Laps completed count
+LapCurrentLapTime              | System.Single                  |                              0 | Estimate of players current lap time as shown in F3 box
+LapDeltaToBestLap              | System.Single                  |                              0 | Delta time for best lap
+LapDeltaToBestLap_DD           | System.Single                  |                              0 | Rate of change of delta time for best lap
+LapDeltaToBestLap_OK           | System.Boolean                 |                          False | Delta time for best lap is valid
+LapDeltaToOptimalLap           | System.Single                  |                              0 | Delta time for optimal lap
+LapDeltaToOptimalLap_DD        | System.Single                  |                              0 | Rate of change of delta time for optimal lap
+LapDeltaToOptimalLap_OK        | System.Boolean                 |                          False | Delta time for optimal lap is valid
+LapDeltaToSessionBestLap       | System.Single                  |                              0 | Delta time for session best lap
+LapDeltaToSessionBestLap_DD    | System.Single                  |                              0 | Rate of change of delta time for session best lap
+LapDeltaToSessionBestLap_OK    | System.Boolean                 |                          False | Delta time for session best lap is valid
+LapDeltaToSessionLastlLap      | System.Single                  |                              0 | Delta time for session last lap
+LapDeltaToSessionLastlLap_DD   | System.Single                  |                              0 | Rate of change of delta time for session last lap
+LapDeltaToSessionLastlLap_OK   | System.Boolean                 |                          False | Delta time for session last lap is valid
+LapDeltaToSessionOptimalLap    | System.Single                  |                              0 | Delta time for session optimal lap
+LapDeltaToSessionOptimalLap_DD | System.Single                  |                              0 | Rate of change of delta time for session optimal lap
+LapDeltaToSessionOptimalLap_OK | System.Boolean                 |                          False | Delta time for session optimal lap is valid
+LapDist                        | System.Single                  |                              0 | Meters traveled from S/F this lap
+LapDistPct                     | System.Single                  |                              0 | Percentage distance around lap
+LapLasNLapSeq                  | System.Int32                   |                              0 | Player num consecutive clean laps completed for N average
+LapLastLapTime                 | System.Single                  |                              0 | Players last lap time
+LapLastNLapTime                | System.Single                  |                              0 | Player last N average lap time
+LatAccel                       | System.Single                  |                              0 | Lateral acceleration (including gravity)
+LatAccel_ST                    | System.Single[]                |                System.Single[] | Lateral acceleration (including gravity) at 360 Hz
+LeftTireSetsAvailable          | System.Int32                   |                              0 | How many left tire sets are remaining  255 is unlimited
+LeftTireSetsUsed               | System.Int32                   |                              0 | How many left tire sets used so far
+LFbrakeLinePress               | System.Single                  |                              0 | LF brake line pressure
+LFcoldPressure                 | System.Single                  |                       158,4965 | LF tire cold pressure  as set in the garage
+LFshockDefl                    | System.Single                  |                     0,03873621 | LF shock deflection
+LFshockDefl_ST                 | System.Single[]                |                System.Single[] | LF shock deflection at 360 Hz
+LFshockVel                     | System.Single                  |                    -0,02670143 | LF shock velocity
+LFshockVel_ST                  | System.Single[]                |                System.Single[] | LF shock velocity at 360 Hz
+LFtempCL                       | System.Single                  |                       40,06384 | LF tire left carcass temperature
+LFtempCM                       | System.Single                  |                       40,06384 | LF tire middle carcass temperature
+LFtempCR                       | System.Single                  |                       40,06384 | LF tire right carcass temperature
+LFTiresAvailable               | System.Int32                   |                              0 | How many left front tires are remaining  255 is unlimited
+LFTiresUsed                    | System.Int32                   |                              0 | How many left front tires used so far
+LFwearL                        | System.Single                  |                              1 | LF tire left percent tread remaining
+LFwearM                        | System.Single                  |                              1 | LF tire middle percent tread remaining
+LFwearR                        | System.Single                  |                              1 | LF tire right percent tread remaining
+LoadNumTextures                | System.Boolean                 |                          False | True if the car_num texture will be loaded
+LongAccel                      | System.Single                  |                              0 | Longitudinal acceleration (including gravity)
+LongAccel_ST                   | System.Single[]                |                System.Single[] | Longitudinal acceleration (including gravity) at 360 Hz
+LRbrakeLinePress               | System.Single                  |                              0 | LR brake line pressure
+LRcoldPressure                 | System.Single                  |                       151,6053 | LR tire cold pressure  as set in the garage
+LRshockDefl                    | System.Single                  |                     0,03951814 | LR shock deflection
+LRshockDefl_ST                 | System.Single[]                |                System.Single[] | LR shock deflection at 360 Hz
+LRshockVel                     | System.Single                  |                    -0,02009662 | LR shock velocity
+LRshockVel_ST                  | System.Single[]                |                System.Single[] | LR shock velocity at 360 Hz
+LRtempCL                       | System.Single                  |                       40,06384 | LR tire left carcass temperature
+LRtempCM                       | System.Single                  |                       40,06384 | LR tire middle carcass temperature
+LRtempCR                       | System.Single                  |                       40,06384 | LR tire right carcass temperature
+LRTiresAvailable               | System.Int32                   |                              0 | How many left rear tires are remaining  255 is unlimited
+LRTiresUsed                    | System.Int32                   |                              0 | How many left rear tires used so far
+LRwearL                        | System.Single                  |                              1 | LR tire left percent tread remaining
+LRwearM                        | System.Single                  |                              1 | LR tire middle percent tread remaining
+LRwearR                        | System.Single                  |                              1 | LR tire right percent tread remaining
+ManifoldPress                  | System.Single                  |                              1 | Engine manifold pressure
+ManualBoost                    | System.Boolean                 |                          False | Hybrid manual boost state
+ManualNoBoost                  | System.Boolean                 |                          False | Hybrid manual no boost state
+MemPageFaultSec                | System.Single                  |                              0 | Memory page faults per second
+MemSoftPageFaultSec            | System.Single                  |                              0 | Memory soft page faults per second
+OilLevel                       | System.Single                  |                            9,5 | Engine oil level
+OilPress                       | System.Single                  |                              0 | Engine oil pressure
+OilTemp                        | System.Single                  |                             77 | Engine oil temperature
+OkToReloadTextures             | System.Boolean                 |                           True | True if it is ok to reload car textures at this time
+OnPitRoad                      | System.Boolean                 |                          False | Is the player car on pit road between the cones
+PaceMode                       | System.Int32                   |                              4 | Are we pacing or not
+Pitch                          | System.Single                  |                              0 | Pitch orientation
+PitchRate                      | System.Single                  |                              0 | Pitch rate
+PitchRate_ST                   | System.Single[]                |                System.Single[] | Pitch rate at 360 Hz
+PitOptRepairLeft               | System.Single                  |                              0 | Time left for optional repairs if repairs are active
+PitRepairLeft                  | System.Single                  |                              0 | Time left for mandatory pit repairs if repairs are active
+PitsOpen                       | System.Boolean                 |                           True | True if pit stop is allowed for the current player
+PitstopActive                  | System.Boolean                 |                          False | Is the player getting pit stop service
+PitSvFlags                     | System.Int32                   |                              0 | Bitfield of pit service checkboxes
+PitSvFuel                      | System.Single                  |                              0 | Pit service fuel add amount
+PitSvLFP                       | System.Single                  |                              0 | Pit service left front tire pressure
+PitSvLRP                       | System.Single                  |                              0 | Pit service left rear tire pressure
+PitSvRFP                       | System.Single                  |                              0 | Pit service right front tire pressure
+PitSvRRP                       | System.Single                  |                              0 | Pit service right rear tire pressure
+PitSvTireCompound              | System.Int32                   |                              0 | Pit service pending tire compound
+PlayerCarClass                 | System.Int32                   |                           2978 | Player car class id
+PlayerCarClassPosition         | System.Int32                   |                              0 | Players class position in race
+PlayerCarDriverIncidentCount   | System.Int32                   |                              0 | Teams current drivers incident count for this session
+PlayerCarDryTireSetLimit       | System.Int32                   |                              0 | Players dry tire set limit
+PlayerCarIdx                   | System.Int32                   |                             63 | Players carIdx
+PlayerCarInPitStall            | System.Boolean                 |                          False | Players car is properly in there pitstall
+PlayerCarMyIncidentCount       | System.Int32                   |                              0 | Players own incident count for this session
+PlayerCarPitSvStatus           | System.Int32                   |                              0 | Players car pit service status bits
+PlayerCarPosition              | System.Int32                   |                              0 | Players position in race
+PlayerCarPowerAdjust           | System.Single                  |                              0 | Players power adjust
+PlayerCarTeamIncidentCount     | System.Int32                   |                              0 | Players team incident count for this session
+PlayerCarTowTime               | System.Single                  |                              0 | Players car is being towed if time is greater than zero
+PlayerCarWeightPenalty         | System.Single                  |                              0 | Players weight penalty
+PlayerFastRepairsUsed          | System.Int32                   |                              0 | Players car number of fast repairs used
+PlayerTireCompound             | System.Int32                   |                             -1 | Players car current tire compound
+PlayerTrackSurface             | System.Int32                   |                             -1 | Players car track surface type
+PlayerTrackSurfaceMaterial     | System.Int32                   |                             -1 | Players car track surface material type
+PushToPass                     | System.Boolean                 |                          False | Push to pass button state
+PushToTalk                     | System.Boolean                 |                          False | Push to talk button state
+RaceLaps                       | System.Int32                   |                              1 | Laps completed in race
+RadioTransmitCarIdx            | System.Int32                   |                             -1 | The car index of the current person speaking on the radio
+RadioTransmitFrequencyIdx      | System.Int32                   |                              0 | The frequency index of the current person speaking on the radio
+RadioTransmitRadioIdx          | System.Int32                   |                              0 | The radio index of the current person speaking on the radio
+RearTireSetsAvailable          | System.Int32                   |                              0 | How many rear tire sets are remaining  255 is unlimited
+RearTireSetsUsed               | System.Int32                   |                              0 | How many rear tire sets used so far
+RelativeHumidity               | System.Single                  |                           0,55 | Relative Humidity
+ReplayFrameNum                 | System.Int32                   |                         210329 | Integer replay frame number (60 per second)
+ReplayFrameNumEnd              | System.Int32                   |                         242828 | Integer replay frame number from end of tape
+ReplayPlaySlowMotion           | System.Boolean                 |                          False | 0=not slow motion  1=replay is in slow motion
+ReplayPlaySpeed                | System.Int32                   |                             16 | Replay playback speed
+ReplaySessionNum               | System.Int32                   |                              2 | Replay session number
+ReplaySessionTime              | System.Double                  |               246,476667277018 | Seconds since replay session start
+RFbrakeLinePress               | System.Single                  |                              0 | RF brake line pressure
+RFcoldPressure                 | System.Single                  |                       158,4969 | RF tire cold pressure  as set in the garage
+RFshockDefl                    | System.Single                  |                     0,03618469 | RF shock deflection
+RFshockDefl_ST                 | System.Single[]                |                System.Single[] | RF shock deflection at 360 Hz
+RFshockVel                     | System.Single                  |                     0,02472347 | RF shock velocity
+RFshockVel_ST                  | System.Single[]                |                System.Single[] | RF shock velocity at 360 Hz
+RFtempCL                       | System.Single                  |                       40,06384 | RF tire left carcass temperature
+RFtempCM                       | System.Single                  |                       40,06384 | RF tire middle carcass temperature
+RFtempCR                       | System.Single                  |                       40,06384 | RF tire right carcass temperature
+RFTiresAvailable               | System.Int32                   |                              0 | How many right front tires are remaining  255 is unlimited
+RFTiresUsed                    | System.Int32                   |                              0 | How many right front tires used so far
+RFwearL                        | System.Single                  |                              1 | RF tire left percent tread remaining
+RFwearM                        | System.Single                  |                              1 | RF tire middle percent tread remaining
+RFwearR                        | System.Single                  |                              1 | RF tire right percent tread remaining
+RightTireSetsAvailable         | System.Int32                   |                              0 | How many right tire sets are remaining  255 is unlimited
+RightTireSetsUsed              | System.Int32                   |                              0 | How many right tire sets used so far
+Roll                           | System.Single                  |                              0 | Roll orientation
+RollRate                       | System.Single                  |                              0 | Roll rate
+RollRate_ST                    | System.Single[]                |                System.Single[] | Roll rate at 360 Hz
+RPM                            | System.Single                  |                              0 | Engine rpm
+RRbrakeLinePress               | System.Single                  |                              0 | RR brake line pressure
+RRcoldPressure                 | System.Single                  |                       151,6057 | RR tire cold pressure  as set in the garage
+RRshockDefl                    | System.Single                  |                     0,03788191 | RR shock deflection
+RRshockDefl_ST                 | System.Single[]                |                System.Single[] | RR shock deflection at 360 Hz
+RRshockVel                     | System.Single                  |                     0,01944029 | RR shock velocity
+RRshockVel_ST                  | System.Single[]                |                System.Single[] | RR shock velocity at 360 Hz
+RRtempCL                       | System.Single                  |                       40,06384 | RR tire left carcass temperature
+RRtempCM                       | System.Single                  |                       40,06384 | RR tire middle carcass temperature
+RRtempCR                       | System.Single                  |                       40,06384 | RR tire right carcass temperature
+RRTiresAvailable               | System.Int32                   |                              0 | How many right rear tires are remaining  255 is unlimited
+RRTiresUsed                    | System.Int32                   |                              0 | How many right rear tires used so far
+RRwearL                        | System.Single                  |                              1 | RR tire left percent tread remaining
+RRwearM                        | System.Single                  |                              1 | RR tire middle percent tread remaining
+RRwearR                        | System.Single                  |                              1 | RR tire right percent tread remaining
+SessionFlags                   | iRacingSDK.SessionFlags        |                              0 | Session flags
+SessionJokerLapsRemain         | System.Int32                   |                              0 | Joker laps remaining to be taken
+SessionLapsRemain              | System.Int32                   |                             44 | Old laps left till session ends use SessionLapsRemainEx
+SessionLapsRemainEx            | System.Int32                   |                             45 | New improved laps left till session ends
+SessionLapsTotal               | System.Int32                   |                             45 | Total number of laps in session
+SessionNum                     | System.Int32                   |                              2 | Session number
+SessionOnJokerLap              | System.Boolean                 |                          False | Player is currently completing a joker lap
+SessionState                   | iRacingSDK.SessionState        |                         Racing | Session state
+SessionTick                    | System.Int32                   |                          48758 | Current update number
+SessionTime                    | System.Double                  |               246,476667277018 | Seconds since session start
+SessionTimeOfDay               | System.Single                  |                              0 | Time of day in seconds
+SessionTimeRemain              | System.Double                  |               6653,52333272298 | Seconds left till session ends
+SessionTimeTotal               | System.Double                  |                           6900 | Total number of seconds in session
+SessionUniqueID                | System.Int32                   |                              3 | Session ID
+ShiftGrindRPM                  | System.Single                  |                              0 | RPM of shifter grinding noise
+ShiftIndicatorPct              | System.Single                  |                              0 | DEPRECATED use DriverCarSLBlinkRPM instead
+ShiftPowerPct                  | System.Single                  |                              0 | Friction torque applied to gears when shifting or grinding
+Skies                          | iRacingSDK.Skies               |                   PartlyCloudy | Skies (0=clear/1=p cloudy/2=m cloudy/3=overcast)
+SolarAltitude                  | System.Single                  |                      0,7853982 | Sun angle above horizon in radians
+SolarAzimuth                   | System.Single                  |                       4,712389 | Sun angle clockwise from north in radians
+Speed                          | System.Single                  |                              0 | GPS vehicle speed
+SteeringWheelAngle             | System.Single                  |                              0 | Steering wheel angle
+SteeringWheelAngleMax          | System.Single                  |                       11,26574 | Steering wheel max angle
+SteeringWheelLimiter           | System.Single                  |                              0 | Force feedback limiter strength limits impacts and oscillation
+SteeringWheelMaxForceNm        | System.Single                  |                       34,16893 | Value of strength or max force slider in Nm for FFB
+SteeringWheelPctDamper         | System.Single                  |                              0 | Force feedback % max damping
+SteeringWheelPctSmoothing      | System.Single                  |                              0 | Force feedback % max smoothing
+SteeringWheelPctTorque         | System.Single                  |                              0 | Force feedback % max torque on steering shaft unsigned
+SteeringWheelPctTorqueSign     | System.Single                  |                              0 | Force feedback % max torque on steering shaft signed
+SteeringWheelPctTorqueSignStops| System.Single                  |                              0 | Force feedback % max torque on steering shaft signed stops
+SteeringWheelPeakForceNm       | System.Single                  |                             -1 | Peak torque mapping to direct input units for FFB
+SteeringWheelTorque            | System.Single                  |                              0 | Output torque on steering shaft
+SteeringWheelTorque_ST         | System.Single[]                |                System.Single[] | Output torque on steering shaft at 360 Hz
+SteeringWheelUseLinear         | System.Boolean                 |                           True | True if steering wheel force is using linear mode
+Throttle                       | System.Single                  |                              0 | 0=off throttle to 1=full throttle
+ThrottleRaw                    | System.Single                  |                              0 | Raw throttle input 0=off throttle to 1=full throttle
+TickCount                      | System.Int32                   |                          44931 | 
+TireLF_RumblePitch             | System.Single                  |                              0 | Players LF Tire Sound rumblestrip pitch
+TireLR_RumblePitch             | System.Single                  |                              0 | Players LR Tire Sound rumblestrip pitch
+TireRF_RumblePitch             | System.Single                  |                              0 | Players RF Tire Sound rumblestrip pitch
+TireRR_RumblePitch             | System.Single                  |                              0 | Players RR Tire Sound rumblestrip pitch
+TireSetsAvailable              | System.Int32                   |                              0 | How many tire sets are remaining  255 is unlimited
+TireSetsUsed                   | System.Int32                   |                              0 | How many tire sets used so far
+TrackTemp                      | System.Single                  |                       22,77777 | Deprecated  set to TrackTempCrew
+TrackTempCrew                  | System.Single                  |                       22,77777 | Temperature of track measured by crew around track
+VelocityX                      | System.Single                  |                              0 | X velocity
+VelocityX_ST                   | System.Single[]                |                System.Single[] | X velocity
+VelocityY                      | System.Single                  |                              0 | Y velocity
+VelocityY_ST                   | System.Single[]                |                System.Single[] | Y velocity
+VelocityZ                      | System.Single                  |                              0 | Z velocity
+VelocityZ_ST                   | System.Single[]                |                System.Single[] | Z velocity
+VertAccel                      | System.Single                  |                              0 | Vertical acceleration (including gravity)
+VertAccel_ST                   | System.Single[]                |                System.Single[] | Vertical acceleration (including gravity) at 360 Hz
+VidCapActive                   | System.Boolean                 |                          False | True if video currently being captured
+VidCapEnabled                  | System.Boolean                 |                          False | True if video capture system is enabled
+Voltage                        | System.Single                  |                           13,4 | Engine voltage
+WaterLevel                     | System.Single                  |                            9,5 | Engine coolant level
+WaterTemp                      | System.Single                  |                             77 | Engine coolant temp
+WeatherType                    | iRacingSDK.WeatherType         |                       Constant | Weather type (0=constant  1=dynamic)
+WindDir                        | System.Single                  |                              0 | Wind direction at start/finish line
+WindVel                        | System.Single                  |                              2 | Wind velocity at start/finish line
+Yaw                            | System.Single                  |                              0 | Yaw orientation
+YawNorth                       | System.Single                  |                              0 | Yaw orientation relative to north
+YawRate                        | System.Single                  |                              0 | Yaw rate
+YawRate_ST                     | System.Single[]                |                System.Single[] | Yaw rate at 360 Hz

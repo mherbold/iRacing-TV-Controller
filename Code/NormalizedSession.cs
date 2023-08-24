@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -15,12 +16,14 @@ namespace iRacingTVController
 		public string sessionType = string.Empty;
 
 		public bool isReplay = false;
+		public bool isDirtTrack = false;
 		public bool isInPracticeSession = false;
 		public bool isInQualifyingSession = false;
 		public bool isInRaceSession = false;
 
 		public int trackID = 0;
 		public float trackLengthInMeters = 0;
+		public string trackType = string.Empty;
 
 		public string seriesLogoTextureUrl = string.Empty;
 
@@ -29,6 +32,7 @@ namespace iRacingTVController
 			Reset();
 		}
 
+		// called only when director starts up for the first time and when iracing simulation shuts down
 		public void Reset()
 		{
 			sessionID = 0;
@@ -40,16 +44,19 @@ namespace iRacingTVController
 			sessionType = string.Empty;
 
 			isReplay = false;
+			isDirtTrack = false;
 			isInPracticeSession = false;
 			isInQualifyingSession = false;
 			isInRaceSession = false;
 
 			trackID = 0;
 			trackLengthInMeters = 0;
+			trackType = string.Empty;
 
 			seriesLogoTextureUrl = string.Empty;
 		}
 
+		// called only when telemetry data session number changes
 		public void SessionNumberChange()
 		{
 			if ( ( IRSDK.session == null ) || ( IRSDK.data == null ) )
@@ -82,6 +89,7 @@ namespace iRacingTVController
 			LogFile.Write( $"Session number:{sessionNumber}, Session name:{sessionName}.\r\n" );
 		}
 
+		// called only when header session info version number changes
 		public void SessionUpdate()
 		{
 			if ( IRSDK.session == null )
@@ -107,7 +115,13 @@ namespace iRacingTVController
 				trackLengthInMeters = trackLengthInKilometers * 1000;
 			}
 
-			LogFile.Write( $"Session ID:{sessionID}, Subsession ID:{subSessionID}, Session count:{sessionCount}, Is replay?{isReplay}, Track ID:{trackID}, Track length:{trackLengthInMeters}.\r\n" );
+			trackType = IRSDK.session.WeekendInfo.TrackType;
+
+			isDirtTrack = ( trackType.IndexOf( "dirt", StringComparison.OrdinalIgnoreCase ) >= 0 );
+
+			seriesLogoTextureUrl = $"https://ir-core-sites.iracing.com/members/member_images/series/seriesid_{IRSDK.session.WeekendInfo.SeriesID}/logo.jpg";
+
+			LogFile.Write( $"Session ID:{sessionID}, Subsession ID:{subSessionID}, Session count:{sessionCount}, Is replay?{isReplay}, Track ID:{trackID}, Track length:{trackLengthInMeters}, Track type:{trackType}.\r\n" );
 
 			if ( isReplay )
 			{
@@ -115,8 +129,6 @@ namespace iRacingTVController
 				IncidentPlayback.Load();
 				SubtitlePlayback.Load();
 			}
-
-			seriesLogoTextureUrl = $"https://ir-core-sites.iracing.com/members/member_images/series/seriesid_{IRSDK.session.WeekendInfo.SeriesID}/logo.jpg";
 		}
 	}
 }

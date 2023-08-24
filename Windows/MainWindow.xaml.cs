@@ -1200,13 +1200,17 @@ namespace iRacingTVController
 					normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.camCarIdx ) ?? IRSDK.normalizedData.normalizedCars[ 0 ];
 				}
 
+				Director.isEnabled = false;
+				Director.targetCamCarIdx = normalizedCar.carIdx;
+				Director.targetCamType = cameraType;
+
+				Director.UpdateAutoCamType( normalizedCar );
+
 				IRSDK.targetCamFastSwitchEnabled = true;
 				IRSDK.targetCamSlowSwitchEnabled = false;
 				IRSDK.targetCamCarIdx = normalizedCar.carIdx;
 				IRSDK.targetCamGroupNumber = Director.GetCamGroupNumber( normalizedCar, cameraType );
 				IRSDK.targetCamReason = "Manual camera control.";
-
-				Director.isEnabled = false;
 			}
 		}
 

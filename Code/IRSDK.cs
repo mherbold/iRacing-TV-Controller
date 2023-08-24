@@ -66,8 +66,9 @@ namespace iRacingTVController
 					session = iRacingSdk.GetSerializedSessionInfo();
 
 					normalizedSession.SessionUpdate();
-
 					normalizedData.SessionUpdate();
+
+					EventLog.SessionUpdate();
 
 					TrackMap.Initialize();
 				}
@@ -77,13 +78,16 @@ namespace iRacingTVController
 					targetCamSlowSwitchEnabled = false;
 
 					normalizedSession.SessionNumberChange();
-
 					normalizedData.SessionNumberChange();
+
+					EventLog.Reset();
 				}
 
 				if ( data.SessionNum >= 0 )
 				{
 					normalizedData.Update();
+
+					EventLog.Update();
 
 					WebPage.saveToFileQueued = true;
 				}
@@ -94,6 +98,8 @@ namespace iRacingTVController
 
 				normalizedSession.Reset();
 				normalizedData.Reset();
+
+				EventLog.Reset();
 			}
 
 			wasConnected = isConnected;

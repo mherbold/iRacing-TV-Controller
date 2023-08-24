@@ -17,6 +17,17 @@ var app =
             container: null
         },
 
+        trackMap:
+        {
+            canvas: null,
+        },
+
+        eventLog:
+        {
+            messageTemplate: null,
+            container: null
+        },
+
         raceStatus:
         {
             blackLight: null,
@@ -30,11 +41,6 @@ var app =
             lapsRemaining: null,
             units: null,
             currentLap: null
-        },
-
-        trackMap:
-        {
-            canvas: null,
         }
     },
 
@@ -183,25 +189,13 @@ function toggleVisibility( element, visible )
     }
 }
 
-function updateRaceStatus( liveDataRaceStatus )
-{
-    toggleVisibility( app.dom.raceStatus.greenFlag, liveDataRaceStatus.showGreenFlag );
-    toggleVisibility( app.dom.raceStatus.yellowFlag, liveDataRaceStatus.showYellowFlag );
-    toggleVisibility( app.dom.raceStatus.checkeredFlag, liveDataRaceStatus.showCheckeredFlag );
-
-    toggleVisibility( app.dom.raceStatus.blackLight, liveDataRaceStatus.showBlackLight );
-    toggleVisibility( app.dom.raceStatus.greenLight, liveDataRaceStatus.showGreenLight );
-    toggleVisibility( app.dom.raceStatus.yellowLight, liveDataRaceStatus.showWhiteLight );
-    toggleVisibility( app.dom.raceStatus.whiteLight, liveDataRaceStatus.showYellowLight );
-
-    app.dom.raceStatus.sessionName.textContent = liveDataRaceStatus.sessionNameText;
-    app.dom.raceStatus.lapsRemaining.textContent = liveDataRaceStatus.lapsRemainingText;
-    app.dom.raceStatus.units.textContent = liveDataRaceStatus.unitsText;
-    app.dom.raceStatus.currentLap.textContent = liveDataRaceStatus.currentLapText;
-}
-
 function updateTrackMap( liveDataTrackMap )
 {
+    // update canvas size
+
+    app.dom.trackMap.canvas.width = app.dom.trackMap.canvas.offsetWidth;
+    app.dom.trackMap.canvas.height = app.dom.trackMap.canvas.offsetHeight;
+
     // calculate scale and offset of track map
 
     var padding = Math.max( app.setting.trackMap.lineWidth / 2, app.setting.trackMap.carSize + 1 ) * 2 + 2;
@@ -289,13 +283,56 @@ function updateTrackMap( liveDataTrackMap )
     }
 }
 
+function updateEventLog( liveDataEventLog )
+{
+    while ( app.dom.eventLog.container.firstChild )
+    {
+        app.dom.eventLog.container.removeChild( app.dom.eventLog.container.firstChild );
+    }
+
+    var domMessage = null;
+
+    for ( var i = 0; i < liveDataEventLog.messages.length; i++ )
+    {
+        domMessage = app.dom.eventLog.messageTemplate.cloneNode( true );
+
+        domMessage.classList.remove( "d-none" );
+        domMessage.textContent = liveDataEventLog.messages[ i ];
+
+        app.dom.eventLog.container.append( domMessage );
+    }
+
+    if ( domMessage != null )
+    {
+        domMessage.scrollIntoView();
+    }
+}
+
+function updateRaceStatus( liveDataRaceStatus )
+{
+    toggleVisibility( app.dom.raceStatus.greenFlag, liveDataRaceStatus.showGreenFlag );
+    toggleVisibility( app.dom.raceStatus.yellowFlag, liveDataRaceStatus.showYellowFlag );
+    toggleVisibility( app.dom.raceStatus.checkeredFlag, liveDataRaceStatus.showCheckeredFlag );
+
+    toggleVisibility( app.dom.raceStatus.blackLight, liveDataRaceStatus.showBlackLight );
+    toggleVisibility( app.dom.raceStatus.greenLight, liveDataRaceStatus.showGreenLight );
+    toggleVisibility( app.dom.raceStatus.yellowLight, liveDataRaceStatus.showWhiteLight );
+    toggleVisibility( app.dom.raceStatus.whiteLight, liveDataRaceStatus.showYellowLight );
+
+    app.dom.raceStatus.sessionName.textContent = liveDataRaceStatus.sessionNameText;
+    app.dom.raceStatus.lapsRemaining.textContent = liveDataRaceStatus.lapsRemainingText;
+    app.dom.raceStatus.units.textContent = liveDataRaceStatus.unitsText;
+    app.dom.raceStatus.currentLap.textContent = liveDataRaceStatus.currentLapText;
+}
+
 function update( liveData )
 {
     if ( liveData.isConnected )
     {
         updateLeaderboards( liveData.liveDataLeaderboards );
-        updateRaceStatus( liveData.liveDataRaceStatus );
         updateTrackMap( liveData.liveDataTrackMap );
+        updateEventLog( liveData.liveDataEventLog );
+        updateRaceStatus( liveData.liveDataRaceStatus );
     }
 }
 
@@ -313,6 +350,11 @@ function init()
 
     app.dom.leaderboards.container = document.querySelector( ".leaderboards-container" );
 
+    app.dom.trackMap.canvas = document.querySelector( ".track-map-canvas" );
+
+    app.dom.eventLog.messageTemplate = document.querySelector( ".event-log-message-template" );
+    app.dom.eventLog.container = document.querySelector( ".event-log-container" );
+
     app.dom.raceStatus.blackLight = document.querySelector( ".race-status-black-light" );
     app.dom.raceStatus.greenLight = document.querySelector( ".race-status-green-light" );
     app.dom.raceStatus.yellowLight = document.querySelector( ".race-status-yellow-light" );
@@ -324,8 +366,6 @@ function init()
     app.dom.raceStatus.lapsRemaining = document.querySelector( ".race-status-laps-remaining" );
     app.dom.raceStatus.units = document.querySelector( ".race-status-units" )
     app.dom.raceStatus.currentLap = document.querySelector( ".race-status-current-lap" );
-
-    app.dom.trackMap.canvas = document.querySelector( ".track-map-canvas" );
 
     app.setting.liveDataContainer.updateInterval = parseFloat( app.dom.liveDataContainer.getAttribute( "data-update-interval" ) );
 

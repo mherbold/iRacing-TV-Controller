@@ -379,6 +379,7 @@ namespace iRacingTVController
 				{ "IntroQualifyingTime", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 27, position = { x = -179, y = 108 }, tintColor = { r = 0.306f, g = 0.832f, b = 1 } } },
 				{ "IntroStartingGridPosition", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 50, position = { x = -180, y = -167 } } },
 				{ "LeaderboardClassName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, alignment = TextAlignmentOptions.Top, position = { x = 159, y = 8 }, tintColor = { r = 0.137f, g = 0.122f, b = 0.125f } } },
+				{ "LeaderboardClassNameShort", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 27, alignment = TextAlignmentOptions.Top, position = { x = 159, y = 8 }, tintColor = { r = 0.137f, g = 0.122f, b = 0.125f } } },
 				{ "LeaderboardCurrentTargetSpeed", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 397, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "LeaderboardPosition", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 43, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "LeaderboardPositionDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 21, position = { x = 108, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },

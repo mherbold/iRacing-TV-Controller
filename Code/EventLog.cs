@@ -1,11 +1,14 @@
 ﻿
+using System;
 using System.Collections.Generic;
+
+using irsdkSharp.Serialization.Enums.Fastest;
 
 namespace iRacingTVController
 {
 	public static class EventLog
 	{
-		public static List<string> messages = new List<string>();
+		public static List<LiveDataEventLogMessage> messages = new List<LiveDataEventLogMessage>();
 
 		public static void Reset()
 		{
@@ -45,7 +48,17 @@ namespace iRacingTVController
 						}
 					}
 
-					messages.Add( $"{sessionTime}: Car #{normalizedCar.carNumber}, {normalizedCar.abbrevName}, P{normalizedCar.displayedPosition}: Incident - {normalizedCar.activeIncidentPoints}x - {incidentType}" );
+					var liveDataEventLogMessage = new LiveDataEventLogMessage()
+					{
+						sessionTime = sessionTime,
+						carNumber = normalizedCar.carNumber,
+						driverName = normalizedCar.abbrevName,
+						position = $"P{normalizedCar.displayedPosition}",
+						type = "Incident",
+						text = $"{normalizedCar.activeIncidentPoints}x - {incidentType}"
+					};
+
+					messages.Add( liveDataEventLogMessage );
 				}
 			}
 
@@ -59,6 +72,27 @@ namespace iRacingTVController
 		{
 			var sessionTime = Program.GetTimeString( IRSDK.normalizedData.sessionTime, false );
 
+			foreach ( SessionFlags sessionFlag in Enum.GetValues( typeof( SessionFlags ) ) )
+			{
+				if ( ( ( IRSDK.normalizedData.sessionFlags & (uint) sessionFlag ) != 0 ) && ( ( IRSDK.normalizedData.sessionFlagsLastFrame & (uint) sessionFlag ) ) == 0 )
+				{
+					if ( ( sessionFlag != SessionFlags.GreenHeld ) && ( ( sessionFlag < SessionFlags.Black ) || ( sessionFlag > SessionFlags.StartHidden ) ) )
+					{
+						var liveDataEventLogMessage = new LiveDataEventLogMessage()
+						{
+							sessionTime = sessionTime,
+							carNumber = string.Empty,
+							driverName = string.Empty,
+							position = string.Empty,
+							type = sessionFlag.ToString(),
+							text = string.Empty
+						};
+
+						messages.Add( liveDataEventLogMessage );
+					}
+				}
+			}
+
 			foreach ( var normalizedCar in IRSDK.normalizedData.normalizedCars )
 			{
 				if ( !normalizedCar.includeInLeaderboard )
@@ -66,24 +100,43 @@ namespace iRacingTVController
 					continue;
 				}
 
-				if ( normalizedCar.isOnPitRoad && !normalizedCar.wasOnPitRoad )
+				if ( normalizedCar.isOnPitRoad != normalizedCar.wasOnPitRoad )
 				{
-					messages.Add( $"{sessionTime}: Car #{normalizedCar.carNumber}, {normalizedCar.abbrevName}, P{normalizedCar.displayedPosition}: Entered pit road" );
+					var liveDataEventLogMessage = new LiveDataEventLogMessage()
+					{
+						sessionTime = sessionTime,
+						carNumber = normalizedCar.carNumber,
+						driverName = normalizedCar.abbrevName,
+						position = $"P{normalizedCar.displayedPosition}",
+						type = (normalizedCar.isOnPitRoad) ? "Pit In" : "Pit Out",
+						text = string.Empty
+					};
+
+					messages.Add( liveDataEventLogMessage );
 				}
 
-				if ( !normalizedCar.isOnPitRoad && normalizedCar.wasOnPitRoad )
+				if ( normalizedCar.bestLapTime != normalizedCar.bestLapTimeLastFrame )
 				{
-					messages.Add( $"{sessionTime}: Car #{normalizedCar.carNumber}, {normalizedCar.abbrevName}, P{normalizedCar.displayedPosition}: Left pit road" );
-				}
+					var liveDataEventLogMessage = new LiveDataEventLogMessage()
+					{
+						sessionTime = sessionTime,
+						carNumber = normalizedCar.carNumber,
+						driverName = normalizedCar.abbrevName,
+						position = $"P{normalizedCar.displayedPosition}",
+						type = "Best Lap",
+						text = Program.GetTimeString( normalizedCar.bestLapTime, true )
+					};
 
-				if ( normalizedCar.isOutOfCar && !normalizedCar.wasOutOfCar )
-				{
-					messages.Add( $"{sessionTime}: Car #{normalizedCar.carNumber}, {normalizedCar.abbrevName}, P{normalizedCar.displayedPosition}: Jumped out of their car" );
-				}
+					if ( normalizedCar.bestLapTime == IRSDK.normalizedData.bestLapTime )
+					{
+						liveDataEventLogMessage.text += " overall";
+					}
+					else
+					{
+						liveDataEventLogMessage.text += " personal";
+					}
 
-				if ( !normalizedCar.isOutOfCar && normalizedCar.wasOutOfCar )
-				{
-					messages.Add( $"{sessionTime}: Car #{normalizedCar.carNumber}, {normalizedCar.abbrevName}, P{normalizedCar.displayedPosition}: Jumped into their car" );
+					messages.Add( liveDataEventLogMessage );
 				}
 			}
 

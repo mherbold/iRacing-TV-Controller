@@ -772,7 +772,6 @@ namespace iRacingTVController
 			WebPage_General_Enabled.IsChecked = Settings.editor.webpageGeneralEnabled;
 			WebPage_General_SourceFolder.Text = Settings.editor.webpageGeneralSourceFolder;
 			WebPage_General_OutputFolder.Text = Settings.editor.webpageGeneralOutputFolder;
-			WebPage_General_UpdateInterval.Value = Settings.editor.webpageGeneralUpdateInterval;
 
 			// iracing
 
@@ -4191,7 +4190,6 @@ namespace iRacingTVController
 				Settings.editor.webpageGeneralEnabled = WebPage_General_Enabled.IsChecked ?? false;
 				Settings.editor.webpageGeneralSourceFolder = WebPage_General_SourceFolder.Text;
 				Settings.editor.webpageGeneralOutputFolder = WebPage_General_OutputFolder.Text;
-				Settings.editor.webpageGeneralUpdateInterval = WebPage_General_UpdateInterval.Value;
 
 				Settings.saveEditorToFileQueued = true;
 			}

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.27"
+        Title="iRacing-TV Controller v1.28"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="900" Height="700" MinWidth="900" MinHeight="700" Icon="/Assets/icon/iracing-tv.ico">
     <Grid>
@@ -2182,13 +2182,6 @@
                                     <Button x:Name="WebPage_General_OutputFolder_Button" Padding="6,0,6,0" Content="📁" Grid.Column="1" Margin="-1,0,0,0" Click="WebPage_General_OutputFolder_Button_Click" />
                                 </Grid>
                             </Grid>
-                            <StackPanel Margin="0,6,0,0">
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Content="Interval" Width="100"/>
-                                    <local:Decimal x:Name="WebPage_General_UpdateInterval" Width="100" ValueChanged="WebPage_Update" />
-                                    <Label Content="Seconds"/>
-                                </StackPanel>
-                            </StackPanel>
                             <Grid Margin="0,6,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>

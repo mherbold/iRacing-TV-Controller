@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Globalization;
 using System.IO;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -9,6 +8,11 @@ namespace iRacingTVController
 {
 	public static class WebPage
 	{
+		public const float UpdateInterval = 0.5f;
+		public const int NumJsonFiles = 3;
+
+		public static int nextJsonFileIndex = 0;
+
 		public static float saveToFileTimeRemaining = 0;
 		public static bool saveToFileQueued = false;
 
@@ -21,7 +25,6 @@ namespace iRacingTVController
 				var indexHtml = File.ReadAllText( Settings.editor.webpageGeneralSourceFolder + "\\index.html" );
 
 				indexHtml = Replace( indexHtml, "title", Settings.editor.webpageTextTitle );
-				indexHtml = Replace( indexHtml, "update interval", Settings.editor.webpageGeneralUpdateInterval.ToString( CultureInfo.InvariantCulture ) );
 				indexHtml = Replace( indexHtml, "iracing-tv version", MainWindow.Instance.Title );
 
 				var indexHtmlFilePath = $"{Settings.editor.webpageGeneralOutputFolder}index.html";
@@ -74,7 +77,7 @@ namespace iRacingTVController
 			if ( saveToFileQueued && ( saveToFileTimeRemaining == 0 ) )
 			{
 				saveToFileQueued = false;
-				saveToFileTimeRemaining = Settings.editor.webpageGeneralUpdateInterval;
+				saveToFileTimeRemaining = UpdateInterval;
 
 				Save();
 			}
@@ -86,14 +89,16 @@ namespace iRacingTVController
 			{
 				var jsonString = JsonSerializer.Serialize( LiveData.Instance );
 
-				var jsonDataFilePath = $"{Settings.editor.webpageGeneralOutputFolder}livedata.json";
+				var jsonDataFilePath = $"{Settings.editor.webpageGeneralOutputFolder}livedata{nextJsonFileIndex}.json";
 
 				File.WriteAllText( jsonDataFilePath, jsonString );
+
+				nextJsonFileIndex = ( nextJsonFileIndex + 1 ) % NumJsonFiles;
 			}
 			catch ( IOException )
 			{
 				saveToFileQueued = true;
-				saveToFileTimeRemaining = Settings.editor.webpageGeneralUpdateInterval;
+				saveToFileTimeRemaining = UpdateInterval;
 			}
 		}
 

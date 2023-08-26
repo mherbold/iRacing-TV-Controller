@@ -1,7 +1,7 @@
 ﻿
 using System;
 using System.Text.Json.Serialization;
-
+using System.Xml.Serialization;
 using static iRacingTVController.Unity;
 
 namespace iRacingTVController
@@ -13,5 +13,6 @@ namespace iRacingTVController
 		public bool showHighlight = false;
 
 		[JsonInclude] public Vector3 offset = Vector3.zero;
+		[JsonInclude, XmlIgnore] public string carNumber = string.Empty;
 	}
 }

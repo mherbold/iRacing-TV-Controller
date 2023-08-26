@@ -8,6 +8,6 @@ namespace iRacingTVController
 	[Serializable]
 	public class LiveDataEventLog
 	{
-		[JsonInclude] public List<string> messages = new List<string>();
+		[JsonInclude] public List<LiveDataEventLogMessage> messages = new List<LiveDataEventLogMessage>();
 	}
 }

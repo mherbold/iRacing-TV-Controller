@@ -151,7 +151,7 @@ namespace iRacingTVController
 							var sessionFlagsData = new SessionFlagsData()
 							{
 								SessionNumber = int.Parse( match.Groups[ 1 ].Value ),
-								SessionTime = double.Parse( match.Groups[ 2 ].Value ),
+								SessionTime = double.Parse( match.Groups[ 2 ].Value, CultureInfo.InvariantCulture ),
 								SessionFlags = uint.Parse( match.Groups[ 3 ].Value, NumberStyles.HexNumber ),
 								SessionFlagsAsString = ( (SessionFlags) sessionFlags ).ToString()
 							};

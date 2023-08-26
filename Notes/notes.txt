@@ -1,27 +1,15 @@
 ﻿General
-	Director needs to re-evaluate autocam and not stay stuck on the first selection the entire time - observed while heat lock on Jordi
 	Find out why it always says 4x for incident messages
-	Show car numbers on track map
-	Need slightly more width for car numbers on leaderboard
-	Put event log into fixed width columns
 	Color code message types
 		Red - incidents
-		Orange - pits
 		Yellow - black flags
-		Green - lap times
 Incident messages
 	Also show total incidents accumulated for the driver
 Flags
 	Look into displaying black flags for each driver
 		Got furled black flag
 		Cleared furled black flag
-	Green flag / one lap to green / etc messages
 	Meatball flags
 Pits
 	Show pit time when driver leaves the pits (xx.xs)
 	Seems like there is a way to get pit stop time???
-Lap times
-	Show new personal best lap times (x:xx.xxx)
-	Show new overall best lap times (x:xx.xxx)
-Blinking drivers
-	Try not to show jumped in/out of car due to blinking

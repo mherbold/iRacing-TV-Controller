@@ -16,15 +16,21 @@
         <div class="leaderboard-positions-container"></div>
     </div>
     <div class="leaderboard-position-template leaderboard-position d-none">
-        <div class="leaderboard-position-text"></div>
-        <div class="leaderboard-car-number-text"></div>
-        <div class="leaderboard-driver-name-text"></div>
-        <div class="leaderboard-telemetry-text"></div>
-        <div class="leaderboard-speed-text"></div>
+        <div class="leaderboard-position-position"></div>
+        <div class="leaderboard-position-car-number"></div>
+        <div class="leaderboard-position-driver-name"></div>
+        <div class="leaderboard-position-telemetry"></div>
+        <div class="leaderboard-position-speed"></div>
     </div>
     <div class="event-log-message-template event-log-message d-none">
+        <div class="event-log-message-session-time"></div>
+        <div class="event-log-message-car-number"></div>
+        <div class="event-log-message-driver-name"></div>
+        <div class="event-log-message-position"></div>
+        <div class="event-log-message-type"></div>
+        <div class="event-log-message-text"></div>
     </div>
-    <div class="live-data-container" data-update-interval="<!-- update interval -->">
+    <div class="live-data-container">
         <div class="header-container">
             <div>iRacing-TV Telemetry</div>
             <div><!-- iracing-tv version --></div>
@@ -32,7 +38,7 @@
         <div class="leaderboards-container">
         </div>
         <div class="track-map-container">
-            <canvas class="track-map-canvas" data-line-width=15 data-stroke-style="#CCC" data-start-finish-size=5 data-start-finish-fill-style="#E00" data-car-size=12 data-car-fill-style="#FFF" data-car-stroke-style="#222" "></canvas>
+            <canvas class="track-map-canvas" data-line-width=15 data-stroke-style="#CCC" data-start-finish-size=5 data-start-finish-fill-style="#E00" data-car-size=12 data-car-fill-style="#FFF" data-car-stroke-style="#222" data-car-text-style="#000"></canvas>
         </div>
         <div class="event-log-container">
 
@@ -40,11 +46,11 @@
         <div class="race-status-container">
             <div class="race-status-black-light d-none"></div>
             <div class="race-status-green-light d-none">Green</div>
-            <div class="race-status-yellow-light d-none">Yellow</div>
-            <div class="race-status-white-light d-none">White</div>
-            <div class="race-status-green-flag d-none">Green Flag</div>
-            <div class="race-status-yellow-flag d-none">Yellow Flag</div>
-            <div class="race-status-checkered-flag d-none">Checkered Flag</div>
+            <div class="race-status-yellow-light d-none">Caution</div>
+            <div class="race-status-white-light d-none">Final Lap</div>
+            <div class="race-status-green-flag d-none">Green Flag Waving</div>
+            <div class="race-status-yellow-flag d-none">Caution Flag Waving</div>
+            <div class="race-status-checkered-flag d-none">Checkered Flag Waving</div>
             <div class="race-status-session-name"></div>
             <div class="race-status-laps-remaining"></div>
             <div class="race-status-current-lap-container">

@@ -51,6 +51,7 @@ namespace iRacingTVController
 		public int qualifyingPosition = 0;
 
 		public float bestLapTime = 0;
+		public float bestLapTimeLastFrame = 0;
 		public float qualifyingTime = 0;
 
 		public float lapDistPctDelta = 0;
@@ -132,6 +133,7 @@ namespace iRacingTVController
 			qualifyingPosition = 0;
 
 			bestLapTime = 0;
+			bestLapTimeLastFrame = 0;
 			qualifyingTime = 0;
 
 			lapDistPctDelta = 0;
@@ -194,6 +196,7 @@ namespace iRacingTVController
 			displayedPosition = 0;
 
 			bestLapTime = 0;
+			bestLapTimeLastFrame = 0;
 
 			lapDistPctDelta = 0;
 			lapDistPct = Math.Max( 0, car.CarIdxLapDistPct );
@@ -322,12 +325,12 @@ namespace iRacingTVController
 							var licColor = driver.LicColor[ 2.. ];
 							var carPath = driver.CarPath.Replace( " ", "%5C" );
 							var customCarTgaFilePath = $"{Settings.editor.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_num_{driver.UserID}.tga";
-							var numShow = 0;
+							var showSimStampedStuff = 0;
 
 							if ( !File.Exists( customCarTgaFilePath ) )
 							{
 								customCarTgaFilePath = $"{Settings.editor.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_{driver.UserID}.tga";
-								numShow = 1;
+								showSimStampedStuff = 1;
 
 								if ( !File.Exists( customCarTgaFilePath ) )
 								{
@@ -337,7 +340,7 @@ namespace iRacingTVController
 
 							customCarTgaFilePath = customCarTgaFilePath.Replace( " ", "%20" );
 
-							carTextureUrl = $"http://localhost:32034/pk_car.png?size=2&view=1&licCol={licColor}&club={driver.ClubID}&sponsors={driver.CarSponsor_1},{driver.CarSponsor_2}&numShow={numShow}&numPat={numberDesignMatch.Groups[ 1 ].Value}&numCol={numberDesignMatch.Groups[ 3 ].Value},{numberDesignMatch.Groups[ 4 ].Value},{numberDesignMatch.Groups[ 5 ].Value}&numSlnt={numberDesignMatch.Groups[ 2 ].Value}&number={carNumber}&carPath={carPath}&carPat={carDesignMatch.Groups[ 1 ].Value}&carCol={carDesignMatch.Groups[ 2 ].Value},{carDesignMatch.Groups[ 3 ].Value},{carDesignMatch.Groups[ 4 ].Value}&carRimType=2&carRimCol={carDesignMatch.Groups[ 5 ].Value}&carCustPaint={customCarTgaFilePath}";
+							carTextureUrl = $"http://localhost:32034/pk_car.png?size=2&view=1&licCol={licColor}&stampShow={showSimStampedStuff}&club={driver.ClubID}&sponsors={driver.CarSponsor_1},{driver.CarSponsor_2}&numShow={showSimStampedStuff}&numPat={numberDesignMatch.Groups[ 1 ].Value}&numCol={numberDesignMatch.Groups[ 3 ].Value},{numberDesignMatch.Groups[ 4 ].Value},{numberDesignMatch.Groups[ 5 ].Value}&numSlnt={numberDesignMatch.Groups[ 2 ].Value}&number={carNumber}&carPath={carPath}&carPat={carDesignMatch.Groups[ 1 ].Value}&carCol={carDesignMatch.Groups[ 2 ].Value},{carDesignMatch.Groups[ 3 ].Value},{carDesignMatch.Groups[ 4 ].Value}&carRimType=2&carRimCol={carDesignMatch.Groups[ 5 ].Value}&carCustPaint={customCarTgaFilePath}";
 						}
 
 						var helmetDesignMatch = Regex.Match( driver.HelmetDesignStr, @"(\d+),(.{6}),(.{6}),(.{6})" );
@@ -393,9 +396,9 @@ namespace iRacingTVController
 
 					activeIncidentPoints = Math.Max( IRSDK.normalizedSession.isDirtTrack ? 2 : 4, driver.CurDriverIncidentCount - previousIncidentPoints );
 					activeIncidentTimer = 0;
-				}
 
-				currentIncidentPoints = driver.CurDriverIncidentCount;
+					currentIncidentPoints = driver.CurDriverIncidentCount;
+				}
 			}
 		}
 
@@ -437,7 +440,14 @@ namespace iRacingTVController
 
 			if ( newBestLapTime > 0 )
 			{
+				bestLapTimeLastFrame = bestLapTime;
+
 				bestLapTime = newBestLapTime;
+
+				if ( ( IRSDK.normalizedData.bestLapTime == 0 ) || ( IRSDK.normalizedData.bestLapTime > bestLapTime ) )
+				{
+					IRSDK.normalizedData.bestLapTime = bestLapTime;
+				}
 			}
 
 			var newCarIdxLapDistPct = Math.Max( 0, car.CarIdxLapDistPct );
@@ -532,10 +542,6 @@ namespace iRacingTVController
 
 				if ( activeIncidentTimer > 5 )
 				{
-					var driver = IRSDK.session.DriverInfo.Drivers[ driverIdx ];
-
-					currentIncidentPoints = driver.CurDriverIncidentCount;
-
 					previousIncidentPoints = 0;
 					activeIncidentPoints = 0;
 					activeIncidentTimer = 0;

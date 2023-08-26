@@ -2,6 +2,13 @@ const maxPositionsPerLeaderboard = 63;
 
 var app =
 {
+    nextJsonFileIndex: 0,
+
+    liveDataA: null,
+    liveDataB: null,
+
+    delta: 0.0,
+
     dom:
     {
         liveDataContainer: null,
@@ -46,10 +53,8 @@ var app =
 
     setting:
     {
-        liveDataContainer:
-        {
-            updateInterval: 2,
-        },
+        updateInterval: 0.5,
+        numJsonFiles: 3,
 
         trackMap:
         {
@@ -59,7 +64,8 @@ var app =
             startFinishFillStyle: "#E00",
             carSize: 10,
             carFillStyle: "#fff",
-            carStrokeStyle: "#000"
+            carStrokeStyle: "#000",
+            carTextStyle: "#000"
         }
     }
 };
@@ -145,20 +151,20 @@ function updateLeaderboards( liveDataLeaderboards )
                     {
                         domLeaderboardPosition.classList.remove( "d-none" );
 
-                        var domLeaderboardPositionText = domLeaderboardPosition.querySelector( ".leaderboard-position-text" );
-                        domLeaderboardPositionText.textContent = liveDataLeaderboardSlot.positionText;
+                        var domLeaderboardPositionPosition = domLeaderboardPosition.querySelector( ".leaderboard-position-position" );
+                        domLeaderboardPositionPosition.textContent = liveDataLeaderboardSlot.positionText;
 
-                        var domLeaderboardCarNumberText = domLeaderboardPosition.querySelector( ".leaderboard-car-number-text" );
-                        domLeaderboardCarNumberText.textContent = liveDataLeaderboardSlot.carNumberText;
+                        var domLeaderboardCarNumber = domLeaderboardPosition.querySelector( ".leaderboard-position-car-number" );
+                        domLeaderboardCarNumber.textContent = liveDataLeaderboardSlot.carNumberText;
 
-                        var domLeaderboardDriverNameText = domLeaderboardPosition.querySelector( ".leaderboard-driver-name-text" );
-                        domLeaderboardDriverNameText.textContent = liveDataLeaderboardSlot.driverNameText;
+                        var domLeaderboardDriverName = domLeaderboardPosition.querySelector( ".leaderboard-position-driver-name" );
+                        domLeaderboardDriverName.textContent = liveDataLeaderboardSlot.driverNameText;
 
-                        var domLeaderboardTelemetryText = domLeaderboardPosition.querySelector( ".leaderboard-telemetry-text" );
-                        domLeaderboardTelemetryText.textContent = liveDataLeaderboardSlot.telemetryText;
+                        var domLeaderboardTelemetry = domLeaderboardPosition.querySelector( ".leaderboard-position-telemetry" );
+                        domLeaderboardTelemetry.textContent = liveDataLeaderboardSlot.telemetryText;
 
-                        var domLeaderboardSpeedText = domLeaderboardPosition.querySelector( ".leaderboard-speed-text" );
-                        domLeaderboardSpeedText.textContent = liveDataLeaderboardSlot.speedText;
+                        var domLeaderboardSpeed = domLeaderboardPosition.querySelector( ".leaderboard-position-speed" );
+                        domLeaderboardSpeed.textContent = liveDataLeaderboardSlot.speedText;
 
                         liveDataLeaderboardSlotFound = true;
 
@@ -221,6 +227,10 @@ function updateTrackMap( liveDataTrackMap )
 
     var ctx = app.dom.trackMap.canvas.getContext( "2d" );
 
+    ctx.font = "10px sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
     ctx.clearRect( 0, 0, app.dom.trackMap.canvas.width, app.dom.trackMap.canvas.height );
 
     ctx.beginPath();
@@ -269,7 +279,10 @@ function updateTrackMap( liveDataTrackMap )
         {
             ctx.beginPath();
 
-            ctx.arc( liveDataTrackMapCar.offset.x * scale + offsetX, liveDataTrackMapCar.offset.y * -scale + offsetY, app.setting.trackMap.carSize, 0, 2 * Math.PI );
+            var x = liveDataTrackMapCar.offset.x * scale + offsetX;
+            var y = liveDataTrackMapCar.offset.y * -scale + offsetY;
+
+            ctx.arc( x, y, app.setting.trackMap.carSize, 0, 2 * Math.PI );
 
             ctx.fillStyle = app.setting.trackMap.carFillStyle;
 
@@ -279,6 +292,10 @@ function updateTrackMap( liveDataTrackMap )
             ctx.strokeStyle = app.setting.trackMap.carStrokeStyle;
 
             ctx.stroke();
+
+            ctx.fillStyle = app.setting.trackMap.carTextStyle;
+
+            ctx.fillText( liveDataTrackMapCar.carNumber, x, y );
         }
     }
 }
@@ -290,21 +307,36 @@ function updateEventLog( liveDataEventLog )
         app.dom.eventLog.container.removeChild( app.dom.eventLog.container.firstChild );
     }
 
-    var domMessage = null;
+    var domEventLogMessage = null;
 
     for ( var i = 0; i < liveDataEventLog.messages.length; i++ )
     {
-        domMessage = app.dom.eventLog.messageTemplate.cloneNode( true );
+        domEventLogMessage = app.dom.eventLog.messageTemplate.cloneNode( true );
 
-        domMessage.classList.remove( "d-none" );
-        domMessage.textContent = liveDataEventLog.messages[ i ];
+        var typeAsClass = "type-" + liveDataEventLog.messages[ i ].type.toLowerCase().replace( " ", "-" );
 
-        app.dom.eventLog.container.append( domMessage );
-    }
+        domEventLogMessage.classList.remove( "d-none" );
+        domEventLogMessage.classList.add( typeAsClass );
 
-    if ( domMessage != null )
-    {
-        domMessage.scrollIntoView();
+        var domEventLogMessageSessionTime = domEventLogMessage.querySelector( ".event-log-message-session-time" );
+        domEventLogMessageSessionTime.textContent = liveDataEventLog.messages[ i ].sessionTime;
+
+        var domEventLogMessageCarNumber = domEventLogMessage.querySelector( ".event-log-message-car-number" );
+        domEventLogMessageCarNumber.textContent = liveDataEventLog.messages[ i ].carNumber;
+
+        var domEventLogMessageDriverName = domEventLogMessage.querySelector( ".event-log-message-driver-name" );
+        domEventLogMessageDriverName.textContent = liveDataEventLog.messages[ i ].driverName;
+
+        var domEventLogMessagePosition = domEventLogMessage.querySelector( ".event-log-message-position" );
+        domEventLogMessagePosition.textContent = liveDataEventLog.messages[ i ].position;
+
+        var domEventLogMessageType = domEventLogMessage.querySelector( ".event-log-message-type" );
+        domEventLogMessageType.textContent = liveDataEventLog.messages[ i ].type;
+
+        var domEventLogMessageText = domEventLogMessage.querySelector( ".event-log-message-text" );
+        domEventLogMessageText.textContent = liveDataEventLog.messages[ i ].text;
+
+        app.dom.eventLog.container.prepend( domEventLogMessage );
     }
 }
 
@@ -316,8 +348,8 @@ function updateRaceStatus( liveDataRaceStatus )
 
     toggleVisibility( app.dom.raceStatus.blackLight, liveDataRaceStatus.showBlackLight );
     toggleVisibility( app.dom.raceStatus.greenLight, liveDataRaceStatus.showGreenLight );
-    toggleVisibility( app.dom.raceStatus.yellowLight, liveDataRaceStatus.showWhiteLight );
-    toggleVisibility( app.dom.raceStatus.whiteLight, liveDataRaceStatus.showYellowLight );
+    toggleVisibility( app.dom.raceStatus.yellowLight, liveDataRaceStatus.showYellowLight );
+    toggleVisibility( app.dom.raceStatus.whiteLight, liveDataRaceStatus.showWhiteLight );
 
     app.dom.raceStatus.sessionName.textContent = liveDataRaceStatus.sessionNameText;
     app.dom.raceStatus.lapsRemaining.textContent = liveDataRaceStatus.lapsRemainingText;
@@ -329,16 +361,55 @@ function update( liveData )
 {
     if ( liveData.isConnected )
     {
-        updateLeaderboards( liveData.liveDataLeaderboards );
+        updateLeaderboards( liveData.liveDataLeaderboardsWebPage );
         updateTrackMap( liveData.liveDataTrackMap );
         updateEventLog( liveData.liveDataEventLog );
         updateRaceStatus( liveData.liveDataRaceStatus );
     }
 }
 
-function tick()
+function render()
 {
-    fetch( 'livedata.json' ).then( ( response ) => response.json() ).then( ( liveData ) => update( liveData ) );
+    if ( ( app.liveDataA !== null ) && ( app.liveDataB !== null ) )
+    {
+        if ( app.liveDataA.isConnected && app.liveDataB.isConnected )
+        {
+            var oneMinusDelta = 1.0 - app.delta;
+
+            var liveData = JSON.parse( JSON.stringify( app.liveDataA ) );
+
+            var carsA = liveData.liveDataTrackMap.liveDataTrackMapCars;
+            var carsB = app.liveDataB.liveDataTrackMap.liveDataTrackMapCars;
+
+            for ( var i = 0; i < carsA.length; i++ )
+            {
+                var carA = carsA[ i ];
+                var carB = carsB[ i ];
+
+                carA.offset.x = carA.offset.x * oneMinusDelta + carB.offset.x * app.delta;
+                carA.offset.y = carA.offset.y * oneMinusDelta + carB.offset.y * app.delta;
+            }
+
+            update( liveData );
+
+            app.delta += 0.1;
+        }
+    }
+}
+
+async function tick()
+{
+    var response = await fetch( `livedata${app.nextJsonFileIndex}.json` );
+
+    if ( response.ok )
+    {
+        app.nextJsonFileIndex = ( app.nextJsonFileIndex + 1 ) % app.setting.numJsonFiles;
+
+        app.liveDataA = app.liveDataB;
+        app.liveDataB = await response.json();
+
+        app.delta = 0.0;
+    }
 }
 
 function init()
@@ -367,8 +438,6 @@ function init()
     app.dom.raceStatus.units = document.querySelector( ".race-status-units" )
     app.dom.raceStatus.currentLap = document.querySelector( ".race-status-current-lap" );
 
-    app.setting.liveDataContainer.updateInterval = parseFloat( app.dom.liveDataContainer.getAttribute( "data-update-interval" ) );
-
     app.setting.trackMap.lineWidth = parseFloat( app.dom.trackMap.canvas.getAttribute( "data-line-width" ) );
     app.setting.trackMap.strokeStyle = app.dom.trackMap.canvas.getAttribute( "data-stroke-style" );
     app.setting.trackMap.startFinishSize = parseFloat( app.dom.trackMap.canvas.getAttribute( "data-start-finish-size" ) );
@@ -376,10 +445,12 @@ function init()
     app.setting.trackMap.carSize = parseFloat( app.dom.trackMap.canvas.getAttribute( "data-car-size" ) );
     app.setting.trackMap.carFillStyle = app.dom.trackMap.canvas.getAttribute( "data-car-fill-style" );
     app.setting.trackMap.carStrokeStyle = app.dom.trackMap.canvas.getAttribute( "data-car-stroke-style" );
+    app.setting.trackMap.carTextStyle = app.dom.trackMap.canvas.getAttribute( "data-car-text-style" );
 
-    var timeout = Math.round( app.setting.liveDataContainer.updateInterval * 1000 );
+    var timeout = Math.round( app.setting.updateInterval * 1000 );
 
     setInterval( tick, timeout );
+    setInterval( render, 50 );
 }
 
 function ready( fn )

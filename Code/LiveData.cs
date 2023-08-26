@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 using irsdkSharp.Serialization.Enums.Fastest;
 
 using static iRacingTVController.Unity;
@@ -20,13 +21,14 @@ namespace iRacingTVController
 		public LiveDataControlPanel liveDataControlPanel = new();
 		public LiveDataDriver[] liveDataDrivers = new LiveDataDriver[ MaxNumDrivers ];
 		[JsonInclude] public LiveDataRaceStatus liveDataRaceStatus = new();
-		[JsonInclude] public LiveDataLeaderboard[]? liveDataLeaderboards = null;
+		[JsonInclude, XmlIgnore] public LiveDataLeaderboard[]? liveDataLeaderboardsWebPage = null;
+		public LiveDataLeaderboard[]? liveDataLeaderboards = null;
 		public LiveDataVoiceOf liveDataVoiceOf = new();
 		public LiveDataSubtitle liveDataSubtitle = new();
 		public LiveDataIntro liveDataIntro = new();
 		public LiveDataStartLights liveDataStartLights = new();
 		[JsonInclude] public LiveDataTrackMap liveDataTrackMap = new();
-		[JsonInclude] public LiveDataEventLog liveDataEventLog = new();
+		[JsonInclude, XmlIgnore] public LiveDataEventLog liveDataEventLog = new();
 
 		public string seriesLogoTextureUrl = string.Empty;
 
@@ -56,7 +58,8 @@ namespace iRacingTVController
 			UpdateControlPanel();
 			UpdateDrivers();
 			UpdateRaceStatus();
-			UpdateLeaderboard();
+			UpdateLeaderboard( ref liveDataLeaderboardsWebPage, false );
+			UpdateLeaderboard( ref liveDataLeaderboards, true );
 			UpdateTrackMap();
 			UpdateVoiceOf();
 			UpdateSubtitle();
@@ -192,7 +195,7 @@ namespace iRacingTVController
 			}
 		}
 
-		public void UpdateLeaderboard()
+		public void UpdateLeaderboard( ref LiveDataLeaderboard[]? liveDataLeaderboards, bool splitLeaderboard )
 		{
 			// allocate leaderboards
 
@@ -262,6 +265,13 @@ namespace iRacingTVController
 				var topSplitLastSlotIndex = Settings.overlay.leaderboardSlotCount - bottomSplitSlotCount;
 				var bottomSplitFirstSlotIndex = bottomSplitLastSlotIndex - bottomSplitSlotCount + 1;
 
+				if ( !splitLeaderboard )
+				{
+					topSplitLastSlotIndex = MaxNumDrivers;
+					bottomSplitFirstSlotIndex = MaxNumDrivers + 1;
+					bottomSplitLastSlotIndex = MaxNumDrivers + 1;
+				}
+
 				// leaderboard
 
 				currentLiveDataLeaderboard.show = false;
@@ -321,7 +331,10 @@ namespace iRacingTVController
 
 					if ( !liveDataLeaderboardSlot.show )
 					{
-						normalizedCar.wasVisibleOnLeaderboard = false;
+						if ( splitLeaderboard )
+						{
+							normalizedCar.wasVisibleOnLeaderboard = false;
+						}
 					}
 					else
 					{
@@ -341,13 +354,16 @@ namespace iRacingTVController
 
 						var targetSlotOffset = new Vector2( Settings.overlay.leaderboardSlotSpacing.x, -Settings.overlay.leaderboardSlotSpacing.y ) * slotIndex + new Vector2( Settings.overlay.leaderboardFirstSlotPosition.x, -Settings.overlay.leaderboardFirstSlotPosition.y );
 
-						if ( normalizedCar.wasVisibleOnLeaderboard && !resetSlotOffset )
+						if ( splitLeaderboard )
 						{
-							normalizedCar.leaderboardSlotOffset += ( targetSlotOffset - normalizedCar.leaderboardSlotOffset ) * 0.15f;
-						}
-						else
-						{
-							normalizedCar.leaderboardSlotOffset = targetSlotOffset;
+							if ( normalizedCar.wasVisibleOnLeaderboard && !resetSlotOffset )
+							{
+								normalizedCar.leaderboardSlotOffset += ( targetSlotOffset - normalizedCar.leaderboardSlotOffset ) * 0.15f;
+							}
+							else
+							{
+								normalizedCar.leaderboardSlotOffset = targetSlotOffset;
+							}
 						}
 
 						liveDataLeaderboardSlot.offset = normalizedCar.leaderboardSlotOffset;
@@ -474,17 +490,20 @@ namespace iRacingTVController
 										{
 											if ( ( carInFront != null ) && ( carInFront.checkpoints[ normalizedCar.checkpointIdx ] > 0 ) )
 											{
-												var checkpointTime = Math.Abs( (float) ( normalizedCar.checkpoints[ normalizedCar.checkpointIdx ] - carInFront.checkpoints[ normalizedCar.checkpointIdx ] ) );
-
-												var deltaCheckpointTime = checkpointTime - normalizedCar.checkpointTime;
-
-												if ( Math.Abs( deltaCheckpointTime ) < 0.1 )
+												if ( !splitLeaderboard )
 												{
-													normalizedCar.checkpointTime += deltaCheckpointTime * 0.05f;
-												}
-												else
-												{
-													normalizedCar.checkpointTime = checkpointTime;
+													var checkpointTime = Math.Abs( (float) ( normalizedCar.checkpoints[ normalizedCar.checkpointIdx ] - carInFront.checkpoints[ normalizedCar.checkpointIdx ] ) );
+
+													var deltaCheckpointTime = checkpointTime - normalizedCar.checkpointTime;
+
+													if ( Math.Abs( deltaCheckpointTime ) < 0.1 )
+													{
+														normalizedCar.checkpointTime += deltaCheckpointTime * 0.05f;
+													}
+													else
+													{
+														normalizedCar.checkpointTime = checkpointTime;
+													}
 												}
 
 												liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{normalizedCar.checkpointTime:0.00}";
@@ -568,6 +587,7 @@ namespace iRacingTVController
 					if ( liveDataTrackMapCar.show )
 					{
 						liveDataTrackMapCar.offset = TrackMap.GetPosition( normalizedCar.lapDistPct );
+						liveDataTrackMapCar.carNumber = normalizedCar.carNumber;
 					}
 
 					liveDataTrackMapCar.showHighlight = ( normalizedCar.carIdx == IRSDK.normalizedData.camCarIdx );

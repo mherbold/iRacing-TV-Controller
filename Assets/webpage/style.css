@@ -34,7 +34,7 @@
     top: 3rem;
     left: 0;
     bottom: 0;
-    width: 32rem;
+    width: 32.5rem;
     padding: 1rem;
     border-right: 1px solid #888;
     overflow-y: auto;
@@ -49,34 +49,34 @@
     gap: 1rem;
 }
 
-.leaderboard-position-text {
+.leaderboard-position-position {
     width: 1.5rem;
     text-align: right;
     white-space: nowrap;
     overflow: hidden;
 }
 
-.leaderboard-car-number-text {
-    width: 2rem;
+.leaderboard-position-car-number {
+    width: 2.5rem;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
 }
 
-.leaderboard-driver-name-text {
+.leaderboard-position-driver-name {
     width: 9rem;
     white-space: nowrap;
     overflow: hidden;
 }
 
-.leaderboard-telemetry-text {
+.leaderboard-position-telemetry {
     width: 6rem;
     text-align: right;
     white-space: nowrap;
     overflow: hidden;
 }
 
-.leaderboard-speed-text {
+.leaderboard-position-speed {
     width: 6rem;
     text-align: right;
     white-space: nowrap;
@@ -86,7 +86,7 @@
 .track-map-container {
     position: absolute;
     top: 3rem;
-    left: 32rem;
+    left: 32.5rem;
     right: 0;
     bottom: 20rem;
     padding: 1rem;
@@ -101,14 +101,47 @@
 
 .event-log-container {
     position: absolute;
-    left: 32rem;
+    left: 32.5rem;
     bottom: 0;
     right: 12rem;
-    height:20rem;
+    height: 20rem;
     padding: 1rem;
     border-right: 1px solid #888;
     box-sizing: border-box;
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.event-log-message {
+    display: flex;
+    gap: 1rem;
+}
+
+.event-log-message-session-time {
+    width: 4rem;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.event-log-message-car-number {
+    width: 2.5rem;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.event-log-message-driver-name {
+    width: 9rem;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.event-log-message-position {
+    width: 3rem;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .race-status-container {
@@ -119,6 +152,26 @@
     height: 20rem;
     padding: 1rem;
     box-sizing: border-box;
+}
+
+.type-green, .type-onelaptogreen, .type-startready, .type-startset, .type-startgo, .race-status-green-light, .race-status-green-flag {
+    color: lightgreen;
+}
+
+.type-pit-in, .type-pit-out {
+    color: darkorange;
+}
+
+.type-caution, .type-cautionwaving, .type-yellow, .type-yellowwaving, .race-status-yellow-light, .race-status-yellow-flag {
+    color: yellow;
+}
+
+.type-incident {
+    color: red;
+}
+
+.type-best-lap {
+    color: deepskyblue;
 }
 
 .race-status-current-lap-container {

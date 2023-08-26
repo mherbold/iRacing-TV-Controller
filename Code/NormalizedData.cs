@@ -26,6 +26,7 @@ namespace iRacingTVController
 		public double sessionTimeDelta;
 		public double sessionTime;
 		public uint sessionFlags;
+		public uint sessionFlagsLastFrame;
 
 		public int replayFrameNum;
 		public int replaySpeed;
@@ -54,6 +55,8 @@ namespace iRacingTVController
 
 		public int radioTransmitCarIdx;
 
+		public float bestLapTime;
+
 		public NormalizedCar? paceCar = null;
 
 		public NormalizedCar[] normalizedCars = new NormalizedCar[ MaxNumCars ];
@@ -81,11 +84,12 @@ namespace iRacingTVController
 			Reset();
 		}
 
-		public void Reset()
+		public void Reset( bool alsoResetCars = true )
 		{
 			sessionTimeDelta = 0;
 			sessionTime = 0;
 			sessionFlags = 0;
+			sessionFlagsLastFrame = 0;
 
 			replayFrameNum = 0;
 			replaySpeed = 0;
@@ -122,16 +126,23 @@ namespace iRacingTVController
 
 			radioTransmitCarIdx = -1;
 
+			bestLapTime = 0;
+
 			paceCar = null;
 
-			foreach ( var normalizedCar in normalizedCars )
+			if ( alsoResetCars )
 			{
-				normalizedCar.Reset();
+				foreach ( var normalizedCar in normalizedCars )
+				{
+					normalizedCar.Reset();
+				}
 			}
 		}
 
 		public void SessionNumberChange()
 		{
+			Reset( false );
+
 			foreach ( var normalizedCar in normalizedCars )
 			{
 				normalizedCar.SessionNumberChange();
@@ -210,6 +221,8 @@ namespace iRacingTVController
 			{
 				sessionTimeDelta = Math.Max( 0, sessionTimeDelta );
 			}
+
+			sessionFlagsLastFrame = sessionFlags;
 
 			if ( IRSDK.normalizedSession.isReplay )
 			{

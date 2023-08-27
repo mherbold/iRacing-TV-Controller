@@ -6,7 +6,7 @@
     <RootNamespace>iRacingTVController</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <VersionPrefix>1.28</VersionPrefix>
+    <VersionPrefix>1.29</VersionPrefix>
     <ApplicationIcon>Assets\icon\iracing-tv.ico</ApplicationIcon>
   </PropertyGroup>
 
@@ -40,6 +40,9 @@
 
   <ItemGroup>
     <None Update="Assets\default\leaderboard-car-number-space.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\default\leaderboard-preferred-car.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Assets\default\race-status-checkered-flag-text.png">

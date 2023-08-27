@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.28"
+        Title="iRacing-TV Controller v1.29"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="900" Height="700" MinWidth="900" MinHeight="700" Icon="/Assets/icon/iracing-tv.ico">
     <Grid>
@@ -750,8 +750,8 @@
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="300"/>
                                             <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="90"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="User IDs"/>
                                         <TextBox x:Name="Director_PreferredCar_UserIds" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
@@ -760,8 +760,8 @@
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="300"/>
                                             <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="90"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Car Numbers"/>
                                         <TextBox x:Name="Director_PreferredCar_CarNumbers" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>

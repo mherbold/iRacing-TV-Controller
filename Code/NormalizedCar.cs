@@ -40,6 +40,7 @@ namespace iRacingTVController
 		public bool wasOutOfCar = false;
 		public bool isPaceCar = false;
 		public bool isSpectator = false;
+		public bool isPreferredCar = false;
 
 		public float outOfCarTimer = 0;
 

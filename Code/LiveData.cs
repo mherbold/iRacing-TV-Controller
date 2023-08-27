@@ -527,6 +527,10 @@ namespace iRacingTVController
 							liveDataLeaderboardSlot.showHighlight = false;
 						}
 
+						// preferred driver
+
+						liveDataLeaderboardSlot.showPreferredCar = normalizedCar.isPreferredCar;
+
 						//
 
 						normalizedCar.wasVisibleOnLeaderboard = true;

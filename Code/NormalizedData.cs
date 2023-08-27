@@ -261,11 +261,19 @@ namespace iRacingTVController
 
 			if ( sessionTimeDelta > 0 )
 			{
+				var preferredCarUserIdsList = Settings.director.preferredCarUserIds.Split( "," ).ToList().Select( s => s.Trim() ).ToList();
+				var preferredCarCarNumbersList = Settings.director.preferredCarCarNumbers.Split( "," ).ToList().Select( s => s.Trim() ).ToList();
+
 				// update each car
 
 				foreach ( var normalizedCar in normalizedCars )
 				{
 					normalizedCar.Update();
+
+					if ( normalizedCar.includeInLeaderboard )
+					{
+						normalizedCar.isPreferredCar = preferredCarUserIdsList.Contains( normalizedCar.userId.ToString() ) || preferredCarCarNumbersList.Contains( normalizedCar.carNumber );
+					}
 				}
 
 				// reset defending heat and heat bias, calculate attacking heat, and calculate distances to car in front and back, for each car

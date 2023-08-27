@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 27.7.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!-- Generator: Adobe Illustrator 27.8.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 1920 1080" style="enable-background:new 0 0 1920 1080;" xml:space="preserve">
 <style type="text/css">
@@ -17,96 +17,107 @@
 	.st11{fill:#5E6060;}
 	.st12{opacity:0.85;fill:#231F20;}
 	.st13{fill:#39B54A;}
-	.st14{fill:#FFFFFF;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
-	.st15{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-miterlimit:10;}
+	.st14{fill:url(#leaderboard-preferred-car_00000045585597079189213300000013367487036771978125_);}
+	.st15{fill:#FFFFFF;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
+	.st16{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-miterlimit:10;}
+	.st17{display:none;}
 	
-		.st16{fill:url(#voice-of-background_00000123441842443629604390000014823710579346497981_);fill-opacity:0.85;stroke:url(#voice-of-background_00000141441598605562554940000009998080558591558572_);stroke-width:5;stroke-miterlimit:10;}
+		.st18{display:inline;fill:url(#voice-of-background_00000119811672149317992880000009809338480670489761_);fill-opacity:0.85;stroke:url(#voice-of-background_00000047049097954510612820000003026132928373521066_);stroke-width:5;stroke-miterlimit:10;}
 </style>
 <g id="Misc">
 	<g id="generic-background">
-		<polygon class="st0" points="502.5,625.5 502.5,520.96 519.11,502.5 625.52,502.5 625.52,607.56 608.93,625.5 		"/>
-		<path class="st1" d="M623.02,505v101.58L607.83,623H505V521.92L520.23,505H623.02 M628.02,500H518l-18,20v108h110.02l18-19.46V500
-			L628.02,500z"/>
+		<polygon class="st0" points="452.5,285.5 452.5,180.96 469.11,162.5 575.52,162.5 575.52,267.56 558.93,285.5 		"/>
+		<path class="st1" d="M573.02,165v101.58L557.83,283H455V181.92L470.23,165H573.02 M578.02,160H468l-18,20v108h110.02l18-19.46V160
+			L578.02,160z"/>
 	</g>
 </g>
 <g id="Race_Status">
 	<g id="race-status-background">
 		<g id="Background">
-			<polygon class="st2" points="46.5,225.5 46.5,11.5 360.5,11.5 360.5,207.37 343.91,225.5 			"/>
-			<path d="M358,14v192.4L342.81,223H49V14H358 M363,9H44v219h301.01L363,208.34V9L363,9z"/>
+			<polygon class="st2" points="42.5,256.5 42.5,42.5 356.5,42.5 356.5,238.37 339.91,256.5 			"/>
+			<path d="M354,45v192.4L338.81,254H45V45H354 M359,40H40v219h301.01L359,239.34V40L359,40z"/>
 		</g>
 		<g id="Series_Background">
-			<rect x="49" y="13" class="st3" width="309" height="105"/>
+			<rect x="45" y="44" class="st3" width="309" height="105"/>
 		</g>
-		<line id="Big_Divider" class="st4" x1="44" y1="121" x2="363" y2="121"/>
+		<line id="Big_Divider" class="st4" x1="40" y1="152" x2="359" y2="152"/>
 		<g id="Small_Divider">
-			<line class="st5" x1="348" y1="175" x2="59" y2="175"/>
+			<line class="st5" x1="344" y1="206" x2="55" y2="206"/>
 		</g>
 	</g>
 	<g id="race-status-white-light">
-		<circle class="st3" cx="334.5" cy="150.5" r="10.5"/>
+		<circle class="st3" cx="330.5" cy="181.5" r="10.5"/>
 	</g>
 	<g id="race-status-yellow-light">
-		<circle class="st6" cx="334.5" cy="150.5" r="10.5"/>
+		<circle class="st6" cx="330.5" cy="181.5" r="10.5"/>
 	</g>
 	<g id="race-status-green-light">
-		<circle class="st7" cx="334.5" cy="150.5" r="10.5"/>
+		<circle class="st7" cx="330.5" cy="181.5" r="10.5"/>
 	</g>
 	<g id="race-status-black-light">
-		<circle cx="334.5" cy="150.5" r="10"/>
-		<path class="st3" d="M334.5,141c5.24,0,9.5,4.26,9.5,9.5s-4.26,9.5-9.5,9.5s-9.5-4.26-9.5-9.5S329.26,141,334.5,141 M334.5,140
-			c-5.8,0-10.5,4.7-10.5,10.5s4.7,10.5,10.5,10.5s10.5-4.7,10.5-10.5S340.3,140,334.5,140L334.5,140z"/>
+		<circle cx="330.5" cy="181.5" r="10"/>
+		<path class="st3" d="M330.5,172c5.24,0,9.5,4.26,9.5,9.5s-4.26,9.5-9.5,9.5s-9.5-4.26-9.5-9.5S325.26,172,330.5,172 M330.5,171
+			c-5.8,0-10.5,4.7-10.5,10.5s4.7,10.5,10.5,10.5s10.5-4.7,10.5-10.5S336.3,171,330.5,171L330.5,171z"/>
 	</g>
 </g>
 <g id="Leaderboard_Overlay">
 	<g id="leaderboard-position-splitter">
 		<g id="Position_Splitter_00000044144644301241049060000000494847145522205862_">
-			<line class="st8" x1="44" y1="658" x2="363" y2="658"/>
+			<line class="st8" x1="40" y1="450" x2="359" y2="450"/>
 		</g>
 		<g id="Position_Splitter">
 			<g>
-				<line class="st9" x1="44" y1="658" x2="50" y2="658"/>
-				<line class="st10" x1="62.28" y1="658" x2="350.86" y2="658"/>
-				<line class="st9" x1="357" y1="658" x2="363" y2="658"/>
+				<line class="st9" x1="40" y1="450" x2="46" y2="450"/>
+				<line class="st10" x1="58.28" y1="450" x2="346.86" y2="450"/>
+				<line class="st9" x1="353" y1="450" x2="359" y2="450"/>
 			</g>
 		</g>
 	</g>
 	<g id="leaderboard-heading">
-		<polygon class="st3" points="46.5,290.5 46.5,264.96 63.11,246.5 360.5,246.5 360.5,272.04 343.89,290.5 		"/>
-		<path class="st11" d="M358,249v22.08L342.77,288H49v-22.08L64.23,249H358 M363,244H62l-18,20v29h301l18-20V244L363,244z"/>
+		<polygon class="st3" points="42.5,326.5 42.5,300.96 59.11,282.5 356.5,282.5 356.5,308.04 339.89,326.5 		"/>
+		<path class="st11" d="M354,285v22.08L338.77,324H45v-22.08L60.23,285H354 M359,280H58l-18,20v29h301l18-20V280L359,280z"/>
 	</g>
 	<g id="leaderboard-current-target">
 		<g id="leaderboard-current-target-speed">
-			<path class="st12" d="M343.65,372.5l16.85-18.53V328.5h88.96c7.19,0,13.04,5.94,13.04,13.24v17.53c0,7.3-5.85,13.24-13.04,13.24
-				H343.65z"/>
-			<path class="st11" d="M449.46,331c5.81,0,10.54,4.82,10.54,10.74v17.53c0,5.92-4.73,10.74-10.54,10.74H349.3l12.4-13.64l1.3-1.43
-				V353v-22H449.46 M449.46,326H358v27l-20,22h111.46c8.58,0,15.54-7.05,15.54-15.74v-17.53C465,333.05,458.04,326,449.46,326
-				L449.46,326z"/>
+			<path class="st12" d="M339.65,408.5l16.85-18.53V364.5h88.96c7.19,0,13.04,5.94,13.04,13.24v17.53c0,7.3-5.85,13.24-13.04,13.24
+				H339.65z"/>
+			<path class="st11" d="M445.46,367c5.81,0,10.54,4.82,10.54,10.74v17.53c0,5.92-4.73,10.74-10.54,10.74H345.3l12.4-13.64l1.3-1.43
+				V389v-22H445.46 M445.46,362H354v27l-20,22h111.46c8.58,0,15.54-7.05,15.54-15.74v-17.53C461,369.05,454.04,362,445.46,362
+				L445.46,362z"/>
 		</g>
 		<g id="leaderboard-current-target-outline">
-			<path class="st13" d="M358,331v22.08L342.77,370H49v-22.08L64.23,331H358 M363,326H62l-18,20v29h301l18-20V326L363,326z"/>
+			<path class="st13" d="M354,367v22.08L338.77,406H45v-22.08L60.23,367H354 M359,362H58l-18,20v29h301l18-20V362L359,362z"/>
 		</g>
 	</g>
-	<path id="leaderboard-car-number-space" class="st3" d="M140.63,364H99.37c-2.41,0-4.37-1.96-4.37-4.37v-19.26
-		c0-2.41,1.96-4.37,4.37-4.37h41.26c2.41,0,4.37,1.96,4.37,4.37v19.26C145,362.04,143.04,364,140.63,364z"/>
+	<path id="leaderboard-car-number-space" class="st3" d="M136.63,400H95.37c-2.41,0-4.37-1.96-4.37-4.37v-19.26
+		c0-2.41,1.96-4.37,4.37-4.37h41.26c2.41,0,4.37,1.96,4.37,4.37v19.26C141,398.04,139.04,400,136.63,400z"/>
+	
+		<linearGradient id="leaderboard-preferred-car_00000067202945704727631240000004175584760835381925_" gradientUnits="userSpaceOnUse" x1="45" y1="386.5" x2="359" y2="386.5">
+		<stop  offset="0" style="stop-color:#FFFFFF"/>
+		<stop  offset="0.6" style="stop-color:#FFFFFF"/>
+		<stop  offset="0.95" style="stop-color:#737070;stop-opacity:0"/>
+		<stop  offset="1" style="stop-color:#000000;stop-opacity:0"/>
+	</linearGradient>
+	
+		<rect id="leaderboard-preferred-car" x="45" y="367" style="fill:url(#leaderboard-preferred-car_00000067202945704727631240000004175584760835381925_);" width="314" height="39"/>
 </g>
 <g id="Track_Map_Overlay">
-	<circle id="track-map-car_00000065042329446255562980000016965892359670012070_" class="st14" cx="1716" cy="216" r="16"/>
-	<circle id="track-map-target_00000179641946246250401240000017151977930488662200_" class="st15" cx="1761.93" cy="216" r="16"/>
+	<circle id="track-map-car" class="st15" cx="56" cy="506" r="16"/>
+	<circle id="track-map-target_00000179641946246250401240000017151977930488662200_" class="st16" cx="101.93" cy="506" r="16"/>
 </g>
-<g id="Voice_Of_Overlay">
+<g id="Voice_Of_Overlay" class="st17">
 	
-		<linearGradient id="voice-of-background_00000098207304605882677270000001010057704735364230_" gradientUnits="userSpaceOnUse" x1="540.8962" y1="86.5" x2="1007.8962" y2="86.5">
+		<linearGradient id="voice-of-background_00000043439432583195173000000015951250741874543032_" gradientUnits="userSpaceOnUse" x1="450" y1="85.5" x2="917" y2="85.5">
 		<stop  offset="0" style="stop-color:#FFFFFF"/>
 		<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0"/>
 	</linearGradient>
 	
-		<linearGradient id="voice-of-background_00000159470730608446146070000014847108577140663704_" gradientUnits="userSpaceOnUse" x1="538.3962" y1="86.5" x2="1010.3962" y2="86.5">
+		<linearGradient id="voice-of-background_00000130632474296981980410000005266595171483075250_" gradientUnits="userSpaceOnUse" x1="447.5" y1="85.5" x2="919.5" y2="85.5">
 		<stop  offset="0" style="stop-color:#231F20"/>
 		<stop  offset="1" style="stop-color:#231F20;stop-opacity:0"/>
 	</linearGradient>
 	
-		<polygon id="voice-of-background" style="fill:url(#voice-of-background_00000098207304605882677270000001010057704735364230_);fill-opacity:0.85;stroke:url(#voice-of-background_00000159470730608446146070000014847108577140663704_);stroke-width:5;stroke-miterlimit:10;" points="
-		540.9,132 540.9,61 558.9,41 1007.9,41 1007.9,112 989.89,132 	"/>
+		<polygon id="voice-of-background" style="display:inline;fill:url(#voice-of-background_00000043439432583195173000000015951250741874543032_);fill-opacity:0.85;stroke:url(#voice-of-background_00000130632474296981980410000005266595171483075250_);stroke-width:5;stroke-miterlimit:10;" points="
+		450,131 450,60 468.01,40 917,40 917,111 898.99,131 	"/>
 </g>
 </svg>

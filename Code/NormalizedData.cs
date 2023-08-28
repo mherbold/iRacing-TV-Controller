@@ -84,7 +84,7 @@ namespace iRacingTVController
 			Reset();
 		}
 
-		public void Reset( bool alsoResetCars = true )
+		public void Reset()
 		{
 			sessionTimeDelta = 0;
 			sessionTime = 0;
@@ -130,22 +130,9 @@ namespace iRacingTVController
 
 			paceCar = null;
 
-			if ( alsoResetCars )
-			{
-				foreach ( var normalizedCar in normalizedCars )
-				{
-					normalizedCar.Reset();
-				}
-			}
-		}
-
-		public void SessionNumberChange()
-		{
-			Reset( false );
-
 			foreach ( var normalizedCar in normalizedCars )
 			{
-				normalizedCar.SessionNumberChange();
+				normalizedCar.Reset();
 			}
 		}
 
@@ -204,6 +191,18 @@ namespace iRacingTVController
 						otherNormalizedCar.GenerateAbbrevName( true );
 					}
 				}
+			}
+		}
+
+		public void SessionNumberChange()
+		{
+			sessionTime = 0;
+			sessionFlags = 0;
+			sessionFlagsLastFrame = 0;
+
+			foreach ( var normalizedCar in normalizedCars )
+			{
+				normalizedCar.SessionNumberChange();
 			}
 		}
 

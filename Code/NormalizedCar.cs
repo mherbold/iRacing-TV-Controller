@@ -159,8 +159,8 @@ namespace iRacingTVController
 			carNumberTextureUrl = string.Empty;
 			carTextureUrl = string.Empty;
 
-			leaderboardSlotOffset = Vector2.zero;
 			wasVisibleOnLeaderboard = false;
+			leaderboardSlotOffset = Vector2.zero;
 
 			currentIncidentPoints = 0;
 			previousIncidentPoints = 0;
@@ -218,8 +218,8 @@ namespace iRacingTVController
 			distanceMovedInMeters = 0;
 			speedInMetersPerSecond = 0;
 
-			leaderboardSlotOffset = Vector2.zero;
 			wasVisibleOnLeaderboard = false;
+			leaderboardSlotOffset = Vector2.zero;
 
 			if ( driverIdx != -1 )
 			{
@@ -326,12 +326,12 @@ namespace iRacingTVController
 							var licColor = driver.LicColor[ 2.. ];
 							var carPath = driver.CarPath.Replace( " ", "%5C" );
 							var customCarTgaFilePath = $"{Settings.editor.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_num_{driver.UserID}.tga";
-							var showSimStampedStuff = 0;
+							var showSimStampedNumber = 0;
 
 							if ( !File.Exists( customCarTgaFilePath ) )
 							{
 								customCarTgaFilePath = $"{Settings.editor.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_{driver.UserID}.tga";
-								showSimStampedStuff = 1;
+								showSimStampedNumber = 1;
 
 								if ( !File.Exists( customCarTgaFilePath ) )
 								{
@@ -341,7 +341,7 @@ namespace iRacingTVController
 
 							customCarTgaFilePath = customCarTgaFilePath.Replace( " ", "%20" );
 
-							carTextureUrl = $"http://localhost:32034/pk_car.png?size=2&view=1&licCol={licColor}&stampShow={showSimStampedStuff}&club={driver.ClubID}&sponsors={driver.CarSponsor_1},{driver.CarSponsor_2}&numShow={showSimStampedStuff}&numPat={numberDesignMatch.Groups[ 1 ].Value}&numCol={numberDesignMatch.Groups[ 3 ].Value},{numberDesignMatch.Groups[ 4 ].Value},{numberDesignMatch.Groups[ 5 ].Value}&numSlnt={numberDesignMatch.Groups[ 2 ].Value}&number={carNumber}&carPath={carPath}&carPat={carDesignMatch.Groups[ 1 ].Value}&carCol={carDesignMatch.Groups[ 2 ].Value},{carDesignMatch.Groups[ 3 ].Value},{carDesignMatch.Groups[ 4 ].Value}&carRimType=2&carRimCol={carDesignMatch.Groups[ 5 ].Value}&carCustPaint={customCarTgaFilePath}";
+							carTextureUrl = $"http://localhost:32034/pk_car.png?size=2&view=1&licCol={licColor}&club={driver.ClubID}&sponsors={driver.CarSponsor_1},{driver.CarSponsor_2}&numShow={showSimStampedNumber}&numPat={numberDesignMatch.Groups[ 1 ].Value}&numCol={numberDesignMatch.Groups[ 3 ].Value},{numberDesignMatch.Groups[ 4 ].Value},{numberDesignMatch.Groups[ 5 ].Value}&numSlnt={numberDesignMatch.Groups[ 2 ].Value}&number={carNumber}&carPath={carPath}&carPat={carDesignMatch.Groups[ 1 ].Value}&carCol={carDesignMatch.Groups[ 2 ].Value},{carDesignMatch.Groups[ 3 ].Value},{carDesignMatch.Groups[ 4 ].Value}&carRimType=2&carRimCol={carDesignMatch.Groups[ 5 ].Value}&carCustPaint={customCarTgaFilePath}";
 						}
 
 						var helmetDesignMatch = Regex.Match( driver.HelmetDesignStr, @"(\d+),(.{6}),(.{6}),(.{6})" );

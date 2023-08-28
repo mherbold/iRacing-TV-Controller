@@ -56,39 +56,6 @@ namespace iRacingTVController
 			seriesLogoTextureUrl = string.Empty;
 		}
 
-		// called only when telemetry data session number changes
-		public void SessionNumberChange()
-		{
-			if ( ( IRSDK.session == null ) || ( IRSDK.data == null ) )
-			{
-				return;
-			}
-
-			sessionNumber = IRSDK.data.SessionNum;
-
-			if ( sessionNumber >= 0 )
-			{
-				var session = IRSDK.session.SessionInfo.Sessions[ sessionNumber ];
-
-				sessionName = session.SessionName;
-				sessionType = session.SessionType;
-
-				isInPracticeSession = ( sessionType == "Practice" ) || ( sessionType == "Warmup" );
-				isInQualifyingSession = ( sessionType == "Lone Qualify" );
-				isInRaceSession = ( sessionType == "Race" );
-			}
-			else
-			{
-				sessionName = string.Empty;
-
-				isInPracticeSession = false;
-				isInQualifyingSession = false;
-				isInRaceSession = false;
-			}
-
-			LogFile.Write( $"Session number:{sessionNumber}, Session name:{sessionName}.\r\n" );
-		}
-
 		// called only when header session info version number changes
 		public void SessionUpdate()
 		{
@@ -129,6 +96,39 @@ namespace iRacingTVController
 				IncidentPlayback.Load();
 				SubtitlePlayback.Load();
 			}
+		}
+
+		// called only when telemetry data session number changes
+		public void SessionNumberChange()
+		{
+			if ( ( IRSDK.session == null ) || ( IRSDK.data == null ) )
+			{
+				return;
+			}
+
+			sessionNumber = IRSDK.data.SessionNum;
+
+			if ( sessionNumber >= 0 )
+			{
+				var session = IRSDK.session.SessionInfo.Sessions[ sessionNumber ];
+
+				sessionName = session.SessionName;
+				sessionType = session.SessionType;
+
+				isInPracticeSession = ( sessionType == "Practice" ) || ( sessionType == "Warmup" );
+				isInQualifyingSession = ( sessionType == "Lone Qualify" );
+				isInRaceSession = ( sessionType == "Race" );
+			}
+			else
+			{
+				sessionName = string.Empty;
+
+				isInPracticeSession = false;
+				isInQualifyingSession = false;
+				isInRaceSession = false;
+			}
+
+			LogFile.Write( $"Session number:{sessionNumber}, Session name:{sessionName}.\r\n" );
 		}
 	}
 }

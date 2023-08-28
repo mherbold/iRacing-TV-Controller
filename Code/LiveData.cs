@@ -348,14 +348,14 @@ namespace iRacingTVController
 
 						var slotIndex = normalizedCar.displayedPosition - ( ( normalizedCar.displayedPosition >= bottomSplitFirstSlotIndex ) ? bottomSplitFirstSlotIndex - topSplitLastSlotIndex : topSplitFirstSlotIndex );
 
-						var resetSlotOffset = ( ( lastFrameBottomSplitFirstPosition[ classIndex ] != bottomSplitFirstSlotIndex ) && ( normalizedCar.displayedPosition >= bottomSplitFirstSlotIndex ) );
-
 						// compute slot offset
-
-						var targetSlotOffset = new Vector2( Settings.overlay.leaderboardSlotSpacing.x, -Settings.overlay.leaderboardSlotSpacing.y ) * slotIndex + new Vector2( Settings.overlay.leaderboardFirstSlotPosition.x, -Settings.overlay.leaderboardFirstSlotPosition.y );
 
 						if ( splitLeaderboard )
 						{
+							var resetSlotOffset = ( ( lastFrameBottomSplitFirstPosition[ classIndex ] != bottomSplitFirstSlotIndex ) && ( normalizedCar.displayedPosition >= bottomSplitFirstSlotIndex ) );
+
+							var targetSlotOffset = new Vector2( Settings.overlay.leaderboardSlotSpacing.x, -Settings.overlay.leaderboardSlotSpacing.y ) * slotIndex + new Vector2( Settings.overlay.leaderboardFirstSlotPosition.x, -Settings.overlay.leaderboardFirstSlotPosition.y );
+
 							if ( normalizedCar.wasVisibleOnLeaderboard && !resetSlotOffset )
 							{
 								normalizedCar.leaderboardSlotOffset += ( targetSlotOffset - normalizedCar.leaderboardSlotOffset ) * 0.15f;
@@ -364,9 +364,9 @@ namespace iRacingTVController
 							{
 								normalizedCar.leaderboardSlotOffset = targetSlotOffset;
 							}
-						}
 
-						liveDataLeaderboardSlot.offset = normalizedCar.leaderboardSlotOffset;
+							liveDataLeaderboardSlot.offset = normalizedCar.leaderboardSlotOffset;
+						}
 
 						// position text
 
@@ -533,7 +533,10 @@ namespace iRacingTVController
 
 						//
 
-						normalizedCar.wasVisibleOnLeaderboard = true;
+						if ( splitLeaderboard )
+						{
+							normalizedCar.wasVisibleOnLeaderboard = true;
+						}
 
 						if ( ( carInFront == null ) || Settings.overlay.telemetryIsBetweenCars )
 						{
@@ -542,26 +545,29 @@ namespace iRacingTVController
 					}
 				}
 
-				// leaderboard offset and background and splitter
-
-				currentLiveDataLeaderboard.offset = new Vector2( leaderboardOffset.x, leaderboardOffset.y );
-				currentLiveDataLeaderboard.backgroundSize = Settings.overlay.leaderboardSlotSpacing * Math.Min( carsShown, Settings.overlay.leaderboardSlotCount );
-				currentLiveDataLeaderboard.showSplitter = ( ( topSplitLastSlotIndex + 1 ) != bottomSplitFirstSlotIndex );
-				currentLiveDataLeaderboard.splitterPosition = Settings.overlay.leaderboardFirstSlotPosition + Settings.overlay.leaderboardSlotSpacing * topSplitLastSlotIndex;
-
-				if ( currentLiveDataLeaderboard.show )
+				if ( splitLeaderboard )
 				{
-					if ( Settings.overlay.leaderboardMultiClassOffsetType == 0 )
+					// leaderboard offset and background and splitter
+
+					currentLiveDataLeaderboard.offset = new Vector2( leaderboardOffset.x, leaderboardOffset.y );
+					currentLiveDataLeaderboard.backgroundSize = Settings.overlay.leaderboardSlotSpacing * Math.Min( carsShown, Settings.overlay.leaderboardSlotCount );
+					currentLiveDataLeaderboard.showSplitter = ( ( topSplitLastSlotIndex + 1 ) != bottomSplitFirstSlotIndex );
+					currentLiveDataLeaderboard.splitterPosition = Settings.overlay.leaderboardFirstSlotPosition + Settings.overlay.leaderboardSlotSpacing * topSplitLastSlotIndex;
+
+					if ( currentLiveDataLeaderboard.show )
 					{
-						leaderboardOffset.y += currentLiveDataLeaderboard.backgroundSize.y;
+						if ( Settings.overlay.leaderboardMultiClassOffsetType == 0 )
+						{
+							leaderboardOffset.y += currentLiveDataLeaderboard.backgroundSize.y;
+						}
+
+						leaderboardOffset += Settings.overlay.leaderboardMultiClassOffset;
 					}
 
-					leaderboardOffset += Settings.overlay.leaderboardMultiClassOffset;
+					// remember the bottom split first position
+
+					lastFrameBottomSplitFirstPosition[ classIndex ] = bottomSplitFirstSlotIndex;
 				}
-
-				// remember the bottom split first position
-
-				lastFrameBottomSplitFirstPosition[ classIndex ] = bottomSplitFirstSlotIndex;
 			}
 		}
 

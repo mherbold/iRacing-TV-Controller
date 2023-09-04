@@ -119,7 +119,7 @@
 }
 
 .event-log-message-session-time {
-    width: 4rem;
+    width: 5rem;
     text-align: right;
     white-space: nowrap;
     overflow: hidden;
@@ -159,7 +159,7 @@
 }
 
 .type-pit-in, .type-pit-out {
-    color: darkorange;
+    color: orchid;
 }
 
 .type-caution, .type-cautionwaving, .type-yellow, .type-yellowwaving, .race-status-yellow-light, .race-status-yellow-flag {
@@ -167,11 +167,19 @@
 }
 
 .type-incident {
+    color: darkorange;
+}
+
+.type-black-flag {
     color: red;
 }
 
 .type-best-lap {
     color: deepskyblue;
+}
+
+.type-pace-car {
+    color: whitesmoke;
 }
 
 .race-status-current-lap-container {

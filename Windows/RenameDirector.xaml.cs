@@ -56,7 +56,7 @@ namespace iRacingTVController
 
 					Settings.saveEditorToFileQueued = true;
 
-					MainWindow.Instance.Initialize();
+					MainWindow.Instance.Update();
 
 					Close();
 				}

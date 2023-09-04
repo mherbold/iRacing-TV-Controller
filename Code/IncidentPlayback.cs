@@ -194,7 +194,7 @@ namespace iRacingTVController
 
 					case IncidentScanStateEnum.RewindToStartOfReplayAgain:
 
-						LogFile.Write( $"Done with finding incidents, rewinding to the start of the replay again.\r\n" );
+						LogFile.Write( "Done with finding incidents, rewinding to the start of the replay again.\r\n" );
 
 						IRSDK.AddMessage( BroadcastMessageTypes.ReplaySetPlayPosition, (int) ReplayPositionModeTypes.Begin, 1, 0 );
 

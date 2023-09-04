@@ -14,6 +14,7 @@ namespace iRacingTVController
 		public bool voiceOfOn;
 		public bool subtitlesOn;
 		public bool introOn;
+		public bool hudOn;
 
 		public bool[]? customLayerOn;
 	}

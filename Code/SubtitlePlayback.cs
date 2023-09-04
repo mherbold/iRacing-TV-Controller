@@ -9,7 +9,7 @@ namespace iRacingTVController
 	public static class SubtitlePlayback
 	{
 		public const int SaveToFileIntervalTime = 3;
-		public const int SubtitleOverlapMergeThreshold = 5;
+		public const double SubtitleOverlapMergeThreshold = 0.25;
 
 		public static List<SubtitleData> subtitleDataList = new();
 
@@ -29,11 +29,25 @@ namespace iRacingTVController
 
 			foreach ( var subtitleData in subtitleDataList )
 			{
-				if ( !subtitleData.Ignore )
+				if ( subtitleData.SessionNumber > IRSDK.normalizedSession.sessionNumber )
 				{
-					if ( ( IRSDK.normalizedSession.sessionNumber == subtitleData.SessionNumber ) && ( IRSDK.normalizedData.replayFrameNum >= subtitleData.StartFrame ) && ( IRSDK.normalizedData.replayFrameNum <= subtitleData.EndFrame ) )
+					break;
+				}
+
+				if ( subtitleData.SessionNumber == IRSDK.normalizedSession.sessionNumber )
+				{
+					if ( subtitleData.StartTime > IRSDK.normalizedData.sessionTime )
 					{
-						currentSubtitleData = subtitleData;
+						break;
+					}
+
+					if ( subtitleData.EndTime > IRSDK.normalizedData.sessionTime )
+					{
+						if ( !subtitleData.Ignore )
+						{
+							currentSubtitleData = subtitleData;
+						}
+
 						break;
 					}
 				}
@@ -55,100 +69,146 @@ namespace iRacingTVController
 						SubtitleData? nearestPreviousSubtitleData = null;
 						SubtitleData? nearestNextSubtitleData = null;
 
-						int index = 0;
-						int insertAt = 0;
-
 						foreach ( var subtitleData in subtitleDataList )
 						{
 							if ( IRSDK.normalizedSession.sessionNumber == subtitleData.SessionNumber )
 							{
-								if ( ( IRSDK.normalizedData.replayFrameNum >= subtitleData.StartFrame ) && ( IRSDK.normalizedData.replayFrameNum <= subtitleData.EndFrame ) )
+								if ( ( IRSDK.normalizedData.sessionTime >= subtitleData.StartTime ) && ( IRSDK.normalizedData.sessionTime <= subtitleData.EndTime ) )
 								{
 									subtitleDataFound = true;
 									break;
 								}
 
-								if ( ( subtitleData.EndFrame < IRSDK.normalizedData.replayFrameNum ) && ( ( nearestPreviousSubtitleData == null ) || ( subtitleData.EndFrame > nearestPreviousSubtitleData.EndFrame ) ) )
+								if ( ( subtitleData.EndTime < IRSDK.normalizedData.sessionTime ) && ( ( nearestPreviousSubtitleData == null ) || ( subtitleData.EndTime > nearestPreviousSubtitleData.EndTime ) ) )
 								{
 									nearestPreviousSubtitleData = subtitleData;
-
-									insertAt = index + 1;
 								}
 
-								if ( ( subtitleData.StartFrame > IRSDK.normalizedData.replayFrameNum ) && ( ( nearestNextSubtitleData == null ) || ( subtitleData.StartFrame < nearestNextSubtitleData.StartFrame ) ) )
+								if ( ( subtitleData.StartTime > IRSDK.normalizedData.sessionTime ) && ( ( nearestNextSubtitleData == null ) || ( subtitleData.StartTime < nearestNextSubtitleData.StartTime ) ) )
 								{
 									nearestNextSubtitleData = subtitleData;
-
-									insertAt = index;
 								}
 							}
-							else
-							{
-								if ( IRSDK.normalizedSession.sessionNumber > subtitleData.SessionNumber )
-								{
-									if ( ( nearestPreviousSubtitleData == null ) && ( nearestNextSubtitleData == null ) )
-									{
-										insertAt = index + 1;
-									}
-								}
-							}
-
-							index++;
 						}
 
 						if ( !subtitleDataFound )
 						{
 							var addNewSubtitleData = true;
 
-							if ( ( nearestPreviousSubtitleData != null ) && ( nearestPreviousSubtitleData.CarIdx == IRSDK.normalizedData.radioTransmitCarIdx ) && ( ( nearestPreviousSubtitleData.EndFrame + SubtitleOverlapMergeThreshold ) >= IRSDK.normalizedData.replayFrameNum ) )
+							if ( ( nearestPreviousSubtitleData != null ) && ( nearestPreviousSubtitleData.CarIdx == IRSDK.normalizedData.radioTransmitCarIdx ) && ( ( nearestPreviousSubtitleData.EndTime + SubtitleOverlapMergeThreshold ) >= IRSDK.normalizedData.sessionTime ) )
 							{
 								addNewSubtitleData = false;
 
-								nearestPreviousSubtitleData.EndFrame = IRSDK.normalizedData.replayFrameNum;
+								nearestPreviousSubtitleData.EndTime = IRSDK.normalizedData.sessionTime;
 							}
 
-							if ( ( nearestNextSubtitleData != null ) && ( nearestNextSubtitleData.CarIdx == IRSDK.normalizedData.radioTransmitCarIdx ) && ( ( nearestNextSubtitleData.StartFrame - SubtitleOverlapMergeThreshold ) <= IRSDK.normalizedData.replayFrameNum ) )
+							if ( ( nearestNextSubtitleData != null ) && ( nearestNextSubtitleData.CarIdx == IRSDK.normalizedData.radioTransmitCarIdx ) && ( ( nearestNextSubtitleData.StartTime - SubtitleOverlapMergeThreshold ) <= IRSDK.normalizedData.sessionTime ) )
 							{
 								addNewSubtitleData = false;
 
-								nearestNextSubtitleData.StartFrame = IRSDK.normalizedData.replayFrameNum;
-							}
-
-							if ( ( nearestPreviousSubtitleData != null ) && ( nearestNextSubtitleData != null ) && ( nearestPreviousSubtitleData.CarIdx == nearestNextSubtitleData.CarIdx ) && ( ( nearestPreviousSubtitleData.EndFrame + SubtitleOverlapMergeThreshold ) >= nearestNextSubtitleData.StartFrame ) )
-							{
-								nearestPreviousSubtitleData.EndFrame = nearestNextSubtitleData.EndFrame;
-
-								subtitleDataList.Remove( nearestNextSubtitleData );
-
-								MainWindow.Instance.Subtitles_ListView.Items.Remove( nearestNextSubtitleData );
+								nearestNextSubtitleData.StartTime = IRSDK.normalizedData.sessionTime;
 							}
 
 							if ( addNewSubtitleData )
 							{
+								var normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.normalizedData.radioTransmitCarIdx );
+
 								var subtitleData = new SubtitleData()
 								{
 									CarIdx = IRSDK.normalizedData.radioTransmitCarIdx,
+									Index = 0,
 									SessionNumber = IRSDK.normalizedSession.sessionNumber,
-									StartFrame = IRSDK.normalizedData.replayFrameNum,
-									EndFrame = IRSDK.normalizedData.replayFrameNum,
+									StartTime = IRSDK.normalizedData.sessionTime,
+									EndTime = IRSDK.normalizedData.sessionTime,
+									CarNumber = normalizedCar?.carNumber ?? "?",
 									Text = string.Empty,
 									Ignore = false
 								};
 
-								subtitleDataList.Insert( insertAt, subtitleData );
+								subtitleDataList.Add( subtitleData );
 
-								MainWindow.Instance.Subtitles_ListView.Items.Insert( insertAt, subtitleData );
+								Refresh();
 
 								MainWindow.Instance.Subtitles_ListView.ScrollIntoView( subtitleData );
 							}
 							else
 							{
-								MainWindow.Instance.Subtitles_ListView.Items.Refresh();
+								if ( ( nearestPreviousSubtitleData != null ) && ( nearestNextSubtitleData != null ) && ( nearestPreviousSubtitleData.CarIdx == nearestNextSubtitleData.CarIdx ) && ( ( nearestPreviousSubtitleData.EndTime + SubtitleOverlapMergeThreshold ) >= nearestNextSubtitleData.StartTime ) )
+								{
+									nearestPreviousSubtitleData.EndTime = nearestNextSubtitleData.EndTime;
+
+									subtitleDataList.Remove( nearestNextSubtitleData );
+								}
+
+								Refresh();
 							}
 
 							saveToFileQueued = true;
 						}
 					}
+					else
+					{
+						SubtitleData? currentSubtitleData = null;
+
+						var currentText = string.Empty;
+
+						while ( true )
+						{
+							var detectedSpeech = SpeechToText.GetNextDetectedSpeech();
+
+							if ( detectedSpeech == null )
+							{
+								break;
+							}
+
+							if ( currentSubtitleData != null )
+							{
+								if ( ( detectedSpeech.startSimTime.sessionNumber == currentSubtitleData.SessionNumber ) && ( detectedSpeech.startSimTime.sessionTime >= currentSubtitleData.StartTime ) && ( detectedSpeech.startSimTime.sessionTime <= currentSubtitleData.EndTime ) )
+								{
+									if ( currentText.Length != 0 )
+									{
+										currentText += " ";
+									}
+
+									currentText += detectedSpeech.recognizedString;
+
+									continue;
+								}
+								else
+								{
+									currentSubtitleData.Text = currentText;
+								}
+							}
+
+							foreach ( var subtitleData in subtitleDataList )
+							{
+								if ( ( detectedSpeech.startSimTime.sessionNumber == subtitleData.SessionNumber ) && ( detectedSpeech.startSimTime.sessionTime >= subtitleData.StartTime ) && ( detectedSpeech.startSimTime.sessionTime <= subtitleData.EndTime ) )
+								{
+									currentSubtitleData = subtitleData;
+
+									break;
+								}
+							}
+
+							currentText = detectedSpeech.recognizedString;
+						}
+
+						if ( currentText != string.Empty )
+						{
+							if ( currentSubtitleData != null )
+							{
+								currentSubtitleData.Text = currentText;
+
+								saveToFileQueued = true;
+
+								MainWindow.Instance.Subtitles_ListView.Items.Refresh();
+							}
+						}
+					}
+				}
+				else
+				{
+					while ( SpeechToText.GetNextDetectedSpeech() != null ) { };
 				}
 
 				saveToFileTimeRemaining = Math.Max( 0, saveToFileTimeRemaining - Program.deltaTime );
@@ -163,12 +223,14 @@ namespace iRacingTVController
 			}
 			else
 			{
+				while ( SpeechToText.GetNextDetectedSpeech() != null ) { };
+
 				filePath = string.Empty;
 				saveToFileQueued = false;
 
 				subtitleDataList.Clear();
 
-				MainWindow.Instance.Subtitles_ListView.Items.Clear();
+				MainWindow.Instance.Subtitles_ListView.Items.Refresh();
 			}
 		}
 
@@ -207,7 +269,7 @@ namespace iRacingTVController
 
 				subtitleDataList.Clear();
 
-				MainWindow.Instance.Subtitles_ListView.Items.Clear();
+				MainWindow.Instance.Subtitles_ListView.Items.Refresh();
 
 				if ( File.Exists( filePath ) )
 				{
@@ -220,28 +282,51 @@ namespace iRacingTVController
 					subtitleDataList = (List<SubtitleData>) ( xmlSerializer.Deserialize( fileStream ) ?? throw new Exception() );
 
 					fileStream.Close();
-
-					foreach ( var subtitleData in subtitleDataList )
-					{
-						MainWindow.Instance.Subtitles_ListView.Items.Add( subtitleData );
-					}
 				}
 				else
 				{
 					LogFile.Write( $"Subtitles file {filePath} does not exist.\r\n" );
 				}
+
+				Refresh();
 			}
+		}
+
+		public static void Refresh()
+		{
+			subtitleDataList.Sort( SubtitleDataComparison );
+
+			var index = 1;
+
+			foreach ( var subtitleData in subtitleDataList )
+			{
+				subtitleData.Index = index++;
+			}
+
+			MainWindow.Instance.Subtitles_ListView.ItemsSource = subtitleDataList;
+
+			MainWindow.Instance.Subtitles_ListView.Items.Refresh();
 		}
 
 		public static void Clear()
 		{
-			subtitleDataList.Clear();
-
-			MainWindow.Instance.Subtitles_ListView.Items.Clear();
-
 			var subtitlesFilePath = GetFilePath();
 
 			File.Delete( subtitlesFilePath );
+
+			subtitleDataList.Clear();
+
+			Refresh();
 		}
+
+		public static Comparison<SubtitleData> SubtitleDataComparison = delegate ( SubtitleData a, SubtitleData b )
+		{
+			if ( a.SessionNumber == b.SessionNumber )
+			{
+				return a.StartTime.CompareTo( b.StartTime );
+			}
+
+			return a.SessionNumber.CompareTo( b.SessionNumber );
+		};
 	}
 }

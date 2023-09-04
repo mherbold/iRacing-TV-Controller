@@ -284,14 +284,18 @@ namespace iRacingTVController
 				{ "CustomLayer4", new SettingsImage() },
 				{ "CustomLayer5", new SettingsImage() },
 				{ "CustomLayer6", new SettingsImage() },
-				{ "IntroBackground", new SettingsImage() { imageType = SettingsImage.ImageType.None, filePath = Program.documentsFolder + "Assets\\default\\generic-background.png", position = { x = 44, y = 155 }, size = { x = 1826, y = 660 }, border = { x = 32, y = 32, z = 32, w = 32 } } },
-				{ "IntroLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\generic-background.png", position = { x = -203, y = -177 }, size = { x = 408, y = 336 }, border = { x = 32, y = 32, z = 32, w = 32 } } },
+				{ "HudBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\hud-background.png" } },
+				{ "HudSpotterIndicatorLeft", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\spotter-indicator.png", position = { x = 50, y = -50 }, tintColor = { r = 1, g = 1, b = 0 } } },
+				{ "HudSpotterIndicatorRight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\spotter-indicator.png", position = { x = 550, y = -50 }, tintColor = { r = 1, g = 1, b = 0 } } },
+				{ "HudSpeechToTextBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\generic-background.png", border = { x = 24, y = 24, z = 24, w = 24 } } },
+				{ "IntroBackground", new SettingsImage() { imageType = SettingsImage.ImageType.None, filePath = Program.documentsFolder + "Assets\\default\\generic-background.png", position = { x = 44, y = 155 }, size = { x = 1826, y = 660 }, border = { x = 24, y = 24, z = 24, w = 24 } } },
+				{ "IntroLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\generic-background.png", position = { x = -203, y = -177 }, size = { x = 408, y = 336 }, border = { x = 24, y = 24, z = 24, w = 24 } } },
 				{ "IntroLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.None, position = { x = 13, y = -125 }, size = { x = 150, y = 250 } } },
 				{ "IntroLayer3", new SettingsImage() { imageType = SettingsImage.ImageType.Car, position = { x = -228, y = -141 }, size = { x = 508, y = 272 } } },
 				{ "IntroLayer4", new SettingsImage() { imageType = SettingsImage.ImageType.Helmet, position = { x = 105, y = -160 }, size = { x = 80, y = 80 } } },
-				{ "IntroLayer5", new SettingsImage() { imageType = SettingsImage.ImageType.None, filePath = Program.documentsFolder + "Assets\\default\\generic-background.png", position = { x = -178, y = 53 }, size = { x = 357, y = 90 }, border = { x = 32, y = 32, z = 32, w = 32 } } },
+				{ "IntroLayer5", new SettingsImage() { imageType = SettingsImage.ImageType.None, filePath = Program.documentsFolder + "Assets\\default\\generic-background.png", position = { x = -178, y = 53 }, size = { x = 357, y = 90 }, border = { x = 24, y = 24, z = 24, w = 24 } } },
 				{ "IntroLayer6", new SettingsImage() { imageType = SettingsImage.ImageType.CarNumber, position = { x = 100, y = 84 }, size = { x = 94, y = 63 } } },
-				{ "LeaderboardBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\generic-background.png", size = { x = 319, y = 49 }, border = { x = 32, y = 32, z = 32, w = 32 }, useClassColors = true } },
+				{ "LeaderboardBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\generic-background.png", size = { x = 319, y = 49 }, border = { x = 24, y = 24, z = 24, w = 24 }, useClassColors = true } },
 				{ "LeaderboardCurrentTarget", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\leaderboard-current-target.png" } },
 				{ "LeaderboardLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\leaderboard-heading.png", position = { x = 0, y = -3 }, useClassColors = true } },
 				{ "LeaderboardLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
@@ -299,7 +303,7 @@ namespace iRacingTVController
 				{ "LeaderboardPositionLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.CarNumber, position = { x = 48, y = 10 }, size = { x = 56, y = 28 } } },
 				{ "LeaderboardPositionLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
 				{ "LeaderboardPositionLayer3", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
-				{ "LeaderboardPositionSplitter", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\leaderboard-position-splitter.png" } },
+				{ "LeaderboardPositionSplitter", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\leaderboard-position-splitter.png", useClassColors = true } },
 				{ "RaceStatusBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\race-status-background.png" } },
 				{ "RaceStatusBlackLight", new SettingsImage(){ imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\race-status-light-black.png", position = { x = 280, y = 130 } } },
 				{ "RaceStatusCheckeredFlagLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\race-status-checkered-flag.png", size = { x = 319, y = 219 }, frameSize = { x = 319, y = 219 }, frameCount = 35, animationSpeed = 24 } },
@@ -315,6 +319,7 @@ namespace iRacingTVController
 				{ "StartLightsGo", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\start-lights-go.png" } },
 				{ "StartLightsReady", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\start-lights-ready.png" } },
 				{ "StartLightsSet", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\start-lights-set.png" } },
+				{ "SubtitlesBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\generic-background.png", border = { x = 24, y = 24, z = 24, w = 24 } } },
 				{ "TrackMapCarLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\track-map-car.png", size = { x = 16, y = 16 } } },
 				{ "TrackMapCarLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.CarNumber, position = { x = 0, y = -35 }, size = { x = 40, y = 40 } } },
 				{ "TrackMapStartFinishLine", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\track-map-car.png", size = { x = 8, y = 8 }, tintColor = { r = 1, g = 0, b = 0, a = 1 } } },
@@ -377,6 +382,15 @@ namespace iRacingTVController
 
 			var defaultTextSettings = new Dictionary<string, SettingsText>()
 			{
+				{ "HudFuel", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 21, y = 25 } } },
+				{ "HudGapTimeBack", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 335, y = 25 } } },
+				{ "HudGapTimeFront", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 228, y = 25 } } },
+				{ "HudGear", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 652, y = 25 } } },
+				{ "HudLapsToLeader", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 125, y = 25 } } },
+				{ "HudRPM", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 444, y = 25 } } },
+				{ "HudSpeechToText", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 30, alignment = TextAlignmentOptions.Center, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
+				{ "HudSpeed", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 541, y = 25 } } },
+				{ "IntroCarNumber", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 50, alignment = TextAlignmentOptions.TopRight, position = { x = 177, y = 86 } } },
 				{ "IntroDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, position = { x = -179, y = 80 } } },
 				{ "IntroQualifyingTime", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 27, position = { x = -179, y = 108 }, tintColor = { r = 0.306f, g = 0.832f, b = 1 } } },
 				{ "IntroStartingGridPosition", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 50, position = { x = -180, y = -167 } } },
@@ -384,13 +398,15 @@ namespace iRacingTVController
 				{ "LeaderboardClassNameShort", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 27, alignment = TextAlignmentOptions.Top, position = { x = 159, y = 5 }, tintColor = { r = 0.137f, g = 0.122f, b = 0.125f } } },
 				{ "LeaderboardCurrentTargetSpeed", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 397, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "LeaderboardPosition", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 43, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
+				{ "LeaderboardPositionCarNumber", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 21, alignment = TextAlignmentOptions.Top, position = { x = 76, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "LeaderboardPositionDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 21, position = { x = 108, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "LeaderboardPositionTelemetry", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 298, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "RaceStatusCurrentLap", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 27, alignment = TextAlignmentOptions.TopRight, position = { x = 298, y = 175 }, tintColor = { r = 0.737f, g = 0.741f, b = 0.725f } } },
 				{ "RaceStatusLapsRemaining", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, alignment = TextAlignmentOptions.TopRight, position = { x = 269, y = 125 }, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
 				{ "RaceStatusSessionName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, position = { x = 18, y = 125 }, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
 				{ "RaceStatusUnits", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, position = { x = 18, y = 175 }, tintColor = { r = 0.737f, g = 0.741f, b = 0.725f } } },
-				{ "Subtitles", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 39, alignment = TextAlignmentOptions.Center, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
+				{ "Subtitles", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 40, alignment = TextAlignmentOptions.Center, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
+				{ "TrackMapCarNumber", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 21, alignment = TextAlignmentOptions.Top, position = { x = 0, y = -35 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "VoiceOf", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 30, position = { x = 30, y = 10 }, tintColor = { r = 0.434f, g = 0.434f, b = 0.434f } } },
 				{ "VoiceOfDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 38, position = { x = 30, y = 41 }, tintColor = { r = 0.137f, g = 0.122f, b = 0.125f } } },
 			};
@@ -572,6 +588,12 @@ namespace iRacingTVController
 					overlayLocal.fontNames_Overridden[ 3 ]
 				},
 
+				startLightsEnabled = overlayLocal.startLightsEnabled_Overridden ? overlayLocal.startLightsEnabled : overlayGlobal.startLightsEnabled,
+				startLightsPosition = overlayLocal.startLightsPosition_Overridden ? overlayLocal.startLightsPosition : overlayGlobal.startLightsPosition,
+
+				startLightsEnabled_Overridden = overlayLocal.startLightsEnabled_Overridden,
+				startLightsPosition_Overridden = overlayLocal.startLightsPosition_Overridden,
+
 				raceStatusEnabled = overlayLocal.raceStatusEnabled_Overridden ? overlayLocal.raceStatusEnabled : overlayGlobal.raceStatusEnabled,
 				raceStatusPosition = overlayLocal.raceStatusPosition_Overridden ? overlayLocal.raceStatusPosition : overlayGlobal.raceStatusPosition,
 
@@ -624,13 +646,11 @@ namespace iRacingTVController
 				subtitleEnabled = overlayLocal.subtitleEnabled_Overridden ? overlayLocal.subtitleEnabled : overlayGlobal.subtitleEnabled,
 				subtitlePosition = overlayLocal.subtitlePosition_Overridden ? overlayLocal.subtitlePosition : overlayGlobal.subtitlePosition,
 				subtitleMaxSize = overlayLocal.subtitleMaxSize_Overridden ? overlayLocal.subtitleMaxSize : overlayGlobal.subtitleMaxSize,
-				subtitleBackgroundColor = overlayLocal.subtitleBackgroundColor_Overridden ? overlayLocal.subtitleBackgroundColor : overlayGlobal.subtitleBackgroundColor,
 				subtitleTextPadding = overlayLocal.subtitleTextPadding_Overridden ? overlayLocal.subtitleTextPadding : overlayGlobal.subtitleTextPadding,
 
 				subtitleEnabled_Overridden = overlayLocal.subtitleEnabled_Overridden,
 				subtitlePosition_Overridden = overlayLocal.subtitlePosition_Overridden,
 				subtitleMaxSize_Overridden = overlayLocal.subtitleMaxSize_Overridden,
-				subtitleBackgroundColor_Overridden = overlayLocal.subtitleBackgroundColor_Overridden,
 				subtitleTextPadding_Overridden = overlayLocal.subtitleTextPadding_Overridden,
 
 				carNumberOverrideEnabled = overlayLocal.carNumberOverrideEnabled_Overridden ? overlayLocal.carNumberOverrideEnabled : overlayGlobal.carNumberOverrideEnabled,
@@ -651,14 +671,12 @@ namespace iRacingTVController
 				telemetryOutColor = overlayLocal.telemetryOutColor_Overridden ? overlayLocal.telemetryOutColor : overlayGlobal.telemetryOutColor,
 				telemetryIsBetweenCars = overlayLocal.telemetryIsBetweenCars_Overridden ? overlayLocal.telemetryIsBetweenCars : overlayGlobal.telemetryIsBetweenCars,
 				telemetryMode = overlayLocal.telemetryMode_Overridden ? overlayLocal.telemetryMode : overlayGlobal.telemetryMode,
-				telemetryNumberOfCheckpoints = overlayLocal.telemetryNumberOfCheckpoints_Overridden ? overlayLocal.telemetryNumberOfCheckpoints : overlayGlobal.telemetryNumberOfCheckpoints,
 				telemetryShowAsNegativeNumbers = overlayLocal.telemetryShowAsNegativeNumbers_Overridden ? overlayLocal.telemetryShowAsNegativeNumbers : overlayGlobal.telemetryShowAsNegativeNumbers,
 
 				telemetryPitColor_Overridden = overlayLocal.telemetryPitColor_Overridden,
 				telemetryOutColor_Overridden = overlayLocal.telemetryOutColor_Overridden,
 				telemetryIsBetweenCars_Overridden = overlayLocal.telemetryIsBetweenCars_Overridden,
 				telemetryMode_Overridden = overlayLocal.telemetryMode_Overridden,
-				telemetryNumberOfCheckpoints_Overridden = overlayLocal.telemetryNumberOfCheckpoints_Overridden,
 				telemetryShowAsNegativeNumbers_Overridden = overlayLocal.telemetryShowAsNegativeNumbers_Overridden,
 
 				introEnabled = overlayLocal.introEnabled_Overridden ? overlayLocal.introEnabled : overlayGlobal.introEnabled,
@@ -690,11 +708,17 @@ namespace iRacingTVController
 				introHoldTime_Overridden = overlayLocal.introHoldTime_Overridden,
 				introOutTime_Overridden = overlayLocal.introOutTime_Overridden,
 
-				startLightsEnabled = overlayLocal.startLightsEnabled_Overridden ? overlayLocal.startLightsEnabled : overlayGlobal.startLightsEnabled,
-				startLightsPosition = overlayLocal.startLightsPosition_Overridden ? overlayLocal.startLightsPosition : overlayGlobal.startLightsPosition,
+				hudEnabled = overlayLocal.hudEnabled_Overridden ? overlayLocal.hudEnabled : overlayGlobal.hudEnabled,
+				hudPosition = overlayLocal.hudPosition_Overridden ? overlayLocal.hudPosition : overlayGlobal.hudPosition,
+				hudSpeechToTextPosition = overlayLocal.hudSpeechToTextPosition_Overridden ? overlayLocal.hudSpeechToTextPosition : overlayGlobal.hudSpeechToTextPosition,
+				hudSpeechToTextMaxSize = overlayLocal.hudSpeechToTextMaxSize_Overridden ? overlayLocal.hudSpeechToTextMaxSize : overlayGlobal.hudSpeechToTextMaxSize,
+				hudSpeechToTextTextPadding = overlayLocal.hudSpeechToTextTextPadding_Overridden ? overlayLocal.hudSpeechToTextTextPadding : overlayGlobal.hudSpeechToTextTextPadding,
 
-				startLightsEnabled_Overridden = overlayLocal.startLightsEnabled_Overridden,
-				startLightsPosition_Overridden = overlayLocal.startLightsPosition_Overridden,
+				hudEnabled_Overridden = overlayLocal.hudEnabled_Overridden,
+				hudPosition_Overridden = overlayLocal.hudPosition_Overridden,
+				hudSpeechToTextPosition_Overridden = overlayLocal.hudSpeechToTextPosition_Overridden,
+				hudSpeechToTextMaxSize_Overridden = overlayLocal.hudSpeechToTextMaxSize_Overridden,
+				hudSpeechToTextTextPadding_Overridden = overlayLocal.hudSpeechToTextTextPadding_Overridden,
 			};
 
 			foreach ( var item in overlayLocal.imageSettingsDataDictionary )
@@ -823,12 +847,12 @@ namespace iRacingTVController
 				switchDelayRadioChatter_Overridden = directorLocal.switchDelayRadioChatter_Overridden,
 				switchDelayNotInRace_Overridden = directorLocal.switchDelayNotInRace_Overridden,
 
-				heatCarLength = directorLocal.heatCarLength_Overridden ? directorLocal.heatCarLength : directorGlobal.heatCarLength,
-				heatFalloff = directorLocal.heatFalloff_Overridden ? directorLocal.heatFalloff : directorGlobal.heatFalloff,
+				heatMaxGapTime = directorLocal.heatMaxGapTime_Overridden ? directorLocal.heatMaxGapTime : directorGlobal.heatMaxGapTime,
+				heatOvertakeBonus = directorLocal.heatOvertakeBonus_Overridden ? directorLocal.heatOvertakeBonus : directorGlobal.heatOvertakeBonus,
 				heatBias = directorLocal.heatBias_Overridden ? directorLocal.heatBias : directorGlobal.heatBias,
 
-				heatCarLength_Overridden = directorLocal.heatCarLength_Overridden,
-				heatFalloff_Overridden = directorLocal.heatFalloff_Overridden,
+				heatMaxGapTime_Overridden = directorLocal.heatMaxGapTime_Overridden,
+				heatOvertakeBonus_Overridden = directorLocal.heatOvertakeBonus_Overridden,
 				heatBias_Overridden = directorLocal.heatBias_Overridden,
 
 				preferredCarUserIds = directorLocal.preferredCarUserIds_Overridden ? directorLocal.preferredCarUserIds : directorGlobal.preferredCarUserIds,

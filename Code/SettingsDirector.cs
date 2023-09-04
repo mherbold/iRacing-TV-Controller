@@ -40,7 +40,7 @@ namespace iRacingTVController
 		public string camerasStartFinish = "s/f line, starter cam, tv2";
 
 		public string camerasInside = "roll bar";
-		public string camerasClose = "zoomed in, tv1";
+		public string camerasClose = "tv1";
 		public string camerasMedium = "tv2";
 		public string camerasFar = "tv3, spectator, spectator cam";
 		public string camerasVeryFar = "spectator, spectator cam, blimp";
@@ -83,12 +83,12 @@ namespace iRacingTVController
 		public bool switchDelayRadioChatter_Overridden = false;
 		public bool switchDelayNotInRace_Overridden = false;
 
-		public float heatCarLength = 4.91f;
-		public float heatFalloff = 20.0f;
-		public float heatBias = 0.5f;
+		public float heatMaxGapTime = 1.0f;
+		public float heatOvertakeBonus = 2.0f;
+		public float heatBias = 0.1f;
 
-		public bool heatCarLength_Overridden = false;
-		public bool heatFalloff_Overridden = false;
+		public bool heatMaxGapTime_Overridden = false;
+		public bool heatOvertakeBonus_Overridden = false;
 		public bool heatBias_Overridden = false;
 
 		public string preferredCarUserIds = string.Empty;

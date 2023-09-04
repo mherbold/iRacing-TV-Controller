@@ -7,6 +7,9 @@ namespace iRacingTVController
 {
 	public class NormalizedSession
 	{
+		public const int MaxNumCheckpoints = 3000;
+		public const float CheckpointSpacingInMeters = 5;
+
 		public int sessionID = 0;
 		public int subSessionID = 0;
 
@@ -26,6 +29,14 @@ namespace iRacingTVController
 		public string trackType = string.Empty;
 
 		public string seriesLogoTextureUrl = string.Empty;
+
+		public int numForwardGears = 0;
+
+		public float shiftRpm = 0;
+		public float redlineRpm = 0;
+		public float blinkRpm = 0;
+
+		public int numCheckpoints = MaxNumCheckpoints;
 
 		public NormalizedSession()
 		{
@@ -54,6 +65,12 @@ namespace iRacingTVController
 			trackType = string.Empty;
 
 			seriesLogoTextureUrl = string.Empty;
+
+			shiftRpm = 0;
+			redlineRpm = 0;
+			blinkRpm = 0;
+
+			numCheckpoints = MaxNumCheckpoints;
 		}
 
 		// called only when header session info version number changes
@@ -84,11 +101,19 @@ namespace iRacingTVController
 
 			trackType = IRSDK.session.WeekendInfo.TrackType;
 
-			isDirtTrack = ( trackType.IndexOf( "dirt", StringComparison.OrdinalIgnoreCase ) >= 0 );
+			isDirtTrack = trackType.Contains( "dirt", StringComparison.OrdinalIgnoreCase );
 
 			seriesLogoTextureUrl = $"https://ir-core-sites.iracing.com/members/member_images/series/seriesid_{IRSDK.session.WeekendInfo.SeriesID}/logo.jpg";
 
-			LogFile.Write( $"Session ID:{sessionID}, Subsession ID:{subSessionID}, Session count:{sessionCount}, Is replay?{isReplay}, Track ID:{trackID}, Track length:{trackLengthInMeters}, Track type:{trackType}.\r\n" );
+			numForwardGears = IRSDK.session.DriverInfo.DriverCarGearNumForward;
+
+			shiftRpm = IRSDK.session.DriverInfo.DriverCarSLShiftRPM;
+			redlineRpm = IRSDK.session.DriverInfo.DriverCarRedLine;
+			blinkRpm = IRSDK.session.DriverInfo.DriverCarSLBlinkRPM;
+
+			numCheckpoints = (int) Math.Clamp( Math.Ceiling( trackLengthInMeters / CheckpointSpacingInMeters ), 2, MaxNumCheckpoints );
+
+			LogFile.Write( $"Session ID:{sessionID}, Subsession ID:{subSessionID}, Session count:{sessionCount}, Is replay:{isReplay}, Track ID:{trackID}, Track length:{trackLengthInMeters}m, Track type:{trackType}, Is dirt track:{isDirtTrack}, Num checkpoints:{numCheckpoints}.\r\n" );
 
 			if ( isReplay )
 			{

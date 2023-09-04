@@ -8,10 +8,15 @@ namespace iRacingTVController
 	{
 		public int CarIdx = 0;
 
+		public int Index { get; set; } = 0;
 		public int SessionNumber { get; set; } = 0;
-		public int StartFrame { get; set; } = 0;
-		public int EndFrame { get; set; } = 0;
+		public double StartTime { get; set; } = 0;
+		public double EndTime { get; set; } = 0;
+		public string CarNumber { get; set; } = string.Empty;
 		public string Text { get; set; } = string.Empty;
 		public bool Ignore { get; set; } = false;
+
+		public string StartTimeFormatted { get { return $"{StartTime:0.00}"; } }
+		public string EndTimeFormatted { get { return $"{EndTime:0.00}"; } }
 	}
 }

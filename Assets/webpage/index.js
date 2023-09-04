@@ -1,4 +1,4 @@
-const maxPositionsPerLeaderboard = 63;
+const maxPositionsPerLeaderboard = 64;
 
 var app =
 {

@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Text.Json.Serialization;
+using System.Windows.Media.TextFormatting;
 using System.Xml.Serialization;
 using irsdkSharp.Serialization.Enums.Fastest;
 
@@ -11,13 +12,15 @@ namespace iRacingTVController
 	[Serializable]
 	public class LiveData
 	{
-		public const int MaxNumDrivers = 63;
+		public const int MaxNumDrivers = 64;
 		public const int MaxNumClasses = 8;
 
 		public static LiveData Instance { get; private set; }
 
 		[JsonInclude] public bool isConnected = false;
+		public string systemMessage = string.Empty;
 
+		public LiveDataSteamVr liveDataSteamVr = new();
 		public LiveDataControlPanel liveDataControlPanel = new();
 		public LiveDataDriver[] liveDataDrivers = new LiveDataDriver[ MaxNumDrivers ];
 		[JsonInclude] public LiveDataRaceStatus liveDataRaceStatus = new();
@@ -29,10 +32,16 @@ namespace iRacingTVController
 		public LiveDataStartLights liveDataStartLights = new();
 		[JsonInclude] public LiveDataTrackMap liveDataTrackMap = new();
 		[JsonInclude, XmlIgnore] public LiveDataEventLog liveDataEventLog = new();
+		public LiveDataHud liveDataHud = new();
 
 		public string seriesLogoTextureUrl = string.Empty;
 
 		[NonSerialized] public int[] lastFrameBottomSplitFirstPosition = new int[ MaxNumClasses ];
+
+		[NonSerialized] public float hudGapTimeFront = 0;
+		[NonSerialized] public float hudGapTimeBack = 0;
+
+		[NonSerialized] public float speechToTextTimer = 0;
 
 		static LiveData()
 		{
@@ -53,8 +62,35 @@ namespace iRacingTVController
 		{
 			isConnected = IRSDK.isConnected;
 
+			if ( Controller.currentMode == Controller.Mode.None )
+			{
+				systemMessage = string.Empty;
+			}
+			else
+			{
+				switch ( Controller.currentMode )
+				{
+					case Controller.Mode.Width:
+						systemMessage = "Adjusting SteamVR Overlay Width";
+						break;
+
+					case Controller.Mode.PositionXY:
+						systemMessage = "Adjusting SteamVR Overlay Position (X/Y)";
+						break;
+
+					case Controller.Mode.PositionZ:
+						systemMessage = "Adjusting SteamVR Overlay Position (Z)";
+						break;
+
+					case Controller.Mode.Curvature:
+						systemMessage = "Adjusting SteamVR Overlay Curvature";
+						break;
+				}
+			}
+
 			Settings.UpdateCombinedOverlay();
 
+			UpdateSteamVr();
 			UpdateControlPanel();
 			UpdateDrivers();
 			UpdateRaceStatus();
@@ -66,10 +102,19 @@ namespace iRacingTVController
 			UpdateIntro();
 			UpdateStartLights();
 			UpdateEventLog();
+			UpdateHud();
 
 			seriesLogoTextureUrl = IRSDK.normalizedSession.seriesLogoTextureUrl;
 
 			IPC.readyToSendLiveData = true;
+		}
+
+		public void UpdateSteamVr()
+		{
+			liveDataSteamVr.enabled = Settings.editor.editorSteamVrEnabled;
+			liveDataSteamVr.width = Settings.editor.editorSteamVrWidth;
+			liveDataSteamVr.position = Settings.editor.editorSteamVrPosition;
+			liveDataSteamVr.curvature = Settings.editor.editorSteamVrCurvature;
 		}
 
 		public void UpdateControlPanel()
@@ -82,6 +127,7 @@ namespace iRacingTVController
 			liveDataControlPanel.voiceOfOn = MainWindow.Instance.voiceOfOn;
 			liveDataControlPanel.subtitlesOn = MainWindow.Instance.subtitlesOn;
 			liveDataControlPanel.introOn = MainWindow.Instance.introOn;
+			liveDataControlPanel.hudOn = MainWindow.Instance.hudOn;
 			liveDataControlPanel.customLayerOn = MainWindow.Instance.customLayerOn;
 		}
 
@@ -169,7 +215,7 @@ namespace iRacingTVController
 			}
 			else
 			{
-				liveDataRaceStatus.currentLapText = IRSDK.normalizedData.currentLap.ToString() + " | " + IRSDK.normalizedData.sessionLapsTotal.ToString();
+				liveDataRaceStatus.currentLapText = IRSDK.normalizedData.lapNumber.ToString() + " | " + IRSDK.normalizedData.sessionLapsTotal.ToString();
 			}
 
 			// flags
@@ -389,7 +435,18 @@ namespace iRacingTVController
 
 						liveDataLeaderboardSlot.carNumberText = normalizedCar.carNumber;
 
-						// car number text color not implemented yet
+						// car number text color
+
+						tintColor = Settings.overlay.textSettingsDataDictionary[ "LeaderboardPositionCarNumber" ].tintColor;
+
+						if ( Settings.overlay.leaderboardUseClassColors )
+						{
+							liveDataLeaderboardSlot.carNumberColor = Color.Lerp( tintColor, normalizedCar.classColor, Settings.overlay.leaderboardClassColorStrength );
+						}
+						else
+						{
+							liveDataLeaderboardSlot.carNumberColor = tintColor;
+						}
 
 						// driver name
 
@@ -679,6 +736,7 @@ namespace iRacingTVController
 								liveDataIntroDriver.carIdx = normalizedCar.carIdx;
 								liveDataIntroDriver.positionText = $"P{normalizedCar.displayedPosition}";
 								liveDataIntroDriver.driverNameText = normalizedCar.userName;
+								liveDataIntroDriver.carNumberText = normalizedCar.carNumber;
 
 								if ( normalizedCar.qualifyingTime == -1 )
 								{
@@ -736,6 +794,242 @@ namespace iRacingTVController
 		public void UpdateEventLog()
 		{
 			liveDataEventLog.messages = EventLog.messages;
+		}
+
+		public void UpdateHud()
+		{
+			if ( IRSDK.data == null )
+			{
+				return;
+			}
+
+			// player car
+
+			var normalizedCar = IRSDK.normalizedData.normalizedCars[ IRSDK.data.PlayerCarIdx ];
+
+			// fuel
+
+			liveDataHud.fuel = "?.??";
+			liveDataHud.fuelColor = Settings.overlay.textSettingsDataDictionary[ "HudFuel" ].tintColor;
+
+			if ( IRSDK.normalizedData.highestLapFuelLevelDelta > 0 )
+			{
+				var fuelLapsRemaining = IRSDK.normalizedData.fuelLevel / IRSDK.normalizedData.highestLapFuelLevelDelta;
+
+				liveDataHud.fuel = $"{fuelLapsRemaining:0.00}";
+
+				if ( ( IRSDK.normalizedData.isInTimedRace && ( fuelLapsRemaining <= 2.0f ) ) || ( !IRSDK.normalizedData.isInTimedRace && ( fuelLapsRemaining < IRSDK.normalizedData.sessionLapsRemaining ) ) )
+				{
+					liveDataHud.fuelColor = new Color( 1, 0.25f, 0.25f, 1 );
+				}
+			}
+
+			// laps to leader
+
+			if ( normalizedCar.lapPositionRelativeToClassLeader == 0 )
+			{
+				liveDataHud.lapsToLeader = "-.---";
+			}
+			else
+			{
+				liveDataHud.lapsToLeader = $"{normalizedCar.lapPositionRelativeToClassLeader:0.000}";
+			}
+
+			// rpm
+
+			var steppedRPM = (int) Math.Floor( normalizedCar.rpm / 50 ) * 50;
+
+			liveDataHud.rpm = steppedRPM.ToString();
+			liveDataHud.rpmColor = Settings.overlay.textSettingsDataDictionary[ "HudRPM" ].tintColor;
+
+			if ( normalizedCar.gear < IRSDK.normalizedSession.numForwardGears )
+			{
+				if ( normalizedCar.rpm >= IRSDK.normalizedSession.blinkRpm )
+				{
+					liveDataHud.rpmColor = new Color( 1, 0.2f, 0.2f, 1 );
+				}
+				else if ( normalizedCar.rpm >= IRSDK.normalizedSession.redlineRpm )
+				{
+					liveDataHud.rpmColor = new Color( 1, 1, 0.2f, 1 );
+				}
+				else if ( normalizedCar.rpm >= IRSDK.normalizedSession.shiftRpm )
+				{
+					liveDataHud.rpmColor = new Color( 0.2f, 1, 0.2f, 1 );
+				}
+			}
+
+			// speed
+
+			liveDataHud.speed = $"{Math.Abs( normalizedCar.speedInMetersPerSecond ) * ( IRSDK.normalizedData.displayIsMetric ? 3.6f : 2.23694f ):0}";
+
+			// gear
+
+			if ( normalizedCar.gear == -1 )
+			{
+				liveDataHud.gear = "R";
+			}
+			else if ( normalizedCar.gear == 0 )
+			{
+				liveDataHud.gear = "N";
+			}
+			else
+			{
+				liveDataHud.gear = normalizedCar.gear.ToString();
+			}
+
+			// gap time
+
+			liveDataHud.gapTimeFront = "-.--";
+			liveDataHud.gapTimeFrontColor = Settings.overlay.textSettingsDataDictionary[ "HudGapTimeFront" ].tintColor;
+
+			if ( normalizedCar.normalizedCarInFront != null )
+			{
+				var checkpointTimeHis = normalizedCar.normalizedCarInFront.checkpoints[ normalizedCar.checkpointIdx ];
+				var checkpointTimeMine = normalizedCar.checkpoints[ normalizedCar.checkpointIdx ];
+
+				if ( ( checkpointTimeHis > 0 ) && ( checkpointTimeMine > 0 ) && ( checkpointTimeMine >= checkpointTimeHis ) )
+				{
+					var gapTime = (float) ( checkpointTimeMine - checkpointTimeHis );
+
+					var gapTimeDelta = Math.Abs( gapTime - hudGapTimeFront );
+
+					if ( gapTimeDelta >= 0.5f )
+					{
+						hudGapTimeFront = gapTime;
+					}
+					else
+					{
+						hudGapTimeFront = hudGapTimeFront * 0.95f + gapTime * 0.05f;
+					}
+
+					liveDataHud.gapTimeFront = $"{hudGapTimeFront:0.00}";
+				}
+
+				var deltaLapPositionRelativeToClassLeader = normalizedCar.normalizedCarInFront.lapPositionRelativeToClassLeader - normalizedCar.lapPositionRelativeToClassLeader;
+
+				if ( deltaLapPositionRelativeToClassLeader < 0.5f )
+				{
+					liveDataHud.gapTimeFrontColor = new Color( 1.0f, 0.3f, 0.3f, liveDataHud.gapTimeFrontColor.a );
+				}
+				else if ( deltaLapPositionRelativeToClassLeader > 0.5f )
+				{
+					liveDataHud.gapTimeFrontColor = new Color( 0.4f, 0.4f, 1.0f, liveDataHud.gapTimeFrontColor.a );
+				}
+			}
+
+			liveDataHud.gapTimeBack = "-.--";
+			liveDataHud.gapTimeBackColor = Settings.overlay.textSettingsDataDictionary[ "HudGapTimeBack" ].tintColor;
+
+			if ( normalizedCar.normalizedCarBehind != null )
+			{
+				var checkpointTimeMine = normalizedCar.checkpoints[ normalizedCar.normalizedCarBehind.checkpointIdx ];
+				var checkpointTimeHis = normalizedCar.normalizedCarBehind.checkpoints[ normalizedCar.normalizedCarBehind.checkpointIdx ];
+
+				if ( ( checkpointTimeHis > 0 ) && ( checkpointTimeMine > 0 ) && ( checkpointTimeHis >= checkpointTimeMine ) )
+				{
+					var gapTime = (float) ( checkpointTimeHis - checkpointTimeMine );
+
+					var gapTimeDelta = Math.Abs( gapTime - hudGapTimeBack );
+
+					if ( gapTimeDelta >= 0.5f )
+					{
+						hudGapTimeBack = gapTime;
+					}
+					else
+					{
+						hudGapTimeBack = hudGapTimeBack * 0.95f + gapTime * 0.05f;
+					}
+
+					liveDataHud.gapTimeBack = $"{hudGapTimeBack:0.00}";
+				}
+
+				var deltaLapPositionRelativeToClassLeader = normalizedCar.normalizedCarBehind.lapPositionRelativeToClassLeader - normalizedCar.lapPositionRelativeToClassLeader;
+
+				if ( deltaLapPositionRelativeToClassLeader < 0.5f )
+				{
+					liveDataHud.gapTimeBackColor = new Color( 1.0f, 0.3f, 0.3f, liveDataHud.gapTimeFrontColor.a );
+				}
+				else if ( deltaLapPositionRelativeToClassLeader > 0.5f )
+				{
+					liveDataHud.gapTimeBackColor = new Color( 0.4f, 0.4f, 1.0f, liveDataHud.gapTimeFrontColor.a );
+				}
+			}
+
+			// speech to text
+
+			var recognizedString = SpeechToText.GetRecognizingString();
+
+			if ( recognizedString == string.Empty )
+			{
+				if ( speechToTextTimer > 0 )
+				{
+					speechToTextTimer -= Program.deltaTime;
+
+					if ( speechToTextTimer <= 0.0f )
+					{
+						speechToTextTimer = 0;
+
+						liveDataHud.speechToText = string.Empty;
+					}
+				}
+			}
+			else
+			{
+				liveDataHud.speechToText = recognizedString;
+
+				speechToTextTimer = 15.0f;
+			}
+
+			// spotter indicators
+
+			var carsLeft = 0;
+			var carsRight = 0;
+
+			switch ( (CarLeftRight) IRSDK.data.CarLeftRight )
+			{
+				case CarLeftRight.LRCarLeft:
+					carsLeft = 1;
+					break;
+				case CarLeftRight.LR2CarsLeft:
+					carsLeft = 2;
+					break;
+				case CarLeftRight.LRCarRight:
+					carsRight = 1;
+					break;
+				case CarLeftRight.LR2CarsRight:
+					carsRight = 2;
+					break;
+				case CarLeftRight.LRCarLeftRight:
+					carsLeft = 2;
+					carsRight = 2;
+					break;
+			}
+
+			if ( carsLeft == 1 )
+			{
+				liveDataHud.showLeftSpotterIndicator = true;
+			}
+			else if ( carsLeft == 2 )
+			{
+				liveDataHud.showLeftSpotterIndicator = ( Program.elapsedMilliseconds % 250 ) >= 100;
+			}
+			else
+			{
+				liveDataHud.showLeftSpotterIndicator = false;
+			}
+
+			if ( carsRight == 1 )
+			{
+				liveDataHud.showRightSpotterIndicator = true;
+			}
+			else if ( carsRight == 2 )
+			{
+				liveDataHud.showRightSpotterIndicator = ( Program.elapsedMilliseconds % 250 ) >= 100;
+			}
+			else
+			{
+				liveDataHud.showRightSpotterIndicator = false;
+			}
 		}
 	}
 }

@@ -59,7 +59,7 @@ namespace iRacingTVController
 				{
 					Settings.overlayLocal.translationDictionary[ id ].translation_Overridden = value;
 
-					MainWindow.Instance.InitializeOverlayTranslation();
+					MainWindow.Instance.UpdateOverlayTranslation();
 
 					IPC.readyToSendSettings = true;
 

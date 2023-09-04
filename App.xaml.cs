@@ -12,6 +12,9 @@ namespace iRacingTVController
 
 		void AppStartup( object sender, StartupEventArgs e )
 		{
+			Program.Initialize();
+
+			iRacingTVController.MainWindow.Instance.Initialize();
 			iRacingTVController.MainWindow.Instance.Show();
 		}
 	}

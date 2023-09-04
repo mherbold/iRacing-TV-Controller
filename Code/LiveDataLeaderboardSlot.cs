@@ -19,7 +19,7 @@ namespace iRacingTVController
 		public Color positionColor = Color.white;
 
 		[JsonInclude] public string carNumberText = string.Empty;
-		public Color carNumberTextColor = Color.white;
+		public Color carNumberColor = Color.white;
 
 		[JsonInclude] public string driverNameText = string.Empty;
 		public Color driverNameColor = Color.white;

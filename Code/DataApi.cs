@@ -28,7 +28,7 @@ namespace iRacingTVController
 
 			if ( ( Settings.editor.iracingAccountUsername != string.Empty ) && ( Settings.editor.iracingAccountPassword != string.Empty ) )
 			{
-				LogFile.Write( $"Connecting to iRacing data API...\r\n" );
+				LogFile.Write( "Connecting to iRacing data API...\r\n" );
 
 				var serviceCollection = new ServiceCollection();
 

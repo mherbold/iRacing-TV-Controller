@@ -30,6 +30,12 @@ namespace iRacingTVController
 
 		public bool[] fontNames_Overridden = new bool[ MaxNumFonts ];
 
+		public bool startLightsEnabled = true;
+		public Vector2 startLightsPosition = new( 903, 130 );
+
+		public bool startLightsEnabled_Overridden = false;
+		public bool startLightsPosition_Overridden = false;
+
 		public bool raceStatusEnabled = true;
 		public Vector2 raceStatusPosition = new( 44, 9 );
 
@@ -61,7 +67,7 @@ namespace iRacingTVController
 		public Vector2 trackMapSize = new( 440, 440 );
 		public string trackMapTextureFilePath = Settings.GetRelativePath( Program.documentsFolder + "Assets\\default\\track-map-road.png" );
 		public float trackMapLineThickness = 0.025f;
-		public Color trackMapLineColor = new( 0.485f, 0.485f, 0.485f, 1.0f );
+		public Color trackMapLineColor = new( 1.0f, 1.0f, 1.0f, 0.5f );
 		public int trackMapStartFinishOffset = 0;
 
 		public bool trackMapEnabled_Overridden = false;
@@ -82,13 +88,11 @@ namespace iRacingTVController
 		public bool subtitleEnabled = true;
 		public Vector2 subtitlePosition = new( 1089, 918 );
 		public Vector2 subtitleMaxSize = new( 1250, 190 );
-		public Color subtitleBackgroundColor = new( 0, 0, 0, 0.9f );
-		public Vector2Int subtitleTextPadding = new( 12, 6 );
+		public Vector2Int subtitleTextPadding = new( 24, 12 );
 
 		public bool subtitleEnabled_Overridden = false;
 		public bool subtitlePosition_Overridden = false;
 		public bool subtitleMaxSize_Overridden = false;
-		public bool subtitleBackgroundColor_Overridden = false;
 		public bool subtitleTextPadding_Overridden = false;
 
 		public bool carNumberOverrideEnabled = false;
@@ -109,14 +113,12 @@ namespace iRacingTVController
 		public Color telemetryOutColor = new( 0.875f, 0.125f, 0.125f, 1 );
 		public bool telemetryIsBetweenCars = true;
 		public int telemetryMode = 2;
-		public int telemetryNumberOfCheckpoints = 150;
 		public bool telemetryShowAsNegativeNumbers = true;
 
 		public bool telemetryPitColor_Overridden = false;
 		public bool telemetryOutColor_Overridden = false;
 		public bool telemetryIsBetweenCars_Overridden = false;
 		public bool telemetryMode_Overridden = false;
-		public bool telemetryNumberOfCheckpoints_Overridden = false;
 		public bool telemetryShowAsNegativeNumbers_Overridden = false;
 
 		public bool introEnabled = true;
@@ -148,11 +150,17 @@ namespace iRacingTVController
 		public bool introHoldTime_Overridden = false;
 		public bool introOutTime_Overridden = false;
 
-		public bool startLightsEnabled = true;
-		public Vector2 startLightsPosition = new( 903, 130 );
+		public bool hudEnabled = false;
+		public Vector2 hudPosition = new( 620, 250 );
+		public Vector2 hudSpeechToTextPosition = new( 340, -100 );
+		public Vector2 hudSpeechToTextMaxSize = new( 1250, 190 );
+		public Vector2Int hudSpeechToTextTextPadding = new( 24, 12 );
 
-		public bool startLightsEnabled_Overridden = false;
-		public bool startLightsPosition_Overridden = false;
+		public bool hudEnabled_Overridden = false;
+		public bool hudPosition_Overridden = false;
+		public bool hudSpeechToTextPosition_Overridden = false;
+		public bool hudSpeechToTextMaxSize_Overridden = false;
+		public bool hudSpeechToTextTextPadding_Overridden = false;
 
 		public SerializableDictionary<string, SettingsText> textSettingsDataDictionary = new();
 		public SerializableDictionary<string, SettingsImage> imageSettingsDataDictionary = new();

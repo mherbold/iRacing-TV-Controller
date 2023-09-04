@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.31"
+        Title="iRacing-TV Controller v1.32"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="900" Height="700" MinWidth="900" MinHeight="700" Icon="/Assets/icon/iracing-tv.ico">
     <Grid>
@@ -186,6 +186,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="35"/>
                             <ColumnDefinition Width="35"/>
                             <ColumnDefinition Width="35"/>
@@ -193,20 +194,21 @@
                             <ColumnDefinition Width="35"/>
                             <ColumnDefinition Width="35"/>
                         </Grid.ColumnDefinitions>
-                        <ToggleButton x:Name="ControlPanel_Master_Button" Content="MASTER" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" />
-                        <ToggleButton x:Name="ControlPanel_RaceStatus_Button" Content="Race Status" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="1" />
-                        <ToggleButton x:Name="ControlPanel_Leaderboard_Button" Content="Leaderboard" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="2" />
-                        <ToggleButton x:Name="ControlPanel_TrackMap_Button" Content="Track Map" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="3" />
-                        <ToggleButton x:Name="ControlPanel_StartLights_Button" Content="Start Lights" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="4" />
-                        <ToggleButton x:Name="ControlPanel_VoiceOf_Button" Content="Voice Of" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="5" />
-                        <ToggleButton x:Name="ControlPanel_Subtitles_Button" Content="Subtitles" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="6" />
-                        <ToggleButton x:Name="ControlPanel_Intro_Button" Content="Intro" Height="25" Padding="3,0,3,0" Margin="0,0,6,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="7" />
-                        <ToggleButton x:Name="ControlPanel_C1_Button" Content="C1" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="8" />
-                        <ToggleButton x:Name="ControlPanel_C2_Button" Content="C2" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="9" />
-                        <ToggleButton x:Name="ControlPanel_C3_Button" Content="C3" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="10" />
-                        <ToggleButton x:Name="ControlPanel_C4_Button" Content="C4" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="11" />
-                        <ToggleButton x:Name="ControlPanel_C5_Button" Content="C5" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="12" />
-                        <ToggleButton x:Name="ControlPanel_C6_Button" Content="C6" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="13" />
+                        <ToggleButton x:Name="ControlPanel_Master_Button" Content="MASTER" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" FontSize="10" />
+                        <ToggleButton x:Name="ControlPanel_RaceStatus_Button" Content="Race Status" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="1" FontSize="10" />
+                        <ToggleButton x:Name="ControlPanel_Leaderboard_Button" Content="Leaderboard" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="2" FontSize="10" />
+                        <ToggleButton x:Name="ControlPanel_TrackMap_Button" Content="Track Map" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="3" FontSize="10" />
+                        <ToggleButton x:Name="ControlPanel_StartLights_Button" Content="Start Lights" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="4" FontSize="10" />
+                        <ToggleButton x:Name="ControlPanel_VoiceOf_Button" Content="Voice Of" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="5" FontSize="10" />
+                        <ToggleButton x:Name="ControlPanel_Subtitles_Button" Content="Subtitles" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="6" FontSize="10" />
+                        <ToggleButton x:Name="ControlPanel_Intro_Button" Content="Intro" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="7" FontSize="10" />
+                        <ToggleButton x:Name="ControlPanel_Hud_Button" Content="HUD" Height="25" Padding="3,0,3,0" Margin="0,0,6,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="8" FontSize="10" />
+                        <ToggleButton x:Name="ControlPanel_C1_Button" Content="C1" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="9" FontSize="10" />
+                        <ToggleButton x:Name="ControlPanel_C2_Button" Content="C2" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="10" FontSize="10" />
+                        <ToggleButton x:Name="ControlPanel_C3_Button" Content="C3" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="11" FontSize="10" />
+                        <ToggleButton x:Name="ControlPanel_C4_Button" Content="C4" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="12" FontSize="10" />
+                        <ToggleButton x:Name="ControlPanel_C5_Button" Content="C5" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="13" FontSize="10" />
+                        <ToggleButton x:Name="ControlPanel_C6_Button" Content="C6" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="14" FontSize="10" />
                     </Grid>
                 </Grid>
             </TabItem>
@@ -374,25 +376,32 @@
                                     <GridViewColumn Header="SN" Width="50">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Label Content="{Binding SessionNumber}"/>
+                                                <Label Content="{Binding SessionNumber}" HorizontalAlignment="Center"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
                                     <GridViewColumn Header="Start" Width="100">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Label Content="{Binding StartFrame}"/>
+                                                <Label Content="{Binding StartTimeFormatted}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
                                     <GridViewColumn Header="End" Width="100">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Label Content="{Binding EndFrame}"/>
+                                                <Label Content="{Binding EndTimeFormatted}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Text" Width="390">
+                                    <GridViewColumn Header="Car #" Width="50">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Label Content="{Binding CarNumber}" HorizontalAlignment="Center"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Text" Width="340">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox Text="{Binding Text}" TextChanged="Subtitles_Text_TextChanged"/>
@@ -712,10 +721,10 @@
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Label Content="Car Length"/>
-                                        <local:Decimal x:Name="Director_Heat_CarLength" ValueChanged="Director_Update" Grid.Column="1" />
-                                        <Label Content="Meters" Grid.Column="2"/>
-                                        <CheckBox x:Name="Director_Heat_CarLength_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        <Label Content="Max Gap Time"/>
+                                        <local:Decimal x:Name="Director_Heat_MaxGapTime" ValueChanged="Director_Update" Grid.Column="1" />
+                                        <Label Content="Seconds" Grid.Column="2"/>
+                                        <CheckBox x:Name="Director_Heat_MaxGapTime_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
@@ -724,10 +733,10 @@
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Label Content="Falloff"/>
-                                        <local:Decimal x:Name="Director_Heat_Falloff" ValueChanged="Director_Update" Grid.Column="1" />
-                                        <Label Content="Meters" Grid.Column="2"/>
-                                        <CheckBox x:Name="Director_Heat_Falloff_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        <Label Content="Overtake Bonus"/>
+                                        <local:Decimal x:Name="Director_Heat_OvertakeBonus" ValueChanged="Director_Update" Grid.Column="1" />
+                                        <Label Content="Multiplier" Grid.Column="2"/>
+                                        <CheckBox x:Name="Director_Heat_OvertakeBonus_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
@@ -739,7 +748,7 @@
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Bias"/>
                                         <Label Content="Back" Grid.Column="1"/>
-                                        <Slider x:Name="Director_Heat_Bias" Grid.Column="2" VerticalAlignment="Center" LargeChange="0.2" Maximum="2" Minimum="-2" ValueChanged="Director_Update" TickFrequency="0.1"/>
+                                        <Slider x:Name="Director_Heat_Bias" Grid.Column="2" VerticalAlignment="Center" LargeChange="0.05" Maximum="0.5" Minimum="-0.5" ValueChanged="Director_Update" TickFrequency="0.05"/>
                                         <Label Content="Front" Grid.Column="3"/>
                                         <CheckBox x:Name="Director_Heat_Bias_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="4" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
@@ -1478,7 +1487,7 @@
                                             <ColumnDefinition Width="80"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Max Count"/>
-                                        <Slider x:Name="Overlay_Leaderboard_SlotCount" Grid.Column="1" VerticalAlignment="Center" SmallChange="1" LargeChange="4" Maximum="63" Minimum="1" ValueChanged="Overlay_Leaderboard_Update" TickPlacement="TopLeft"/>
+                                        <Slider x:Name="Overlay_Leaderboard_SlotCount" Grid.Column="1" VerticalAlignment="Center" SmallChange="1" LargeChange="4" Maximum="64" Minimum="1" ValueChanged="Overlay_Leaderboard_Update" TickPlacement="TopLeft"/>
                                         <CheckBox x:Name="Overlay_Leaderboard_SlotCount_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Leaderboard_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
@@ -1737,32 +1746,6 @@
                                             <ColumnDefinition Width="25"/>
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="25"/>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="25"/>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="25"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Panel Color"/>
-                                        <local:Decimal x:Name="Overlay_Subtitle_BackgroundColor_R" ValueChanged="Overlay_Subtitle_Update" Grid.Column="1" />
-                                        <Label Content="R" HorizontalContentAlignment="Center" Grid.Column="2"/>
-                                        <local:Decimal x:Name="Overlay_Subtitle_BackgroundColor_G" ValueChanged="Overlay_Subtitle_Update" Grid.Column="3" />
-                                        <Label Content="G" HorizontalContentAlignment="Center" Grid.Column="4"/>
-                                        <local:Decimal x:Name="Overlay_Subtitle_BackgroundColor_B" ValueChanged="Overlay_Subtitle_Update" Grid.Column="5" />
-                                        <Label Content="B" HorizontalContentAlignment="Center" Grid.Column="6"/>
-                                        <local:Decimal x:Name="Overlay_Subtitle_BackgroundColor_A" ValueChanged="Overlay_Subtitle_Update" Grid.Column="7" />
-                                        <Label Content="A" HorizontalContentAlignment="Center" Grid.Column="8"/>
-                                        <Button x:Name="Overlay_Subtitle_BackgroundColor_Palette" Padding="6,0,6,0" Content="🎨" Grid.Column="9" Margin="6,0,0,0" Click="Overlay_Subtitle_OverlayBackgroundColor_Palette_Click" />
-                                        <CheckBox x:Name="Overlay_Subtitle_BackgroundColor_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Subtitle_Update" Grid.Column="10" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
-                                    <Grid Margin="0,6,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="25"/>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="25"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Text Padding"/>
@@ -1964,16 +1947,6 @@
                                         <CheckBox x:Name="Overlay_Telemetry_IsInBetweenCars" VerticalAlignment="Center" Click="Overlay_Telemetry_Update" Grid.Column="1" Content="To Car in Front Instead of to Leader" />
                                         <CheckBox x:Name="Overlay_Telemetry_IsInBetweenCars_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Telemetry_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
-                                    <Grid Margin="0,6,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="80"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Checkpoints"/>
-                                        <Slider x:Name="Overlay_Telemetry_NumberOfCheckpoints" Grid.Column="1" VerticalAlignment="Center" SmallChange="1" LargeChange="10" Maximum="300" Minimum="2" ValueChanged="Overlay_Telemetry_Update" TickPlacement="TopLeft"/>
-                                        <CheckBox x:Name="Overlay_Telemetry_NumberOfCheckpoints_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Telemetry_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
-                                    </Grid>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
@@ -2137,6 +2110,84 @@
                                         <Label Content="Out Time"/>
                                         <local:Decimal x:Name="Overlay_Intro_OutTime" ValueChanged="Overlay_Intro_Update" Grid.Column="1" />
                                         <CheckBox x:Name="Overlay_Intro_OutTime_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Intro_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="HUD" Padding="12,6,12,6">
+                                <StackPanel Margin="6,6,6,6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Enable"/>
+                                        <CheckBox x:Name="Overlay_Hud_Enable" VerticalAlignment="Center" Click="Overlay_Hud_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Overlay_Hud_Enable_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Hud_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Position"/>
+                                        <local:Number x:Name="Overlay_Hud_Position_X" ValueChanged="Overlay_Hud_Update" Grid.Column="1" />
+                                        <Label Content="X" HorizontalContentAlignment="Center" Grid.Column="2" />
+                                        <local:Number x:Name="Overlay_Hud_Position_Y" ValueChanged="Overlay_Hud_Update" Grid.Column="3" />
+                                        <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
+                                        <CheckBox x:Name="Overlay_Hud_Position_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Hud_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="STT Position"/>
+                                        <local:Number x:Name="Overlay_Hud_SpeechToTextPosition_X" ValueChanged="Overlay_Hud_Update" Grid.Column="1" />
+                                        <Label Content="X" HorizontalContentAlignment="Center" Grid.Column="2" />
+                                        <local:Number x:Name="Overlay_Hud_SpeechToTextPosition_Y" ValueChanged="Overlay_Hud_Update" Grid.Column="3" />
+                                        <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
+                                        <CheckBox x:Name="Overlay_Hud_SpeechToTextPosition_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Hud_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="STT Max Size"/>
+                                        <local:Number x:Name="Overlay_Hud_SpeechToTextMaxSize_W" ValueChanged="Overlay_Hud_Update" Grid.Column="1" />
+                                        <Label Content="W" HorizontalContentAlignment="Center" Grid.Column="2" />
+                                        <local:Number x:Name="Overlay_Hud_SpeechToTextMaxSize_H" ValueChanged="Overlay_Hud_Update" Grid.Column="3" />
+                                        <Label Content="H" HorizontalContentAlignment="Center" Grid.Column="4" />
+                                        <CheckBox x:Name="Overlay_Hud_SpeechToTextMaxSize_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Hud_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="STT Text Padding"/>
+                                        <local:Number x:Name="Overlay_Hud_SpeechToTextTextPadding_X" ValueChanged="Overlay_Hud_Update" Grid.Column="1" />
+                                        <Label Content="X" HorizontalContentAlignment="Center" Grid.Column="2" />
+                                        <local:Number x:Name="Overlay_Hud_SpeechToTextTextPadding_Y" ValueChanged="Overlay_Hud_Update" Grid.Column="3" />
+                                        <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
+                                        <CheckBox x:Name="Overlay_Hud_SpeechToTextTextPadding_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Hud_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                 </StackPanel>
                             </TabItem>
@@ -2319,6 +2370,76 @@
                                 <Label Content="Timeout" Width="100"/>
                                 <local:Decimal x:Name="Editor_Incidents_Timeout" Width="100" ValueChanged="Editor_Update" />
                                 <Label Content="Seconds"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="SteamVR" Padding="12,6,12,6">
+                        <StackPanel Margin="6,6,6,6">
+                            <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                                <Label Content="Enable" Width="100"/>
+                                <CheckBox x:Name="Editor_SteamVr_Enabled" VerticalAlignment="Center" Click="Editor_Update" />
+                            </StackPanel>
+                            <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                                <Label Content="Controller" Width="100"/>
+                                <ComboBox x:Name="Editor_SteamVr_ControllerOption" VerticalContentAlignment="Center" SelectionChanged="Editor_Update" />
+                            </StackPanel>
+                            <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                                <Label Content="Width" Width="100"/>
+                                <local:Decimal x:Name="Editor_SteamVr_Width" ValueChanged="Editor_Update" Width="100"/>
+                                <Label Content="Meters"/>
+                            </StackPanel>
+                            <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                                <Label Content="Position" Width="100"/>
+                                <local:Decimal x:Name="Editor_SteamVr_Position_X" ValueChanged="Editor_Update" Width="100"/>
+                                <Label Content="X" HorizontalContentAlignment="Center" Width="25"/>
+                                <local:Decimal x:Name="Editor_SteamVr_Position_Y" ValueChanged="Editor_Update" Width="100" />
+                                <Label Content="Y" HorizontalContentAlignment="Center" Width="25"/>
+                                <local:Decimal x:Name="Editor_SteamVr_Position_Z" ValueChanged="Editor_Update" Width="100" />
+                                <Label Content="Z" HorizontalContentAlignment="Center" Width="25"/>
+                            </StackPanel>
+                            <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                                <Label Content="Curvature" Width="100"/>
+                                <local:Decimal x:Name="Editor_SteamVr_Curvature" ValueChanged="Editor_Update" Width="100"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="Speech to Text" Padding="12,6,12,6">
+                        <StackPanel Margin="6,6,6,6">
+                            <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                                <Label Content="Enable" Width="100"/>
+                                <CheckBox x:Name="Editor_SpeechToText_Enabled" VerticalAlignment="Center" Click="Editor_Update" />
+                            </StackPanel>
+                            <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                                <Label Content="Audio Device" Width="100"/>
+                                <ComboBox x:Name="Editor_SpeechToText_AudioCaptureDeviceOption" VerticalContentAlignment="Center" SelectionChanged="Editor_Update" />
+                            </StackPanel>
+                            <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                                <Label Content="Key" Width="100"/>
+                                <TextBox x:Name="Editor_SpeechToText_CognitiveServicesKey" Width="300" Height="25" Padding="3,0,3,0"  VerticalContentAlignment="Center" TextChanged="Editor_Update" />
+                            </StackPanel>
+                            <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                                <Label Content="Region" Width="100"/>
+                                <TextBox x:Name="Editor_SpeechToText_CognitiveServicesRegion" Width="100" Height="25" Padding="3,0,3,0"  VerticalContentAlignment="Center" TextChanged="Editor_Update" />
+                            </StackPanel>
+                            <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                                <Label Content="Language" Width="100"/>
+                                <TextBox x:Name="Editor_SpeechToText_Language" Width="100" Height="25" Padding="3,0,3,0"  VerticalContentAlignment="Center" TextChanged="Editor_Update" />
+                            </StackPanel>
+                            <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                                <Label Content="Potato Filter" Width="100"/>
+                                <CheckBox x:Name="Editor_SpeechToText_PotatoFilterEnabled" VerticalAlignment="Center" Click="Editor_Update" />
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="Push To Talk" Padding="12,6,12,6">
+                        <StackPanel Margin="6,6,6,6">
+                            <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                                <Label Content="Enable Mute" Width="100"/>
+                                <CheckBox x:Name="Editor_PushToTalk_MuteEnabled" VerticalAlignment="Center" Click="Editor_Update" />
+                            </StackPanel>
+                            <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                                <Label Content="Audio Device" Width="100"/>
+                                <ComboBox x:Name="Editor_PushToTalk_AudioRenderDeviceOption" VerticalContentAlignment="Center" SelectionChanged="Editor_Update" />
                             </StackPanel>
                         </StackPanel>
                     </TabItem>

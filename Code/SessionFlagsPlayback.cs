@@ -38,7 +38,7 @@ namespace iRacingTVController
 					break;
 				}
 
-				if ( IRSDK.normalizedSession.sessionNumber == sessionFlagsData.SessionNumber )
+				if ( sessionFlagsData.SessionNumber == IRSDK.normalizedSession.sessionNumber )
 				{
 					if ( sessionFlagsData.SessionTime > IRSDK.normalizedData.sessionTime )
 					{
@@ -81,7 +81,6 @@ namespace iRacingTVController
 			else
 			{
 				filePath = string.Empty;
-
 				saveToFileQueued = false;
 
 				sessionFlagsDataList.Clear();

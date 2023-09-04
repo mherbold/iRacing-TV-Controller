@@ -91,12 +91,73 @@ namespace iRacingTVController
 						messages.Add( liveDataEventLogMessage );
 					}
 				}
+
+				foreach ( var normalizedCar in IRSDK.normalizedData.normalizedCars )
+				{
+					if ( !normalizedCar.includeInLeaderboard )
+					{
+						continue;
+					}
+
+					if ( ( normalizedCar.sessionFlags & (uint) sessionFlag ) != ( normalizedCar.sessionFlagsLastFrame & (uint) sessionFlag ) )
+					{
+						string? text = null;
+
+						var raised = ( normalizedCar.sessionFlags & (uint) sessionFlag ) != 0;
+
+						switch ( sessionFlag )
+						{
+							case SessionFlags.Black:
+								text = raised ? "Got a black flag" : "Cleared a black flag";
+								break;
+							case SessionFlags.Disqualify:
+								text = raised ? "Got disqualified" : "Cleared disqualification";
+								break;
+							case SessionFlags.Furled:
+								text = raised ? "Got a furled black flag" : "Cleared a furled black flag";
+								break;
+							case SessionFlags.Repair:
+								text = raised ? "Got meatball flag" : "Cleared meatball flag";
+								break;
+						}
+
+						if ( text != null )
+						{
+							var liveDataEventLogMessage = new LiveDataEventLogMessage()
+							{
+								sessionTime = sessionTime,
+								carNumber = normalizedCar.carNumber,
+								driverName = normalizedCar.abbrevName,
+								position = $"P{normalizedCar.displayedPosition}",
+								type = "Black Flag",
+								text = text
+							};
+
+							messages.Add( liveDataEventLogMessage );
+						}
+					}
+				}
 			}
 
 			foreach ( var normalizedCar in IRSDK.normalizedData.normalizedCars )
 			{
 				if ( !normalizedCar.includeInLeaderboard )
 				{
+					if ( normalizedCar.isPaceCar && ( normalizedCar.isOnPitRoad != normalizedCar.wasOnPitRoad ) )
+					{
+						var liveDataEventLogMessage = new LiveDataEventLogMessage()
+						{
+							sessionTime = sessionTime,
+							carNumber = string.Empty,
+							driverName = normalizedCar.abbrevName,
+							position = string.Empty,
+							type = "Pace Car",
+							text = normalizedCar.isOnPitRoad ? "Entered pit road" : "Left pit road"
+						};
+
+						messages.Add( liveDataEventLogMessage );
+					}
+
 					continue;
 				}
 

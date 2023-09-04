@@ -15,8 +15,6 @@ namespace iRacingTVController
 {
 	public class NormalizedCar
 	{
-		public const int MAX_NUM_CHECKPOINTS = 300;
-
 		public int carIdx = 0;
 		public int driverIdx = -1;
 
@@ -45,6 +43,7 @@ namespace iRacingTVController
 		public float outOfCarTimer = 0;
 
 		public int leaderboardIndex = 0;
+		public int leaderboardClassIndex = 0;
 
 		public int overallPosition = 0;
 		public int classPosition = 0;
@@ -66,11 +65,17 @@ namespace iRacingTVController
 
 		public float checkpointTime = 0;
 		public int checkpointIdx = 0;
-		public double[] checkpoints = new double[ MAX_NUM_CHECKPOINTS ];
+		public int checkpointIdxLastFrame = 0;
+		public double[] checkpoints = new double[ NormalizedSession.MaxNumCheckpoints ];
 
-		public float attackingHeat = 0;
-		public float defendingHeat = 0;
+		public float heat = 0;
+		public float heatBonus = 0;
 		public float heatBias = 0;
+		public float heatTotal = 0;
+		public float heatGapTime = 0;
+
+		public NormalizedCar? normalizedCarInFront = null;
+		public NormalizedCar? normalizedCarBehind = null;
 
 		public float distanceToCarInFrontInMeters = 0;
 		public float distanceToCarBehindInMeters = 0;
@@ -86,10 +91,16 @@ namespace iRacingTVController
 		public bool wasVisibleOnLeaderboard = false;
 		public Vector2 leaderboardSlotOffset = Vector2.zero;
 
+		public uint sessionFlags = 0;
+		public uint sessionFlagsLastFrame = 0;
+
 		public int currentIncidentPoints = 0;
 		public int previousIncidentPoints = 0;
 		public int activeIncidentPoints = 0;
 		public float activeIncidentTimer = 0;
+
+		public int gear;
+		public float rpm;
 
 		public NormalizedCar( int carIdx )
 		{
@@ -127,6 +138,7 @@ namespace iRacingTVController
 			isSpectator = false;
 
 			leaderboardIndex = 0;
+			leaderboardClassIndex = 0;
 
 			overallPosition = 0;
 			classPosition = 0;
@@ -144,11 +156,18 @@ namespace iRacingTVController
 			lapPosition = 0;
 			lapDistPctRelativeToLeader = 0;
 
-			checkpointIdx = -1;
+			checkpointIdx = 0;
+			checkpointIdxLastFrame = 0;
 			checkpointTime = 0;
 
-			attackingHeat = 0;
-			defendingHeat = 0;
+			heat = 0;
+			heatBonus = 0;
+			heatBias = 0;
+			heatTotal = 0;
+			heatGapTime = 0;
+
+			normalizedCarInFront = null;
+			normalizedCarBehind = null;
 
 			distanceToCarInFrontInMeters = float.MaxValue;
 			distanceToCarBehindInMeters = float.MaxValue;
@@ -162,10 +181,16 @@ namespace iRacingTVController
 			wasVisibleOnLeaderboard = false;
 			leaderboardSlotOffset = Vector2.zero;
 
+			sessionFlags = 0;
+			sessionFlagsLastFrame = 0;
+
 			currentIncidentPoints = 0;
 			previousIncidentPoints = 0;
 			activeIncidentPoints = 0;
 			activeIncidentTimer = 0;
+
+			gear = 0;
+			rpm = 0;
 
 			for ( var i = 0; i < checkpoints.Length; i++ )
 			{
@@ -191,6 +216,7 @@ namespace iRacingTVController
 			wasOutOfCar = isOutOfCar;
 
 			leaderboardIndex = 0;
+			leaderboardClassIndex = 0;
 
 			overallPosition = 0;
 			classPosition = 0;
@@ -206,11 +232,15 @@ namespace iRacingTVController
 			lapPosition = 0;
 			lapDistPctRelativeToLeader = 0;
 
-			checkpointIdx = -1;
+			checkpointIdx = 0;
+			checkpointIdxLastFrame = 0;
 			checkpointTime = 0;
 
-			attackingHeat = 0;
-			defendingHeat = 0;
+			heat = 0;
+			heatBonus = 0;
+			heatBias = 0;
+			heatTotal = 0;
+			heatGapTime = 0;
 
 			distanceToCarInFrontInMeters = 0;
 			distanceToCarBehindInMeters = 0;
@@ -220,6 +250,9 @@ namespace iRacingTVController
 
 			wasVisibleOnLeaderboard = false;
 			leaderboardSlotOffset = Vector2.zero;
+
+			sessionFlags = 0;
+			sessionFlagsLastFrame = 0;
 
 			if ( driverIdx != -1 )
 			{
@@ -236,13 +269,16 @@ namespace iRacingTVController
 			activeIncidentPoints = 0;
 			activeIncidentTimer = 0;
 
+			gear = 0;
+			rpm = 0;
+
 			for ( var i = 0; i < checkpoints.Length; i++ )
 			{
 				checkpoints[ i ] = 0;
 			}
 		}
 
-		public void SessionUpdate( bool forceUpdate = false )
+		public void SessionUpdate()
 		{
 			if ( IRSDK.session == null )
 			{
@@ -251,142 +287,142 @@ namespace iRacingTVController
 
 			DriverModel? driver = null;
 
-			if ( ( driverIdx == -1 ) || forceUpdate )
+			includeInLeaderboard = false;
+
+			var driverFound = false;
+
+			for ( var driverIdx = 0; driverIdx < IRSDK.session.DriverInfo.Drivers.Count; driverIdx++ )
 			{
-				includeInLeaderboard = false;
+				driver = IRSDK.session.DriverInfo.Drivers[ driverIdx ];
 
-				for ( var driverIdx = 0; driverIdx < IRSDK.session.DriverInfo.Drivers.Count; driverIdx++ )
+				if ( driver.CarIdx == carIdx )
 				{
-					driver = IRSDK.session.DriverInfo.Drivers[ driverIdx ];
+					this.driverIdx = driverIdx;
 
-					if ( driver.CarIdx == carIdx )
-					{
-						this.driverIdx = driverIdx;
-						break;
-					}
-				}
+					driverFound = true;
 
-				if ( ( driver != null ) && ( driverIdx != -1 ) )
-				{
-					userId = driver.UserID;
-
-					userName = Regex.Replace( driver.UserName, @"[\d]", string.Empty );
-
-					isPaceCar = driver.CarIsPaceCar == 1;
-					isSpectator = driver.IsSpectator == 1;
-
-					if ( isPaceCar )
-					{
-						abbrevName = driver.UserName;
-					}
-					else
-					{
-						GenerateAbbrevName( false );
-					}
-
-					carNumber = driver.CarNumber;
-					carNumberRaw = driver.CarNumberRaw;
-
-					classID = driver.CarClassID;
-					classColor = new Color( driver.CarClassColor[ 2.. ] );
-					carClass = DataApi.GetCarClass( classID );
-
-					includeInLeaderboard = !isSpectator && !isPaceCar;
-
-					if ( includeInLeaderboard )
-					{
-						var numberDesignMatch = Regex.Match( driver.CarNumberDesignStr, @"(\d+),(\d+),(.{6}),(.{6}),(.{6})" );
-
-						if ( numberDesignMatch.Success )
-						{
-							var colorA = numberDesignMatch.Groups[ 3 ].Value;
-							var colorB = numberDesignMatch.Groups[ 4 ].Value;
-							var colorC = numberDesignMatch.Groups[ 5 ].Value;
-
-							var pattern = int.Parse( numberDesignMatch.Groups[ 1 ].Value );
-							var slant = int.Parse( numberDesignMatch.Groups[ 2 ].Value );
-
-							if ( Settings.overlay.carNumberOverrideEnabled )
-							{
-								colorA = Settings.overlay.carNumberColorA.ToString();
-								colorB = Settings.overlay.carNumberColorB.ToString();
-								colorC = Settings.overlay.carNumberColorC.ToString();
-
-								pattern = Settings.overlay.carNumberPattern;
-								slant = Settings.overlay.carNumberSlant;
-							}
-
-							carNumberTextureUrl = $"http://localhost:32034/pk_number.png?size=64&view=0&number={carNumber}&numPat={pattern}&numCol={colorA},{colorB},{colorC}&numSlnt={slant}";
-						}
-
-						var carDesignMatch = Regex.Match( driver.CarDesignStr, @"(\d+),(.{6}),(.{6}),(.{6})[,.]?(.{6})?" );
-
-						if ( numberDesignMatch.Success && carDesignMatch.Success )
-						{
-							var licColor = driver.LicColor[ 2.. ];
-							var carPath = driver.CarPath.Replace( " ", "%5C" );
-							var customCarTgaFilePath = $"{Settings.editor.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_num_{driver.UserID}.tga";
-							var showSimStampedNumber = 0;
-
-							if ( !File.Exists( customCarTgaFilePath ) )
-							{
-								customCarTgaFilePath = $"{Settings.editor.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_{driver.UserID}.tga";
-								showSimStampedNumber = 1;
-
-								if ( !File.Exists( customCarTgaFilePath ) )
-								{
-									customCarTgaFilePath = string.Empty;
-								}
-							}
-
-							customCarTgaFilePath = customCarTgaFilePath.Replace( " ", "%20" );
-
-							carTextureUrl = $"http://localhost:32034/pk_car.png?size=2&view=1&licCol={licColor}&club={driver.ClubID}&sponsors={driver.CarSponsor_1},{driver.CarSponsor_2}&numShow={showSimStampedNumber}&numPat={numberDesignMatch.Groups[ 1 ].Value}&numCol={numberDesignMatch.Groups[ 3 ].Value},{numberDesignMatch.Groups[ 4 ].Value},{numberDesignMatch.Groups[ 5 ].Value}&numSlnt={numberDesignMatch.Groups[ 2 ].Value}&number={carNumber}&carPath={carPath}&carPat={carDesignMatch.Groups[ 1 ].Value}&carCol={carDesignMatch.Groups[ 2 ].Value},{carDesignMatch.Groups[ 3 ].Value},{carDesignMatch.Groups[ 4 ].Value}&carRimType=2&carRimCol={carDesignMatch.Groups[ 5 ].Value}&carCustPaint={customCarTgaFilePath}";
-						}
-
-						var helmetDesignMatch = Regex.Match( driver.HelmetDesignStr, @"(\d+),(.{6}),(.{6}),(.{6})" );
-
-						if ( helmetDesignMatch.Success )
-						{
-							var licColor = driver.LicColor[ 2.. ];
-							var helmetType = driver.HelmetType;
-							var customHelmetTgaFileName = $"{Settings.editor.iracingCustomPaintsDirectory}\\helmet_{driver.UserID}.tga";
-
-							if ( !File.Exists( customHelmetTgaFileName ) )
-							{
-								customHelmetTgaFileName = string.Empty;
-							}
-
-							customHelmetTgaFileName = customHelmetTgaFileName.Replace( " ", "%20" );
-
-							helmetTextureUrl = $"http://localhost:32034/pk_helmet.png?size=7&hlmtPat={helmetDesignMatch.Groups[ 1 ].Value}&licCol={licColor}&hlmtCol={helmetDesignMatch.Groups[ 2 ].Value},{helmetDesignMatch.Groups[ 3 ].Value},{helmetDesignMatch.Groups[ 4 ].Value}&view=1&hlmtType={helmetType}&hlmtCustPaint={customHelmetTgaFileName}";
-						}
-
-						var driverDesignMatch = Regex.Match( driver.SuitDesignStr, @"(\d+),(.{6}),(.{6}),(.{6})" );
-
-						if ( driverDesignMatch.Success )
-						{
-							var suitType = driver.BodyType;
-							var helmetType = driver.HelmetType;
-							var faceType = driver.FaceType;
-							var customSuitTgaFileName = $"{Settings.editor.iracingCustomPaintsDirectory}\\suit_{driver.UserID}.tga";
-
-							if ( !File.Exists( customSuitTgaFileName ) )
-							{
-								customSuitTgaFileName = string.Empty;
-							}
-
-							customSuitTgaFileName = customSuitTgaFileName.Replace( " ", "%20" );
-
-							driverTextureUrl = $"http://localhost:32034/pk_body.png?size=1&view=2&bodyType={suitType}&suitPat={driverDesignMatch.Groups[ 1 ].Value}&suitCol={driverDesignMatch.Groups[ 2 ].Value},{driverDesignMatch.Groups[ 3 ].Value},{driverDesignMatch.Groups[ 4 ].Value}&hlmtType={helmetType}&hlmtPat={helmetDesignMatch.Groups[ 1 ].Value}&hlmtCol={helmetDesignMatch.Groups[ 2 ].Value},{helmetDesignMatch.Groups[ 3 ].Value},{helmetDesignMatch.Groups[ 4 ].Value}&faceType={faceType}&suitCustPaint={customSuitTgaFileName}";
-						}
-					}
+					break;
 				}
 			}
 
-			if ( driverIdx != -1 )
+			if ( ( driver == null ) || !driverFound )
 			{
-				driver = IRSDK.session.DriverInfo.Drivers[ driverIdx ];
+				driverIdx = -1;
+				return;
+			}
+
+			userId = driver.UserID;
+
+			userName = Regex.Replace( driver.UserName, @"[\d]", string.Empty );
+
+			isPaceCar = driver.CarIsPaceCar == 1;
+			isSpectator = driver.IsSpectator == 1;
+
+			if ( isPaceCar )
+			{
+				abbrevName = driver.UserName;
+			}
+			else
+			{
+				GenerateAbbrevName( false );
+			}
+
+			carNumber = driver.CarNumber;
+			carNumberRaw = driver.CarNumberRaw;
+
+			classID = driver.CarClassID;
+			classColor = new Color( driver.CarClassColor[ 2.. ] );
+			carClass = DataApi.GetCarClass( classID );
+
+			includeInLeaderboard = !isSpectator && !isPaceCar;
+
+			if ( includeInLeaderboard )
+			{
+				var numberDesignMatch = Regex.Match( driver.CarNumberDesignStr, @"(\d+),(\d+),(.{6}),(.{6}),(.{6})" );
+
+				if ( numberDesignMatch.Success )
+				{
+					var colorA = numberDesignMatch.Groups[ 3 ].Value;
+					var colorB = numberDesignMatch.Groups[ 4 ].Value;
+					var colorC = numberDesignMatch.Groups[ 5 ].Value;
+
+					var pattern = int.Parse( numberDesignMatch.Groups[ 1 ].Value );
+					var slant = int.Parse( numberDesignMatch.Groups[ 2 ].Value );
+
+					if ( Settings.overlay.carNumberOverrideEnabled )
+					{
+						colorA = Settings.overlay.carNumberColorA.ToString();
+						colorB = Settings.overlay.carNumberColorB.ToString();
+						colorC = Settings.overlay.carNumberColorC.ToString();
+
+						pattern = Settings.overlay.carNumberPattern;
+						slant = Settings.overlay.carNumberSlant;
+					}
+
+					carNumberTextureUrl = $"http://localhost:32034/pk_number.png?size=64&view=0&number={carNumber}&numPat={pattern}&numCol={colorA},{colorB},{colorC}&numSlnt={slant}";
+				}
+
+				var carDesignMatch = Regex.Match( driver.CarDesignStr, @"(\d+),(.{6}),(.{6}),(.{6})[,.]?(.{6})?" );
+
+				if ( numberDesignMatch.Success && carDesignMatch.Success )
+				{
+					var licColor = driver.LicColor[ 2.. ];
+					var carPath = driver.CarPath.Replace( " ", "%5C" );
+					var customCarTgaFilePath = $"{Settings.editor.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_num_{driver.UserID}.tga";
+					var showSimStampedNumber = 0;
+
+					if ( !File.Exists( customCarTgaFilePath ) )
+					{
+						customCarTgaFilePath = $"{Settings.editor.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_{driver.UserID}.tga";
+						showSimStampedNumber = 1;
+
+						if ( !File.Exists( customCarTgaFilePath ) )
+						{
+							customCarTgaFilePath = string.Empty;
+						}
+					}
+
+					customCarTgaFilePath = customCarTgaFilePath.Replace( " ", "%20" );
+
+					carTextureUrl = $"http://localhost:32034/pk_car.png?size=2&view=1&licCol={licColor}&club={driver.ClubID}&sponsors={driver.CarSponsor_1},{driver.CarSponsor_2}&numShow={showSimStampedNumber}&numPat={numberDesignMatch.Groups[ 1 ].Value}&numCol={numberDesignMatch.Groups[ 3 ].Value},{numberDesignMatch.Groups[ 4 ].Value},{numberDesignMatch.Groups[ 5 ].Value}&numSlnt={numberDesignMatch.Groups[ 2 ].Value}&number={carNumber}&carPath={carPath}&carPat={carDesignMatch.Groups[ 1 ].Value}&carCol={carDesignMatch.Groups[ 2 ].Value},{carDesignMatch.Groups[ 3 ].Value},{carDesignMatch.Groups[ 4 ].Value}&carRimType=2&carRimCol={carDesignMatch.Groups[ 5 ].Value}&carCustPaint={customCarTgaFilePath}";
+				}
+
+				var helmetDesignMatch = Regex.Match( driver.HelmetDesignStr, @"(\d+),(.{6}),(.{6}),(.{6})" );
+
+				if ( helmetDesignMatch.Success )
+				{
+					var licColor = driver.LicColor[ 2.. ];
+					var helmetType = driver.HelmetType;
+					var customHelmetTgaFileName = $"{Settings.editor.iracingCustomPaintsDirectory}\\helmet_{driver.UserID}.tga";
+
+					if ( !File.Exists( customHelmetTgaFileName ) )
+					{
+						customHelmetTgaFileName = string.Empty;
+					}
+
+					customHelmetTgaFileName = customHelmetTgaFileName.Replace( " ", "%20" );
+
+					helmetTextureUrl = $"http://localhost:32034/pk_helmet.png?size=7&hlmtPat={helmetDesignMatch.Groups[ 1 ].Value}&licCol={licColor}&hlmtCol={helmetDesignMatch.Groups[ 2 ].Value},{helmetDesignMatch.Groups[ 3 ].Value},{helmetDesignMatch.Groups[ 4 ].Value}&view=1&hlmtType={helmetType}&hlmtCustPaint={customHelmetTgaFileName}";
+				}
+
+				var driverDesignMatch = Regex.Match( driver.SuitDesignStr, @"(\d+),(.{6}),(.{6}),(.{6})" );
+
+				if ( driverDesignMatch.Success )
+				{
+					var suitType = driver.BodyType;
+					var helmetType = driver.HelmetType;
+					var faceType = driver.FaceType;
+					var customSuitTgaFileName = $"{Settings.editor.iracingCustomPaintsDirectory}\\suit_{driver.UserID}.tga";
+
+					if ( !File.Exists( customSuitTgaFileName ) )
+					{
+						customSuitTgaFileName = string.Empty;
+					}
+
+					customSuitTgaFileName = customSuitTgaFileName.Replace( " ", "%20" );
+
+					driverTextureUrl = $"http://localhost:32034/pk_body.png?size=1&view=2&bodyType={suitType}&suitPat={driverDesignMatch.Groups[ 1 ].Value}&suitCol={driverDesignMatch.Groups[ 2 ].Value},{driverDesignMatch.Groups[ 3 ].Value},{driverDesignMatch.Groups[ 4 ].Value}&hlmtType={helmetType}&hlmtPat={helmetDesignMatch.Groups[ 1 ].Value}&hlmtCol={helmetDesignMatch.Groups[ 2 ].Value},{helmetDesignMatch.Groups[ 3 ].Value},{helmetDesignMatch.Groups[ 4 ].Value}&faceType={faceType}&suitCustPaint={customSuitTgaFileName}";
+				}
 
 				if ( driver.CurDriverIncidentCount > currentIncidentPoints )
 				{
@@ -397,9 +433,9 @@ namespace iRacingTVController
 
 					activeIncidentPoints = Math.Max( IRSDK.normalizedSession.isDirtTrack ? 2 : 4, driver.CurDriverIncidentCount - previousIncidentPoints );
 					activeIncidentTimer = 0;
-
-					currentIncidentPoints = driver.CurDriverIncidentCount;
 				}
+
+				currentIncidentPoints = driver.CurDriverIncidentCount;
 			}
 		}
 
@@ -525,7 +561,9 @@ namespace iRacingTVController
 				lapPosition = -1 - qualifyingPosition / 200.0f;
 			}
 
-			var checkpointIdx = (int) Math.Max( 0, Math.Floor( lapDistPct * Settings.overlay.telemetryNumberOfCheckpoints ) ) % Settings.overlay.telemetryNumberOfCheckpoints;
+			checkpointIdxLastFrame = this.checkpointIdx;
+
+			var checkpointIdx = (int) Math.Max( 0, Math.Floor( lapDistPct * IRSDK.normalizedSession.numCheckpoints ) ) % IRSDK.normalizedSession.numCheckpoints;
 
 			if ( checkpointIdx != this.checkpointIdx )
 			{
@@ -536,6 +574,9 @@ namespace iRacingTVController
 
 			distanceMovedInMeters = lapDistPctDelta * IRSDK.normalizedSession.trackLengthInMeters;
 			speedInMetersPerSecond = distanceMovedInMeters / (float) IRSDK.normalizedData.sessionTimeDelta;
+
+			sessionFlagsLastFrame = sessionFlags;
+			sessionFlags = (uint) car.CarIdxSessionFlags;
 
 			if ( activeIncidentPoints > 0 )
 			{
@@ -548,6 +589,9 @@ namespace iRacingTVController
 					activeIncidentTimer = 0;
 				}
 			}
+
+			gear = car.CarIdxGear;
+			rpm = car.CarIdxRPM;
 		}
 
 		public void GenerateAbbrevName( bool includeFirstNameInitial )

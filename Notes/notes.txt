@@ -1,15 +1,7 @@
 ﻿General
 	Find out why it always says 4x for incident messages
-	Color code message types
-		Red - incidents
-		Yellow - black flags
 Incident messages
 	Also show total incidents accumulated for the driver
-Flags
-	Look into displaying black flags for each driver
-		Got furled black flag
-		Cleared furled black flag
-	Meatball flags
 Pits
 	Show pit time when driver leaves the pits (xx.xs)
 	Seems like there is a way to get pit stop time???

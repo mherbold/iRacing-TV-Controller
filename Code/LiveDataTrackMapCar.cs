@@ -13,6 +13,6 @@ namespace iRacingTVController
 		public bool showHighlight = false;
 
 		[JsonInclude] public Vector3 offset = Vector3.zero;
-		[JsonInclude, XmlIgnore] public string carNumber = string.Empty;
+		[JsonInclude] public string carNumber = string.Empty;
 	}
 }

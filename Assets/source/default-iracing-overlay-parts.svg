@@ -3,121 +3,154 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 1920 1080" style="enable-background:new 0 0 1920 1080;" xml:space="preserve">
 <style type="text/css">
-	.st0{opacity:0.85;}
+	.st0{fill:none;stroke:#FFFFFF;stroke-width:5;stroke-linecap:round;stroke-miterlimit:10;}
 	.st1{fill:#5E5F5F;}
-	.st2{fill:#181818;}
-	.st3{fill:#FFFFFF;}
-	.st4{fill:#181818;fill-opacity:0.85;stroke:#000000;stroke-width:5;stroke-miterlimit:10;}
-	.st5{fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
-	.st6{fill:#F9EF69;}
-	.st7{fill:#60BB46;}
-	.st8{fill:none;stroke:#5E5F5F;stroke-width:3;stroke-miterlimit:10;}
-	.st9{fill:none;stroke:#5E5F5F;stroke-width:7;stroke-miterlimit:10;}
-	.st10{fill:none;stroke:#5E5F5F;stroke-width:7;stroke-miterlimit:10;stroke-dasharray:12.28,12.28;}
-	.st11{fill:#5E6060;}
-	.st12{opacity:0.85;fill:#231F20;}
-	.st13{fill:#39B54A;}
-	.st14{fill:url(#leaderboard-preferred-car_00000045585597079189213300000013367487036771978125_);}
-	.st15{fill:#FFFFFF;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
-	.st16{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-miterlimit:10;}
-	.st17{display:none;}
+	.st2{fill:#F15A29;}
+	.st3{font-family:'RevolutionGothic-ExtraBold';}
+	.st4{font-size:18px;}
+	.st5{opacity:0.85;}
+	.st6{fill:#181818;}
+	.st7{fill:#FFFFFF;}
+	.st8{fill:#181818;fill-opacity:0.85;stroke:#000000;stroke-width:5;stroke-miterlimit:10;}
+	.st9{fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
+	.st10{fill:#F9EF69;}
+	.st11{fill:#60BB46;}
+	.st12{fill:none;stroke:#5E5F5F;stroke-width:3;stroke-miterlimit:10;}
+	.st13{fill:none;stroke:#5E5F5F;stroke-width:7;stroke-miterlimit:10;}
+	.st14{fill:none;stroke:#5E5F5F;stroke-width:7;stroke-miterlimit:10;stroke-dasharray:12.28,12.28;}
+	.st15{fill:#5E6060;}
+	.st16{opacity:0.85;fill:#231F20;}
+	.st17{fill:#39B54A;}
+	.st18{fill:url(#leaderboard-preferred-car_00000079459973101908306380000009829364184306694844_);}
+	.st19{fill:#FFFFFF;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
+	.st20{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-miterlimit:10;}
 	
-		.st18{display:inline;fill:url(#voice-of-background_00000119811672149317992880000009809338480670489761_);fill-opacity:0.85;stroke:url(#voice-of-background_00000047049097954510612820000003026132928373521066_);stroke-width:5;stroke-miterlimit:10;}
+		.st21{fill:url(#voice-of-background_00000147178327353225844040000006977601554166638737_);fill-opacity:0.85;stroke:url(#voice-of-background_00000020365384180345714560000014646827314116932024_);stroke-width:5;stroke-miterlimit:10;}
 </style>
+<g id="HUD">
+	<g id="spotter-indicator">
+		<g>
+			<line class="st0" x1="400" y1="572" x2="432" y2="540"/>
+			<line class="st0" x1="400" y1="540" x2="432" y2="572"/>
+		</g>
+		<g>
+			<line class="st0" x1="440.73" y1="572" x2="472.73" y2="540"/>
+			<line class="st0" x1="440.73" y1="540" x2="472.73" y2="572"/>
+		</g>
+		<g>
+			<line class="st0" x1="481.45" y1="572" x2="513.45" y2="540"/>
+			<line class="st0" x1="481.45" y1="540" x2="513.45" y2="572"/>
+		</g>
+	</g>
+	<g id="Background_00000129169557785269733630000003818459118295538067_">
+		<path d="M416,499c-8.27,0-15-6.73-15-15v-28c0-8.27,6.73-15,15-15h683c8.27,0,15,6.73,15,15v28c0,8.27-6.73,15-15,15H416z"/>
+		<path class="st1" d="M1099,442c7.72,0,14,6.28,14,14v28c0,7.72-6.28,14-14,14H416c-7.72,0-14-6.28-14-14v-28c0-7.72,6.28-14,14-14
+			H1099 M1099,440H416c-8.84,0-16,7.16-16,16v28c0,8.84,7.16,16,16,16h683c8.84,0,16-7.16,16-16v-28
+			C1115,447.16,1107.84,440,1099,440L1099,440z"/>
+	</g>
+	<g>
+		<text transform="matrix(1 0 0 1 1054.6626 463.6816)" class="st2 st3 st4">Gear</text>
+		<text transform="matrix(1 0 0 1 424.6626 463.6816)" class="st2 st3 st4">Fuel</text>
+		<text transform="matrix(1 0 0 1 528.0081 463.6814)" class="st2 st3 st4">Lead</text>
+		<text transform="matrix(1 0 0 1 845.6141 463.6814)" class="st2 st3 st4">RPM</text>
+		<text transform="matrix(1 0 0 1 944.1451 463.6814)" class="st2 st3 st4">Speed</text>
+		<text transform="matrix(1 0 0 1 630.8049 463.6814)" class="st2 st3 st4">Gap +</text>
+		<text transform="matrix(1 0 0 1 736.7966 463.6814)" class="st2 st3 st4">Gap -</text>
+	</g>
+</g>
 <g id="Misc">
 	<g id="generic-background">
-		<polygon class="st0" points="452.5,285.5 452.5,180.96 469.11,162.5 575.52,162.5 575.52,267.56 558.93,285.5 		"/>
-		<path class="st1" d="M573.02,165v101.58L557.83,283H455V181.92L470.23,165H573.02 M578.02,160H468l-18,20v108h110.02l18-19.46V160
-			L578.02,160z"/>
+		<polygon class="st5" points="452.5,221.5 452.5,180.96 469.11,162.5 511.5,162.5 511.5,203.04 494.89,221.5 		"/>
+		<path class="st1" d="M509,165v37.08L493.77,219H455v-37.08L470.23,165H509 M514,160h-46l-18,20v44h46l18-20V160L514,160z"/>
 	</g>
 </g>
 <g id="Race_Status">
 	<g id="race-status-background">
 		<g id="Background">
-			<polygon class="st2" points="42.5,256.5 42.5,42.5 356.5,42.5 356.5,238.37 339.91,256.5 			"/>
+			<polygon class="st6" points="42.5,256.5 42.5,42.5 356.5,42.5 356.5,238.37 339.91,256.5 			"/>
 			<path d="M354,45v192.4L338.81,254H45V45H354 M359,40H40v219h301.01L359,239.34V40L359,40z"/>
 		</g>
 		<g id="Series_Background">
-			<rect x="45" y="44" class="st3" width="309" height="105"/>
+			<rect x="45" y="44" class="st7" width="309" height="105"/>
 		</g>
-		<line id="Big_Divider" class="st4" x1="40" y1="152" x2="359" y2="152"/>
+		<line id="Big_Divider" class="st8" x1="40" y1="152" x2="359" y2="152"/>
 		<g id="Small_Divider">
-			<line class="st5" x1="344" y1="206" x2="55" y2="206"/>
+			<line class="st9" x1="344" y1="206" x2="55" y2="206"/>
 		</g>
 	</g>
 	<g id="race-status-white-light">
-		<circle class="st3" cx="330.5" cy="181.5" r="10.5"/>
+		<circle class="st7" cx="330.5" cy="181.5" r="10.5"/>
 	</g>
 	<g id="race-status-yellow-light">
-		<circle class="st6" cx="330.5" cy="181.5" r="10.5"/>
+		<circle class="st10" cx="330.5" cy="181.5" r="10.5"/>
 	</g>
 	<g id="race-status-green-light">
-		<circle class="st7" cx="330.5" cy="181.5" r="10.5"/>
+		<circle class="st11" cx="330.5" cy="181.5" r="10.5"/>
 	</g>
 	<g id="race-status-black-light">
 		<circle cx="330.5" cy="181.5" r="10"/>
-		<path class="st3" d="M330.5,172c5.24,0,9.5,4.26,9.5,9.5s-4.26,9.5-9.5,9.5s-9.5-4.26-9.5-9.5S325.26,172,330.5,172 M330.5,171
+		<path class="st7" d="M330.5,172c5.24,0,9.5,4.26,9.5,9.5s-4.26,9.5-9.5,9.5s-9.5-4.26-9.5-9.5S325.26,172,330.5,172 M330.5,171
 			c-5.8,0-10.5,4.7-10.5,10.5s4.7,10.5,10.5,10.5s10.5-4.7,10.5-10.5S336.3,171,330.5,171L330.5,171z"/>
 	</g>
 </g>
 <g id="Leaderboard_Overlay">
 	<g id="leaderboard-position-splitter">
 		<g id="Position_Splitter_00000044144644301241049060000000494847145522205862_">
-			<line class="st8" x1="40" y1="450" x2="359" y2="450"/>
+			<line class="st12" x1="40" y1="450" x2="359" y2="450"/>
 		</g>
 		<g id="Position_Splitter">
 			<g>
-				<line class="st9" x1="40" y1="450" x2="46" y2="450"/>
-				<line class="st10" x1="58.28" y1="450" x2="346.86" y2="450"/>
-				<line class="st9" x1="353" y1="450" x2="359" y2="450"/>
+				<line class="st13" x1="40" y1="450" x2="46" y2="450"/>
+				<line class="st14" x1="58.28" y1="450" x2="346.86" y2="450"/>
+				<line class="st13" x1="353" y1="450" x2="359" y2="450"/>
 			</g>
 		</g>
 	</g>
 	<g id="leaderboard-heading">
-		<polygon class="st3" points="42.5,326.5 42.5,300.96 59.11,282.5 356.5,282.5 356.5,308.04 339.89,326.5 		"/>
-		<path class="st11" d="M354,285v22.08L338.77,324H45v-22.08L60.23,285H354 M359,280H58l-18,20v29h301l18-20V280L359,280z"/>
+		<polygon class="st7" points="42.5,326.5 42.5,300.96 59.11,282.5 356.5,282.5 356.5,308.04 339.89,326.5 		"/>
+		<path class="st15" d="M354,285v22.08L338.77,324H45v-22.08L60.23,285H354 M359,280H58l-18,20v29h301l18-20V280L359,280z"/>
 	</g>
 	<g id="leaderboard-current-target">
 		<g id="leaderboard-current-target-speed">
-			<path class="st12" d="M339.65,408.5l16.85-18.53V364.5h88.96c7.19,0,13.04,5.94,13.04,13.24v17.53c0,7.3-5.85,13.24-13.04,13.24
+			<path class="st16" d="M339.65,408.5l16.85-18.53V364.5h88.96c7.19,0,13.04,5.94,13.04,13.24v17.53c0,7.3-5.85,13.24-13.04,13.24
 				H339.65z"/>
-			<path class="st11" d="M445.46,367c5.81,0,10.54,4.82,10.54,10.74v17.53c0,5.92-4.73,10.74-10.54,10.74H345.3l12.4-13.64l1.3-1.43
+			<path class="st15" d="M445.46,367c5.81,0,10.54,4.82,10.54,10.74v17.53c0,5.92-4.73,10.74-10.54,10.74H345.3l12.4-13.64l1.3-1.43
 				V389v-22H445.46 M445.46,362H354v27l-20,22h111.46c8.58,0,15.54-7.05,15.54-15.74v-17.53C461,369.05,454.04,362,445.46,362
 				L445.46,362z"/>
 		</g>
 		<g id="leaderboard-current-target-outline">
-			<path class="st13" d="M354,367v22.08L338.77,406H45v-22.08L60.23,367H354 M359,362H58l-18,20v29h301l18-20V362L359,362z"/>
+			<path class="st17" d="M354,367v22.08L338.77,406H45v-22.08L60.23,367H354 M359,362H58l-18,20v29h301l18-20V362L359,362z"/>
 		</g>
 	</g>
-	<path id="leaderboard-car-number-space" class="st3" d="M136.63,400H95.37c-2.41,0-4.37-1.96-4.37-4.37v-19.26
+	<path id="leaderboard-car-number-space" class="st7" d="M136.63,400H95.37c-2.41,0-4.37-1.96-4.37-4.37v-19.26
 		c0-2.41,1.96-4.37,4.37-4.37h41.26c2.41,0,4.37,1.96,4.37,4.37v19.26C141,398.04,139.04,400,136.63,400z"/>
 	
-		<linearGradient id="leaderboard-preferred-car_00000067202945704727631240000004175584760835381925_" gradientUnits="userSpaceOnUse" x1="45" y1="386.5" x2="359" y2="386.5">
+		<linearGradient id="leaderboard-preferred-car_00000041297763976519032040000016790226432494378680_" gradientUnits="userSpaceOnUse" x1="45" y1="386.5" x2="359" y2="386.5">
 		<stop  offset="0" style="stop-color:#FFFFFF"/>
 		<stop  offset="0.6" style="stop-color:#FFFFFF"/>
 		<stop  offset="0.95" style="stop-color:#737070;stop-opacity:0"/>
 		<stop  offset="1" style="stop-color:#000000;stop-opacity:0"/>
 	</linearGradient>
 	
-		<rect id="leaderboard-preferred-car" x="45" y="367" style="fill:url(#leaderboard-preferred-car_00000067202945704727631240000004175584760835381925_);" width="314" height="39"/>
+		<rect id="leaderboard-preferred-car" x="45" y="367" style="fill:url(#leaderboard-preferred-car_00000041297763976519032040000016790226432494378680_);" width="314" height="39"/>
 </g>
 <g id="Track_Map_Overlay">
-	<circle id="track-map-car" class="st15" cx="56" cy="506" r="16"/>
-	<circle id="track-map-target_00000179641946246250401240000017151977930488662200_" class="st16" cx="101.93" cy="506" r="16"/>
+	<circle id="track-map-car" class="st19" cx="56" cy="506" r="16"/>
+	<circle id="track-map-target_00000179641946246250401240000017151977930488662200_" class="st20" cx="101.93" cy="506" r="16"/>
 </g>
-<g id="Voice_Of_Overlay" class="st17">
+<g id="Voice_Of_Overlay">
 	
-		<linearGradient id="voice-of-background_00000043439432583195173000000015951250741874543032_" gradientUnits="userSpaceOnUse" x1="450" y1="85.5" x2="917" y2="85.5">
+		<linearGradient id="voice-of-background_00000173879242093884403620000000038444635742769557_" gradientUnits="userSpaceOnUse" x1="450" y1="85.5" x2="917" y2="85.5">
 		<stop  offset="0" style="stop-color:#FFFFFF"/>
 		<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0"/>
 	</linearGradient>
 	
-		<linearGradient id="voice-of-background_00000130632474296981980410000005266595171483075250_" gradientUnits="userSpaceOnUse" x1="447.5" y1="85.5" x2="919.5" y2="85.5">
+		<linearGradient id="voice-of-background_00000153666255654966196680000007260812038209815486_" gradientUnits="userSpaceOnUse" x1="447.5" y1="85.5" x2="919.5" y2="85.5">
 		<stop  offset="0" style="stop-color:#231F20"/>
 		<stop  offset="1" style="stop-color:#231F20;stop-opacity:0"/>
 	</linearGradient>
 	
-		<polygon id="voice-of-background" style="display:inline;fill:url(#voice-of-background_00000043439432583195173000000015951250741874543032_);fill-opacity:0.85;stroke:url(#voice-of-background_00000130632474296981980410000005266595171483075250_);stroke-width:5;stroke-miterlimit:10;" points="
+		<polygon id="voice-of-background" style="fill:url(#voice-of-background_00000173879242093884403620000000038444635742769557_);fill-opacity:0.85;stroke:url(#voice-of-background_00000153666255654966196680000007260812038209815486_);stroke-width:5;stroke-miterlimit:10;" points="
 		450,131 450,60 468.01,40 917,40 917,111 898.99,131 	"/>
 </g>
 </svg>

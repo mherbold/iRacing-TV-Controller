@@ -1,6 +1,8 @@
 ﻿
 using System;
 
+using static iRacingTVController.Unity;
+
 namespace iRacingTVController
 {
 	[Serializable]
@@ -33,6 +35,22 @@ namespace iRacingTVController
 		public string editorIncidentsEditCameras = "far chase, chase, chopper";
 		public float editorIncidentsOverlapMergeTime = 10.0f;
 		public float editorIncidentsTimeout = 5.0f;
+
+		public bool editorSteamVrEnabled = false;
+		public float editorSteamVrWidth = 1.0f;
+		public Vector3 editorSteamVrPosition = new( 0.0f, 0.0f, -0.5f );
+		public float editorSteamVrCurvature = 0.25f;
+		public Guid editorSteamVrControllerGuid = Guid.Empty;
+
+		public bool editorSpeechToTextEnabled = false;
+		public string editorSpeechToTextAudioCaptureDeviceId = string.Empty;
+		public string editorSpeechToTextCognitiveServiceKey = string.Empty;
+		public string editorSpeechToTextCognitiveServiceRegion = string.Empty;
+		public string editorSpeechToTextLanguage = "en-US";
+		public bool editorSpeechToTextPotatoFilterEnabled = true;
+
+		public bool editorPushToTalkMuteEnabled = false;
+		public string editorPushToTalkAudioRenderDeviceId = string.Empty;
 
 		public string lastActiveOverlayFilePath = string.Empty;
 		public string lastActiveDirectorFilePath = string.Empty;

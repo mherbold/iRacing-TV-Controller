@@ -20,11 +20,12 @@ namespace iRacingTVController
 			public string shortName = string.Empty;
 		}
 
-		public const int MaxNumCars = 63;
+		public const int MaxNumCars = 64;
 		public const int MaxNumClasses = 8;
 
 		public double sessionTimeDelta;
 		public double sessionTime;
+
 		public uint sessionFlags;
 		public uint sessionFlagsLastFrame;
 
@@ -35,6 +36,7 @@ namespace iRacingTVController
 
 		public bool isInTimedRace;
 		public bool isUnderCaution;
+		public bool isTalking;
 
 		public SessionState sessionState;
 
@@ -44,7 +46,9 @@ namespace iRacingTVController
 		public int sessionLapsTotal;
 		public int sessionLapsRemaining;
 
-		public int currentLap;
+		public int lapNumber;
+		public int lapNumberLastFrame;
+
 		public int numLeaderboardCars;
 		public int numLeaderboardClasses;
 		public LeaderboardClass[] leaderboardClass = new LeaderboardClass[ MaxNumClasses ];
@@ -56,6 +60,11 @@ namespace iRacingTVController
 		public int radioTransmitCarIdx;
 
 		public float bestLapTime;
+
+		public float fuelLevel;
+		public float lastLapFuelLevel;
+		public float[] lapFuelLevelDelta = Array.Empty<float>();
+		public float highestLapFuelLevelDelta;
 
 		public NormalizedCar? paceCar = null;
 
@@ -88,6 +97,7 @@ namespace iRacingTVController
 		{
 			sessionTimeDelta = 0;
 			sessionTime = 0;
+
 			sessionFlags = 0;
 			sessionFlagsLastFrame = 0;
 
@@ -98,6 +108,7 @@ namespace iRacingTVController
 
 			isInTimedRace = false;
 			isUnderCaution = false;
+			isTalking = false;
 
 			sessionState = SessionState.StateInvalid;
 
@@ -107,9 +118,11 @@ namespace iRacingTVController
 			sessionLapsTotal = 0;
 			sessionLapsRemaining = 0;
 
-			currentLap = 0;
+			lapNumber = 0;
+			lapNumberLastFrame = 0;
+
 			numLeaderboardCars = 0;
-			numLeaderboardClasses = 0;
+			numLeaderboardClasses = 1;
 
 			for ( var classIndex = 0; classIndex < MaxNumClasses; classIndex++ )
 			{
@@ -130,13 +143,18 @@ namespace iRacingTVController
 
 			paceCar = null;
 
+			fuelLevel = 0;
+			lastLapFuelLevel = 0;
+			lapFuelLevelDelta = new float[] { 0, 0, 0, 0, 0 };
+			highestLapFuelLevelDelta = 0;
+
 			foreach ( var normalizedCar in normalizedCars )
 			{
 				normalizedCar.Reset();
 			}
 		}
 
-		public void SessionUpdate( bool forceUpdate = false )
+		public void SessionUpdate()
 		{
 			numLeaderboardCars = 0;
 
@@ -144,7 +162,7 @@ namespace iRacingTVController
 			{
 				foreach ( var normalizedCar in normalizedCars )
 				{
-					normalizedCar.SessionUpdate( forceUpdate );
+					normalizedCar.SessionUpdate();
 
 					if ( normalizedCar.includeInLeaderboard )
 					{
@@ -197,8 +215,12 @@ namespace iRacingTVController
 		public void SessionNumberChange()
 		{
 			sessionTime = 0;
+
 			sessionFlags = 0;
 			sessionFlagsLastFrame = 0;
+
+			lapNumber = 0;
+			lapNumberLastFrame = 0;
 
 			foreach ( var normalizedCar in normalizedCars )
 			{
@@ -213,8 +235,10 @@ namespace iRacingTVController
 				return;
 			}
 
-			sessionTimeDelta = Math.Round( ( IRSDK.data.SessionTime - sessionTime ) / ( 1.0f / 60.0f ) ) * ( 1.0f / 60.0f );
-			sessionTime = IRSDK.data.SessionTime;
+			var newSessionTime = Math.Round( IRSDK.data.SessionTime / ( 1.0f / 60.0f ) ) * ( 1.0f / 60.0f );
+
+			sessionTimeDelta = newSessionTime - sessionTime;
+			sessionTime = newSessionTime;
 
 			if ( IRSDK.data.ReplayPlaySpeed >= 0 )
 			{
@@ -241,6 +265,7 @@ namespace iRacingTVController
 
 			isInTimedRace = IRSDK.data.SessionLapsTotal == 32767;
 			isUnderCaution = ( sessionFlags & ( (uint) SessionFlags.CautionWaving | (uint) SessionFlags.Caution | (uint) SessionFlags.YellowWaving | (uint) SessionFlags.Yellow ) ) != 0;
+			isTalking = IRSDK.data.PushToTalk;
 
 			sessionState = (SessionState) IRSDK.data.SessionState;
 
@@ -250,13 +275,74 @@ namespace iRacingTVController
 			sessionLapsTotal = IRSDK.data.SessionLapsTotal;
 			sessionLapsRemaining = Math.Min( sessionLapsTotal, Math.Max( 0, IRSDK.data.SessionLapsRemain ) + 1 );
 
-			currentLap = sessionLapsTotal - sessionLapsRemaining + 1;
+			lapNumberLastFrame = lapNumber;
+
+			if ( isInTimedRace )
+			{
+				lapNumber = IRSDK.data.Lap + 1;
+			}
+			else
+			{
+				lapNumber = sessionLapsTotal - sessionLapsRemaining + 1;
+			}
 
 			camCarIdx = IRSDK.data.CamCarIdx;
 			camGroupNumber = IRSDK.data.CamGroupNumber;
 			camCameraNumber = IRSDK.data.CamCameraNumber;
 
+			var radioTransmitCarIdxLastFrame = radioTransmitCarIdx;
+
 			radioTransmitCarIdx = IRSDK.data.RadioTransmitCarIdx;
+
+			// speech to text
+
+			if ( IRSDK.normalizedData.replaySpeed == 1 )
+			{
+				if ( radioTransmitCarIdx != radioTransmitCarIdxLastFrame )
+				{
+					if ( radioTransmitCarIdx == -1 )
+					{
+						SpeechToText.Stop( IRSDK.normalizedSession.sessionNumber, IRSDK.normalizedData.sessionTime );
+					}
+					else
+					{
+						if ( radioTransmitCarIdxLastFrame != -1 )
+						{
+							SpeechToText.Stop( IRSDK.normalizedSession.sessionNumber, IRSDK.normalizedData.sessionTime );
+						}
+
+						var subtitleData = SubtitlePlayback.GetCurrentSubtitleData();
+
+						if ( ( subtitleData == null ) || ( subtitleData.Text == string.Empty ) )
+						{
+							SpeechToText.Start( IRSDK.normalizedSession.sessionNumber, IRSDK.normalizedData.sessionTime );
+						}
+					}
+				}
+			}
+			else
+			{
+				SpeechToText.StopAll();
+			}
+
+			// hud - fuel
+
+			fuelLevel = IRSDK.data.FuelLevel;
+
+			if ( lapNumber != lapNumberLastFrame )
+			{
+				lapFuelLevelDelta[ lapNumberLastFrame % lapFuelLevelDelta.Length ] = lastLapFuelLevel - fuelLevel;
+
+				lastLapFuelLevel = fuelLevel;
+				highestLapFuelLevelDelta = 0;
+
+				foreach ( var lapFuelLevelData in lapFuelLevelDelta )
+				{
+					highestLapFuelLevelDelta = Math.Max( highestLapFuelLevelDelta, lapFuelLevelData );
+				}
+			}
+
+			// leaderboard and heat stuff
 
 			if ( sessionTimeDelta > 0 )
 			{
@@ -275,12 +361,12 @@ namespace iRacingTVController
 					}
 				}
 
-				// reset defending heat and heat bias, calculate attacking heat, and calculate distances to car in front and back, for each car
+				// calculate distances to car in front and back for each car
 
 				foreach ( var normalizedCar in normalizedCars )
 				{
-					normalizedCar.attackingHeat = 0;
-					normalizedCar.defendingHeat = 0;
+					normalizedCar.normalizedCarInFront = null;
+					normalizedCar.normalizedCarBehind = null;
 
 					normalizedCar.distanceToCarInFrontInMeters = float.MaxValue;
 					normalizedCar.distanceToCarBehindInMeters = float.MaxValue;
@@ -308,18 +394,21 @@ namespace iRacingTVController
 
 									if ( signedDistanceToOtherCarInMeters >= 0 )
 									{
-										var heat = 1 - Math.Max( 0, Math.Abs( signedDistanceToOtherCarInMeters ) - Settings.director.heatCarLength ) / Math.Max( 1, Settings.director.heatFalloff );
-
-										if ( heat > 0 )
+										if ( normalizedCar.distanceToCarInFrontInMeters > signedDistanceToOtherCarInMeters )
 										{
-											normalizedCar.attackingHeat += heat;
+											normalizedCar.normalizedCarInFront = otherNormalizedCar;
+											normalizedCar.distanceToCarInFrontInMeters = signedDistanceToOtherCarInMeters;
 										}
-
-										normalizedCar.distanceToCarInFrontInMeters = Math.Min( normalizedCar.distanceToCarInFrontInMeters, signedDistanceToOtherCarInMeters );
 									}
 									else
 									{
-										normalizedCar.distanceToCarBehindInMeters = Math.Min( normalizedCar.distanceToCarBehindInMeters, -signedDistanceToOtherCarInMeters );
+										signedDistanceToOtherCarInMeters = -signedDistanceToOtherCarInMeters;
+
+										if ( normalizedCar.distanceToCarBehindInMeters > signedDistanceToOtherCarInMeters )
+										{
+											normalizedCar.normalizedCarBehind = otherNormalizedCar;
+											normalizedCar.distanceToCarBehindInMeters = signedDistanceToOtherCarInMeters;
+										}
 									}
 								}
 							}
@@ -400,8 +489,9 @@ namespace iRacingTVController
 
 					normalizedCar.lapPositionRelativeToClassLeader = classLeader.lapPosition - normalizedCar.lapPosition;
 					normalizedCar.displayedPosition = displayedPosition++;
+					normalizedCar.leaderboardClassIndex = numLeaderboardClasses - 1;
 
-					leaderboardClass[ numLeaderboardClasses - 1 ].numDrivers++;
+					leaderboardClass[ normalizedCar.leaderboardClassIndex ].numDrivers++;
 				}
 
 				for ( var i = numLeaderboardClasses; leaderboardIndex < MaxNumClasses; leaderboardIndex++ )
@@ -409,21 +499,76 @@ namespace iRacingTVController
 					leaderboardClass[ i ].numDrivers = 0;
 				}
 
-				// set the heat bias of each car
+				// heat calculations
 
-				foreach ( var normalizedCar in leaderboardSortedNormalizedCars )
+				foreach ( var normalizedCar in normalizedCars )
 				{
 					if ( normalizedCar.includeInLeaderboard )
 					{
-						if ( normalizedCar.attackingHeat > 0 )
+						if ( normalizedCar.isOnPitRoad || ( normalizedCar.outOfCarTimer >= 10 ) )
 						{
-							var positionAsSignedPct = ( ( numLeaderboardCars / 2.0f ) - normalizedCar.leaderboardIndex ) / ( numLeaderboardCars / 2.0f );
-
-							normalizedCar.heatBias = Settings.director.heatBias * positionAsSignedPct + Math.Abs( Settings.director.heatBias );
-						}
-						else
-						{
+							normalizedCar.heat = 0;
+							normalizedCar.heatBonus = 0;
 							normalizedCar.heatBias = 0;
+							normalizedCar.heatTotal = 0;
+							normalizedCar.heatGapTime = 0;
+						}
+						else if ( normalizedCar.checkpointIdx != normalizedCar.checkpointIdxLastFrame )
+						{
+							normalizedCar.heat = 0;
+
+							var heatGapTime = 0.0f;
+
+							if ( normalizedCar.normalizedCarInFront != null )
+							{
+								var checkpointTimeHis = normalizedCar.normalizedCarInFront.checkpoints[ normalizedCar.checkpointIdx ];
+								var checkpointTimeMine = normalizedCar.checkpoints[ normalizedCar.checkpointIdx ];
+
+								if ( ( checkpointTimeHis > 0 ) && ( checkpointTimeMine > 0 ) && ( checkpointTimeMine >= checkpointTimeHis ) )
+								{
+									heatGapTime = ( (float) ( checkpointTimeMine - checkpointTimeHis ) - 0.1f ) / ( Settings.director.heatMaxGapTime - 0.1f );
+
+									normalizedCar.heat = (float) Math.Pow( Math.Max( 0, Math.Min( 1, 1 - heatGapTime ) ), 2 );
+								}
+							}
+
+							var deltaHeatGapTime = heatGapTime - normalizedCar.heatGapTime;
+
+							normalizedCar.heatGapTime = heatGapTime;
+
+							var heatBonus = normalizedCar.heatBonus;
+
+							if ( deltaHeatGapTime < 0 )
+							{
+								heatBonus = Math.Max( 0, Math.Min( 1, 1 - heatGapTime ) ) * Settings.director.heatOvertakeBonus;
+							}
+							else if ( deltaHeatGapTime > 0 )
+							{
+								heatBonus = 0;
+							}
+
+							normalizedCar.heatBonus = normalizedCar.heatBonus * 0.9f + heatBonus * 0.1f;
+
+							if ( normalizedCar.heatBonus < 0.01f )
+							{
+								normalizedCar.heatBonus = 0;
+							}
+
+							normalizedCar.heatBias = 0;
+
+							if ( ( normalizedCar.heat + normalizedCar.heatBonus ) > 0 )
+							{
+								var numDrivers = leaderboardClass[ normalizedCar.leaderboardClassIndex ].numDrivers;
+
+								var driverOnScale = normalizedCar.displayedPosition - 1;
+								var scaleMidpoint = ( ( numDrivers - 1.0f ) / 2.0f );
+
+								var positionAsSignedPct = ( scaleMidpoint - driverOnScale ) / scaleMidpoint;
+
+								normalizedCar.heatBias = Settings.director.heatBias * positionAsSignedPct + Math.Abs( Settings.director.heatBias );
+							}
+
+							normalizedCar.heatTotal = normalizedCar.heat + normalizedCar.heatBonus + normalizedCar.heatBias;
 						}
 					}
 				}
@@ -443,17 +588,6 @@ namespace iRacingTVController
 				}
 
 				relativeLapPositionSortedNormalizedCars.Sort( NormalizedCar.RelativeLapPositionComparison );
-
-				// update defending heat for each car
-
-				NormalizedCar normalizedCarInFront = relativeLapPositionSortedNormalizedCars.Last();
-
-				foreach ( var normalizedCar in relativeLapPositionSortedNormalizedCars )
-				{
-					normalizedCarInFront.defendingHeat = normalizedCar.attackingHeat;
-
-					normalizedCarInFront = normalizedCar;
-				}
 			}
 		}
 

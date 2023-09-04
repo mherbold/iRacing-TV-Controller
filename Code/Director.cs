@@ -66,7 +66,7 @@ namespace iRacingTVController
 							leadingPittedCar = normalizedCar;
 						}
 
-						if ( ( normalizedCar.attackingHeat > 0 ) && ( ( hottestCar == null ) || ( ( normalizedCar.attackingHeat + normalizedCar.heatBias ) > ( hottestCar.attackingHeat + hottestCar.heatBias ) ) ) )
+						if ( ( normalizedCar.heatTotal > 0 ) && ( ( hottestCar == null ) || ( normalizedCar.heatTotal > hottestCar.heatTotal ) ) )
 						{
 							hottestCar = normalizedCar;
 						}
@@ -99,7 +99,7 @@ namespace iRacingTVController
 					targetCamType = Settings.director.rule1_Camera;
 					targetCamReason = "Rule 1: Post-race cool down, first place car still connected, look at first place car.";
 				}
-				else if ( Settings.director.rule2_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateRacing ) && Settings.director.preferredCarLockOnEnabled && ( preferredCar != null ) && ( ( preferredCar.attackingHeat >= Settings.director.preferredCarLockOnMinimumHeat ) || ( preferredCar.defendingHeat >= Settings.director.preferredCarLockOnMinimumHeat ) ) ) )
+				else if ( Settings.director.rule2_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateRacing ) && Settings.director.preferredCarLockOnEnabled && ( preferredCar != null ) && ( preferredCar.heatTotal >= Settings.director.preferredCarLockOnMinimumHeat ) ) )
 				{
 					targetCamCarIdx = preferredCar.carIdx;
 					targetCamType = Settings.director.rule2_Camera;

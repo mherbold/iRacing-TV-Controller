@@ -42,12 +42,13 @@ namespace iRacingTVController
 			Directory.SetCurrentDirectory( documentsFolder );
 
 			LogFile.Initialize();
-			LogFile.Write( $"{MainWindow.Instance.Title} is starting up!\r\n\r\n" );
-
 			Settings.Initialize();
 			IPC.Initialize();
 			DataApi.Initialize( false );
 			WebPage.Initialize();
+			Controller.Initialize();
+			SpeechToText.Initialize();
+			PushToTalk.Initialize();
 
 			Task.Run( () => ProgramAsync() );
 		}
@@ -56,7 +57,7 @@ namespace iRacingTVController
 		{
 			try
 			{
-				LogFile.Write( $"Starting async thread...\r\n" );
+				LogFile.Write( "Starting async thread...\r\n" );
 
 				stopwatch.Start();
 
@@ -73,7 +74,7 @@ namespace iRacingTVController
 
 				stopwatch.Stop();
 
-				LogFile.Write( $"Async thread finished.\r\n" );
+				LogFile.Write( "Async thread finished.\r\n" );
 			}
 			catch ( Exception exception )
 			{
@@ -99,18 +100,18 @@ namespace iRacingTVController
 
 					elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
 
+					Controller.Update();
 					Settings.Update();
-
 					IRSDK.Update();
-
 					LiveData.Instance.Update();
-
 					WebPage.Update();
 
 					IPC.UpdateSettings();
 					IPC.UpdateLiveData();
 
 					Director.Update();
+					SpeechToText.Update();
+					PushToTalk.Update();
 
 					SessionFlagsPlayback.Update();
 					IncidentPlayback.Update();

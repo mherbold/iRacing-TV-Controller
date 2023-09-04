@@ -10,7 +10,7 @@ namespace iRacingTVController
 	[Serializable]
 	public class LiveDataTrackMap
 	{
-		public const int MaxNumCars = 63;
+		public const int MaxNumCars = 64;
 
 		public bool show;
 

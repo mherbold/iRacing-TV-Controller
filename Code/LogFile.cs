@@ -1,6 +1,8 @@
 ﻿
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Threading;
 
 namespace iRacingTVController
@@ -11,25 +13,40 @@ namespace iRacingTVController
 
 		public static string logFilePath = $"{Program.documentsFolder}{Program.AppName}.log";
 
+		public static FileStream? fileStream = null;
+
 		public static void Initialize()
 		{
-			if ( File.Exists( logFilePath ) )
-			{
-				File.Delete( logFilePath );
-			}
+			fileStream = new FileStream( logFilePath, FileMode.Append, FileAccess.Write, FileShare.Read );
+
+			Write( "\r\n" );
+			Write( $"Log file opened.\r\n" );
 		}
 
 		public static void Write( string message )
 		{
-			try
+			if ( fileStream != null )
 			{
-				readerWriterLock.AcquireWriterLock( 250 );
+				try
+				{
+					readerWriterLock.AcquireWriterLock( 250 );
 
-				File.AppendAllText( logFilePath, $"{DateTime.Now}   {message}" );
-			}
-			finally
-			{
-				readerWriterLock.ReleaseWriterLock();
+					try
+					{
+						var bytes = new UTF8Encoding( true ).GetBytes( $"{DateTime.Now}   {message}" );
+
+						fileStream.Write( bytes, 0, bytes.Length );
+						fileStream.Flush();
+					}
+					finally
+					{
+						readerWriterLock.ReleaseWriterLock();
+					}
+				}
+				catch ( ApplicationException )
+				{
+					Debug.WriteLine( "Could not acquire writer lock!" );
+				}
 			}
 		}
 

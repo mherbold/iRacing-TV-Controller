@@ -9,7 +9,7 @@ namespace iRacingTVController
 {
 	public static class IPC
 	{
-		public const int MAX_MEMORY_MAPPED_FILE_SIZE = 1 * 1024 * 1024;
+		public const int MaxMemoryMappedFileSize = 1 * 1024 * 1024;
 
 		public static MemoryMappedFile? memoryMappedFileSettings = null;
 		public static MemoryMappedFile? memoryMappedFileLiveData = null;
@@ -24,11 +24,11 @@ namespace iRacingTVController
 		{
 			LogFile.Write( "Initializing settings IPC...\r\n" );
 
-			memoryMappedFileSettings = MemoryMappedFile.CreateOrOpen( Program.IpcNameSettings, MAX_MEMORY_MAPPED_FILE_SIZE );
+			memoryMappedFileSettings = MemoryMappedFile.CreateOrOpen( Program.IpcNameSettings, MaxMemoryMappedFileSize );
 
 			LogFile.Write( "Initializing live data IPC...\r\n" );
 
-			memoryMappedFileLiveData = MemoryMappedFile.CreateOrOpen( Program.IpcNameLiveData, MAX_MEMORY_MAPPED_FILE_SIZE );
+			memoryMappedFileLiveData = MemoryMappedFile.CreateOrOpen( Program.IpcNameLiveData, MaxMemoryMappedFileSize );
 		}
 
 		public static void UpdateSettings()
@@ -59,7 +59,7 @@ namespace iRacingTVController
 
 				indexSettings++;
 
-				var viewAccessor = memoryMappedFileSettings.CreateViewAccessor( 0, MAX_MEMORY_MAPPED_FILE_SIZE );
+				var viewAccessor = memoryMappedFileSettings.CreateViewAccessor( 0, MaxMemoryMappedFileSize );
 
 				viewAccessor.Write( 0, indexSettings );
 				viewAccessor.Write( 8, buffer.Length );
@@ -100,7 +100,7 @@ namespace iRacingTVController
 
 				indexLiveData++;
 
-				var viewAccessor = memoryMappedFileLiveData.CreateViewAccessor( 0, MAX_MEMORY_MAPPED_FILE_SIZE );
+				var viewAccessor = memoryMappedFileLiveData.CreateViewAccessor( 0, MaxMemoryMappedFileSize );
 
 				viewAccessor.Write( 0, indexLiveData );
 				viewAccessor.Write( 8, buffer.Length );

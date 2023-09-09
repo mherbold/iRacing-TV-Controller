@@ -49,6 +49,7 @@ namespace iRacingTVController
 			Controller.Initialize();
 			SpeechToText.Initialize();
 			PushToTalk.Initialize();
+			Director.Initialize();
 
 			Task.Run( () => ProgramAsync() );
 		}
@@ -112,6 +113,7 @@ namespace iRacingTVController
 					Director.Update();
 					SpeechToText.Update();
 					PushToTalk.Update();
+					Triggers.Update();
 
 					SessionFlagsPlayback.Update();
 					IncidentPlayback.Update();

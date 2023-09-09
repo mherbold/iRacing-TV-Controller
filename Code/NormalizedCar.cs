@@ -80,6 +80,9 @@ namespace iRacingTVController
 		public float distanceToCarInFrontInMeters = 0;
 		public float distanceToCarBehindInMeters = 0;
 
+		public int carIdxInFrontLastFrame = -1;
+		public int carIdxBehindLastFrame = -1;
+
 		public float distanceMovedInMeters = 0;
 		public float speedInMetersPerSecond = 0;
 
@@ -171,6 +174,9 @@ namespace iRacingTVController
 
 			distanceToCarInFrontInMeters = float.MaxValue;
 			distanceToCarBehindInMeters = float.MaxValue;
+
+			carIdxInFrontLastFrame = -1;
+			carIdxBehindLastFrame = -1;
 
 			distanceMovedInMeters = 0;
 			speedInMetersPerSecond = 0;

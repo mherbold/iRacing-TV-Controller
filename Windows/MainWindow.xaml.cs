@@ -630,6 +630,7 @@ namespace iRacingTVController
 
 			Update( Director_Heat_MaxGapTime, Settings.director.heatMaxGapTime, Director_Heat_MaxGapTime_Override, directorIsGlobal, Settings.director.heatMaxGapTime_Overridden );
 			Update( Director_Heat_OvertakeBonus, Settings.director.heatOvertakeBonus, Director_Heat_OvertakeBonus_Override, directorIsGlobal, Settings.director.heatOvertakeBonus_Overridden );
+			Update( Director_Heat_PositionBattle, Settings.director.heatPositionBattle, Director_Heat_PositionBattle_Override, directorIsGlobal, Settings.director.heatPositionBattle_Overridden );
 			Update( Director_Heat_Bias, Settings.director.heatBias, Director_Heat_Bias_Override, directorIsGlobal, Settings.director.heatBias_Overridden );
 
 			Update( Director_PreferredCar_UserIds, Settings.director.preferredCarUserIds, Director_PreferredCar_UserIds_Override, directorIsGlobal, Settings.director.preferredCarUserIds_Overridden );
@@ -857,6 +858,10 @@ namespace iRacingTVController
 
 			Editor_PushToTalk_MuteEnabled.IsChecked = Settings.editor.editorPushToTalkMuteEnabled;
 			Editor_PushToTalk_AudioRenderDeviceOption.SelectedItem = audioRenderDeviceOptions.FirstOrDefault( x => x.Value == Settings.editor.editorPushToTalkAudioRenderDeviceId ).Key;
+
+			Editor_Triggers_SessionChange.Text = Settings.editor.editorTriggersSessionChange;
+
+			Editor_Startup_EnableDirector.IsChecked = Settings.editor.editorStartupEnableDirector;
 
 			// turn on/off topmost window attribute
 
@@ -1997,6 +2002,21 @@ namespace iRacingTVController
 					var director = Settings.directorLocal.heatOvertakeBonus_Overridden ? Settings.directorLocal : Settings.directorGlobal;
 
 					director.heatOvertakeBonus = Director_Heat_OvertakeBonus.Value;
+				}
+
+				overridden = Director_Heat_PositionBattle_Override.IsChecked ?? false;
+
+				if ( Settings.directorLocal.heatPositionBattle_Overridden != overridden )
+				{
+					Settings.directorLocal.heatPositionBattle_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var director = Settings.directorLocal.heatPositionBattle_Overridden ? Settings.directorLocal : Settings.directorGlobal;
+
+					director.heatPositionBattle = Director_Heat_PositionBattle.Value;
 				}
 
 				overridden = Director_Heat_Bias_Override.IsChecked ?? false;
@@ -4360,6 +4380,29 @@ namespace iRacingTVController
 			cameraSelector.ShowDialog();
 		}
 
+		private void Editor_Triggers_SessionChange_Button_Click( object sender, EventArgs e )
+		{
+			string currentFilePath = Editor_Triggers_SessionChange.Text;
+
+			currentFilePath = Settings.GetFullPath( currentFilePath );
+
+			var openFileDialog = new OpenFileDialog()
+			{
+				Title = "Select a Program to Run",
+				Filter = "Program Files (*.exe)|*.exe|All files (*.*)|*.*",
+				InitialDirectory = ( currentFilePath == string.Empty ) ? Program.documentsFolder : Path.GetDirectoryName( currentFilePath ),
+				FileName = currentFilePath,
+				ValidateNames = true,
+				CheckPathExists = true,
+				CheckFileExists = true
+			};
+
+			if ( openFileDialog.ShowDialog() == true )
+			{
+				Editor_Triggers_SessionChange.Text = Settings.GetRelativePath( openFileDialog.FileName );
+			}
+		}
+
 		private void Editor_Update( object sender, EventArgs e )
 		{
 			if ( initializing == 0 )
@@ -4408,6 +4451,10 @@ namespace iRacingTVController
 				}
 
 				PushToTalk.Initialize();
+
+				Settings.editor.editorTriggersSessionChange = Editor_Triggers_SessionChange.Text;
+				
+				Settings.editor.editorStartupEnableDirector = Editor_Startup_EnableDirector.IsChecked ?? false;
 
 				Settings.saveEditorToFileQueued = true;
 

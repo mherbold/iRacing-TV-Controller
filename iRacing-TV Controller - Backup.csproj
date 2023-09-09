@@ -9,7 +9,6 @@
     <VersionPrefix>1.34</VersionPrefix>
     <ApplicationIcon>Assets\icon\iracing-tv.ico</ApplicationIcon>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
-    <Version>$(VersionPrefix)</Version>
   </PropertyGroup>
 
   <ItemGroup>

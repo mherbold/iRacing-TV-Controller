@@ -1,7 +1,6 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using irsdkSharp.Serialization.Enums.Fastest;
 
@@ -17,6 +16,16 @@ namespace iRacingTVController
 		public static SettingsDirector.CameraType autoCamType = SettingsDirector.CameraType.Close;
 
 		public static List<NormalizedCar> preferredCarList = new();
+
+		public static void Initialize()
+		{
+			if ( Settings.editor.editorStartupEnableDirector )
+			{
+				IRSDK.targetCamEnabled = true;
+
+				isEnabled = true;
+			}
+		}
 
 		public static void Update()
 		{

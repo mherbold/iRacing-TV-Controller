@@ -330,6 +330,15 @@ namespace iRacingTVController
 				var leadCarBestLapTime = 0.0f;
 				var carsShown = 0;
 
+				// reset leaderboard slots to be hidden
+
+				foreach ( var liveDataLeaderboardSlot in currentLiveDataLeaderboard.liveDataLeaderboardSlots )
+				{
+					liveDataLeaderboardSlot.show = false;
+				}
+
+				// go through cars for this class
+
 				foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardSortedNormalizedCars )
 				{
 					// skip cars with wrong car class
@@ -345,11 +354,7 @@ namespace iRacingTVController
 
 					// skip pace car and spectators
 
-					if ( !normalizedCar.includeInLeaderboard )
-					{
-						liveDataLeaderboardSlot.show = false;
-					}
-					else
+					if ( normalizedCar.includeInLeaderboard )
 					{
 						// lead car best lap time
 
@@ -551,11 +556,9 @@ namespace iRacingTVController
 												{
 													var checkpointTime = Math.Abs( (float) ( normalizedCar.checkpoints[ normalizedCar.checkpointIdx ] - carInFront.checkpoints[ normalizedCar.checkpointIdx ] ) );
 
-													var deltaCheckpointTime = checkpointTime - normalizedCar.checkpointTime;
-
-													if ( Math.Abs( deltaCheckpointTime ) < 0.1 )
+													if ( ( normalizedCar.normalizedCarInFront == null ) || ( normalizedCar.carIdxInFrontLastFrame == normalizedCar.normalizedCarInFront.carIdx ) )
 													{
-														normalizedCar.checkpointTime += deltaCheckpointTime * 0.05f;
+														normalizedCar.checkpointTime = normalizedCar.checkpointTime * 0.95f + checkpointTime * 0.05f;
 													}
 													else
 													{
@@ -835,6 +838,80 @@ namespace iRacingTVController
 				liveDataHud.lapsToLeader = $"{normalizedCar.lapPositionRelativeToClassLeader:0.000}";
 			}
 
+			// gap time
+
+			liveDataHud.gapTimeFront = "-.--";
+			liveDataHud.gapTimeFrontColor = Settings.overlay.textSettingsDataDictionary[ "HudGapTimeFront" ].tintColor;
+
+			if ( normalizedCar.normalizedCarInFront != null )
+			{
+				var checkpointTimeHis = normalizedCar.normalizedCarInFront.checkpoints[ normalizedCar.checkpointIdx ];
+				var checkpointTimeMine = normalizedCar.checkpoints[ normalizedCar.checkpointIdx ];
+
+				if ( ( checkpointTimeHis > 0 ) && ( checkpointTimeMine > 0 ) && ( checkpointTimeMine >= checkpointTimeHis ) )
+				{
+					var gapTime = (float) ( checkpointTimeMine - checkpointTimeHis );
+
+					if ( normalizedCar.carIdxInFrontLastFrame == normalizedCar.normalizedCarInFront.carIdx )
+					{
+						hudGapTimeFront = hudGapTimeFront * 0.95f + gapTime * 0.05f;
+					}
+					else
+					{
+						hudGapTimeFront = gapTime;
+					}
+
+					liveDataHud.gapTimeFront = $"{hudGapTimeFront:0.00}";
+				}
+
+				var deltaLapPositionRelativeToClassLeader = normalizedCar.normalizedCarInFront.lapPositionRelativeToClassLeader - normalizedCar.lapPositionRelativeToClassLeader;
+
+				if ( deltaLapPositionRelativeToClassLeader < -0.5f )
+				{
+					liveDataHud.gapTimeFrontColor = new Color( 1.0f, 0.3f, 0.3f, liveDataHud.gapTimeFrontColor.a );
+				}
+				else if ( deltaLapPositionRelativeToClassLeader > 0.5f )
+				{
+					liveDataHud.gapTimeFrontColor = new Color( 0.4f, 0.4f, 1.0f, liveDataHud.gapTimeFrontColor.a );
+				}
+			}
+
+			liveDataHud.gapTimeBack = "-.--";
+			liveDataHud.gapTimeBackColor = Settings.overlay.textSettingsDataDictionary[ "HudGapTimeBack" ].tintColor;
+
+			if ( normalizedCar.normalizedCarBehind != null )
+			{
+				var checkpointTimeMine = normalizedCar.checkpoints[ normalizedCar.normalizedCarBehind.checkpointIdx ];
+				var checkpointTimeHis = normalizedCar.normalizedCarBehind.checkpoints[ normalizedCar.normalizedCarBehind.checkpointIdx ];
+
+				if ( ( checkpointTimeHis > 0 ) && ( checkpointTimeMine > 0 ) && ( checkpointTimeHis >= checkpointTimeMine ) )
+				{
+					var gapTime = (float) ( checkpointTimeHis - checkpointTimeMine );
+
+					if ( normalizedCar.carIdxBehindLastFrame == normalizedCar.normalizedCarBehind.carIdx )
+					{
+						hudGapTimeBack = hudGapTimeBack * 0.95f + gapTime * 0.05f;
+					}
+					else
+					{
+						hudGapTimeBack = gapTime;
+					}
+
+					liveDataHud.gapTimeBack = $"{hudGapTimeBack:0.00}";
+				}
+
+				var deltaLapPositionRelativeToClassLeader = normalizedCar.normalizedCarBehind.lapPositionRelativeToClassLeader - normalizedCar.lapPositionRelativeToClassLeader;
+
+				if ( deltaLapPositionRelativeToClassLeader < -0.5f )
+				{
+					liveDataHud.gapTimeBackColor = new Color( 1.0f, 0.3f, 0.3f, liveDataHud.gapTimeFrontColor.a );
+				}
+				else if ( deltaLapPositionRelativeToClassLeader > 0.5f )
+				{
+					liveDataHud.gapTimeBackColor = new Color( 0.4f, 0.4f, 1.0f, liveDataHud.gapTimeFrontColor.a );
+				}
+			}
+
 			// rpm
 
 			var steppedRPM = (int) Math.Floor( normalizedCar.rpm / 50 ) * 50;
@@ -875,84 +952,6 @@ namespace iRacingTVController
 			else
 			{
 				liveDataHud.gear = normalizedCar.gear.ToString();
-			}
-
-			// gap time
-
-			liveDataHud.gapTimeFront = "-.--";
-			liveDataHud.gapTimeFrontColor = Settings.overlay.textSettingsDataDictionary[ "HudGapTimeFront" ].tintColor;
-
-			if ( normalizedCar.normalizedCarInFront != null )
-			{
-				var checkpointTimeHis = normalizedCar.normalizedCarInFront.checkpoints[ normalizedCar.checkpointIdx ];
-				var checkpointTimeMine = normalizedCar.checkpoints[ normalizedCar.checkpointIdx ];
-
-				if ( ( checkpointTimeHis > 0 ) && ( checkpointTimeMine > 0 ) && ( checkpointTimeMine >= checkpointTimeHis ) )
-				{
-					var gapTime = (float) ( checkpointTimeMine - checkpointTimeHis );
-
-					var gapTimeDelta = Math.Abs( gapTime - hudGapTimeFront );
-
-					if ( gapTimeDelta >= 0.5f )
-					{
-						hudGapTimeFront = gapTime;
-					}
-					else
-					{
-						hudGapTimeFront = hudGapTimeFront * 0.95f + gapTime * 0.05f;
-					}
-
-					liveDataHud.gapTimeFront = $"{hudGapTimeFront:0.00}";
-				}
-
-				var deltaLapPositionRelativeToClassLeader = normalizedCar.normalizedCarInFront.lapPositionRelativeToClassLeader - normalizedCar.lapPositionRelativeToClassLeader;
-
-				if ( deltaLapPositionRelativeToClassLeader < 0.5f )
-				{
-					liveDataHud.gapTimeFrontColor = new Color( 1.0f, 0.3f, 0.3f, liveDataHud.gapTimeFrontColor.a );
-				}
-				else if ( deltaLapPositionRelativeToClassLeader > 0.5f )
-				{
-					liveDataHud.gapTimeFrontColor = new Color( 0.4f, 0.4f, 1.0f, liveDataHud.gapTimeFrontColor.a );
-				}
-			}
-
-			liveDataHud.gapTimeBack = "-.--";
-			liveDataHud.gapTimeBackColor = Settings.overlay.textSettingsDataDictionary[ "HudGapTimeBack" ].tintColor;
-
-			if ( normalizedCar.normalizedCarBehind != null )
-			{
-				var checkpointTimeMine = normalizedCar.checkpoints[ normalizedCar.normalizedCarBehind.checkpointIdx ];
-				var checkpointTimeHis = normalizedCar.normalizedCarBehind.checkpoints[ normalizedCar.normalizedCarBehind.checkpointIdx ];
-
-				if ( ( checkpointTimeHis > 0 ) && ( checkpointTimeMine > 0 ) && ( checkpointTimeHis >= checkpointTimeMine ) )
-				{
-					var gapTime = (float) ( checkpointTimeHis - checkpointTimeMine );
-
-					var gapTimeDelta = Math.Abs( gapTime - hudGapTimeBack );
-
-					if ( gapTimeDelta >= 0.5f )
-					{
-						hudGapTimeBack = gapTime;
-					}
-					else
-					{
-						hudGapTimeBack = hudGapTimeBack * 0.95f + gapTime * 0.05f;
-					}
-
-					liveDataHud.gapTimeBack = $"{hudGapTimeBack:0.00}";
-				}
-
-				var deltaLapPositionRelativeToClassLeader = normalizedCar.normalizedCarBehind.lapPositionRelativeToClassLeader - normalizedCar.lapPositionRelativeToClassLeader;
-
-				if ( deltaLapPositionRelativeToClassLeader < 0.5f )
-				{
-					liveDataHud.gapTimeBackColor = new Color( 1.0f, 0.3f, 0.3f, liveDataHud.gapTimeFrontColor.a );
-				}
-				else if ( deltaLapPositionRelativeToClassLeader > 0.5f )
-				{
-					liveDataHud.gapTimeBackColor = new Color( 0.4f, 0.4f, 1.0f, liveDataHud.gapTimeFrontColor.a );
-				}
 			}
 
 			// speech to text

@@ -85,10 +85,12 @@ namespace iRacingTVController
 
 		public float heatMaxGapTime = 1.0f;
 		public float heatOvertakeBonus = 2.0f;
+		public float heatPositionBattle = 1.25f;
 		public float heatBias = 0.1f;
 
 		public bool heatMaxGapTime_Overridden = false;
 		public bool heatOvertakeBonus_Overridden = false;
+		public bool heatPositionBattle_Overridden = false;
 		public bool heatBias_Overridden = false;
 
 		public string preferredCarUserIds = string.Empty;

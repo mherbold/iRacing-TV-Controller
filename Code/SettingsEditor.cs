@@ -52,6 +52,10 @@ namespace iRacingTVController
 		public bool editorPushToTalkMuteEnabled = false;
 		public string editorPushToTalkAudioRenderDeviceId = string.Empty;
 
+		public string editorTriggersSessionChange = string.Empty;
+
+		public bool editorStartupEnableDirector = false;
+
 		public string lastActiveOverlayFilePath = string.Empty;
 		public string lastActiveDirectorFilePath = string.Empty;
 	}

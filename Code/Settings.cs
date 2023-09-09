@@ -849,10 +849,12 @@ namespace iRacingTVController
 
 				heatMaxGapTime = directorLocal.heatMaxGapTime_Overridden ? directorLocal.heatMaxGapTime : directorGlobal.heatMaxGapTime,
 				heatOvertakeBonus = directorLocal.heatOvertakeBonus_Overridden ? directorLocal.heatOvertakeBonus : directorGlobal.heatOvertakeBonus,
+				heatPositionBattle = directorLocal.heatPositionBattle_Overridden ? directorLocal.heatPositionBattle : directorGlobal.heatPositionBattle,
 				heatBias = directorLocal.heatBias_Overridden ? directorLocal.heatBias : directorGlobal.heatBias,
 
 				heatMaxGapTime_Overridden = directorLocal.heatMaxGapTime_Overridden,
 				heatOvertakeBonus_Overridden = directorLocal.heatOvertakeBonus_Overridden,
+				heatPositionBattle_Overridden = directorLocal.heatPositionBattle_Overridden,
 				heatBias_Overridden = directorLocal.heatBias_Overridden,
 
 				preferredCarUserIds = directorLocal.preferredCarUserIds_Overridden ? directorLocal.preferredCarUserIds : directorGlobal.preferredCarUserIds,

@@ -365,6 +365,9 @@ namespace iRacingTVController
 
 				foreach ( var normalizedCar in normalizedCars )
 				{
+					normalizedCar.carIdxInFrontLastFrame = normalizedCar.normalizedCarInFront?.carIdx ?? -1;
+					normalizedCar.carIdxBehindLastFrame = normalizedCar.normalizedCarBehind?.carIdx ?? -1;
+
 					normalizedCar.normalizedCarInFront = null;
 					normalizedCar.normalizedCarBehind = null;
 
@@ -518,9 +521,18 @@ namespace iRacingTVController
 							normalizedCar.heat = 0;
 
 							var heatGapTime = 0.0f;
+							var heatPositionBattle = 1.0f;
 
 							if ( normalizedCar.normalizedCarInFront != null )
 							{
+								if ( normalizedCar.classID == normalizedCar.normalizedCarInFront.classID )
+								{
+									if ( normalizedCar.displayedPosition == ( normalizedCar.normalizedCarInFront.displayedPosition + 1 ) )
+									{
+										heatPositionBattle = Settings.director.heatPositionBattle;
+									}
+								}
+
 								var checkpointTimeHis = normalizedCar.normalizedCarInFront.checkpoints[ normalizedCar.checkpointIdx ];
 								var checkpointTimeMine = normalizedCar.checkpoints[ normalizedCar.checkpointIdx ];
 
@@ -528,7 +540,7 @@ namespace iRacingTVController
 								{
 									heatGapTime = ( (float) ( checkpointTimeMine - checkpointTimeHis ) - 0.1f ) / ( Settings.director.heatMaxGapTime - 0.1f );
 
-									normalizedCar.heat = (float) Math.Pow( Math.Max( 0, Math.Min( 1, 1 - heatGapTime ) ), 2 );
+									normalizedCar.heat = (float) Math.Pow( Math.Max( 0, Math.Min( 1, 1 - heatGapTime ) ), 2 ) * heatPositionBattle;
 								}
 							}
 
@@ -540,7 +552,7 @@ namespace iRacingTVController
 
 							if ( deltaHeatGapTime < 0 )
 							{
-								heatBonus = Math.Max( 0, Math.Min( 1, 1 - heatGapTime ) ) * Settings.director.heatOvertakeBonus;
+								heatBonus = Math.Max( 0, Math.Min( 1, 1 - heatGapTime ) ) * Settings.director.heatOvertakeBonus * heatPositionBattle;
 							}
 							else if ( deltaHeatGapTime > 0 )
 							{

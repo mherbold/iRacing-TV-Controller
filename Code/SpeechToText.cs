@@ -53,9 +53,12 @@ namespace iRacingTVController
 
 			foreach ( var deviceInformation in deviceInformationList )
 			{
-				audioCaptureDevices.Add( deviceInformation.Name, deviceInformation.Id );
+				if ( !audioCaptureDevices.ContainsKey( deviceInformation.Name ) )
+				{
+					audioCaptureDevices.Add( deviceInformation.Name, deviceInformation.Id );
 
-				LogFile.Write( $"...found {deviceInformation.Name}\r\n" );
+					LogFile.Write( $"...found {deviceInformation.Name}\r\n" );
+				}
 			}
 
 			return audioCaptureDevices;

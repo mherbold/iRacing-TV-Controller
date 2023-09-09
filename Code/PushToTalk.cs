@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 using Windows.Devices.Enumeration;
 
 using NAudio.CoreAudioApi;
-using System.Text.RegularExpressions;
 
 namespace iRacingTVController
 {
@@ -26,9 +26,12 @@ namespace iRacingTVController
 
 			foreach ( var deviceInformation in deviceInformationList )
 			{
-				audioRenderDevices.Add( deviceInformation.Name, deviceInformation.Id );
+				if ( !audioRenderDevices.ContainsKey( deviceInformation.Name ) )
+				{
+					audioRenderDevices.Add( deviceInformation.Name, deviceInformation.Id );
 
-				LogFile.Write( $"...found {deviceInformation.Name}\r\n" );
+					LogFile.Write( $"...found {deviceInformation.Name}\r\n" );
+				}
 			}
 
 			return audioRenderDevices;

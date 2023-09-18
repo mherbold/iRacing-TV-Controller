@@ -1,12 +1,12 @@
 ﻿
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 using Aydsko.iRacingData.Common;
 
-using irsdkSharp.Serialization.Enums.Fastest;
 using irsdkSharp.Serialization.Models.Session.DriverInfo;
 
 using static iRacingTVController.Unity;
@@ -32,6 +32,7 @@ namespace iRacingTVController
 
 		public bool includeInLeaderboard = false;
 		public bool hasCrossedStartLine = false;
+		public bool hasCrossedFinishLine = false;
 		public bool isOnPitRoad = false;
 		public bool wasOnPitRoad = false;
 		public bool isOutOfCar = false;
@@ -50,6 +51,10 @@ namespace iRacingTVController
 		public int displayedPosition = 0;
 		public int qualifyingPosition = 0;
 
+		public int currentLap = 0;
+		public int currentLapLastFrame = 0;
+
+		public float lastLapTime = 0;
 		public float bestLapTime = 0;
 		public float bestLapTimeLastFrame = 0;
 		public float qualifyingTime = 0;
@@ -66,7 +71,8 @@ namespace iRacingTVController
 		public float checkpointTime = 0;
 		public int checkpointIdx = 0;
 		public int checkpointIdxLastFrame = 0;
-		public double[] checkpoints = new double[ NormalizedSession.MaxNumCheckpoints ];
+		public double[] sessionTimeCheckpoints = new double[ NormalizedSession.MaxNumCheckpoints ];
+		public float[] speedCheckpoints = new float[ NormalizedSession.MaxNumCheckpoints ];
 
 		public float heat = 0;
 		public float heatBonus = 0;
@@ -76,6 +82,8 @@ namespace iRacingTVController
 
 		public NormalizedCar? normalizedCarInFront = null;
 		public NormalizedCar? normalizedCarBehind = null;
+
+		public NormalizedCar? normalizedCarForTelemetry = null;
 
 		public float distanceToCarInFrontInMeters = 0;
 		public float distanceToCarBehindInMeters = 0;
@@ -130,6 +138,7 @@ namespace iRacingTVController
 			includeInLeaderboard = false;
 
 			hasCrossedStartLine = false;
+			hasCrossedFinishLine = false;
 
 			isOnPitRoad = false;
 			wasOnPitRoad = false;
@@ -148,6 +157,10 @@ namespace iRacingTVController
 			displayedPosition = 0;
 			qualifyingPosition = 0;
 
+			currentLap = 0;
+			currentLapLastFrame = 0;
+
+			lastLapTime = 0;
 			bestLapTime = 0;
 			bestLapTimeLastFrame = 0;
 			qualifyingTime = 0;
@@ -171,6 +184,8 @@ namespace iRacingTVController
 
 			normalizedCarInFront = null;
 			normalizedCarBehind = null;
+
+			normalizedCarForTelemetry = null;
 
 			distanceToCarInFrontInMeters = float.MaxValue;
 			distanceToCarBehindInMeters = float.MaxValue;
@@ -198,9 +213,10 @@ namespace iRacingTVController
 			gear = 0;
 			rpm = 0;
 
-			for ( var i = 0; i < checkpoints.Length; i++ )
+			for ( var i = 0; i < sessionTimeCheckpoints.Length; i++ )
 			{
-				checkpoints[ i ] = 0;
+				sessionTimeCheckpoints[ i ] = 0;
+				speedCheckpoints[ i ] = 0;
 			}
 		}
 
@@ -214,6 +230,7 @@ namespace iRacingTVController
 			var car = IRSDK.data.Cars[ carIdx ];
 
 			hasCrossedStartLine = false;
+			hasCrossedFinishLine = false;
 
 			isOnPitRoad = car.CarIdxOnPitRoad;
 			wasOnPitRoad = isOnPitRoad;
@@ -228,6 +245,10 @@ namespace iRacingTVController
 			classPosition = 0;
 			displayedPosition = 0;
 
+			currentLap = 0;
+			currentLapLastFrame = 0;
+
+			lastLapTime = 0;
 			bestLapTime = 0;
 			bestLapTimeLastFrame = 0;
 
@@ -247,6 +268,11 @@ namespace iRacingTVController
 			heatBias = 0;
 			heatTotal = 0;
 			heatGapTime = 0;
+
+			normalizedCarInFront = null;
+			normalizedCarBehind = null;
+
+			normalizedCarForTelemetry = null;
 
 			distanceToCarInFrontInMeters = 0;
 			distanceToCarBehindInMeters = 0;
@@ -278,9 +304,10 @@ namespace iRacingTVController
 			gear = 0;
 			rpm = 0;
 
-			for ( var i = 0; i < checkpoints.Length; i++ )
+			for ( var i = 0; i < sessionTimeCheckpoints.Length; i++ )
 			{
-				checkpoints[ i ] = 0;
+				sessionTimeCheckpoints[ i ] = 0;
+				speedCheckpoints[ i ] = 0;
 			}
 		}
 
@@ -463,7 +490,6 @@ namespace iRacingTVController
 			if ( !includeInLeaderboard )
 			{
 				lapDistPct = Math.Max( 0, car.CarIdxLapDistPct );
-
 				return;
 			}
 
@@ -528,23 +554,34 @@ namespace iRacingTVController
 					lapDistPctDelta += 1.0f;
 				}
 
-				if ( hasCrossedStartLine )
+				if ( car.CarIdxLap <= 0 )
 				{
-					if ( IRSDK.normalizedData.sessionState <= SessionState.StateParadeLaps )
-					{
-						hasCrossedStartLine = false;
-					}
+					hasCrossedStartLine = false;
+					hasCrossedFinishLine = false;
 				}
-				else if ( car.CarIdxLap >= 2 )
+				else if ( car.CarIdxLap == 1 )
 				{
-					hasCrossedStartLine = true;
-				}
-				else if ( !isOnPitRoad )
-				{
-					if ( ( car.CarIdxLap == 1 ) && ( newCarIdxLapDistPct > 0 ) && ( newCarIdxLapDistPct < 0.5f ) )
+					hasCrossedFinishLine = false;
+
+					if ( !isOnPitRoad && ( ( newCarIdxLapDistPct > 0 ) && ( newCarIdxLapDistPct < 0.5 ) ) )
 					{
 						hasCrossedStartLine = true;
 					}
+				}
+				else if ( car.CarIdxLap <= IRSDK.normalizedData.sessionLapsTotal )
+				{
+					hasCrossedStartLine = true;
+					hasCrossedFinishLine = false;
+				}
+				else
+				{
+					hasCrossedStartLine = true;
+					hasCrossedFinishLine = true;
+				}
+
+				if ( hasCrossedStartLine )
+				{
+					lapPosition = Math.Max( 0, lapPosition );
 				}
 
 				var newLapPosition = car.CarIdxLap + newCarIdxLapDistPct - 1;
@@ -564,22 +601,84 @@ namespace iRacingTVController
 
 			if ( IRSDK.normalizedSession.isInRaceSession && !hasCrossedStartLine )
 			{
-				lapPosition = -1 - qualifyingPosition / 200.0f;
+				lapPosition = qualifyingPosition / -200.0f;
 			}
 
-			checkpointIdxLastFrame = this.checkpointIdx;
+			currentLapLastFrame = currentLap;
 
-			var checkpointIdx = (int) Math.Max( 0, Math.Floor( lapDistPct * IRSDK.normalizedSession.numCheckpoints ) ) % IRSDK.normalizedSession.numCheckpoints;
+			currentLap = (int) Math.Floor( lapPosition ) + 1;
 
-			if ( checkpointIdx != this.checkpointIdx )
+			if ( currentLapLastFrame == 0 )
 			{
-				this.checkpointIdx = checkpointIdx;
+				currentLapLastFrame = currentLap;
+			}
 
-				checkpoints[ checkpointIdx ] = IRSDK.normalizedData.sessionTime;
+			if ( currentLap == ( currentLapLastFrame + 1 ) )
+			{
+				if ( sessionTimeCheckpoints[ 0 ] > 0 )
+				{
+					lastLapTime = (float) ( IRSDK.normalizedData.sessionTime - sessionTimeCheckpoints[ 0 ] );
+				}
+				else
+				{
+					lastLapTime = 0;
+				}
 			}
 
 			distanceMovedInMeters = lapDistPctDelta * IRSDK.normalizedSession.trackLengthInMeters;
 			speedInMetersPerSecond = distanceMovedInMeters / (float) IRSDK.normalizedData.sessionTimeDelta;
+
+			checkpointIdxLastFrame = checkpointIdx;
+
+			var targetCheckpointIdx = (int) Math.Max( 0, Math.Floor( lapDistPct * IRSDK.normalizedSession.numCheckpoints ) ) % IRSDK.normalizedSession.numCheckpoints;
+
+			if ( IRSDK.normalizedData.replayFrameNum < IRSDK.normalizedData.replayFrameNumLastFrame )
+			{
+				for ( var i = 0; i < sessionTimeCheckpoints.Length; i++ )
+				{
+					sessionTimeCheckpoints[ i ] = 0;
+					speedCheckpoints[ i ] = 0;
+				}
+
+				checkpointIdx = targetCheckpointIdx;
+			}
+
+			if ( checkpointIdx != targetCheckpointIdx )
+			{
+				var numSteps = targetCheckpointIdx - checkpointIdx;
+
+				if ( numSteps < 0 )
+				{
+					numSteps += IRSDK.normalizedSession.numCheckpoints;
+				}
+
+				if ( ( numSteps == 1 ) || ( numSteps > 10 ) )
+				{
+					sessionTimeCheckpoints[ targetCheckpointIdx ] = IRSDK.normalizedData.sessionTime;
+					speedCheckpoints[ targetCheckpointIdx ] = speedInMetersPerSecond;
+				}
+				else
+				{
+					var startSessionTime = sessionTimeCheckpoints[ checkpointIdx ];
+					var startSpeed = speedCheckpoints[ checkpointIdx ];
+
+					var stepSize = 1f / numSteps;
+
+					var nextCheckpointIdx = ( checkpointIdxLastFrame + 1 ) % IRSDK.normalizedSession.numCheckpoints;
+
+					for ( var step = 0; step < numSteps; step++ )
+					{
+						var t = stepSize * step;
+
+						sessionTimeCheckpoints[ nextCheckpointIdx ] = Program.Lerp( startSessionTime, IRSDK.normalizedData.sessionTime, t );
+						speedCheckpoints[ nextCheckpointIdx ] = (float) Program.Lerp( startSpeed, speedInMetersPerSecond, t );
+
+						nextCheckpointIdx++;
+					}
+				}
+
+				checkpointIdx = targetCheckpointIdx;
+			}
 
 			sessionFlagsLastFrame = sessionFlags;
 			sessionFlags = (uint) car.CarIdxSessionFlags;
@@ -597,7 +696,12 @@ namespace iRacingTVController
 			}
 
 			gear = car.CarIdxGear;
-			rpm = car.CarIdxRPM;
+			rpm = Math.Max( 0, car.CarIdxRPM );
+
+			if ( rpm < 500 )
+			{
+				rpm = 0;
+			}
 		}
 
 		public void GenerateAbbrevName( bool includeFirstNameInitial )
@@ -623,7 +727,7 @@ namespace iRacingTVController
 
 				if ( userNameIndex >= 0 )
 				{
-					abbrevName = userNameParts[ userNameIndex ];
+					abbrevName = userNameParts[ userNameIndex ] + " " + abbrevName;
 				}
 			}
 
@@ -775,6 +879,11 @@ namespace iRacingTVController
 		public static Comparison<NormalizedCar> LapPositionComparison = delegate ( NormalizedCar a, NormalizedCar b )
 		{
 			int result;
+
+			if ( a.hasCrossedFinishLine && b.hasCrossedFinishLine )
+			{
+				return OverallPositionComparison( a, b );
+			}
 
 			if ( a.includeInLeaderboard && b.includeInLeaderboard )
 			{

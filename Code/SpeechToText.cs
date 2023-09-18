@@ -228,7 +228,7 @@ namespace iRacingTVController
 				return;
 			}
 
-			mutex.WaitOne();
+			mutex.WaitOne( 5000 );
 
 			startSimTimeList.Add( new SimTime( sessionNumber, sessionTime ) );
 
@@ -244,7 +244,7 @@ namespace iRacingTVController
 				return;
 			}
 
-			mutex.WaitOne();
+			mutex.WaitOne( 5000 );
 
 			var startCount = startSimTimeList.Count + ( ( ( state == State.Starting ) || ( state == State.Started ) ) ? 1 : 0 );
 
@@ -265,7 +265,7 @@ namespace iRacingTVController
 				return;
 			}
 
-			mutex.WaitOne();
+			mutex.WaitOne( 5000 );
 
 			startSimTimeList.Clear();
 			stopSimTimeList.Clear();
@@ -295,7 +295,7 @@ namespace iRacingTVController
 				return;
 			}
 
-			mutex.WaitOne();
+			mutex.WaitOne( 5000 );
 
 			switch ( state )
 			{
@@ -345,7 +345,7 @@ namespace iRacingTVController
 
 			if ( speechRecognizer != null )
 			{
-				mutex.WaitOne();
+				mutex.WaitOne( 5000 );
 
 				if ( state == State.Stopped )
 				{
@@ -365,7 +365,7 @@ namespace iRacingTVController
 
 		public static string GetRecognizingString()
 		{
-			mutex.WaitOne();
+			mutex.WaitOne( 5000 );
 
 			var recognizingStringCopy = new string( recognizingString );
 

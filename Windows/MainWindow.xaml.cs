@@ -67,7 +67,6 @@ namespace iRacingTVController
 		public bool voiceOfOn;
 		public bool subtitlesOn;
 		public bool introOn;
-		public bool hudOn;
 
 		public bool[] customLayerOn = new bool[ 6 ];
 
@@ -582,7 +581,6 @@ namespace iRacingTVController
 			ControlPanel_VoiceOf_Button.IsChecked = voiceOfOn = Settings.overlay.voiceOfEnabled;
 			ControlPanel_Subtitles_Button.IsChecked = subtitlesOn = Settings.overlay.subtitleEnabled;
 			ControlPanel_Intro_Button.IsChecked = introOn = Settings.overlay.introEnabled;
-			ControlPanel_Hud_Button.IsChecked = hudOn = Settings.overlay.hudEnabled;
 
 			ControlPanel_C1_Button.IsChecked = customLayerOn[ 0 ] = Settings.overlay.imageSettingsDataDictionary[ "CustomLayer1" ].imageType != SettingsImage.ImageType.None;
 			ControlPanel_C2_Button.IsChecked = customLayerOn[ 1 ] = Settings.overlay.imageSettingsDataDictionary[ "CustomLayer2" ].imageType != SettingsImage.ImageType.None;
@@ -808,6 +806,13 @@ namespace iRacingTVController
 			Update( Overlay_Hud_SpeechToTextPosition_X, Overlay_Hud_SpeechToTextPosition_Y, Settings.overlay.hudSpeechToTextPosition, Overlay_Hud_SpeechToTextPosition_Override, overlayIsGlobal, Settings.overlay.hudSpeechToTextPosition_Overridden );
 			Update( Overlay_Hud_SpeechToTextMaxSize_W, Overlay_Hud_SpeechToTextMaxSize_H, Settings.overlay.hudSpeechToTextMaxSize, Overlay_Hud_SpeechToTextMaxSize_Override, overlayIsGlobal, Settings.overlay.hudSpeechToTextMaxSize_Overridden );
 			Update( Overlay_Hud_SpeechToTextTextPadding_X, Overlay_Hud_SpeechToTextTextPadding_Y, Settings.overlay.hudSpeechToTextTextPadding, Overlay_Hud_SpeechToTextTextPadding_Override, overlayIsGlobal, Settings.overlay.hudSpeechToTextTextPadding_Overridden );
+
+			// overlay - trainer
+
+			Update( Overlay_Trainer_Enable, Settings.overlay.trainerEnabled, Overlay_Trainer_Enable_Override, overlayIsGlobal, Settings.overlay.trainerEnabled_Overridden );
+			Update( Overlay_Trainer_Position_X, Overlay_Trainer_Position_Y, Settings.overlay.trainerPosition, Overlay_Trainer_Position_Override, overlayIsGlobal, Settings.overlay.trainerPosition_Overridden );
+			Update( Overlay_Trainer_Size_W, Overlay_Trainer_Size_H, Settings.overlay.trainerSize, Overlay_Trainer_Size_Override, overlayIsGlobal, Settings.overlay.trainerSize_Overridden );
+			Update( Overlay_Trainer_SpeedScale, Settings.overlay.trainerSpeedScale, Overlay_Trainer_SpeedScale_Override, overlayIsGlobal, Settings.overlay.trainerSpeedScale_Overridden );
 
 			// web page
 
@@ -1125,7 +1130,7 @@ namespace iRacingTVController
 							cpb.label[ 0 ].Content = $"P{normalizedCar.leaderboardIndex}";
 							cpb.label[ 1 ].Content = $"#{normalizedCar.carNumber}";
 
-							if ( normalizedCar.heatTotal > 0 )
+							if ( normalizedCar.heatTotal > 0.025f )
 							{
 								cpb.label[ 2 ].Content = $"{normalizedCar.heat:0.0}+{normalizedCar.heatBonus:0.0}+{normalizedCar.heatBias:0.0}";
 							}
@@ -1139,30 +1144,41 @@ namespace iRacingTVController
 
 							if ( normalizedCar.heatTotal > 0 )
 							{
+								var t = (int) Math.Floor( normalizedCar.heatTotal % 1 * 127 );
+
 								var r = 0;
 								var g = 0;
 								var b = 0;
 
 								if ( normalizedCar.heatTotal < 1 )
 								{
-									r = g = 255;
-									b = (int) Math.Round( 255 - ( normalizedCar.heatTotal - 0 ) * 255 * 0.5 );
+									r = 255 - t;
+									g = 255;
+									b = 255;
 								}
 								else if ( normalizedCar.heatTotal < 2 )
 								{
-									r = 255;
-									g = (int) Math.Round( 255 - ( normalizedCar.heatTotal - 1 ) * 255 * 0.5 );
-									b = 128;
+									r = 127 + t;
+									g = 255;
+									b = 255 - t;
 								}
 								else if ( normalizedCar.heatTotal < 3 )
 								{
 									r = 255;
-									g = b = (int) Math.Round( 128 - ( normalizedCar.heatTotal - 2 ) * 255 * 0.5 );
+									g = 255 - t;
+									b = 127;
+								}
+								else if ( normalizedCar.heatTotal < 4 )
+								{
+									r = 255;
+									g = 127 - t;
+									b = 127 - t;
 								}
 								else
 								{
 									r = 255;
-									g = b = 0;
+									g = 0;
+									b = 0;
 								}
 
 								backgroundButton = new System.Windows.Media.SolidColorBrush( System.Windows.Media.Color.FromArgb( 255, (byte) r, (byte) g, (byte) b ) );
@@ -1395,7 +1411,6 @@ namespace iRacingTVController
 			voiceOfOn = ControlPanel_VoiceOf_Button.IsChecked ?? false;
 			subtitlesOn = ControlPanel_Subtitles_Button.IsChecked ?? false;
 			introOn = ControlPanel_Intro_Button.IsChecked ?? false;
-			hudOn = ControlPanel_Hud_Button.IsChecked ?? false;
 
 			customLayerOn[ 0 ] = ControlPanel_C1_Button.IsChecked ?? false;
 			customLayerOn[ 1 ] = ControlPanel_C2_Button.IsChecked ?? false;
@@ -4221,6 +4236,78 @@ namespace iRacingTVController
 					var overlay = Settings.overlayLocal.hudSpeechToTextTextPadding_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
 
 					overlay.hudSpeechToTextTextPadding = new Vector2Int( Overlay_Hud_SpeechToTextTextPadding_X.Value, Overlay_Hud_SpeechToTextTextPadding_Y.Value );
+				}
+
+				IPC.readyToSendSettings = true;
+
+				Settings.saveOverlayToFileQueued = true;
+			}
+		}
+
+		private void Overlay_Trainer_Update( object sender, EventArgs e )
+		{
+			if ( initializing == 0 )
+			{
+				var overridden = Overlay_Trainer_Enable_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.trainerEnabled_Overridden != overridden )
+				{
+					Settings.overlayLocal.trainerEnabled_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.trainerEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.trainerEnabled = Overlay_Trainer_Enable.IsChecked ?? false;
+				}
+
+				overridden = Overlay_Trainer_Position_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.trainerPosition_Overridden != overridden )
+				{
+					Settings.overlayLocal.trainerPosition_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.trainerPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.trainerPosition.x = Overlay_Trainer_Position_X.Value;
+					overlay.trainerPosition.y = Overlay_Trainer_Position_Y.Value;
+				}
+
+				overridden = Overlay_Trainer_Size_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.trainerSize_Overridden != overridden )
+				{
+					Settings.overlayLocal.trainerSize_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.trainerSize_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.trainerSize.x = Overlay_Trainer_Size_W.Value;
+					overlay.trainerSize.y = Overlay_Trainer_Size_H.Value;
+				}
+
+				overridden = Overlay_Trainer_SpeedScale_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.trainerSpeedScale_Overridden != overridden )
+				{
+					Settings.overlayLocal.trainerSpeedScale_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.trainerSpeedScale_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.trainerSpeedScale = Overlay_Trainer_SpeedScale.Value;
 				}
 
 				IPC.readyToSendSettings = true;

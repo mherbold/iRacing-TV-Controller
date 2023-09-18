@@ -162,6 +162,16 @@ namespace iRacingTVController
 		public bool hudSpeechToTextMaxSize_Overridden = false;
 		public bool hudSpeechToTextTextPadding_Overridden = false;
 
+		public bool trainerEnabled = false;
+		public Vector2 trainerPosition = new( 640, 540 );
+		public Vector2 trainerSize = new( 640, 256 );
+		public float trainerSpeedScale = 10;
+
+		public bool trainerEnabled_Overridden = false;
+		public bool trainerPosition_Overridden = false;
+		public bool trainerSize_Overridden = false;
+		public bool trainerSpeedScale_Overridden = false;
+
 		public SerializableDictionary<string, SettingsText> textSettingsDataDictionary = new();
 		public SerializableDictionary<string, SettingsImage> imageSettingsDataDictionary = new();
 		public SerializableDictionary<string, SettingsTranslation> translationDictionary = new();

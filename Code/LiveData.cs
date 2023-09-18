@@ -33,6 +33,7 @@ namespace iRacingTVController
 		[JsonInclude] public LiveDataTrackMap liveDataTrackMap = new();
 		[JsonInclude, XmlIgnore] public LiveDataEventLog liveDataEventLog = new();
 		public LiveDataHud liveDataHud = new();
+		public LiveDataTrainer liveDataTrainer = new();
 
 		public string seriesLogoTextureUrl = string.Empty;
 
@@ -103,6 +104,7 @@ namespace iRacingTVController
 			UpdateStartLights();
 			UpdateEventLog();
 			UpdateHud();
+			UpdateTrainer();
 
 			seriesLogoTextureUrl = IRSDK.normalizedSession.seriesLogoTextureUrl;
 
@@ -127,7 +129,6 @@ namespace iRacingTVController
 			liveDataControlPanel.voiceOfOn = MainWindow.Instance.voiceOfOn;
 			liveDataControlPanel.subtitlesOn = MainWindow.Instance.subtitlesOn;
 			liveDataControlPanel.introOn = MainWindow.Instance.introOn;
-			liveDataControlPanel.hudOn = MainWindow.Instance.hudOn;
 			liveDataControlPanel.customLayerOn = MainWindow.Instance.customLayerOn;
 		}
 
@@ -325,9 +326,10 @@ namespace iRacingTVController
 				currentLiveDataLeaderboard.className = currentLeaderboardClass.name;
 				currentLiveDataLeaderboard.classNameShort = currentLeaderboardClass.shortName;
 
-				NormalizedCar? carInFront = null;
+				NormalizedCar? normalizedCarClassLeader = null;
+				NormalizedCar? normalizedCarInFront = null;
 
-				var leadCarBestLapTime = 0.0f;
+				var classLeaderBestLapTime = 0.0f;
 				var carsShown = 0;
 
 				// reset leaderboard slots to be hidden
@@ -356,11 +358,13 @@ namespace iRacingTVController
 
 					if ( normalizedCar.includeInLeaderboard )
 					{
-						// lead car best lap time
+						// class leader best lap time
 
-						if ( carInFront == null )
+						if ( normalizedCarClassLeader == null )
 						{
-							leadCarBestLapTime = normalizedCar.bestLapTime;
+							normalizedCarClassLeader = normalizedCar;
+
+							classLeaderBestLapTime = normalizedCar.bestLapTime;
 						}
 
 						// check if the car is visible on the leaderboard
@@ -481,44 +485,52 @@ namespace iRacingTVController
 						{
 							if ( normalizedCar.bestLapTime > 0 )
 							{
-								if ( leadCarBestLapTime == normalizedCar.bestLapTime )
+								if ( classLeaderBestLapTime == normalizedCar.bestLapTime )
 								{
-									liveDataLeaderboardSlot.telemetryText = Program.GetTimeString( leadCarBestLapTime, true );
+									liveDataLeaderboardSlot.telemetryText = Program.GetTimeString( classLeaderBestLapTime, true );
 								}
 								else
 								{
-									var deltaTime = normalizedCar.bestLapTime - leadCarBestLapTime;
+									var deltaTime = normalizedCar.bestLapTime - classLeaderBestLapTime;
 
 									liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{deltaTime:0.000}";
 								}
 							}
+
+							normalizedCar.checkpointTime = 0;
 						}
 						else if ( normalizedCar.isOnPitRoad )
 						{
 							liveDataLeaderboardSlot.telemetryText = Settings.overlay.translationDictionary[ "Pit" ].translation;
 							liveDataLeaderboardSlot.telemetryColor = Settings.overlay.telemetryPitColor;
+
+							normalizedCar.checkpointTime = 0;
 						}
 						else if ( normalizedCar.isOutOfCar )
 						{
 							liveDataLeaderboardSlot.telemetryText = Settings.overlay.translationDictionary[ "Out" ].translation;
 							liveDataLeaderboardSlot.telemetryColor = Settings.overlay.telemetryOutColor;
+
+							normalizedCar.checkpointTime = 0;
 						}
 						else if ( IRSDK.normalizedSession.isInRaceSession )
 						{
-							if ( ( IRSDK.normalizedData.sessionState == SessionState.StateRacing ) && normalizedCar.hasCrossedStartLine )
+							if ( normalizedCar.hasCrossedStartLine )
 							{
 								if ( normalizedCar.lapPositionRelativeToClassLeader >= 1.0f )
 								{
 									var wholeLapsDown = Math.Floor( normalizedCar.lapPositionRelativeToClassLeader );
 
 									liveDataLeaderboardSlot.telemetryText = $"-{wholeLapsDown:0} {Settings.overlay.translationDictionary[ "LapsAbbreviation" ].translation}";
-								}
-								else if ( !IRSDK.normalizedData.isUnderCaution )
-								{
-									var lapPosition = Settings.overlay.telemetryIsBetweenCars ? ( ( carInFront == null ) ? 0 : ( carInFront.lapPosition - normalizedCar.lapPosition ) ) : normalizedCar.lapPositionRelativeToClassLeader;
 
-									if ( lapPosition > 0 )
+									normalizedCar.checkpointTime = 0;
+								}
+								else if ( !IRSDK.normalizedData.isUnderCaution && ( normalizedCarInFront != null ) )
+								{
+									if ( !normalizedCar.hasCrossedFinishLine && !normalizedCarInFront.hasCrossedFinishLine )
 									{
+										var lapPosition = Settings.overlay.telemetryIsBetweenCars ? ( normalizedCarInFront.lapPosition - normalizedCar.lapPosition ) : normalizedCar.lapPositionRelativeToClassLeader;
+
 										if ( Settings.overlay.telemetryMode == 0 )
 										{
 											liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{lapPosition:0.000} {Settings.overlay.translationDictionary[ "LapsAbbreviation" ].translation}";
@@ -550,27 +562,64 @@ namespace iRacingTVController
 										}
 										else
 										{
-											if ( ( carInFront != null ) && ( carInFront.checkpoints[ normalizedCar.checkpointIdx ] > 0 ) )
+											if ( Settings.overlay.telemetryIsBetweenCars )
 											{
-												if ( !splitLeaderboard )
+												if ( normalizedCarInFront.sessionTimeCheckpoints[ normalizedCar.checkpointIdx ] > 0 )
 												{
-													var checkpointTime = Math.Abs( (float) ( normalizedCar.checkpoints[ normalizedCar.checkpointIdx ] - carInFront.checkpoints[ normalizedCar.checkpointIdx ] ) );
+													if ( !splitLeaderboard )
+													{
+														var checkpointTime = Math.Abs( (float) ( normalizedCar.sessionTimeCheckpoints[ normalizedCar.checkpointIdx ] - normalizedCarInFront.sessionTimeCheckpoints[ normalizedCar.checkpointIdx ] ) );
 
-													if ( ( normalizedCar.normalizedCarInFront == null ) || ( normalizedCar.carIdxInFrontLastFrame == normalizedCar.normalizedCarInFront.carIdx ) )
-													{
-														normalizedCar.checkpointTime = normalizedCar.checkpointTime * 0.95f + checkpointTime * 0.05f;
+														if ( ( normalizedCar.checkpointTime != 0 ) && ( normalizedCar.normalizedCarForTelemetry != null ) && ( normalizedCarInFront.carIdx == normalizedCar.normalizedCarForTelemetry.carIdx ) )
+														{
+															normalizedCar.checkpointTime = normalizedCar.checkpointTime * 0.95f + checkpointTime * 0.05f;
+														}
+														else
+														{
+															normalizedCar.normalizedCarForTelemetry = normalizedCarInFront;
+
+															normalizedCar.checkpointTime = checkpointTime;
+														}
 													}
-													else
-													{
-														normalizedCar.checkpointTime = checkpointTime;
-													}
+
+													liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{normalizedCar.checkpointTime:0.00}";
 												}
-
-												liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{normalizedCar.checkpointTime:0.00}";
 											}
+											else if ( normalizedCarClassLeader != null )
+											{
+												if ( normalizedCarClassLeader.sessionTimeCheckpoints[ normalizedCar.checkpointIdx ] > 0 )
+												{
+													if ( !splitLeaderboard )
+													{
+														var checkpointTime = Math.Abs( (float) ( normalizedCar.sessionTimeCheckpoints[ normalizedCar.checkpointIdx ] - normalizedCarClassLeader.sessionTimeCheckpoints[ normalizedCar.checkpointIdx ] ) );
+
+														if ( ( normalizedCar.checkpointTime != 0 ) && ( normalizedCar.normalizedCarForTelemetry != null ) && ( normalizedCarClassLeader.carIdx == normalizedCar.normalizedCarForTelemetry.carIdx ) )
+														{
+															normalizedCar.checkpointTime = normalizedCar.checkpointTime * 0.95f + checkpointTime * 0.05f;
+														}
+														else
+														{
+															normalizedCar.normalizedCarForTelemetry = normalizedCarClassLeader;
+
+															normalizedCar.checkpointTime = checkpointTime;
+														}
+													}
+
+													liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{normalizedCar.checkpointTime:0.00}";
+												}
+											}
+										}
+
+										if ( liveDataLeaderboardSlot.telemetryText == string.Empty )
+										{
+											normalizedCar.checkpointTime = 0;
 										}
 									}
 								}
+							}
+							else
+							{
+								normalizedCar.checkpointTime = 0;
 							}
 						}
 
@@ -598,10 +647,7 @@ namespace iRacingTVController
 							normalizedCar.wasVisibleOnLeaderboard = true;
 						}
 
-						if ( ( carInFront == null ) || Settings.overlay.telemetryIsBetweenCars )
-						{
-							carInFront = normalizedCar;
-						}
+						normalizedCarInFront = normalizedCar;
 					}
 				}
 
@@ -812,7 +858,7 @@ namespace iRacingTVController
 
 			// fuel
 
-			liveDataHud.fuel = "?.??";
+			liveDataHud.fuel = "-.--";
 			liveDataHud.fuelColor = Settings.overlay.textSettingsDataDictionary[ "HudFuel" ].tintColor;
 
 			if ( IRSDK.normalizedData.highestLapFuelLevelDelta > 0 )
@@ -829,7 +875,7 @@ namespace iRacingTVController
 
 			// laps to leader
 
-			if ( normalizedCar.lapPositionRelativeToClassLeader == 0 )
+			if ( !IRSDK.normalizedSession.isInRaceSession || ( normalizedCar.lapPositionRelativeToClassLeader <= 0 ) )
 			{
 				liveDataHud.lapsToLeader = "-.---";
 			}
@@ -843,10 +889,10 @@ namespace iRacingTVController
 			liveDataHud.gapTimeFront = "-.--";
 			liveDataHud.gapTimeFrontColor = Settings.overlay.textSettingsDataDictionary[ "HudGapTimeFront" ].tintColor;
 
-			if ( normalizedCar.normalizedCarInFront != null )
+			if ( !IRSDK.normalizedSession.isInQualifyingSession && ( normalizedCar.normalizedCarInFront != null ) )
 			{
-				var checkpointTimeHis = normalizedCar.normalizedCarInFront.checkpoints[ normalizedCar.checkpointIdx ];
-				var checkpointTimeMine = normalizedCar.checkpoints[ normalizedCar.checkpointIdx ];
+				var checkpointTimeHis = normalizedCar.normalizedCarInFront.sessionTimeCheckpoints[ normalizedCar.checkpointIdx ];
+				var checkpointTimeMine = normalizedCar.sessionTimeCheckpoints[ normalizedCar.checkpointIdx ];
 
 				if ( ( checkpointTimeHis > 0 ) && ( checkpointTimeMine > 0 ) && ( checkpointTimeMine >= checkpointTimeHis ) )
 				{
@@ -879,10 +925,10 @@ namespace iRacingTVController
 			liveDataHud.gapTimeBack = "-.--";
 			liveDataHud.gapTimeBackColor = Settings.overlay.textSettingsDataDictionary[ "HudGapTimeBack" ].tintColor;
 
-			if ( normalizedCar.normalizedCarBehind != null )
+			if ( !IRSDK.normalizedSession.isInQualifyingSession && ( normalizedCar.normalizedCarBehind != null ) )
 			{
-				var checkpointTimeMine = normalizedCar.checkpoints[ normalizedCar.normalizedCarBehind.checkpointIdx ];
-				var checkpointTimeHis = normalizedCar.normalizedCarBehind.checkpoints[ normalizedCar.normalizedCarBehind.checkpointIdx ];
+				var checkpointTimeMine = normalizedCar.sessionTimeCheckpoints[ normalizedCar.normalizedCarBehind.checkpointIdx ];
+				var checkpointTimeHis = normalizedCar.normalizedCarBehind.sessionTimeCheckpoints[ normalizedCar.normalizedCarBehind.checkpointIdx ];
 
 				if ( ( checkpointTimeHis > 0 ) && ( checkpointTimeMine > 0 ) && ( checkpointTimeHis >= checkpointTimeMine ) )
 				{
@@ -1029,6 +1075,14 @@ namespace iRacingTVController
 			{
 				liveDataHud.showRightSpotterIndicator = false;
 			}
+		}
+
+		public void UpdateTrainer()
+		{
+			liveDataTrainer.drawVectorListA = Trainer.drawVectorListA;
+			liveDataTrainer.drawVectorListB = Trainer.drawVectorListB;
+
+			liveDataTrainer.message = Trainer.message;
 		}
 	}
 }

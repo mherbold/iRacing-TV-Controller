@@ -324,6 +324,7 @@ namespace iRacingTVController
 				{ "TrackMapCarLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.CarNumber, position = { x = 0, y = -35 }, size = { x = 40, y = 40 } } },
 				{ "TrackMapStartFinishLine", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\track-map-car.png", size = { x = 8, y = 8 }, tintColor = { r = 1, g = 0, b = 0, a = 1 } } },
 				{ "TrackMapCurrentTarget", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\track-map-target.png", size = { x = 32, y = 32 }, position = { x = -1, y = 0 }, tintColor = { r = 57f / 255, g = 181f / 255, b = 74f / 255, a = 1 } } },
+				{ "TrainerBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\generic-background.png", position = { x = -10, y = -10 }, size = { x = 660, y = 256 }, border = { x = 24, y = 24, z = 24, w = 24 }, tintColor = { a = 0.25f } } },
 				{ "VoiceOfBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\voice-of-background.png" } },
 				{ "VoiceOfLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.Car, position = { x = 220, y = -48 }, size = { x = 400, y = 200 } } },
 				{ "VoiceOfLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
@@ -407,6 +408,7 @@ namespace iRacingTVController
 				{ "RaceStatusUnits", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, position = { x = 18, y = 175 }, tintColor = { r = 0.737f, g = 0.741f, b = 0.725f } } },
 				{ "Subtitles", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 40, alignment = TextAlignmentOptions.Center, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
 				{ "TrackMapCarNumber", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 21, alignment = TextAlignmentOptions.Top, position = { x = 0, y = -35 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
+				{ "TrainerMessage", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 21, alignment = TextAlignmentOptions.TopLeft, position = { x = 10, y = 10 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "VoiceOf", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 30, position = { x = 30, y = 10 }, tintColor = { r = 0.434f, g = 0.434f, b = 0.434f } } },
 				{ "VoiceOfDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 38, position = { x = 30, y = 41 }, tintColor = { r = 0.137f, g = 0.122f, b = 0.125f } } },
 			};
@@ -719,6 +721,16 @@ namespace iRacingTVController
 				hudSpeechToTextPosition_Overridden = overlayLocal.hudSpeechToTextPosition_Overridden,
 				hudSpeechToTextMaxSize_Overridden = overlayLocal.hudSpeechToTextMaxSize_Overridden,
 				hudSpeechToTextTextPadding_Overridden = overlayLocal.hudSpeechToTextTextPadding_Overridden,
+
+				trainerEnabled = overlayLocal.trainerEnabled_Overridden ? overlayLocal.trainerEnabled : overlayGlobal.trainerEnabled,
+				trainerPosition = overlayLocal.trainerPosition_Overridden ? overlayLocal.trainerPosition : overlayGlobal.trainerPosition,
+				trainerSize = overlayLocal.trainerSize_Overridden ? overlayLocal.trainerSize : overlayGlobal.trainerSize,
+				trainerSpeedScale = overlayLocal.trainerSpeedScale_Overridden ? overlayLocal.trainerSpeedScale : overlayGlobal.trainerSpeedScale,
+
+				trainerEnabled_Overridden = overlayLocal.trainerEnabled_Overridden,
+				trainerPosition_Overridden = overlayLocal.trainerPosition_Overridden,
+				trainerSize_Overridden = overlayLocal.trainerSize_Overridden,
+				trainerSpeedScale_Overridden = overlayLocal.trainerSpeedScale_Overridden
 			};
 
 			foreach ( var item in overlayLocal.imageSettingsDataDictionary )

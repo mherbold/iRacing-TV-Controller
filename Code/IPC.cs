@@ -11,8 +11,14 @@ namespace iRacingTVController
 	{
 		public const int MaxMemoryMappedFileSize = 1 * 1024 * 1024;
 
+		public static Mutex? mutexSettings;
+		public static Mutex? mutexLiveData;
+
 		public static MemoryMappedFile? memoryMappedFileSettings = null;
 		public static MemoryMappedFile? memoryMappedFileLiveData = null;
+
+		public static MemoryMappedViewAccessor? memoryMappedViewAccessorSettings = null;
+		public static MemoryMappedViewAccessor? memoryMappedViewAccessorLiveData = null;
 
 		public static long indexSettings = DateTime.Now.Ticks;
 		public static long indexLiveData = DateTime.Now.Ticks;
@@ -24,16 +30,31 @@ namespace iRacingTVController
 		{
 			LogFile.Write( "Initializing settings IPC...\r\n" );
 
+			mutexSettings = new Mutex( false, Program.MutexNameSettings );
 			memoryMappedFileSettings = MemoryMappedFile.CreateOrOpen( Program.IpcNameSettings, MaxMemoryMappedFileSize );
+			memoryMappedViewAccessorSettings = memoryMappedFileSettings.CreateViewAccessor( 0, MaxMemoryMappedFileSize, MemoryMappedFileAccess.Write );
 
 			LogFile.Write( "Initializing live data IPC...\r\n" );
 
+			mutexLiveData = new Mutex( false, Program.MutexNameLiveData );
 			memoryMappedFileLiveData = MemoryMappedFile.CreateOrOpen( Program.IpcNameLiveData, MaxMemoryMappedFileSize );
+			memoryMappedViewAccessorLiveData = memoryMappedFileLiveData.CreateViewAccessor( 0, MaxMemoryMappedFileSize, MemoryMappedFileAccess.Write );
+		}
+
+		public static void Shutdown()
+		{
+			memoryMappedViewAccessorSettings?.Dispose();
+			memoryMappedFileSettings?.Dispose();
+			mutexSettings?.Dispose();
+
+			memoryMappedViewAccessorLiveData?.Dispose();
+			memoryMappedFileLiveData?.Dispose();
+			mutexLiveData?.Dispose();
 		}
 
 		public static void UpdateSettings()
 		{
-			if ( readyToSendSettings && ( memoryMappedFileSettings != null ) )
+			if ( readyToSendSettings && ( mutexSettings != null ) && ( memoryMappedViewAccessorSettings != null ) )
 			{
 				var xmlSerializer = new XmlSerializer( typeof( SettingsOverlay ) );
 
@@ -43,30 +64,18 @@ namespace iRacingTVController
 
 				var buffer = memoryStream.ToArray();
 
-				if ( Mutex.TryOpenExisting( Program.MutexNameSettings, out var mutex ) )
+				var signalReceived = mutexSettings.WaitOne( 250 );
+
+				if ( signalReceived )
 				{
-					mutex.WaitOne();
+					indexSettings++;
+
+					memoryMappedViewAccessorSettings.Write( 0, indexSettings );
+					memoryMappedViewAccessorSettings.Write( 8, buffer.Length );
+					memoryMappedViewAccessorSettings.WriteArray( 12, buffer, 0, buffer.Length );
+
+					mutexSettings.ReleaseMutex();
 				}
-				else
-				{
-					mutex = new Mutex( true, Program.MutexNameSettings, out var createdNew );
-
-					if ( !createdNew )
-					{
-						mutex.WaitOne();
-					}
-				}
-
-				indexSettings++;
-
-				var viewAccessor = memoryMappedFileSettings.CreateViewAccessor( 0, MaxMemoryMappedFileSize );
-
-				viewAccessor.Write( 0, indexSettings );
-				viewAccessor.Write( 8, buffer.Length );
-				viewAccessor.WriteArray( 12, buffer, 0, buffer.Length );
-				viewAccessor.Dispose();
-
-				mutex.ReleaseMutex();
 
 				readyToSendSettings = false;
 			}
@@ -74,7 +83,7 @@ namespace iRacingTVController
 
 		public static void UpdateLiveData()
 		{
-			if ( readyToSendLiveData && ( memoryMappedFileLiveData != null ) )
+			if ( readyToSendLiveData && ( mutexLiveData != null ) && ( memoryMappedViewAccessorLiveData != null ) )
 			{
 				var xmlSerializer = new XmlSerializer( typeof( LiveData ) );
 
@@ -84,30 +93,18 @@ namespace iRacingTVController
 
 				var buffer = memoryStream.ToArray();
 
-				if ( Mutex.TryOpenExisting( Program.MutexNameLiveData, out var mutex ) )
+				var signalReceived = mutexLiveData.WaitOne( 250 );
+
+				if ( signalReceived )
 				{
-					mutex.WaitOne();
+					indexLiveData++;
+
+					memoryMappedViewAccessorLiveData.Write( 0, indexLiveData );
+					memoryMappedViewAccessorLiveData.Write( 8, buffer.Length );
+					memoryMappedViewAccessorLiveData.WriteArray( 12, buffer, 0, buffer.Length );
+
+					mutexLiveData.ReleaseMutex();
 				}
-				else
-				{
-					mutex = new Mutex( true, Program.MutexNameLiveData, out var createdNew );
-
-					if ( !createdNew )
-					{
-						mutex.WaitOne();
-					}
-				}
-
-				indexLiveData++;
-
-				var viewAccessor = memoryMappedFileLiveData.CreateViewAccessor( 0, MaxMemoryMappedFileSize );
-
-				viewAccessor.Write( 0, indexLiveData );
-				viewAccessor.Write( 8, buffer.Length );
-				viewAccessor.WriteArray( 12, buffer, 0, buffer.Length );
-				viewAccessor.Dispose();
-
-				mutex.ReleaseMutex();
 
 				readyToSendLiveData = false;
 			}

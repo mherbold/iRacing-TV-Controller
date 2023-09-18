@@ -198,11 +198,6 @@ namespace iRacingTVController
 
 			drawVectorList.RemoveAt( drawVectorList.Count - 1 );
 
-			foreach ( var v in drawVectorList )
-			{
-				Debug.WriteLine( $"{v.x} {v.y}" );
-			}
-
 			width = maxX - minX;
 			height = maxY - minY;
 

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using irsdkSharp.Models;
 using irsdkSharp.Serialization.Enums.Fastest;
 
 using static iRacingTVController.Unity;
@@ -19,17 +19,22 @@ namespace iRacingTVController
 			public string name = string.Empty;
 			public string shortName = string.Empty;
 		}
-
+		
 		public const int MaxNumCars = 64;
 		public const int MaxNumClasses = 8;
 
+		public int currentTick;
+		public int currentTickLastFrame;
+
 		public double sessionTimeDelta;
 		public double sessionTime;
+		public double sessionTimeLastFrame;
 
 		public uint sessionFlags;
 		public uint sessionFlagsLastFrame;
 
 		public int replayFrameNum;
+		public int replayFrameNumLastFrame;
 		public int replaySpeed;
 
 		public bool displayIsMetric;
@@ -74,6 +79,10 @@ namespace iRacingTVController
 		public List<NormalizedCar> classLeaderboardSortedNormalizedCars = new( MaxNumCars );
 		public List<NormalizedCar> relativeLapPositionSortedNormalizedCars = new( MaxNumCars );
 
+		public double fastestLapTime = double.MaxValue;
+		public int fastestLapTimeAge = 0;
+		public float[] fastestLapSpeedCheckpoints = new float[ NormalizedSession.MaxNumCheckpoints ];
+
 		public NormalizedData()
 		{
 			for ( var i = 0; i < MaxNumCars; i++ )
@@ -95,13 +104,18 @@ namespace iRacingTVController
 
 		public void Reset()
 		{
+			currentTick = 0;
+			currentTickLastFrame = 0;
+
 			sessionTimeDelta = 0;
 			sessionTime = 0;
+			sessionTimeLastFrame = 0;
 
 			sessionFlags = 0;
 			sessionFlagsLastFrame = 0;
 
 			replayFrameNum = 0;
+			replayFrameNumLastFrame = 0;
 			replaySpeed = 0;
 
 			displayIsMetric = false;
@@ -147,6 +161,16 @@ namespace iRacingTVController
 			lastLapFuelLevel = 0;
 			lapFuelLevelDelta = new float[] { 0, 0, 0, 0, 0 };
 			highestLapFuelLevelDelta = 0;
+
+			fastestLapTime = double.MaxValue;
+			fastestLapTimeAge = 0;
+
+			Trainer.message = string.Empty;
+
+			for ( var i = 0; i < NormalizedSession.MaxNumCheckpoints; i++ )
+			{
+				fastestLapSpeedCheckpoints[ i ] = 0;
+			}
 
 			foreach ( var normalizedCar in normalizedCars )
 			{
@@ -215,12 +239,28 @@ namespace iRacingTVController
 		public void SessionNumberChange()
 		{
 			sessionTime = 0;
+			sessionTimeLastFrame = 0;
 
 			sessionFlags = 0;
 			sessionFlagsLastFrame = 0;
 
 			lapNumber = 0;
 			lapNumberLastFrame = 0;
+
+			fuelLevel = 0;
+			lastLapFuelLevel = 0;
+			lapFuelLevelDelta = new float[] { 0, 0, 0, 0, 0 };
+			highestLapFuelLevelDelta = 0;
+
+			fastestLapTime = double.MaxValue;
+			fastestLapTimeAge = 0;
+
+			Trainer.message = string.Empty;
+
+			for ( var i = 0; i < NormalizedSession.MaxNumCheckpoints; i++ )
+			{
+				fastestLapSpeedCheckpoints[ i ] = 0;
+			}
 
 			foreach ( var normalizedCar in normalizedCars )
 			{
@@ -235,14 +275,41 @@ namespace iRacingTVController
 				return;
 			}
 
-			var newSessionTime = Math.Round( IRSDK.data.SessionTime / ( 1.0f / 60.0f ) ) * ( 1.0f / 60.0f );
+			replayFrameNumLastFrame = replayFrameNum;
+			replayFrameNum = IRSDK.data.ReplayFrameNum;
+			replaySpeed = IRSDK.data.ReplayPlaySpeed;
 
-			sessionTimeDelta = newSessionTime - sessionTime;
-			sessionTime = newSessionTime;
+			sessionTimeLastFrame = sessionTime;
+			sessionTime = Math.Floor( IRSDK.data.SessionTime / ( 1.0 / 60.0 ) ) * ( 1.0 / 60.0 );
 
-			if ( IRSDK.data.ReplayPlaySpeed >= 0 )
+			if ( replayFrameNum > 0 )
 			{
-				sessionTimeDelta = Math.Max( 0, sessionTimeDelta );
+				var frameNumberDelta = Math.Abs( replayFrameNum - replayFrameNumLastFrame );
+
+				if ( frameNumberDelta <= 16 )
+				{
+					sessionTimeDelta = frameNumberDelta * ( 1.0 / 60.0 );
+				}
+				else
+				{
+					sessionTimeDelta = 0;
+				}
+			}
+			else
+			{
+				currentTickLastFrame = currentTick;
+				currentTick = IRacingSdkHeader.CurrentTick;
+
+				var tickDelta = Math.Abs( currentTick - currentTickLastFrame );
+
+				if ( tickDelta <= 16 )
+				{
+					sessionTimeDelta = tickDelta * ( 1.0 / 60.0 );
+				}
+				else
+				{
+					sessionTimeDelta = 0;
+				}
 			}
 
 			sessionFlagsLastFrame = sessionFlags;
@@ -257,9 +324,6 @@ namespace iRacingTVController
 			{
 				sessionFlags = (uint) IRSDK.data.SessionFlags;
 			}
-
-			replayFrameNum = IRSDK.data.ReplayFrameNum;
-			replaySpeed = IRSDK.data.ReplayPlaySpeed;
 
 			displayIsMetric = IRSDK.data.DisplayUnits == 1;
 
@@ -361,6 +425,18 @@ namespace iRacingTVController
 					}
 				}
 
+				// always use iracing's speed calculation for the current player (if one exist)
+
+				if ( IRSDK.data.Speed > 0 )
+				{
+					var normalizedCar = FindNormalizedCarByCarIdx( IRSDK.data.PlayerCarIdx );
+
+					if ( normalizedCar != null )
+					{
+						normalizedCar.speedInMetersPerSecond = IRSDK.data.Speed;
+					}
+				}
+
 				// calculate distances to car in front and back for each car
 
 				foreach ( var normalizedCar in normalizedCars )
@@ -431,7 +507,7 @@ namespace iRacingTVController
 					{
 						leaderboardSortedNormalizedCars.Sort( NormalizedCar.QualifyingPositionComparison );
 					}
-					else if ( isUnderCaution || ( IRSDK.normalizedData.sessionState >= SessionState.StateCheckered ) )
+					else if ( isUnderCaution )
 					{
 						leaderboardSortedNormalizedCars.Sort( NormalizedCar.OverallPositionComparison );
 					}
@@ -533,8 +609,8 @@ namespace iRacingTVController
 									}
 								}
 
-								var checkpointTimeHis = normalizedCar.normalizedCarInFront.checkpoints[ normalizedCar.checkpointIdx ];
-								var checkpointTimeMine = normalizedCar.checkpoints[ normalizedCar.checkpointIdx ];
+								var checkpointTimeHis = normalizedCar.normalizedCarInFront.sessionTimeCheckpoints[ normalizedCar.checkpointIdx ];
+								var checkpointTimeMine = normalizedCar.sessionTimeCheckpoints[ normalizedCar.checkpointIdx ];
 
 								if ( ( checkpointTimeHis > 0 ) && ( checkpointTimeMine > 0 ) && ( checkpointTimeMine >= checkpointTimeHis ) )
 								{
@@ -580,7 +656,7 @@ namespace iRacingTVController
 								normalizedCar.heatBias = Settings.director.heatBias * positionAsSignedPct + Math.Abs( Settings.director.heatBias );
 							}
 
-							normalizedCar.heatTotal = normalizedCar.heat + normalizedCar.heatBonus + normalizedCar.heatBias;
+							normalizedCar.heatTotal = normalizedCar.heatTotal * 0.95f + ( normalizedCar.heat + normalizedCar.heatBonus + normalizedCar.heatBias ) * 0.05f;
 						}
 					}
 				}

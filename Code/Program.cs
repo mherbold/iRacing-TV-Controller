@@ -75,6 +75,8 @@ namespace iRacingTVController
 
 				stopwatch.Stop();
 
+				IPC.Shutdown();
+
 				LogFile.Write( "Async thread finished.\r\n" );
 			}
 			catch ( Exception exception )
@@ -104,16 +106,17 @@ namespace iRacingTVController
 					Controller.Update();
 					Settings.Update();
 					IRSDK.Update();
-					LiveData.Instance.Update();
-					WebPage.Update();
-
-					IPC.UpdateSettings();
-					IPC.UpdateLiveData();
-
 					Director.Update();
+					WebPage.Update();
+					Trainer.Update();
 					SpeechToText.Update();
 					PushToTalk.Update();
 					Triggers.Update();
+
+					LiveData.Instance.Update();
+
+					IPC.UpdateSettings();
+					IPC.UpdateLiveData();
 
 					SessionFlagsPlayback.Update();
 					IncidentPlayback.Update();
@@ -151,6 +154,13 @@ namespace iRacingTVController
 			{
 				return time.ToString( @"m\:ss" );
 			}
+		}
+
+		public static double Lerp( double a, double b, double t )
+		{
+			t = Math.Clamp( t, 0, 1 );
+
+			return a * ( 1 - t ) + ( b * t );
 		}
 	}
 }

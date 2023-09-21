@@ -1,8 +1,9 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using System.Windows.Media.TextFormatting;
 using System.Xml.Serialization;
+
 using irsdkSharp.Serialization.Enums.Fastest;
 
 using static iRacingTVController.Unity;
@@ -27,6 +28,7 @@ namespace iRacingTVController
 		[JsonInclude, XmlIgnore] public LiveDataLeaderboard[]? liveDataLeaderboardsWebPage = null;
 		public LiveDataLeaderboard[]? liveDataLeaderboards = null;
 		public LiveDataVoiceOf liveDataVoiceOf = new();
+		public LiveDataChyron liveDataChyron = new();
 		public LiveDataSubtitle liveDataSubtitle = new();
 		public LiveDataIntro liveDataIntro = new();
 		public LiveDataStartLights liveDataStartLights = new();
@@ -37,12 +39,17 @@ namespace iRacingTVController
 
 		public string seriesLogoTextureUrl = string.Empty;
 
-		[NonSerialized] public int[] lastFrameBottomSplitFirstPosition = new int[ MaxNumClasses ];
+		[NonSerialized, XmlIgnore] public int[] lastFrameBottomSplitFirstPosition = new int[ MaxNumClasses ];
 
-		[NonSerialized] public float hudGapTimeFront = 0;
-		[NonSerialized] public float hudGapTimeBack = 0;
+		[NonSerialized, XmlIgnore] public float hudGapTimeFront = 0;
+		[NonSerialized, XmlIgnore] public float hudGapTimeBack = 0;
 
-		[NonSerialized] public float speechToTextTimer = 0;
+		[NonSerialized, XmlIgnore] public float speechToTextTimer = 0;
+
+		[NonSerialized, XmlIgnore] public int chyronRandomOffset = 0;
+		[NonSerialized, XmlIgnore] public Dictionary<string, string> chyronRandomItemNames;
+		[NonSerialized, XmlIgnore] public string[] chyronAvailableItemLabels;
+		[NonSerialized, XmlIgnore] public string[] chyronAvailableItemValues;
 
 		static LiveData()
 		{
@@ -57,6 +64,23 @@ namespace iRacingTVController
 			{
 				liveDataDrivers[ driverIndex ] = new LiveDataDriver();
 			}
+
+			chyronRandomItemNames = new Dictionary<string, string>
+			{
+				{ "FAV_REAL_TRACKS", "Favorite tracks" },
+				{ "FAV_REAL_CARS", "Favorite cars" },
+				{ "FAV_MOVIES", "Favorite movies" },
+				{ "FAV_HOBBIES", "Hobbies" },
+				{ "FAV_GAMES", "Favorite games" },
+				{ "FAV_MUSIC", "Favorite music" },
+				{ "FAV_TV_SHOWS", "Favorite TV shows" },
+				{ "FAV_BOOKS", "Favorite books" },
+				{ "FAV_QUOTATION", "Favorite saying" },
+				{ "FAV_SPORTS", "Favorite sports" }
+			};
+
+			chyronAvailableItemLabels = new string[ chyronRandomItemNames.Count ];
+			chyronAvailableItemValues = new string[ chyronRandomItemNames.Count ];
 		}
 
 		public void Update()
@@ -99,6 +123,7 @@ namespace iRacingTVController
 			UpdateLeaderboard( ref liveDataLeaderboards, true );
 			UpdateTrackMap();
 			UpdateVoiceOf();
+			UpdateChyron();
 			UpdateSubtitle();
 			UpdateIntro();
 			UpdateStartLights();
@@ -127,6 +152,7 @@ namespace iRacingTVController
 			liveDataControlPanel.trackMapOn = MainWindow.Instance.trackMapOn;
 			liveDataControlPanel.startLightsOn = MainWindow.Instance.startLightsOn;
 			liveDataControlPanel.voiceOfOn = MainWindow.Instance.voiceOfOn;
+			liveDataControlPanel.chyronOn = MainWindow.Instance.chyronOn;
 			liveDataControlPanel.subtitlesOn = MainWindow.Instance.subtitlesOn;
 			liveDataControlPanel.introOn = MainWindow.Instance.introOn;
 			liveDataControlPanel.customLayerOn = MainWindow.Instance.customLayerOn;
@@ -140,6 +166,24 @@ namespace iRacingTVController
 				liveDataDrivers[ normalizedCar.carIdx ].carTextureUrl = normalizedCar.carTextureUrl;
 				liveDataDrivers[ normalizedCar.carIdx ].helmetTextureUrl = normalizedCar.helmetTextureUrl;
 				liveDataDrivers[ normalizedCar.carIdx ].driverTextureUrl = normalizedCar.driverTextureUrl;
+
+				if ( normalizedCar.memberProfile != null )
+				{
+					liveDataDrivers[ normalizedCar.carIdx ].memberImageUrl = normalizedCar.memberProfile.ImageUrl;
+
+					foreach ( var field in normalizedCar.memberProfile.ProfileFields )
+					{
+						if ( field.Name == "CLUB_REGION_IMG" )
+						{
+							liveDataDrivers[ normalizedCar.carIdx ].memberClubRegionUrl = $"https://ir-core-sites.iracing.com/members/{field.Value}";
+							break;
+						}
+					}
+				}
+				else
+				{
+					liveDataDrivers[ normalizedCar.carIdx ].memberImageUrl = string.Empty;
+				}
 			}
 		}
 
@@ -736,6 +780,87 @@ namespace iRacingTVController
 
 					liveDataVoiceOf.carIdx = IRSDK.normalizedData.radioTransmitCarIdx;
 				}
+			}
+		}
+
+		public void UpdateChyron()
+		{
+			if ( IRSDK.normalizedData.camCarIdx != IRSDK.normalizedData.camCarIdxLastFrame )
+			{
+				chyronRandomOffset++;
+			}
+
+			var normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.normalizedData.camCarIdx );
+
+			if ( ( normalizedCar != null ) && normalizedCar.includeInLeaderboard && Director.showChyron )
+			{
+				liveDataChyron.show = true;
+
+				liveDataChyron.driverNameText = normalizedCar.userName;
+				liveDataChyron.speedLabelText = Settings.overlay.translationDictionary[ "Speed" ].translation;
+				liveDataChyron.speedText = $"{Math.Abs( normalizedCar.speedInMetersPerSecond ) * ( IRSDK.normalizedData.displayIsMetric ? 3.6f : 2.23694f ):0} {( IRSDK.normalizedData.displayIsMetric ? Settings.overlay.translationDictionary[ "KPH" ].translation : Settings.overlay.translationDictionary[ "MPH" ].translation )}";
+				liveDataChyron.gearLabelText = Settings.overlay.translationDictionary[ "Gear" ].translation;
+				liveDataChyron.rpmLabelText = Settings.overlay.translationDictionary[ "RPM" ].translation;
+				liveDataChyron.rpmText = $"{normalizedCar.rpm:0}";
+				liveDataChyron.ratingLabelText = Settings.overlay.translationDictionary[ "iRating" ].translation;
+				liveDataChyron.ratingText = normalizedCar.iRating.ToString();
+				liveDataChyron.licenseLabelText = Settings.overlay.translationDictionary[ "License" ].translation;
+				liveDataChyron.licenseText = normalizedCar.license;
+				liveDataChyron.hometownLabelText = string.Empty;
+				liveDataChyron.hometownText = string.Empty;
+				liveDataChyron.randomLabelText = string.Empty;
+				liveDataChyron.randomText = string.Empty;
+
+				if ( normalizedCar.memberProfile != null )
+				{
+					var numRandomItems = 0;
+
+					foreach ( var field in normalizedCar.memberProfile.ProfileFields )
+					{
+						if ( ( field.Value != string.Empty ) && ( field.Value != "undefined" ) && ( field.Value != "N/A" ) )
+						{
+							if ( field.Name == "HOMETOWN" )
+							{
+								liveDataChyron.hometownLabelText = Settings.overlay.translationDictionary[ "Hometown" ].translation;
+								liveDataChyron.hometownText = field.Value;
+							}
+							else if ( chyronRandomItemNames.ContainsKey( field.Name ) )
+							{
+								chyronAvailableItemLabels[ numRandomItems ] = chyronRandomItemNames[ field.Name ];
+								chyronAvailableItemValues[ numRandomItems ] = field.Value;
+
+								numRandomItems++;
+							}
+						}
+					}
+
+					if ( numRandomItems > 0 )
+					{
+						var winner = chyronRandomOffset % numRandomItems;
+
+						liveDataChyron.randomLabelText = chyronAvailableItemLabels[ winner ];
+						liveDataChyron.randomText = chyronAvailableItemValues[ winner ];
+					}
+				}
+
+				liveDataChyron.carIdx = normalizedCar.carIdx;
+
+				if ( normalizedCar.gear == -1 )
+				{
+					liveDataChyron.gearText = "R";
+				}
+				else if ( normalizedCar.gear == 0 )
+				{
+					liveDataChyron.gearText = "N";
+				}
+				else
+				{
+					liveDataChyron.gearText = normalizedCar.gear.ToString();
+				}
+			}
+			else
+			{
+				liveDataChyron.show = false;
 			}
 		}
 

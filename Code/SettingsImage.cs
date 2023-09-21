@@ -16,7 +16,9 @@ namespace iRacingTVController
 			CarNumber,
 			Car,
 			Helmet,
-			Driver
+			Driver,
+			MemberImage,
+			MemberClubRegion
 		}
 
 		public ImageType imageType = ImageType.None;

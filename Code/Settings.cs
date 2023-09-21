@@ -278,6 +278,14 @@ namespace iRacingTVController
 			}
 
 			var defaultImageSettings = new Dictionary<string, SettingsImage>() {
+				{ "ChyronBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\generic-background.png", size = { x = 500, y = 178 }, border = { x = 24, y = 24, z = 24, w = 24 } } },
+				{ "ChyronLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
+				{ "ChyronLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.Car, position = { x = 287, y = -86 }, size = { x = 600, y = 320 } } },
+				{ "ChyronLayer3", new SettingsImage() { imageType = SettingsImage.ImageType.Helmet, position = { x = -22, y = -20 }, size = { x = 80, y = 80 } } },
+				{ "ChyronLayer4", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
+				{ "ChyronLayer5", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
+				{ "ChyronLayer6", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
+				{ "ChyronLayer7", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
 				{ "CustomLayer1", new SettingsImage() },
 				{ "CustomLayer2", new SettingsImage() },
 				{ "CustomLayer3", new SettingsImage() },
@@ -324,7 +332,7 @@ namespace iRacingTVController
 				{ "TrackMapCarLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.CarNumber, position = { x = 0, y = -35 }, size = { x = 40, y = 40 } } },
 				{ "TrackMapStartFinishLine", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\track-map-car.png", size = { x = 8, y = 8 }, tintColor = { r = 1, g = 0, b = 0, a = 1 } } },
 				{ "TrackMapCurrentTarget", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\track-map-target.png", size = { x = 32, y = 32 }, position = { x = -1, y = 0 }, tintColor = { r = 57f / 255, g = 181f / 255, b = 74f / 255, a = 1 } } },
-				{ "TrainerBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\generic-background.png", position = { x = -10, y = -10 }, size = { x = 660, y = 256 }, border = { x = 24, y = 24, z = 24, w = 24 }, tintColor = { a = 0.25f } } },
+				{ "TrainerBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\generic-background.png", position = { x = -10, y = -10 }, size = { x = 660, y = 148 }, border = { x = 24, y = 24, z = 24, w = 24 }, tintColor = { a = 0.25f } } },
 				{ "VoiceOfBackground", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\voice-of-background.png" } },
 				{ "VoiceOfLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.Car, position = { x = 220, y = -48 }, size = { x = 400, y = 200 } } },
 				{ "VoiceOfLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
@@ -383,6 +391,21 @@ namespace iRacingTVController
 
 			var defaultTextSettings = new Dictionary<string, SettingsText>()
 			{
+				{ "ChyronDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 32, position = { x = 79, y = 10 } } },
+				{ "ChyronGear", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 24, position = { x = 119, y = 84 } } },
+				{ "ChyronGearLabel", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 20, position = { x = 110, y = 64 }, tintColor = { a = 0.5f } } },
+				{ "ChyronHometown", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 24, position = { x = 179, y = 84 } } },
+				{ "ChyronHometownLabel", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 20, position = { x = 179, y = 64 }, tintColor = { a = 0.5f } } },
+				{ "ChyronLicense", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 18, position = { x = 113, y = 43 }, tintColor = { b = 0, a = 0.75f } } },
+				{ "ChyronLicenseLabel", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 20, position = { x = 0, y = 0 }, tintColor = { a = 0.5f } } },
+				{ "ChyronRandom", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 24, position = { x = 20, y = 134 }, size = { x = 450, y = 32 }, allowOverflow = false } },
+				{ "ChyronRandomLabel", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 20, position = { x = 20, y = 112 }, tintColor = { a = 0.5f } } },
+				{ "ChyronRating", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 18, position = { x = 80, y = 43 }, tintColor = { b = 0, a = 0.75f } } },
+				{ "ChyronRatingLabel", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 20, position = { x = 0, y = 0 }, tintColor = { a = 0.5f } } },
+				{ "ChyronRPM", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 24, position = { x = 0, y = 0 } } },
+				{ "ChyronRPMLabel", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 20, position = { x = 0, y = 0 }, tintColor = { a = 0.5f } } },
+				{ "ChyronSpeed", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 24, position = { x = 20, y = 84 } } },
+				{ "ChyronSpeedLabel", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 20, position = { x = 20, y = 64 }, tintColor = { a = 0.5f } } },
 				{ "HudFuel", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 21, y = 25 } } },
 				{ "HudGapTimeBack", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 335, y = 25 } } },
 				{ "HudGapTimeFront", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 228, y = 25 } } },
@@ -406,7 +429,7 @@ namespace iRacingTVController
 				{ "RaceStatusLapsRemaining", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, alignment = TextAlignmentOptions.TopRight, position = { x = 269, y = 125 }, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
 				{ "RaceStatusSessionName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, position = { x = 18, y = 125 }, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
 				{ "RaceStatusUnits", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, position = { x = 18, y = 175 }, tintColor = { r = 0.737f, g = 0.741f, b = 0.725f } } },
-				{ "Subtitles", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 40, alignment = TextAlignmentOptions.Center, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
+				{ "Subtitles", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 35, alignment = TextAlignmentOptions.Center, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
 				{ "TrackMapCarNumber", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 21, alignment = TextAlignmentOptions.Top, position = { x = 0, y = -35 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "TrainerMessage", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 21, alignment = TextAlignmentOptions.TopLeft, position = { x = 10, y = 10 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "VoiceOf", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 30, position = { x = 30, y = 10 }, tintColor = { r = 0.434f, g = 0.434f, b = 0.434f } } },
@@ -453,17 +476,23 @@ namespace iRacingTVController
 				{ "FEATURE", new SettingsTranslation() { translation = "RACE" } },
 				{ "FeetAbbreviation", new SettingsTranslation() { translation = "FT" } },
 				{ "FinalLap", new SettingsTranslation() { translation = "FINAL LAP" } },
+				{ "Gear", new SettingsTranslation() { translation = "Gear" } },
 				{ "HEAT 1", new SettingsTranslation() { translation = "HEAT 1" } },
 				{ "HEAT 2", new SettingsTranslation() { translation = "HEAT 2" } },
+				{ "Hometown", new SettingsTranslation() { translation = "Hometown" } },
+				{ "iRating", new SettingsTranslation() { translation = "iRating" } },
 				{ "KPH", new SettingsTranslation() { translation = "KPH" } },
 				{ "Lap", new SettingsTranslation() { translation = "LAP" } },
 				{ "LapsAbbreviation", new SettingsTranslation() { translation = "L" } },
+				{ "License", new SettingsTranslation() { translation = "License" } },
 				{ "MetersAbbreviation", new SettingsTranslation() { translation = "M" } },
 				{ "MPH", new SettingsTranslation() { translation = "MPH" } },
 				{ "Out", new SettingsTranslation() { translation = "OUT" } },
 				{ "Pit", new SettingsTranslation() { translation = "PIT" } },
 				{ "PRACTICE", new SettingsTranslation() { translation = "PRACTICE" } },
 				{ "QUALIFY", new SettingsTranslation() { translation = "QUALIFY" } },
+				{ "RPM", new SettingsTranslation() { translation = "RPM" } },
+				{ "Speed", new SettingsTranslation() { translation = "Speed" } },
 				{ "Time", new SettingsTranslation() { translation = "TIME" } },
 				{ "ToGo", new SettingsTranslation() { translation = "TO GO" } },
 				{ "VoiceOf", new SettingsTranslation() { translation = "VOICE OF" } },
@@ -645,6 +674,12 @@ namespace iRacingTVController
 				voiceOfEnabled_Overridden = overlayLocal.voiceOfEnabled_Overridden,
 				voiceOfPosition_Overridden = overlayLocal.voiceOfPosition_Overridden,
 
+				chyronEnabled = overlayLocal.chyronEnabled_Overridden ? overlayLocal.chyronEnabled : overlayGlobal.chyronEnabled,
+				chyronPosition = overlayLocal.chyronPosition_Overridden ? overlayLocal.chyronPosition : overlayGlobal.chyronPosition,
+
+				chyronEnabled_Overridden = overlayLocal.chyronEnabled_Overridden,
+				chyronPosition_Overridden = overlayLocal.chyronPosition_Overridden,
+
 				subtitleEnabled = overlayLocal.subtitleEnabled_Overridden ? overlayLocal.subtitleEnabled : overlayGlobal.subtitleEnabled,
 				subtitlePosition = overlayLocal.subtitlePosition_Overridden ? overlayLocal.subtitlePosition : overlayGlobal.subtitlePosition,
 				subtitleMaxSize = overlayLocal.subtitleMaxSize_Overridden ? overlayLocal.subtitleMaxSize : overlayGlobal.subtitleMaxSize,
@@ -735,71 +770,82 @@ namespace iRacingTVController
 
 			foreach ( var item in overlayLocal.imageSettingsDataDictionary )
 			{
-				var globalItem = overlayGlobal.imageSettingsDataDictionary[ item.Key ];
-
-				overlay.imageSettingsDataDictionary[ item.Key ] = new SettingsImage()
+				if ( overlayGlobal.imageSettingsDataDictionary.ContainsKey( item.Key ) )
 				{
-					imageType = item.Value.imageType_Overridden ? item.Value.imageType : globalItem.imageType,
-					filePath = item.Value.filePath_Overridden ? item.Value.filePath : globalItem.filePath,
-					position = item.Value.position_Overridden ? item.Value.position : globalItem.position,
-					size = item.Value.size_Overridden ? item.Value.size : globalItem.size,
-					tintColor = item.Value.tintColor_Overridden ? item.Value.tintColor : globalItem.tintColor,
-					border = item.Value.border_Overridden ? item.Value.border : globalItem.border,
-					frameSize = item.Value.frames_Overridden ? item.Value.frameSize : globalItem.frameSize,
-					frameCount = item.Value.frames_Overridden ? item.Value.frameCount : globalItem.frameCount,
-					animationSpeed = item.Value.animationSpeed_Overridden ? item.Value.animationSpeed : globalItem.animationSpeed,
-					tilingEnabled = item.Value.tilingEnabled_Overridden ? item.Value.tilingEnabled : globalItem.tilingEnabled,
-					useClassColors = item.Value.useClassColors_Overridden ? item.Value.useClassColors : globalItem.useClassColors,
-					classColorStrength = item.Value.classColorStrength_Overridden ? item.Value.classColorStrength : globalItem.classColorStrength,
+					var globalItem = overlayGlobal.imageSettingsDataDictionary[ item.Key ];
 
-					imageType_Overridden = item.Value.imageType_Overridden,
-					filePath_Overridden = item.Value.filePath_Overridden,
-					position_Overridden = item.Value.position_Overridden,
-					size_Overridden = item.Value.size_Overridden,
-					tintColor_Overridden = item.Value.tintColor_Overridden,
-					border_Overridden = item.Value.border_Overridden,
-					frames_Overridden = item.Value.frames_Overridden,
-					animationSpeed_Overridden = item.Value.animationSpeed_Overridden,
-					tilingEnabled_Overridden = item.Value.tilingEnabled_Overridden,
-					useClassColors_Overridden = item.Value.useClassColors_Overridden,
-					classColorStrength_Overridden = item.Value.classColorStrength_Overridden,
-				};
+					overlay.imageSettingsDataDictionary[ item.Key ] = new SettingsImage()
+					{
+						imageType = item.Value.imageType_Overridden ? item.Value.imageType : globalItem.imageType,
+						filePath = item.Value.filePath_Overridden ? item.Value.filePath : globalItem.filePath,
+						position = item.Value.position_Overridden ? item.Value.position : globalItem.position,
+						size = item.Value.size_Overridden ? item.Value.size : globalItem.size,
+						tintColor = item.Value.tintColor_Overridden ? item.Value.tintColor : globalItem.tintColor,
+						border = item.Value.border_Overridden ? item.Value.border : globalItem.border,
+						frameSize = item.Value.frames_Overridden ? item.Value.frameSize : globalItem.frameSize,
+						frameCount = item.Value.frames_Overridden ? item.Value.frameCount : globalItem.frameCount,
+						animationSpeed = item.Value.animationSpeed_Overridden ? item.Value.animationSpeed : globalItem.animationSpeed,
+						tilingEnabled = item.Value.tilingEnabled_Overridden ? item.Value.tilingEnabled : globalItem.tilingEnabled,
+						useClassColors = item.Value.useClassColors_Overridden ? item.Value.useClassColors : globalItem.useClassColors,
+						classColorStrength = item.Value.classColorStrength_Overridden ? item.Value.classColorStrength : globalItem.classColorStrength,
+
+						imageType_Overridden = item.Value.imageType_Overridden,
+						filePath_Overridden = item.Value.filePath_Overridden,
+						position_Overridden = item.Value.position_Overridden,
+						size_Overridden = item.Value.size_Overridden,
+						tintColor_Overridden = item.Value.tintColor_Overridden,
+						border_Overridden = item.Value.border_Overridden,
+						frames_Overridden = item.Value.frames_Overridden,
+						animationSpeed_Overridden = item.Value.animationSpeed_Overridden,
+						tilingEnabled_Overridden = item.Value.tilingEnabled_Overridden,
+						useClassColors_Overridden = item.Value.useClassColors_Overridden,
+						classColorStrength_Overridden = item.Value.classColorStrength_Overridden,
+					};
+				}
 			}
 
 			foreach ( var item in overlayLocal.textSettingsDataDictionary )
 			{
-				var globalItem = overlayGlobal.textSettingsDataDictionary[ item.Key ];
-
-				overlay.textSettingsDataDictionary[ item.Key ] = new SettingsText()
+				if ( overlayGlobal.textSettingsDataDictionary.ContainsKey( item.Key ) )
 				{
-					fontIndex = item.Value.fontIndex_Overridden ? item.Value.fontIndex : globalItem.fontIndex,
-					fontSize = item.Value.fontSize_Overridden ? item.Value.fontSize : globalItem.fontSize,
-					alignment = item.Value.alignment_Overridden ? item.Value.alignment : globalItem.alignment,
-					position = item.Value.position_Overridden ? item.Value.position : globalItem.position,
-					size = item.Value.size_Overridden ? item.Value.size : globalItem.size,
-					tintColor = item.Value.tintColor_Overridden ? item.Value.tintColor : globalItem.tintColor,
+					var globalItem = overlayGlobal.textSettingsDataDictionary[ item.Key ];
 
-					fontIndex_Overridden = item.Value.fontIndex_Overridden,
-					fontSize_Overridden = item.Value.fontSize_Overridden,
-					alignment_Overridden = item.Value.alignment_Overridden,
-					position_Overridden = item.Value.position_Overridden,
-					size_Overridden = item.Value.size_Overridden,
-					tintColor_Overridden = item.Value.tintColor_Overridden
-				};
+					overlay.textSettingsDataDictionary[ item.Key ] = new SettingsText()
+					{
+						fontIndex = item.Value.fontIndex_Overridden ? item.Value.fontIndex : globalItem.fontIndex,
+						fontSize = item.Value.fontSize_Overridden ? item.Value.fontSize : globalItem.fontSize,
+						alignment = item.Value.alignment_Overridden ? item.Value.alignment : globalItem.alignment,
+						position = item.Value.position_Overridden ? item.Value.position : globalItem.position,
+						size = item.Value.size_Overridden ? item.Value.size : globalItem.size,
+						tintColor = item.Value.tintColor_Overridden ? item.Value.tintColor : globalItem.tintColor,
+						allowOverflow = item.Value.allowOverflow_Overridden ? item.Value.allowOverflow : globalItem.allowOverflow,
+
+						fontIndex_Overridden = item.Value.fontIndex_Overridden,
+						fontSize_Overridden = item.Value.fontSize_Overridden,
+						alignment_Overridden = item.Value.alignment_Overridden,
+						position_Overridden = item.Value.position_Overridden,
+						size_Overridden = item.Value.size_Overridden,
+						tintColor_Overridden = item.Value.tintColor_Overridden,
+						allowOverflow_Overridden = item.Value.allowOverflow_Overridden
+					};
+				}
 			}
 
 			foreach ( var item in overlayLocal.translationDictionary )
 			{
-				var globalItem = overlayGlobal.translationDictionary[ item.Key ];
-
-				overlay.translationDictionary[ item.Key ] = new SettingsTranslation()
+				if ( overlayGlobal.translationDictionary.ContainsKey( item.Key ) )
 				{
-					id = item.Value.id,
+					var globalItem = overlayGlobal.translationDictionary[ item.Key ];
 
-					translation = item.Value.translation_Overridden ? item.Value.translation : globalItem.translation,
+					overlay.translationDictionary[ item.Key ] = new SettingsTranslation()
+					{
+						id = item.Value.id,
 
-					translation_Overridden = item.Value.translation_Overridden
-				};
+						translation = item.Value.translation_Overridden ? item.Value.translation : globalItem.translation,
+
+						translation_Overridden = item.Value.translation_Overridden
+					};
+				}
 			}
 		}
 

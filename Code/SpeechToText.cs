@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,6 +22,8 @@ namespace iRacingTVController
 			Stopping,
 			Stopped
 		}
+
+		public static string logFilePath = $"{Program.documentsFolder}{Program.AppName}-STT.log";
 
 		public static string currentCognitiveServicesKey = string.Empty;
 		public static string currentCognitiveServicesRegion = string.Empty;
@@ -66,6 +69,16 @@ namespace iRacingTVController
 
 		public static void Initialize()
 		{
+			if ( File.Exists( logFilePath ) )
+			{
+				var lastWriteTime = File.GetLastWriteTime( logFilePath );
+
+				if ( lastWriteTime.CompareTo( DateTime.Now.AddHours( -4 ) ) < 0 )
+				{
+					File.Delete( logFilePath );
+				}
+			}
+
 			if ( !Settings.editor.editorSpeechToTextEnabled )
 			{
 				Shutdown();
@@ -123,7 +136,7 @@ namespace iRacingTVController
 
 				speechConfig.SetProfanity( Settings.editor.editorSpeechToTextPotatoFilterEnabled ? ProfanityOption.Masked : ProfanityOption.Raw );
 
-				speechConfig.SetProperty( PropertyId.Speech_LogFilename, $"{Program.documentsFolder}iRacing-TV-STT.log" );
+				speechConfig.SetProperty( PropertyId.Speech_LogFilename, logFilePath );
 
 				var match = Regex.Match( Settings.editor.editorSpeechToTextAudioCaptureDeviceId, @"({[^#]*})" );
 

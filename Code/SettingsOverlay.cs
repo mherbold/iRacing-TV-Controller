@@ -31,7 +31,7 @@ namespace iRacingTVController
 		public bool[] fontNames_Overridden = new bool[ MaxNumFonts ];
 
 		public bool startLightsEnabled = true;
-		public Vector2 startLightsPosition = new( 903, 130 );
+		public Vector2 startLightsPosition = new( 900,-20 );
 
 		public bool startLightsEnabled_Overridden = false;
 		public bool startLightsPosition_Overridden = false;
@@ -63,8 +63,8 @@ namespace iRacingTVController
 
 		public bool trackMapEnabled = true;
 		public bool trackMapReverse = false;
-		public Vector2 trackMapPosition = new( 1380, 168 );
-		public Vector2 trackMapSize = new( 440, 440 );
+		public Vector2 trackMapPosition = new( 1460, 50 );
+		public Vector2 trackMapSize = new( 440, 240 );
 		public string trackMapTextureFilePath = Settings.GetRelativePath( Program.documentsFolder + "Assets\\default\\track-map-road.png" );
 		public float trackMapLineThickness = 0.025f;
 		public Color trackMapLineColor = new( 1.0f, 1.0f, 1.0f, 0.5f );
@@ -80,13 +80,19 @@ namespace iRacingTVController
 		public bool trackMapStartFinishOffset_Overridden = false;
 
 		public bool voiceOfEnabled = true;
-		public Vector2 voiceOfPosition = new( 1920, 41 );
+		public Vector2 voiceOfPosition = new( 1920, 550 );
 
 		public bool voiceOfEnabled_Overridden = false;
 		public bool voiceOfPosition_Overridden = false;
 
+		public bool chyronEnabled = true;
+		public Vector2 chyronPosition = new( 1060, 890 );
+
+		public bool chyronEnabled_Overridden = false;
+		public bool chyronPosition_Overridden = false;
+
 		public bool subtitleEnabled = true;
-		public Vector2 subtitlePosition = new( 1089, 918 );
+		public Vector2 subtitlePosition = new( 1080, 760 );
 		public Vector2 subtitleMaxSize = new( 1250, 190 );
 		public Vector2Int subtitleTextPadding = new( 24, 12 );
 
@@ -164,8 +170,8 @@ namespace iRacingTVController
 
 		public bool trainerEnabled = false;
 		public Vector2 trainerPosition = new( 640, 540 );
-		public Vector2 trainerSize = new( 640, 256 );
-		public float trainerSpeedScale = 10;
+		public Vector2 trainerSize = new( 640, 128 );
+		public float trainerSpeedScale = 15;
 
 		public bool trainerEnabled_Overridden = false;
 		public bool trainerPosition_Overridden = false;

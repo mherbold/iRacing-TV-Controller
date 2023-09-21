@@ -59,6 +59,7 @@ namespace iRacingTVController
 		public LeaderboardClass[] leaderboardClass = new LeaderboardClass[ MaxNumClasses ];
 
 		public int camCarIdx;
+		public int camCarIdxLastFrame;
 		public int camGroupNumber;
 		public int camCameraNumber;
 
@@ -148,6 +149,7 @@ namespace iRacingTVController
 			}
 
 			camCarIdx = 0;
+			camCarIdxLastFrame = 0;
 			camGroupNumber = 0;
 			camCameraNumber = 0;
 
@@ -350,6 +352,7 @@ namespace iRacingTVController
 				lapNumber = sessionLapsTotal - sessionLapsRemaining + 1;
 			}
 
+			camCarIdxLastFrame = camCarIdx;
 			camCarIdx = IRSDK.data.CamCarIdx;
 			camGroupNumber = IRSDK.data.CamGroupNumber;
 			camCameraNumber = IRSDK.data.CamCameraNumber;

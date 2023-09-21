@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-
+using System.Threading.Tasks;
 using Aydsko.iRacingData.Common;
-
+using Aydsko.iRacingData.Member;
 using irsdkSharp.Serialization.Models.Session.DriverInfo;
 
 using static iRacingTVController.Unity;
@@ -110,8 +110,13 @@ namespace iRacingTVController
 		public int activeIncidentPoints = 0;
 		public float activeIncidentTimer = 0;
 
-		public int gear;
-		public float rpm;
+		public int gear = 0;
+		public float rpm = 0;
+		public int iRating = 0;
+		public string license = string.Empty;
+
+		public bool memberProfileRetrieved = false;
+		public MemberProfile? memberProfile = null;
 
 		public NormalizedCar( int carIdx )
 		{
@@ -212,6 +217,8 @@ namespace iRacingTVController
 
 			gear = 0;
 			rpm = 0;
+			iRating = 0;
+			license = string.Empty;
 
 			for ( var i = 0; i < sessionTimeCheckpoints.Length; i++ )
 			{
@@ -367,6 +374,9 @@ namespace iRacingTVController
 			classColor = new Color( driver.CarClassColor[ 2.. ] );
 			carClass = DataApi.GetCarClass( classID );
 
+			iRating = driver.IRating;
+			license = driver.LicString;
+
 			includeInLeaderboard = !isSpectator && !isPaceCar;
 
 			if ( includeInLeaderboard )
@@ -469,6 +479,13 @@ namespace iRacingTVController
 				}
 
 				currentIncidentPoints = driver.CurDriverIncidentCount;
+
+				if ( !memberProfileRetrieved )
+				{
+					memberProfileRetrieved = true;
+
+					Task.Run( async () => memberProfile = await DataApi.GetMemberProfileAsync( driver.UserID ) );
+				}
 			}
 		}
 
@@ -697,11 +714,6 @@ namespace iRacingTVController
 
 			gear = car.CarIdxGear;
 			rpm = Math.Max( 0, car.CarIdxRPM );
-
-			if ( rpm < 500 )
-			{
-				rpm = 0;
-			}
 		}
 
 		public void GenerateAbbrevName( bool includeFirstNameInitial )

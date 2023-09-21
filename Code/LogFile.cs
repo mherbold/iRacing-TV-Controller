@@ -17,6 +17,16 @@ namespace iRacingTVController
 
 		public static void Initialize()
 		{
+			if ( File.Exists( logFilePath ) )
+			{
+				var lastWriteTime = File.GetLastWriteTime( logFilePath );
+
+				if ( lastWriteTime.CompareTo( DateTime.Now.AddHours( -4 ) ) < 0 )
+				{
+					File.Delete( logFilePath );
+				}
+			}
+
 			fileStream = new FileStream( logFilePath, FileMode.Append, FileAccess.Write, FileShare.Read );
 
 			Write( "\r\n" );

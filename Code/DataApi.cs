@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Aydsko.iRacingData;
 using Aydsko.iRacingData.Tracks;
 using Aydsko.iRacingData.Common;
+using Aydsko.iRacingData.Member;
 
 namespace iRacingTVController
 {
@@ -165,6 +166,18 @@ namespace iRacingTVController
 						return carClass;
 					}
 				}
+			}
+
+			return null;
+		}
+
+		public static async Task<MemberProfile?> GetMemberProfileAsync( int customerID )
+		{
+			if ( dataClient != null )
+			{
+				var dataResponse = await dataClient.GetMemberProfileAsync( customerID );
+
+				return dataResponse.Data;
 			}
 
 			return null;

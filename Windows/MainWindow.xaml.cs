@@ -65,6 +65,7 @@ namespace iRacingTVController
 		public bool trackMapOn;
 		public bool startLightsOn;
 		public bool voiceOfOn;
+		public bool chyronOn;
 		public bool subtitlesOn;
 		public bool introOn;
 
@@ -579,6 +580,7 @@ namespace iRacingTVController
 			ControlPanel_TrackMap_Button.IsChecked = trackMapOn = Settings.overlay.trackMapEnabled;
 			ControlPanel_StartLights_Button.IsChecked = startLightsOn = Settings.overlay.startLightsEnabled;
 			ControlPanel_VoiceOf_Button.IsChecked = voiceOfOn = Settings.overlay.voiceOfEnabled;
+			ControlPanel_Chyron_Button.IsChecked = chyronOn = Settings.overlay.chyronEnabled;
 			ControlPanel_Subtitles_Button.IsChecked = subtitlesOn = Settings.overlay.subtitleEnabled;
 			ControlPanel_Intro_Button.IsChecked = introOn = Settings.overlay.introEnabled;
 
@@ -755,6 +757,11 @@ namespace iRacingTVController
 			Update( Overlay_VoiceOf_Enable, Settings.overlay.voiceOfEnabled, Overlay_VoiceOf_Enable_Override, overlayIsGlobal, Settings.overlay.voiceOfEnabled_Overridden );
 			Update( Overlay_VoiceOf_Position_X, Overlay_VoiceOf_Position_Y, Settings.overlay.voiceOfPosition, Overlay_VoiceOf_Position_Override, overlayIsGlobal, Settings.overlay.voiceOfPosition_Overridden );
 
+			// overlay - chyron
+
+			Update( Overlay_Chyron_Enable, Settings.overlay.chyronEnabled, Overlay_Chyron_Enable_Override, overlayIsGlobal, Settings.overlay.chyronEnabled_Overridden );
+			Update( Overlay_Chyron_Position_X, Overlay_Chyron_Position_Y, Settings.overlay.chyronPosition, Overlay_Chyron_Position_Override, overlayIsGlobal, Settings.overlay.chyronPosition_Overridden );
+
 			// overlay - subtitle
 
 			Update( Overlay_Subtitle_Enable, Settings.overlay.subtitleEnabled, Overlay_Subtitle_Enable_Override, overlayIsGlobal, Settings.overlay.subtitleEnabled_Overridden );
@@ -928,6 +935,7 @@ namespace iRacingTVController
 				Update( Text_Position_X, Text_Position_Y, settings.position, Text_Position_Override, overlayIsGlobal, settings.position_Overridden );
 				Update( Text_Size_W, Text_Size_H, settings.size, Text_Size_Override, overlayIsGlobal, settings.size_Overridden );
 				Update( Text_TintColor_R, Text_TintColor_G, Text_TintColor_B, Text_TintColor_A, settings.tintColor, Text_TintColor_Override, overlayIsGlobal, settings.tintColor_Overridden, Text_TintColor_Palette );
+				Update( Text_AllowOverflow, settings.allowOverflow, Text_AllowOverflow_Override, overlayIsGlobal, settings.allowOverflow_Overridden );
 
 				initializing--;
 			}
@@ -1409,6 +1417,7 @@ namespace iRacingTVController
 			trackMapOn = ControlPanel_TrackMap_Button.IsChecked ?? false;
 			startLightsOn = ControlPanel_StartLights_Button.IsChecked ?? false;
 			voiceOfOn = ControlPanel_VoiceOf_Button.IsChecked ?? false;
+			chyronOn = ControlPanel_Chyron_Button.IsChecked ?? false;
 			subtitlesOn = ControlPanel_Subtitles_Button.IsChecked ?? false;
 			introOn = ControlPanel_Intro_Button.IsChecked ?? false;
 
@@ -3091,6 +3100,21 @@ namespace iRacingTVController
 					settings.tintColor = new Color( Text_TintColor_R.Value, Text_TintColor_G.Value, Text_TintColor_B.Value, Text_TintColor_A.Value );
 				}
 
+				overridden = Text_AllowOverflow_Override.IsChecked ?? false;
+
+				if ( overlaySettings.allowOverflow_Overridden != overridden )
+				{
+					overlaySettings.allowOverflow_Overridden = overridden;
+
+					UpdateOverlayText();
+				}
+				else
+				{
+					var settings = overlaySettings.allowOverflow_Overridden ? overlaySettings : globalSettings;
+
+					settings.allowOverflow = Text_AllowOverflow.IsChecked ?? false;
+				}
+
 				IPC.readyToSendSettings = true;
 
 				Settings.saveOverlayToFileQueued = true;
@@ -3530,6 +3554,46 @@ namespace iRacingTVController
 					var overlay = Settings.overlayLocal.voiceOfPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
 
 					overlay.voiceOfPosition = new Vector2( Overlay_VoiceOf_Position_X.Value, Overlay_VoiceOf_Position_Y.Value );
+				}
+
+				IPC.readyToSendSettings = true;
+
+				Settings.saveOverlayToFileQueued = true;
+			}
+		}
+
+		private void Overlay_Chyron_Update( object sender, EventArgs e )
+		{
+			if ( initializing == 0 )
+			{
+				var overridden = Overlay_Chyron_Enable_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.chyronEnabled_Overridden != overridden )
+				{
+					Settings.overlayLocal.chyronEnabled_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.chyronEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.chyronEnabled = Overlay_Chyron_Enable.IsChecked ?? false;
+				}
+
+				overridden = Overlay_Chyron_Position_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.chyronPosition_Overridden != overridden )
+				{
+					Settings.overlayLocal.chyronPosition_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.chyronPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.chyronPosition = new Vector2( Overlay_Chyron_Position_X.Value, Overlay_Chyron_Position_Y.Value );
 				}
 
 				IPC.readyToSendSettings = true;

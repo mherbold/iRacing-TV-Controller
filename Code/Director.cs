@@ -10,6 +10,7 @@ namespace iRacingTVController
 	{
 		public static bool isEnabled = true;
 		public static bool driverWasTalking = false;
+		public static bool showChyron = false;
 
 		public static int targetCamCarIdx = 0;
 		public static SettingsDirector.CameraType targetCamType = SettingsDirector.CameraType.Intro;
@@ -36,6 +37,8 @@ namespace iRacingTVController
 
 			if ( !isEnabled )
 			{
+				showChyron = true;
+
 				var targetNormalizedCar = IRSDK.normalizedData.normalizedCars[ targetCamCarIdx ];
 
 				var previousAutoCamType = autoCamType;
@@ -49,6 +52,8 @@ namespace iRacingTVController
 			}
 			else
 			{
+				showChyron = false;
+
 				IncidentData? currentIncident = IncidentPlayback.GetCurrentIncidentData();
 
 				NormalizedCar? firstPlaceCar = null;
@@ -110,6 +115,8 @@ namespace iRacingTVController
 				}
 				else if ( Settings.director.rule2_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateRacing ) && Settings.director.preferredCarLockOnEnabled && ( preferredCar != null ) && ( preferredCar.heatTotal >= Settings.director.preferredCarLockOnMinimumHeat ) ) )
 				{
+					showChyron = true;
+
 					targetCamCarIdx = preferredCar.carIdx;
 					targetCamType = Settings.director.rule2_Camera;
 					targetCamReason = "Rule 2: Racing, preferred car lock-on enabled, and preferred car heat >= minimum, look at preferred car.";
@@ -176,6 +183,8 @@ namespace iRacingTVController
 				{
 					if ( randomCar != null )
 					{
+						showChyron = true;
+
 						targetCamSlowSwitchEnabled = true;
 						targetCamCarIdx = randomCar.carIdx;
 						targetCamType = Settings.director.rule7_Camera;
@@ -192,6 +201,8 @@ namespace iRacingTVController
 				{
 					if ( randomCar != null )
 					{
+						showChyron = true;
+
 						targetCamSlowSwitchEnabled = true;
 						targetCamCarIdx = randomCar.carIdx;
 						targetCamType = Settings.director.rule8_Camera;
@@ -252,6 +263,8 @@ namespace iRacingTVController
 				{
 					if ( hottestCar != null )
 					{
+						showChyron = true;
+
 						targetCamCarIdx = hottestCar.carIdx;
 						targetCamType = Settings.director.rule13_Camera;
 						targetCamReason = "Rule 13: Hottest car.";

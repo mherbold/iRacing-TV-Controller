@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 27.8.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!-- Generator: Adobe Illustrator 27.9.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 1920 1080" style="enable-background:new 0 0 1920 1080;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#FFFFFF;stroke-width:5;stroke-linecap:round;stroke-miterlimit:10;}
+	.st0{opacity:0.85;}
 	.st1{fill:#5E5F5F;}
-	.st2{fill:#F15A29;}
-	.st3{font-family:'RevolutionGothic-ExtraBold';}
-	.st4{font-size:18px;}
-	.st5{opacity:0.85;}
+	.st2{fill:none;stroke:#FFFFFF;stroke-width:5;stroke-linecap:round;stroke-miterlimit:10;}
+	.st3{fill:#F15A29;}
+	.st4{font-family:'RevolutionGothic-ExtraBold';}
+	.st5{font-size:18px;}
 	.st6{fill:#181818;}
 	.st7{fill:#FFFFFF;}
 	.st8{fill:#181818;fill-opacity:0.85;stroke:#000000;stroke-width:5;stroke-miterlimit:10;}
@@ -21,25 +21,35 @@
 	.st15{fill:#5E6060;}
 	.st16{opacity:0.85;fill:#231F20;}
 	.st17{fill:#39B54A;}
-	.st18{fill:url(#leaderboard-preferred-car_00000079459973101908306380000009829364184306694844_);}
-	.st19{fill:#FFFFFF;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
-	.st20{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-miterlimit:10;}
+	.st18{fill:url(#leaderboard-preferred-car_00000088816376372131917100000001680714303980444326_);}
+	.st19{fill:#40403F;}
+	.st20{font-family:'RevolutionGothic-ExtraBoldIt';}
+	.st21{font-size:12px;}
+	.st22{fill:none;stroke:#000000;stroke-miterlimit:10;}
+	.st23{fill:#FFFFFF;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
+	.st24{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-miterlimit:10;}
 	
-		.st21{fill:url(#voice-of-background_00000147178327353225844040000006977601554166638737_);fill-opacity:0.85;stroke:url(#voice-of-background_00000020365384180345714560000014646827314116932024_);stroke-width:5;stroke-miterlimit:10;}
+		.st25{fill:url(#voice-of-background_00000123442261943472655780000017911873433182641839_);fill-opacity:0.85;stroke:url(#voice-of-background_00000005237218099156200540000007536475448567113385_);stroke-width:5;stroke-miterlimit:10;}
 </style>
-<g id="HUD">
+<g id="Misc">
+	<g id="generic-background">
+		<polygon class="st0" points="452.5,221.5 452.5,180.96 469.11,162.5 511.5,162.5 511.5,203.04 494.89,221.5 		"/>
+		<path class="st1" d="M509,165v37.08L493.77,219H455v-37.08L470.23,165H509 M514,160h-46l-18,20v44h46l18-20V160L514,160z"/>
+	</g>
+</g>
+<g id="HUD_Overlay">
 	<g id="spotter-indicator">
 		<g>
-			<line class="st0" x1="400" y1="572" x2="432" y2="540"/>
-			<line class="st0" x1="400" y1="540" x2="432" y2="572"/>
+			<line class="st2" x1="400" y1="572" x2="432" y2="540"/>
+			<line class="st2" x1="400" y1="540" x2="432" y2="572"/>
 		</g>
 		<g>
-			<line class="st0" x1="440.73" y1="572" x2="472.73" y2="540"/>
-			<line class="st0" x1="440.73" y1="540" x2="472.73" y2="572"/>
+			<line class="st2" x1="440.73" y1="572" x2="472.73" y2="540"/>
+			<line class="st2" x1="440.73" y1="540" x2="472.73" y2="572"/>
 		</g>
 		<g>
-			<line class="st0" x1="481.45" y1="572" x2="513.45" y2="540"/>
-			<line class="st0" x1="481.45" y1="540" x2="513.45" y2="572"/>
+			<line class="st2" x1="481.45" y1="572" x2="513.45" y2="540"/>
+			<line class="st2" x1="481.45" y1="540" x2="513.45" y2="572"/>
 		</g>
 	</g>
 	<g id="Background_00000129169557785269733630000003818459118295538067_">
@@ -49,19 +59,13 @@
 			C1115,447.16,1107.84,440,1099,440L1099,440z"/>
 	</g>
 	<g>
-		<text transform="matrix(1 0 0 1 1054.6626 463.6816)" class="st2 st3 st4">Gear</text>
-		<text transform="matrix(1 0 0 1 424.6626 463.6816)" class="st2 st3 st4">Fuel</text>
-		<text transform="matrix(1 0 0 1 528.0081 463.6814)" class="st2 st3 st4">Lead</text>
-		<text transform="matrix(1 0 0 1 845.6141 463.6814)" class="st2 st3 st4">RPM</text>
-		<text transform="matrix(1 0 0 1 944.1451 463.6814)" class="st2 st3 st4">Speed</text>
-		<text transform="matrix(1 0 0 1 630.8049 463.6814)" class="st2 st3 st4">Gap +</text>
-		<text transform="matrix(1 0 0 1 736.7966 463.6814)" class="st2 st3 st4">Gap -</text>
-	</g>
-</g>
-<g id="Misc">
-	<g id="generic-background">
-		<polygon class="st5" points="452.5,221.5 452.5,180.96 469.11,162.5 511.5,162.5 511.5,203.04 494.89,221.5 		"/>
-		<path class="st1" d="M509,165v37.08L493.77,219H455v-37.08L470.23,165H509 M514,160h-46l-18,20v44h46l18-20V160L514,160z"/>
+		<text transform="matrix(1 0 0 1 1054.6626 463.6816)" class="st3 st4 st5">Gear</text>
+		<text transform="matrix(1 0 0 1 424.6626 463.6816)" class="st3 st4 st5">Fuel</text>
+		<text transform="matrix(1 0 0 1 528.0081 463.6814)" class="st3 st4 st5">Lead</text>
+		<text transform="matrix(1 0 0 1 845.6141 463.6814)" class="st3 st4 st5">RPM</text>
+		<text transform="matrix(1 0 0 1 944.1451 463.6814)" class="st3 st4 st5">Speed</text>
+		<text transform="matrix(1 0 0 1 630.8049 463.6814)" class="st3 st4 st5">Gap +</text>
+		<text transform="matrix(1 0 0 1 736.7966 463.6814)" class="st3 st4 st5">Gap -</text>
 	</g>
 </g>
 <g id="Race_Status">
@@ -125,32 +129,45 @@
 	<path id="leaderboard-car-number-space" class="st7" d="M136.63,400H95.37c-2.41,0-4.37-1.96-4.37-4.37v-19.26
 		c0-2.41,1.96-4.37,4.37-4.37h41.26c2.41,0,4.37,1.96,4.37,4.37v19.26C141,398.04,139.04,400,136.63,400z"/>
 	
-		<linearGradient id="leaderboard-preferred-car_00000041297763976519032040000016790226432494378680_" gradientUnits="userSpaceOnUse" x1="45" y1="386.5" x2="359" y2="386.5">
+		<linearGradient id="leaderboard-preferred-car_00000022536301788086215090000006733023107964138135_" gradientUnits="userSpaceOnUse" x1="45" y1="386.5" x2="359" y2="386.5">
 		<stop  offset="0" style="stop-color:#FFFFFF"/>
 		<stop  offset="0.6" style="stop-color:#FFFFFF"/>
 		<stop  offset="0.95" style="stop-color:#737070;stop-opacity:0"/>
 		<stop  offset="1" style="stop-color:#000000;stop-opacity:0"/>
 	</linearGradient>
 	
-		<rect id="leaderboard-preferred-car" x="45" y="367" style="fill:url(#leaderboard-preferred-car_00000041297763976519032040000016790226432494378680_);" width="314" height="39"/>
+		<rect id="leaderboard-preferred-car" x="45" y="367" style="fill:url(#leaderboard-preferred-car_00000022536301788086215090000006733023107964138135_);" width="314" height="39"/>
+</g>
+<g id="Pit_Lane_Overlay">
+	<g id="pit-lane-background">
+		<rect x="45" y="550" class="st7" width="100" height="18"/>
+		<text transform="matrix(1 0 0 1 77.1497 563.2)" class="st19 st20 st21">Pit Road</text>
+		<line class="st22" x1="45" y1="550.5" x2="145" y2="550.5"/>
+		<line class="st22" x1="45" y1="567.5" x2="145" y2="567.5"/>
+	</g>
 </g>
 <g id="Track_Map_Overlay">
-	<circle id="track-map-car" class="st19" cx="56" cy="506" r="16"/>
-	<circle id="track-map-target_00000179641946246250401240000017151977930488662200_" class="st20" cx="101.93" cy="506" r="16"/>
+	<circle id="track-map-car" class="st23" cx="56" cy="506" r="16"/>
+	<circle id="track-map-target_00000179641946246250401240000017151977930488662200_" class="st24" cx="101.93" cy="506" r="16"/>
+	<g id="track-map-road">
+		<rect x="45" y="580" class="st7" width="2" height="6"/>
+		<line class="st22" x1="45" y1="580.5" x2="47" y2="580.5"/>
+		<line class="st22" x1="45" y1="585.5" x2="47" y2="585.5"/>
+	</g>
 </g>
 <g id="Voice_Of_Overlay">
 	
-		<linearGradient id="voice-of-background_00000173879242093884403620000000038444635742769557_" gradientUnits="userSpaceOnUse" x1="450" y1="85.5" x2="917" y2="85.5">
+		<linearGradient id="voice-of-background_00000020398022367573505890000004611972839606296966_" gradientUnits="userSpaceOnUse" x1="450" y1="85.5" x2="917" y2="85.5">
 		<stop  offset="0" style="stop-color:#FFFFFF"/>
 		<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0"/>
 	</linearGradient>
 	
-		<linearGradient id="voice-of-background_00000153666255654966196680000007260812038209815486_" gradientUnits="userSpaceOnUse" x1="447.5" y1="85.5" x2="919.5" y2="85.5">
+		<linearGradient id="voice-of-background_00000049902171910393936780000004041791152059503763_" gradientUnits="userSpaceOnUse" x1="447.5" y1="85.5" x2="919.5" y2="85.5">
 		<stop  offset="0" style="stop-color:#231F20"/>
 		<stop  offset="1" style="stop-color:#231F20;stop-opacity:0"/>
 	</linearGradient>
 	
-		<polygon id="voice-of-background" style="fill:url(#voice-of-background_00000173879242093884403620000000038444635742769557_);fill-opacity:0.85;stroke:url(#voice-of-background_00000153666255654966196680000007260812038209815486_);stroke-width:5;stroke-miterlimit:10;" points="
+		<polygon id="voice-of-background" style="fill:url(#voice-of-background_00000020398022367573505890000004611972839606296966_);fill-opacity:0.85;stroke:url(#voice-of-background_00000049902171910393936780000004041791152059503763_);stroke-width:5;stroke-miterlimit:10;" points="
 		450,131 450,60 468.01,40 917,40 917,111 898.99,131 	"/>
 </g>
 </svg>

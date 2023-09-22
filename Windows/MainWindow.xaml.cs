@@ -63,6 +63,7 @@ namespace iRacingTVController
 		public bool raceStatusOn;
 		public bool leaderboardOn;
 		public bool trackMapOn;
+		public bool pitLaneOn;
 		public bool startLightsOn;
 		public bool voiceOfOn;
 		public bool chyronOn;
@@ -578,6 +579,7 @@ namespace iRacingTVController
 			ControlPanel_RaceStatus_Button.IsChecked = raceStatusOn = Settings.overlay.raceStatusEnabled;
 			ControlPanel_Leaderboard_Button.IsChecked = leaderboardOn = Settings.overlay.leaderboardEnabled;
 			ControlPanel_TrackMap_Button.IsChecked = trackMapOn = Settings.overlay.trackMapEnabled;
+			ControlPanel_PitLane_Button.IsChecked = pitLaneOn = Settings.overlay.pitLaneEnabled;
 			ControlPanel_StartLights_Button.IsChecked = startLightsOn = Settings.overlay.startLightsEnabled;
 			ControlPanel_VoiceOf_Button.IsChecked = voiceOfOn = Settings.overlay.voiceOfEnabled;
 			ControlPanel_Chyron_Button.IsChecked = chyronOn = Settings.overlay.chyronEnabled;
@@ -685,6 +687,8 @@ namespace iRacingTVController
 				}
 			}
 
+			Overlay_ShowBorders.IsChecked = Settings.overlay.showBorders;
+
 			// overlay - general
 
 			Update( Overlay_General_Position_X, Overlay_General_Position_Y, Settings.overlay.position, Overlay_General_Position_Override, overlayIsGlobal, Settings.overlay.position_Overridden );
@@ -751,6 +755,12 @@ namespace iRacingTVController
 			Update( Overlay_TrackMap_LineThickness, Settings.overlay.trackMapLineThickness, Overlay_TrackMap_LineThickness_Override, overlayIsGlobal, Settings.overlay.trackMapLineThickness_Overridden );
 			Update( Overlay_TrackMap_LineColor_R, Overlay_TrackMap_LineColor_G, Overlay_TrackMap_LineColor_B, Overlay_TrackMap_LineColor_A, Settings.overlay.trackMapLineColor, Overlay_TrackMap_LineColor_Override, overlayIsGlobal, Settings.overlay.trackMapLineColor_Overridden );
 			Update( Overlay_TrackMap_StartFinishOffset, Settings.overlay.trackMapStartFinishOffset, Overlay_TrackMap_StartFinishOffset_Override, overlayIsGlobal, Settings.overlay.trackMapStartFinishOffset_Overridden );
+
+			// overlay - pit lane
+
+			Update( Overlay_PitLane_Enable, Settings.overlay.pitLaneEnabled, Overlay_PitLane_Enable_Override, overlayIsGlobal, Settings.overlay.pitLaneEnabled_Overridden );
+			Update( Overlay_PitLane_Position_X, Overlay_PitLane_Position_Y, Settings.overlay.pitLanePosition, Overlay_PitLane_Position_Override, overlayIsGlobal, Settings.overlay.pitLanePosition_Overridden );
+			Update( Overlay_PitLane_Length, Settings.overlay.pitLaneLength, Overlay_PitLane_Length_Override, overlayIsGlobal, Settings.overlay.pitLaneLength_Overridden );
 
 			// overlay - voice of
 
@@ -1415,6 +1425,7 @@ namespace iRacingTVController
 			raceStatusOn = ControlPanel_RaceStatus_Button.IsChecked ?? false;
 			leaderboardOn = ControlPanel_Leaderboard_Button.IsChecked ?? false;
 			trackMapOn = ControlPanel_TrackMap_Button.IsChecked ?? false;
+			pitLaneOn = ControlPanel_PitLane_Button.IsChecked ?? false;
 			startLightsOn = ControlPanel_StartLights_Button.IsChecked ?? false;
 			voiceOfOn = ControlPanel_VoiceOf_Button.IsChecked ?? false;
 			chyronOn = ControlPanel_Chyron_Button.IsChecked ?? false;
@@ -2406,7 +2417,7 @@ namespace iRacingTVController
 				SubtitlePlayback.saveToFileQueued = true;
 			}
 		}
-		
+
 		private void Subtitles_ListView_MouseDoubleClick( object sender, RoutedEventArgs e )
 		{
 			// TODO: Needs fixing to work with session times instead of frame numbers
@@ -2431,7 +2442,7 @@ namespace iRacingTVController
 			}
 			*/
 		}
-		
+
 		private void Subtitles_Clear_Button_Click( object sender, EventArgs e )
 		{
 			if ( Subtitles_ListView.Items.Count > 0 )
@@ -2446,6 +2457,20 @@ namespace iRacingTVController
 		}
 
 		// overlay
+
+		private void Overlay_ShowBorders_Update( object sender, EventArgs e )
+		{
+			if ( initializing == 0 )
+			{
+				Settings.overlayLocal.showBorders = Overlay_ShowBorders.IsChecked ?? false;
+
+				Settings.saveOverlayToFileQueued = true;
+
+				Update();
+
+				IPC.readyToSendSettings = true;
+			}
+		}
 
 		private void Overlay_OverlayList_SelectionChanged( object sender, EventArgs e )
 		{
@@ -3514,6 +3539,62 @@ namespace iRacingTVController
 					var overlay = Settings.overlayLocal.trackMapStartFinishOffset_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
 
 					overlay.trackMapStartFinishOffset = (int) Overlay_TrackMap_StartFinishOffset.Value;
+				}
+
+				IPC.readyToSendSettings = true;
+
+				Settings.saveOverlayToFileQueued = true;
+			}
+		}
+
+		private void Overlay_PitLane_Update( object sender, EventArgs e )
+		{
+			if ( initializing == 0 )
+			{
+				var overridden = Overlay_PitLane_Enable_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.pitLaneEnabled_Overridden != overridden )
+				{
+					Settings.overlayLocal.pitLaneEnabled_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.pitLaneEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.pitLaneEnabled = Overlay_PitLane_Enable.IsChecked ?? false;
+				}
+
+				overridden = Overlay_PitLane_Position_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.pitLanePosition_Overridden != overridden )
+				{
+					Settings.overlayLocal.pitLanePosition_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.pitLanePosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.pitLanePosition.x = Overlay_PitLane_Position_X.Value;
+					overlay.pitLanePosition.y = Overlay_PitLane_Position_Y.Value;
+				}
+
+				overridden = Overlay_PitLane_Length_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.pitLaneLength_Overridden != overridden )
+				{
+					Settings.overlayLocal.pitLaneLength_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.pitLaneLength_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.pitLaneLength = Overlay_PitLane_Length.Value;
 				}
 
 				IPC.readyToSendSettings = true;
@@ -4604,7 +4685,7 @@ namespace iRacingTVController
 				PushToTalk.Initialize();
 
 				Settings.editor.editorTriggersSessionChange = Editor_Triggers_SessionChange.Text;
-				
+
 				Settings.editor.editorStartupEnableDirector = Editor_Startup_EnableDirector.IsChecked ?? false;
 
 				Settings.saveEditorToFileQueued = true;

@@ -1,6 +1,6 @@
 [Setup]
 AppName=iRacing-TV
-AppVersion=1.37
+AppVersion=1.38
 AppCopyright=Created by Marvin Herbold
 AppPublisher=Marvin Herbold
 AppPublisherURL=https://herboldracing.com/iracing-tv

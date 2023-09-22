@@ -19,6 +19,8 @@ namespace iRacingTVController
 		[NonSerialized] public const int MaxNumFonts = 4;
 		[NonSerialized] public const int MaxNumAnimations = 2;
 
+		public bool showBorders = false;
+
 		public Vector2Int position = new( 0, 0 );
 		public Vector2Int size = new( 1920, 1080 );
 
@@ -78,6 +80,14 @@ namespace iRacingTVController
 		public bool trackMapLineThickness_Overridden = false;
 		public bool trackMapLineColor_Overridden = false;
 		public bool trackMapStartFinishOffset_Overridden = false;
+
+		public bool pitLaneEnabled = true;
+		public Vector2 pitLanePosition = new( 1460, 340 );
+		public int pitLaneLength = 440;
+
+		public bool pitLaneEnabled_Overridden = false;
+		public bool pitLanePosition_Overridden = false;
+		public bool pitLaneLength_Overridden = false;
 
 		public bool voiceOfEnabled = true;
 		public Vector2 voiceOfPosition = new( 1920, 550 );

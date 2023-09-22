@@ -1,7 +1,9 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -20,6 +22,12 @@ namespace iRacingTVController
 
 		public static IReadOnlyDictionary<string, TrackAssets>? trackAssetsDictionary = null;
 		public static CarClass[]? carClasses = null;
+
+		public static int? totalRateLimit = null;
+		public static int? rateLimitRemaining = null;
+		public static DateTimeOffset? rateLimitReset = null;
+
+		public static AsyncMutex asyncMutex = new();
 
 		public static void Initialize( bool showMessageBoxOnSuccess )
 		{
@@ -72,7 +80,13 @@ namespace iRacingTVController
 					{
 						LogFile.Write( "Fetching track assets dictionary...\r\n" );
 
-						trackAssetsDictionary = Task.Run( async () => await dataClient.GetTrackAssetsAsync() ).Result.Data;
+						var dataResponse = Task.Run( async () => await dataClient.GetTrackAssetsAsync() ).Result;
+
+						totalRateLimit = dataResponse.TotalRateLimit;
+						rateLimitRemaining = dataResponse.RateLimitRemaining;
+						rateLimitReset = dataResponse.RateLimitReset;
+
+						trackAssetsDictionary = dataResponse.Data;
 
 						return true;
 					}
@@ -96,7 +110,13 @@ namespace iRacingTVController
 					{
 						LogFile.Write( "Fetching car classes...\r\n" );
 
-						carClasses = Task.Run( async () => await dataClient.GetCarClassesAsync() ).Result.Data;
+						var dataResponse = Task.Run( async () => await dataClient.GetCarClassesAsync() ).Result;
+
+						totalRateLimit = dataResponse.TotalRateLimit;
+						rateLimitRemaining = dataResponse.RateLimitRemaining;
+						rateLimitReset = dataResponse.RateLimitReset;
+
+						carClasses = dataResponse.Data;
 
 						return true;
 					}
@@ -175,12 +195,40 @@ namespace iRacingTVController
 		{
 			if ( dataClient != null )
 			{
+				asyncMutex.Acquire();
+
+				Stall();
+
 				var dataResponse = await dataClient.GetMemberProfileAsync( customerID );
+
+				totalRateLimit = dataResponse.TotalRateLimit;
+				rateLimitRemaining = dataResponse.RateLimitRemaining;
+				rateLimitReset = dataResponse.RateLimitReset;
+
+				asyncMutex.Release();
 
 				return dataResponse.Data;
 			}
 
 			return null;
+		}
+
+		public static void Stall()
+		{
+			if ( rateLimitRemaining <= 5 )
+			{
+				var timeSpan = rateLimitReset - DateTime.UtcNow;
+
+				if ( timeSpan != null )
+				{
+					var milliseconds = timeSpan.Value.TotalMilliseconds;
+
+					if ( milliseconds > 0 )
+					{
+						Thread.Sleep( (int) timeSpan.Value.TotalMilliseconds );
+					}
+				}
+			}
 		}
 	}
 }

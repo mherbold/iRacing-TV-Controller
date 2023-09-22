@@ -33,6 +33,7 @@ namespace iRacingTVController
 		public LiveDataIntro liveDataIntro = new();
 		public LiveDataStartLights liveDataStartLights = new();
 		[JsonInclude] public LiveDataTrackMap liveDataTrackMap = new();
+		public LiveDataPitLane liveDataPitLane = new();
 		[JsonInclude, XmlIgnore] public LiveDataEventLog liveDataEventLog = new();
 		public LiveDataHud liveDataHud = new();
 		public LiveDataTrainer liveDataTrainer = new();
@@ -50,6 +51,11 @@ namespace iRacingTVController
 		[NonSerialized, XmlIgnore] public Dictionary<string, string> chyronRandomItemNames;
 		[NonSerialized, XmlIgnore] public string[] chyronAvailableItemLabels;
 		[NonSerialized, XmlIgnore] public string[] chyronAvailableItemValues;
+
+		[NonSerialized, XmlIgnore] public int trackIdLastFrame = 0;
+		[NonSerialized, XmlIgnore] public bool pitLaneTouched = false;
+		[NonSerialized, XmlIgnore] public float pitLaneMinLapDistPct = 0;
+		[NonSerialized, XmlIgnore] public float pitLaneMaxLapDistPct = 0;
 
 		static LiveData()
 		{
@@ -122,6 +128,7 @@ namespace iRacingTVController
 			UpdateLeaderboard( ref liveDataLeaderboardsWebPage, false );
 			UpdateLeaderboard( ref liveDataLeaderboards, true );
 			UpdateTrackMap();
+			UpdatePitLane();
 			UpdateVoiceOf();
 			UpdateChyron();
 			UpdateSubtitle();
@@ -150,6 +157,7 @@ namespace iRacingTVController
 			liveDataControlPanel.raceStatusOn = MainWindow.Instance.raceStatusOn;
 			liveDataControlPanel.leaderboardOn = MainWindow.Instance.leaderboardOn;
 			liveDataControlPanel.trackMapOn = MainWindow.Instance.trackMapOn;
+			liveDataControlPanel.pitLaneOn = MainWindow.Instance.pitLaneOn;
 			liveDataControlPanel.startLightsOn = MainWindow.Instance.startLightsOn;
 			liveDataControlPanel.voiceOfOn = MainWindow.Instance.voiceOfOn;
 			liveDataControlPanel.chyronOn = MainWindow.Instance.chyronOn;
@@ -744,12 +752,8 @@ namespace iRacingTVController
 
 					// skip cars not visible on the leaderboard
 
-					if ( liveDataTrackMapCar.show )
-					{
-						liveDataTrackMapCar.offset = TrackMap.GetPosition( normalizedCar.lapDistPct );
-						liveDataTrackMapCar.carNumber = normalizedCar.carNumber;
-					}
-
+					liveDataTrackMapCar.offset = TrackMap.GetPosition( normalizedCar.lapDistPct );
+					liveDataTrackMapCar.carNumber = normalizedCar.carNumber;
 					liveDataTrackMapCar.showHighlight = ( normalizedCar.carIdx == IRSDK.normalizedData.camCarIdx );
 				}
 			}
@@ -761,6 +765,125 @@ namespace iRacingTVController
 				liveDataTrackMap.height = 0;
 				liveDataTrackMap.startFinishLine = Vector3.zero;
 				liveDataTrackMap.drawVectorList = null;
+			}
+		}
+
+		public void UpdatePitLane()
+		{
+			if ( trackIdLastFrame != IRSDK.normalizedSession.trackID )
+			{
+				trackIdLastFrame = IRSDK.normalizedSession.trackID;
+
+				pitLaneTouched = false;
+
+				pitLaneMinLapDistPct = 0;
+				pitLaneMaxLapDistPct = 0;
+			}
+
+			if ( !pitLaneTouched )
+			{
+				foreach ( var normalizedCar in IRSDK.normalizedData.normalizedCars )
+				{
+					if ( normalizedCar.includeInLeaderboard && normalizedCar.isOnPitRoad )
+					{
+						pitLaneTouched = true;
+
+						pitLaneMinLapDistPct = normalizedCar.lapDistPct;
+						pitLaneMaxLapDistPct = normalizedCar.lapDistPct;
+
+						break;
+					}
+				}
+			}
+
+			liveDataPitLane.show = false;
+
+			if ( pitLaneTouched )
+			{
+				foreach ( var normalizedCar in IRSDK.normalizedData.normalizedCars )
+				{
+					if ( normalizedCar.includeInLeaderboard && normalizedCar.isOnPitRoad )
+					{
+						liveDataPitLane.show = true;
+
+						var lapDistPct = normalizedCar.lapDistPct;
+
+						var deltaLapDistPct = lapDistPct - pitLaneMinLapDistPct;
+
+						if ( deltaLapDistPct <= -0.5 )
+						{
+							lapDistPct += 1;
+						}
+						else if ( deltaLapDistPct >= 0.5 )
+						{
+							lapDistPct -= 1;
+						}
+
+						if ( lapDistPct < pitLaneMinLapDistPct )
+						{
+							pitLaneMinLapDistPct = lapDistPct;
+						}
+
+						lapDistPct = normalizedCar.lapDistPct;
+
+						deltaLapDistPct = lapDistPct - pitLaneMaxLapDistPct;
+
+						if ( deltaLapDistPct <= -0.5 )
+						{
+							lapDistPct += 1;
+						}
+						else if ( deltaLapDistPct >= 0.5 )
+						{
+							lapDistPct -= 1;
+						}
+
+						if ( lapDistPct > pitLaneMaxLapDistPct )
+						{
+							pitLaneMaxLapDistPct = lapDistPct;
+						}
+					}
+				}
+
+				var adjustedMaxLapDistPct = pitLaneMaxLapDistPct;
+
+				if ( adjustedMaxLapDistPct < pitLaneMinLapDistPct )
+				{
+					adjustedMaxLapDistPct += 1;
+				}
+
+				var length = adjustedMaxLapDistPct - pitLaneMinLapDistPct;
+
+				foreach ( var normalizedCar in IRSDK.normalizedData.normalizedCars )
+				{
+					var liveDataPitLaneCar = liveDataPitLane.liveDataPitLaneCars[ normalizedCar.carIdx ];
+
+					if ( normalizedCar.includeInLeaderboard && normalizedCar.isOnPitRoad && ( length > 0 ) )
+					{
+						liveDataPitLaneCar.show = true;
+						liveDataPitLaneCar.showHighlight = ( normalizedCar.carIdx == IRSDK.normalizedData.camCarIdx );
+
+						var lapDistPct = normalizedCar.lapDistPct;
+
+						var deltaLapDistPct = lapDistPct - pitLaneMinLapDistPct;
+
+						if ( deltaLapDistPct <= -0.5 )
+						{
+							lapDistPct += 1;
+						}
+						else if ( deltaLapDistPct >= 0.5 )
+						{
+							lapDistPct -= 1;
+						}
+
+						var offset = Settings.overlay.pitLaneLength * ( ( lapDistPct - pitLaneMinLapDistPct ) / length );
+
+						liveDataPitLaneCar.offset = new Vector3( offset, 0, 0 );
+					}
+					else
+					{
+						liveDataPitLaneCar.show = false;
+					}
+				}
 			}
 		}
 

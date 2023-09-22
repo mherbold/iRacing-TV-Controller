@@ -10,11 +10,9 @@ namespace iRacingTVController
 	[Serializable]
 	public class LiveDataTrackMap
 	{
-		public const int MaxNumCars = 64;
+		public bool show = false;
 
-		public bool show;
-
-		public int trackID;
+		public int trackID = 0;
 
 		[JsonInclude] public float width;
 		[JsonInclude] public float height;
@@ -23,7 +21,7 @@ namespace iRacingTVController
 
 		[JsonInclude] public List<Vector3>? drawVectorList;
 
-		[JsonInclude] public LiveDataTrackMapCar[] liveDataTrackMapCars = new LiveDataTrackMapCar[ MaxNumCars ];
+		[JsonInclude] public LiveDataTrackMapCar[] liveDataTrackMapCars = new LiveDataTrackMapCar[ LiveData.MaxNumDrivers ];
 
 		public LiveDataTrackMap()
 		{

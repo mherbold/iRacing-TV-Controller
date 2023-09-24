@@ -7,12 +7,22 @@ namespace iRacingTVController
 {
 	public static class Trainer
 	{
-		public const int numVectors = 40;
+		public const int NumLists = 7;
+		public const int NumVectors = 40;
 
-		public static Vector3[] drawVectorListA = new Vector3[ numVectors ];
-		public static Vector3[] drawVectorListB = new Vector3[ numVectors ];
+		public static NormalizedCar[] fastestCars = new NormalizedCar[ NumLists ];
+
+		public static Vector3[][] drawVectorList = new Vector3[ NumLists ][];
 
 		public static string message = string.Empty;
+
+		public static void Initialize()
+		{
+			for ( var i = 0; i < drawVectorList.Length; i++ )
+			{
+				drawVectorList[ i ] = new Vector3[ NumVectors ];
+			}
+		}
 
 		public static void Update()
 		{
@@ -24,80 +34,69 @@ namespace iRacingTVController
 				{
 					if ( playerNormalizedCar != null )
 					{
-						if ( IRSDK.normalizedData.replayFrameNum < IRSDK.normalizedData.replayFrameNumLastFrame )
-						{
-							message = string.Empty;
+						fastestCars[ 0 ] = playerNormalizedCar;
+						fastestCars[ 1 ] = playerNormalizedCar;
 
-							for ( var i = 0; i < IRSDK.normalizedSession.numCheckpoints; i++ )
+						var fastestCarCount = 2;
+
+						foreach ( var normalizedCar in IRSDK.normalizedData.fastestTimeSortedNormalizedCars )
+						{
+							if ( ( normalizedCar.fastestTime == 0 ) || ( normalizedCar.carIdx == IRSDK.data.PlayerCarIdx ) )
 							{
-								IRSDK.normalizedData.fastestLapSpeedCheckpoints[ i ] = 0;
+								continue;
 							}
-						}
 
-						if ( IRSDK.normalizedData.fastestLapTime != double.MaxValue )
-						{
-							if ( IRSDK.normalizedData.bestLapTime > 0 )
+							fastestCars[ fastestCarCount++ ] = normalizedCar;
+
+							if ( fastestCarCount == NumLists )
 							{
-								IRSDK.normalizedData.fastestLapTime += 0.25 * Program.deltaTime / IRSDK.normalizedData.bestLapTime;
-							}
-						}
-
-						if ( playerNormalizedCar.currentLap != playerNormalizedCar.currentLapLastFrame )
-						{
-							IRSDK.normalizedData.fastestLapTimeAge++;
-
-							if ( IRSDK.normalizedData.fastestLapTimeAge >= 3 )
-							{
-								IRSDK.normalizedData.fastestLapTimeAge = 0;
-
-								IRSDK.normalizedData.fastestLapTime = double.MaxValue;
-							}
-						}
-
-						foreach ( var normalizedCar in IRSDK.normalizedData.normalizedCars )
-						{
-							if ( ( normalizedCar.currentLap != normalizedCar.currentLapLastFrame ) && !normalizedCar.isOnPitRoad && !normalizedCar.wasOnPitRoad )
-							{
-								if ( ( normalizedCar.lastLapTime > 0 ) && ( normalizedCar.lastLapTime < IRSDK.normalizedData.fastestLapTime ) )
-								{
-									IRSDK.normalizedData.fastestLapTime = normalizedCar.lastLapTime;
-
-									message = $"#{playerNormalizedCar.carNumber} {playerNormalizedCar.abbrevName} vs. #{normalizedCar.carNumber} {normalizedCar.abbrevName} " + Program.GetTimeString( normalizedCar.lastLapTime, true );
-
-									for ( var i = 0; i < IRSDK.normalizedSession.numCheckpoints; i++ )
-									{
-										IRSDK.normalizedData.fastestLapSpeedCheckpoints[ i ] = normalizedCar.speedCheckpoints[ i ];
-									}
-								}
+								break;
 							}
 						}
 
 						var speed = playerNormalizedCar.speedInMetersPerSecond;
 
-						var offset = ( playerNormalizedCar.checkpointIdx + IRSDK.normalizedSession.numCheckpoints - ( numVectors / 2 ) ) % IRSDK.normalizedSession.numCheckpoints;
+						var offset = ( playerNormalizedCar.checkpointIdx + IRSDK.normalizedSession.numCheckpoints - ( NumVectors / 2 ) ) % IRSDK.normalizedSession.numCheckpoints;
 
 						Vector3? holdVector = null;
 
-						for ( var i = 0; i < numVectors; i++ )
+						for ( var i = 0; i < NumVectors; i++ )
 						{
-							drawVectorListA[ i ] = new Vector3( i * ( Settings.overlay.trainerSize.x / numVectors ), ( -( Settings.overlay.trainerSize.y / 2 ) + Settings.overlay.trainerSpeedScale * ( IRSDK.normalizedData.fastestLapSpeedCheckpoints[ offset ] - speed ) ), 0 );
-
-							drawVectorListA[ i ].y = Math.Clamp( drawVectorListA[ i ].y, -Settings.overlay.trainerSize.y, 0 );
-
 							if ( holdVector != null )
 							{
-								drawVectorListB[ i ] = holdVector;
+								drawVectorList[ 0 ][ i ] = holdVector;
 							}
 							else
 							{
-								drawVectorListB[ i ] = new Vector3( i * ( Settings.overlay.trainerSize.x / numVectors ), ( -( Settings.overlay.trainerSize.y / 2 ) + Settings.overlay.trainerSpeedScale * ( playerNormalizedCar.speedCheckpoints[ offset ] - speed ) ), 0 );
+								drawVectorList[ 0 ][ i ] = new Vector3( i * ( Settings.overlay.trainerSize.x / NumVectors ), ( -( Settings.overlay.trainerSize.y / 2 ) + Settings.overlay.trainerSpeedScale * ( playerNormalizedCar.speedCheckpoints[ offset ] - speed ) ), 0 );
 							}
 
-							drawVectorListB[ i ].y = Math.Clamp( drawVectorListB[ i ].y, -Settings.overlay.trainerSize.y, 0 );
+							drawVectorList[ 0 ][ i ].y = Math.Clamp( drawVectorList[ 0 ][ i ].y, -Settings.overlay.trainerSize.y, 0 );
 
 							if ( offset == playerNormalizedCar.checkpointIdx )
 							{
-								holdVector = drawVectorListB[ i ];
+								holdVector = drawVectorList[ 0 ][ i ];
+							}
+
+							offset = ( offset + 1 ) % IRSDK.normalizedSession.numCheckpoints;
+						}
+
+						offset = ( playerNormalizedCar.checkpointIdx + IRSDK.normalizedSession.numCheckpoints - ( NumVectors / 2 ) ) % IRSDK.normalizedSession.numCheckpoints;
+
+						for ( var i = 0; i < NumVectors; i++ )
+						{
+							for ( var j = 1; j < NumLists; j++ )
+							{
+								if ( j < fastestCarCount )
+								{
+									drawVectorList[ j ][ i ] = new Vector3( i * ( Settings.overlay.trainerSize.x / NumVectors ), ( -( Settings.overlay.trainerSize.y / 2 ) + Settings.overlay.trainerSpeedScale * ( fastestCars[ j ].fastestSpeedCheckpoints[ offset ] - speed ) ), 0 );
+
+									drawVectorList[ j ][ i ].y = Math.Clamp( drawVectorList[ j ][ i ].y, -Settings.overlay.trainerSize.y, 0 );
+								}
+								else
+								{
+									drawVectorList[ j ][ i ] = Vector3.zero;
+								}
 							}
 
 							offset = ( offset + 1 ) % IRSDK.normalizedSession.numCheckpoints;

@@ -12,6 +12,9 @@ namespace iRacingTVController
 	{
 		public bool show = false;
 
+		public bool showPaceCar = false;
+		public Vector3 paceCarOffset = Vector3.zero;
+
 		public int trackID = 0;
 
 		[JsonInclude] public float width;

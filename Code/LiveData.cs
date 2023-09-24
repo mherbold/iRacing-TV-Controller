@@ -57,6 +57,8 @@ namespace iRacingTVController
 		[NonSerialized, XmlIgnore] public float pitLaneMinLapDistPct = 0;
 		[NonSerialized, XmlIgnore] public float pitLaneMaxLapDistPct = 0;
 
+		[NonSerialized, XmlIgnore] public float paceCarDistPct = 0;
+
 		static LiveData()
 		{
 			Instance = new LiveData();
@@ -511,7 +513,7 @@ namespace iRacingTVController
 
 						// driver name
 
-						liveDataLeaderboardSlot.driverNameText = normalizedCar.abbrevName;
+						liveDataLeaderboardSlot.driverNameText = normalizedCar.displayedName;
 
 						// driver name color
 
@@ -734,6 +736,7 @@ namespace iRacingTVController
 			if ( TrackMap.initialized )
 			{
 				liveDataTrackMap.show = true;
+				liveDataTrackMap.showPaceCar = false;
 				liveDataTrackMap.trackID = TrackMap.trackID;
 				liveDataTrackMap.width = TrackMap.width;
 				liveDataTrackMap.height = TrackMap.height;
@@ -742,24 +745,37 @@ namespace iRacingTVController
 
 				foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardSortedNormalizedCars )
 				{
-					// get car
-
 					var liveDataTrackMapCar = liveDataTrackMap.liveDataTrackMapCars[ normalizedCar.carIdx ];
 
-					// skip pace car and spectators
-
 					liveDataTrackMapCar.show = normalizedCar.includeInLeaderboard && !normalizedCar.isOnPitRoad && !normalizedCar.isOutOfCar;
-
-					// skip cars not visible on the leaderboard
-
 					liveDataTrackMapCar.offset = TrackMap.GetPosition( normalizedCar.lapDistPct );
 					liveDataTrackMapCar.carNumber = normalizedCar.carNumber;
 					liveDataTrackMapCar.showHighlight = ( normalizedCar.carIdx == IRSDK.normalizedData.camCarIdx );
+
+					if ( normalizedCar.isPaceCar )
+					{
+						if ( !normalizedCar.isOnPitRoad )
+						{
+							var lapDistPctDelta = normalizedCar.lapDistPct - paceCarDistPct;
+
+							var distanceMovedInMeters = lapDistPctDelta * IRSDK.normalizedSession.trackLengthInMeters;
+							var speedInMetersPerSecond = distanceMovedInMeters / (float) IRSDK.normalizedData.sessionTimeDelta;
+
+							if ( speedInMetersPerSecond >= 5 )
+							{
+								liveDataTrackMap.showPaceCar = true;
+								liveDataTrackMap.paceCarOffset = TrackMap.GetPosition( normalizedCar.lapDistPct );
+							}
+						}
+
+						paceCarDistPct = normalizedCar.lapDistPct;
+					}
 				}
 			}
 			else
 			{
 				liveDataTrackMap.show = false;
+				liveDataTrackMap.showPaceCar = false;
 				liveDataTrackMap.trackID = 0;
 				liveDataTrackMap.width = 0;
 				liveDataTrackMap.height = 0;
@@ -1327,8 +1343,7 @@ namespace iRacingTVController
 
 		public void UpdateTrainer()
 		{
-			liveDataTrainer.drawVectorListA = Trainer.drawVectorListA;
-			liveDataTrainer.drawVectorListB = Trainer.drawVectorListB;
+			liveDataTrainer.drawVectorList = Trainer.drawVectorList;
 
 			liveDataTrainer.message = Trainer.message;
 		}

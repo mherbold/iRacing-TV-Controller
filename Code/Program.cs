@@ -50,6 +50,7 @@ namespace iRacingTVController
 			SpeechToText.Initialize();
 			PushToTalk.Initialize();
 			Director.Initialize();
+			Trainer.Initialize();
 
 			Task.Run( () => ProgramAsync() );
 		}

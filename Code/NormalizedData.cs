@@ -19,7 +19,7 @@ namespace iRacingTVController
 			public string name = string.Empty;
 			public string shortName = string.Empty;
 		}
-		
+
 		public const int MaxNumCars = 64;
 		public const int MaxNumClasses = 8;
 
@@ -79,10 +79,7 @@ namespace iRacingTVController
 		public List<NormalizedCar> leaderboardSortedNormalizedCars = new( MaxNumCars );
 		public List<NormalizedCar> classLeaderboardSortedNormalizedCars = new( MaxNumCars );
 		public List<NormalizedCar> relativeLapPositionSortedNormalizedCars = new( MaxNumCars );
-
-		public double fastestLapTime = double.MaxValue;
-		public int fastestLapTimeAge = 0;
-		public float[] fastestLapSpeedCheckpoints = new float[ NormalizedSession.MaxNumCheckpoints ];
+		public List<NormalizedCar> fastestTimeSortedNormalizedCars = new( MaxNumCars );
 
 		public NormalizedData()
 		{
@@ -93,6 +90,7 @@ namespace iRacingTVController
 				leaderboardSortedNormalizedCars.Add( normalizedCars[ i ] );
 				classLeaderboardSortedNormalizedCars.Add( normalizedCars[ i ] );
 				relativeLapPositionSortedNormalizedCars.Add( normalizedCars[ i ] );
+				fastestTimeSortedNormalizedCars.Add( normalizedCars[ i ] );
 			}
 
 			for ( var i = 0; i < MaxNumClasses; i++ )
@@ -164,16 +162,6 @@ namespace iRacingTVController
 			lapFuelLevelDelta = new float[] { 0, 0, 0, 0, 0 };
 			highestLapFuelLevelDelta = 0;
 
-			fastestLapTime = double.MaxValue;
-			fastestLapTimeAge = 0;
-
-			Trainer.message = string.Empty;
-
-			for ( var i = 0; i < NormalizedSession.MaxNumCheckpoints; i++ )
-			{
-				fastestLapSpeedCheckpoints[ i ] = 0;
-			}
-
 			foreach ( var normalizedCar in normalizedCars )
 			{
 				normalizedCar.Reset();
@@ -223,16 +211,16 @@ namespace iRacingTVController
 			{
 				var normalizedCar = normalizedCars[ carIdx ];
 
-				var originalAbbrevName = normalizedCar.abbrevName;
+				var originalDisplayedName = normalizedCar.displayedName;
 
 				for ( var otherCarIdx = carIdx + 1; otherCarIdx < MaxNumCars; otherCarIdx++ )
 				{
 					var otherNormalizedCar = normalizedCars[ otherCarIdx ];
 
-					if ( otherNormalizedCar.abbrevName == originalAbbrevName )
+					if ( otherNormalizedCar.displayedName == originalDisplayedName )
 					{
-						normalizedCar.GenerateAbbrevName( true );
-						otherNormalizedCar.GenerateAbbrevName( true );
+						normalizedCar.GenerateDisplayedName( true );
+						otherNormalizedCar.GenerateDisplayedName( true );
 					}
 				}
 			}
@@ -253,16 +241,6 @@ namespace iRacingTVController
 			lastLapFuelLevel = 0;
 			lapFuelLevelDelta = new float[] { 0, 0, 0, 0, 0 };
 			highestLapFuelLevelDelta = 0;
-
-			fastestLapTime = double.MaxValue;
-			fastestLapTimeAge = 0;
-
-			Trainer.message = string.Empty;
-
-			for ( var i = 0; i < NormalizedSession.MaxNumCheckpoints; i++ )
-			{
-				fastestLapSpeedCheckpoints[ i ] = 0;
-			}
 
 			foreach ( var normalizedCar in normalizedCars )
 			{
@@ -679,6 +657,10 @@ namespace iRacingTVController
 				}
 
 				relativeLapPositionSortedNormalizedCars.Sort( NormalizedCar.RelativeLapPositionComparison );
+
+				// sort cars by fastest lap time
+
+				fastestTimeSortedNormalizedCars.Sort( NormalizedCar.FastestTimeComparison );
 			}
 		}
 

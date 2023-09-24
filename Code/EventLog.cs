@@ -52,7 +52,7 @@ namespace iRacingTVController
 					{
 						sessionTime = sessionTime,
 						carNumber = normalizedCar.carNumber,
-						driverName = normalizedCar.abbrevName,
+						driverName = normalizedCar.displayedName,
 						position = $"P{normalizedCar.displayedPosition}",
 						type = "Incident",
 						text = $"{normalizedCar.activeIncidentPoints}x - {incidentType}"
@@ -127,7 +127,7 @@ namespace iRacingTVController
 							{
 								sessionTime = sessionTime,
 								carNumber = normalizedCar.carNumber,
-								driverName = normalizedCar.abbrevName,
+								driverName = normalizedCar.displayedName,
 								position = $"P{normalizedCar.displayedPosition}",
 								type = "Black Flag",
 								text = text
@@ -149,7 +149,7 @@ namespace iRacingTVController
 						{
 							sessionTime = sessionTime,
 							carNumber = string.Empty,
-							driverName = normalizedCar.abbrevName,
+							driverName = normalizedCar.displayedName,
 							position = string.Empty,
 							type = "Pace Car",
 							text = normalizedCar.isOnPitRoad ? "Entered pit road" : "Left pit road"
@@ -167,7 +167,7 @@ namespace iRacingTVController
 					{
 						sessionTime = sessionTime,
 						carNumber = normalizedCar.carNumber,
-						driverName = normalizedCar.abbrevName,
+						driverName = normalizedCar.displayedName,
 						position = $"P{normalizedCar.displayedPosition}",
 						type = (normalizedCar.isOnPitRoad) ? "Pit In" : "Pit Out",
 						text = string.Empty
@@ -182,7 +182,7 @@ namespace iRacingTVController
 					{
 						sessionTime = sessionTime,
 						carNumber = normalizedCar.carNumber,
-						driverName = normalizedCar.abbrevName,
+						driverName = normalizedCar.displayedName,
 						position = $"P{normalizedCar.displayedPosition}",
 						type = "Best Lap",
 						text = Program.GetTimeString( normalizedCar.bestLapTime, true )

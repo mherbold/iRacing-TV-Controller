@@ -383,8 +383,16 @@ namespace iRacingTVController
 
 				// editor
 
-				formatOptions.Add( "Last name", 0 );
-				formatOptions.Add( "First three letters of the last name", 1 );
+				formatOptions.Add( "Lastname", 0 );
+				formatOptions.Add( "Las", 1 );
+				formatOptions.Add( "F Las", 2 );
+				formatOptions.Add( "Firstname", 3 );
+				formatOptions.Add( "Fir", 4 );
+				formatOptions.Add( "Fir L", 5 );
+				formatOptions.Add( "F. Lastname", 6 );
+				formatOptions.Add( "Firstname L.", 7 );
+				formatOptions.Add( "Lastname, F", 8 );
+				formatOptions.Add( "Firstname Lastname", 9 );
 
 				foreach ( var item in formatOptions )
 				{
@@ -1138,11 +1146,11 @@ namespace iRacingTVController
 
 							if ( normalizedCar.lapPositionRelativeToClassLeader >= 1 )
 							{
-								cpb.label[ 4 ].Content = $"↓ {normalizedCar.abbrevName} ↓";
+								cpb.label[ 4 ].Content = $"↓ {normalizedCar.displayedName} ↓";
 							}
 							else
 							{
-								cpb.label[ 4 ].Content = normalizedCar.abbrevName;
+								cpb.label[ 4 ].Content = normalizedCar.displayedName;
 							}
 
 							cpb.label[ 0 ].Content = $"P{normalizedCar.leaderboardIndex}";

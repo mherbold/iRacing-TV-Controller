@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Controls.Primitives;
 using Aydsko.iRacingData.Common;
 using Aydsko.iRacingData.Member;
 using irsdkSharp.Serialization.Models.Session.DriverInfo;
@@ -21,7 +22,7 @@ namespace iRacingTVController
 		public int userId = 0;
 
 		public string userName = string.Empty;
-		public string abbrevName = string.Empty;
+		public string displayedName = string.Empty;
 
 		public string carNumber = string.Empty;
 		public int carNumberRaw = 0;
@@ -73,6 +74,9 @@ namespace iRacingTVController
 		public int checkpointIdxLastFrame = 0;
 		public double[] sessionTimeCheckpoints = new double[ NormalizedSession.MaxNumCheckpoints ];
 		public float[] speedCheckpoints = new float[ NormalizedSession.MaxNumCheckpoints ];
+
+		public double fastestTime = 0;
+		public float[] fastestSpeedCheckpoints = new float[ NormalizedSession.MaxNumCheckpoints ];
 
 		public float heat = 0;
 		public float heatBonus = 0;
@@ -132,7 +136,7 @@ namespace iRacingTVController
 			userId = 0;
 
 			userName = string.Empty;
-			abbrevName = string.Empty;
+			displayedName = string.Empty;
 
 			carNumber = string.Empty;
 			carNumberRaw = 0;
@@ -181,6 +185,8 @@ namespace iRacingTVController
 			checkpointIdxLastFrame = 0;
 			checkpointTime = 0;
 
+			fastestTime = 0;
+
 			heat = 0;
 			heatBonus = 0;
 			heatBias = 0;
@@ -224,6 +230,7 @@ namespace iRacingTVController
 			{
 				sessionTimeCheckpoints[ i ] = 0;
 				speedCheckpoints[ i ] = 0;
+				fastestSpeedCheckpoints[ i ] = 0;
 			}
 		}
 
@@ -270,6 +277,8 @@ namespace iRacingTVController
 			checkpointIdxLastFrame = 0;
 			checkpointTime = 0;
 
+			fastestTime = 0;
+
 			heat = 0;
 			heatBonus = 0;
 			heatBias = 0;
@@ -315,6 +324,7 @@ namespace iRacingTVController
 			{
 				sessionTimeCheckpoints[ i ] = 0;
 				speedCheckpoints[ i ] = 0;
+				fastestSpeedCheckpoints[ i ] = 0;
 			}
 		}
 
@@ -360,11 +370,11 @@ namespace iRacingTVController
 
 			if ( isPaceCar )
 			{
-				abbrevName = driver.UserName;
+				displayedName = driver.UserName;
 			}
 			else
 			{
-				GenerateAbbrevName( false );
+				GenerateDisplayedName( false );
 			}
 
 			carNumber = driver.CarNumber;
@@ -662,6 +672,29 @@ namespace iRacingTVController
 
 			if ( checkpointIdx != targetCheckpointIdx )
 			{
+				if ( ( targetCheckpointIdx < checkpointIdxLastFrame ) && !isOnPitRoad )
+				{
+					if ( fastestTime > 0 )
+					{
+						fastestTime += 0.25f;
+					}
+
+					if ( speedCheckpoints[ 0 ] != 0 )
+					{
+						var newFastestTime = IRSDK.normalizedData.sessionTime - sessionTimeCheckpoints[ 0 ];
+
+						if ( ( fastestTime == 0 ) || ( newFastestTime < fastestTime ) )
+						{
+							fastestTime = newFastestTime;
+
+							for ( var i = 0; i < IRSDK.normalizedSession.numCheckpoints; i++ )
+							{
+								fastestSpeedCheckpoints[ i ] = speedCheckpoints[ i ];
+							}
+						}
+					}
+				}
+
 				var numSteps = targetCheckpointIdx - checkpointIdx;
 
 				if ( numSteps < 0 )
@@ -716,59 +749,239 @@ namespace iRacingTVController
 			rpm = Math.Max( 0, car.CarIdxRPM );
 		}
 
-		public void GenerateAbbrevName( bool includeFirstNameInitial )
+		public void GenerateDisplayedName( bool multipleDriversHaveTheSameName )
 		{
+			displayedName = "---";
+
 			var userNameParts = userName.Split( " " );
 
 			if ( ( userNameParts.Length == 0 ) || ( userNameParts[ 0 ] == string.Empty ) )
 			{
-				abbrevName = "---";
-
 				return;
 			}
 
-			var userNameIndex = userNameParts.Length - 1;
+			var firstName = userNameParts[ 0 ];
+			var lastName = string.Empty;
 
-			abbrevName = userNameParts[ userNameIndex ];
-
-			var suffixList = Settings.editor.iracingDriverNamesSuffixes.Split( "," ).ToList().Select( s => s.Trim().ToLower() ).ToList();
-
-			if ( suffixList.Contains( abbrevName.ToLower() ) )
+			if ( userNameParts.Length >= 2 )
 			{
-				userNameIndex--;
+				var userNameIndex = userNameParts.Length - 1;
 
-				if ( userNameIndex >= 0 )
+				lastName = userNameParts[ userNameIndex ];
+
+				var suffixList = Settings.editor.iracingDriverNamesSuffixes.Split( "," ).ToList().Select( s => s.Trim().ToLower() ).ToList();
+
+				if ( suffixList.Contains( lastName.ToLower() ) )
 				{
-					abbrevName = userNameParts[ userNameIndex ] + " " + abbrevName;
+					if ( userNameIndex >= 2 )
+					{
+						lastName = userNameParts[ userNameIndex - 1 ] + " " + lastName;
+					}
+					else
+					{
+						lastName = string.Empty;
+					}
 				}
 			}
 
-			if ( Settings.editor.iracingDriverNameFormatOption == 1 )
+			switch ( Settings.editor.iracingDriverNameCapitalizationOption )
 			{
-				if ( abbrevName.Length > 3 )
+				case 1:
+
+					if ( firstName.Length >= 2 )
+					{
+						if ( firstName == firstName.ToUpper() )
+						{
+							firstName = $"{firstName[ 0 ].ToString().ToUpper()}{firstName[ 1.. ].ToLower()}";
+						}
+					}
+
+					if ( lastName.Length >= 2 )
+					{
+						if ( lastName == lastName.ToUpper() )
+						{
+							lastName = $"{lastName[ 0 ].ToString().ToUpper()}{lastName[ 1.. ].ToLower()}";
+						}
+					}
+
+					break;
+
+				case 2:
+
+					firstName = firstName.ToUpper();
+					lastName = lastName.ToUpper();
+					break;
+			}
+
+			var option = Settings.editor.iracingDriverNameFormatOption;
+
+			if ( multipleDriversHaveTheSameName )
+			{
+				switch ( option )
 				{
-					abbrevName = $"{abbrevName[ ..3 ]}";
+					case 0: option = 6; break;
+					case 1: option = 2; break;
+					case 3: option = 7; break;
+					case 4: option = 5; break;
 				}
 			}
 
-			if ( Settings.editor.iracingDriverNameCapitalizationOption == 1 )
+			switch ( option )
 			{
-				if ( abbrevName == abbrevName.ToUpper() )
-				{
-					abbrevName = $"{abbrevName[ 0 ].ToString().ToUpper()}{abbrevName[ 1.. ].ToLower()}";
-				}
-			}
-			else if ( Settings.editor.iracingDriverNameCapitalizationOption == 2 )
-			{
-				abbrevName = abbrevName.ToUpper();
-			}
+				case 0:
 
-			if ( includeFirstNameInitial )
-			{
-				if ( userNameIndex >= 1 )
-				{
-					abbrevName = $"{userNameParts[ 0 ][ ..1 ].ToUpper()}. {abbrevName}";
-				}
+					if ( lastName != string.Empty )
+					{
+						displayedName = lastName;
+					}
+					else if ( firstName != string.Empty )
+					{
+						displayedName = firstName;
+					}
+
+					break;
+
+				case 1:
+
+					if ( lastName != string.Empty )
+					{
+						displayedName = lastName.Substring( 0, Math.Min( 3, lastName.Length ) );
+					}
+					else if ( firstName != string.Empty )
+					{
+						displayedName = firstName.Substring( 0, Math.Min( 3, firstName.Length ) );
+					}
+
+					break;
+
+				case 2:
+
+					if ( ( firstName != string.Empty ) && ( lastName != string.Empty ) )
+					{
+						displayedName = $"{firstName[ 0 ]} {lastName.Substring( 0, Math.Min( 3, lastName.Length ) )}";
+					}
+					else if ( lastName != string.Empty )
+					{
+						displayedName = lastName.Substring( 0, Math.Min( 3, lastName.Length ) );
+					}
+					else if ( firstName != string.Empty )
+					{
+						displayedName = firstName.Substring( 0, Math.Min( 3, firstName.Length ) );
+					}
+
+					break;
+
+				case 3:
+
+					if ( firstName != string.Empty )
+					{
+						displayedName = firstName;
+					}
+					else if ( lastName != string.Empty )
+					{
+						displayedName = lastName;
+					}
+
+					break;
+
+				case 4:
+
+					if ( firstName != string.Empty )
+					{
+						displayedName = firstName.Substring( 0, Math.Min( 3, firstName.Length ) );
+					}
+					else if ( lastName != string.Empty )
+					{
+						displayedName = lastName.Substring( 0, Math.Min( 3, lastName.Length ) );
+					}
+
+					break;
+
+				case 5:
+
+					if ( ( firstName != string.Empty ) && ( lastName != string.Empty ) )
+					{
+						displayedName = $"{firstName.Substring( 0, Math.Min( 3, firstName.Length ) )} {lastName[ 0 ]}";
+					}
+					else if ( firstName != string.Empty )
+					{
+						displayedName = firstName.Substring( 0, Math.Min( 3, firstName.Length ) );
+					}
+					else if ( lastName != string.Empty )
+					{
+						displayedName = lastName.Substring( 0, Math.Min( 3, lastName.Length ) );
+					}
+
+					break;
+
+				case 6:
+
+					if ( ( firstName != string.Empty ) && ( lastName != string.Empty ) )
+					{
+						displayedName = $"{firstName[ 0 ]}. {lastName}";
+					}
+					else if ( lastName != string.Empty )
+					{
+						displayedName = lastName;
+					}
+					else if ( firstName != string.Empty )
+					{
+						displayedName = firstName;
+					}
+
+					break;
+
+				case 7:
+
+					if ( ( firstName != string.Empty ) && ( lastName != string.Empty ) )
+					{
+						displayedName = $"{firstName} {lastName[ 0 ]}.";
+					}
+					else if ( firstName != string.Empty )
+					{
+						displayedName = firstName;
+					}
+					else if ( lastName != string.Empty )
+					{
+						displayedName = lastName;
+					}
+
+					break;
+
+				case 8:
+
+					if ( ( firstName != string.Empty ) && ( lastName != string.Empty ) )
+					{
+						displayedName = $"{lastName}, {firstName[ 0 ]}";
+					}
+					else if ( lastName != string.Empty )
+					{
+						displayedName = lastName;
+					}
+					else if ( firstName != string.Empty )
+					{
+						displayedName = firstName;
+					}
+
+					break;
+
+				case 9:
+
+					if ( ( firstName != string.Empty ) && ( lastName != string.Empty ) )
+					{
+						displayedName = $"{firstName} {lastName}";
+					}
+					else if ( lastName != string.Empty )
+					{
+						displayedName = lastName;
+					}
+					else if ( firstName != string.Empty )
+					{
+						displayedName = firstName;
+					}
+
+					break;
+
 			}
 		}
 
@@ -982,6 +1195,37 @@ namespace iRacingTVController
 				else
 				{
 					result = lprl1.CompareTo( lprl2 );
+				}
+			}
+			else if ( a.includeInLeaderboard )
+			{
+				result = -1;
+			}
+			else if ( b.includeInLeaderboard )
+			{
+				result = 1;
+			}
+			else
+			{
+				result = a.carIdx.CompareTo( b.carIdx );
+			}
+
+			return result;
+		};
+
+		public static Comparison<NormalizedCar> FastestTimeComparison = delegate ( NormalizedCar a, NormalizedCar b )
+		{
+			int result;
+
+			if ( a.includeInLeaderboard && b.includeInLeaderboard )
+			{
+				if ( a.fastestTime == b.fastestTime )
+				{
+					result = a.carIdx.CompareTo( b.carIdx );
+				}
+				else
+				{
+					result = a.fastestTime.CompareTo( b.fastestTime );
 				}
 			}
 			else if ( a.includeInLeaderboard )

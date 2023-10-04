@@ -23,6 +23,8 @@ namespace iRacingTVController
 		public Vector2 position = Vector2.zero;
 		public Vector2 size = Vector2.zero;
 		public Color tintColor = Color.white;
+		public bool useClassColors = false;
+		public float classColorStrength = 0.5f;
 		public bool allowOverflow = true;
 
 		public bool fontIndex_Overridden = false;
@@ -31,6 +33,8 @@ namespace iRacingTVController
 		public bool position_Overridden = false;
 		public bool size_Overridden = false;
 		public bool tintColor_Overridden = false;
+		public bool useClassColors_Overridden = false;
+		public bool classColorStrength_Overridden = false;
 		public bool allowOverflow_Overridden = false;
 	}
 }

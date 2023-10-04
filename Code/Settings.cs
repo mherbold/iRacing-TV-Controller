@@ -307,6 +307,7 @@ namespace iRacingTVController
 				{ "LeaderboardCurrentTarget", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\leaderboard-current-target.png" } },
 				{ "LeaderboardLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\leaderboard-heading.png", position = { x = 0, y = -3 }, useClassColors = true } },
 				{ "LeaderboardLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
+				{ "LeaderboardPositionBackground", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
 				{ "LeaderboardPositionLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.CarNumber, position = { x = 48, y = 10 }, size = { x = 56, y = 28 } } },
 				{ "LeaderboardPositionLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
 				{ "LeaderboardPositionLayer3", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
@@ -429,7 +430,7 @@ namespace iRacingTVController
 				{ "LeaderboardCurrentTargetSpeed", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 397, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "LeaderboardPosition", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 43, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "LeaderboardPositionCarNumber", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 21, alignment = TextAlignmentOptions.Top, position = { x = 76, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
-				{ "LeaderboardPositionDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 21, position = { x = 108, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
+				{ "LeaderboardPositionDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 21, position = { x = 108, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f }, useClassColors = true } },
 				{ "LeaderboardPositionTelemetry", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 298, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "PitLaneCarNumber", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 21, alignment = TextAlignmentOptions.Top, position = { x = 0, y = -35 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "RaceStatusCurrentLap", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 27, alignment = TextAlignmentOptions.TopRight, position = { x = 298, y = 175 }, tintColor = { r = 0.737f, g = 0.741f, b = 0.725f } } },
@@ -645,8 +646,7 @@ namespace iRacingTVController
 				leaderboardFirstSlotPosition = overlayLocal.leaderboardFirstSlotPosition_Overridden ? overlayLocal.leaderboardFirstSlotPosition : overlayGlobal.leaderboardFirstSlotPosition,
 				leaderboardSlotCount = overlayLocal.leaderboardSlotCount_Overridden ? overlayLocal.leaderboardSlotCount : overlayGlobal.leaderboardSlotCount,
 				leaderboardSlotSpacing = overlayLocal.leaderboardSlotSpacing_Overridden ? overlayLocal.leaderboardSlotSpacing : overlayGlobal.leaderboardSlotSpacing,
-				leaderboardUseClassColors = overlayLocal.leaderboardUseClassColors_Overridden ? overlayLocal.leaderboardUseClassColors : overlayGlobal.leaderboardUseClassColors,
-				leaderboardClassColorStrength = overlayLocal.leaderboardClassColorStrength_Overridden ? overlayLocal.leaderboardClassColorStrength : overlayGlobal.leaderboardClassColorStrength,
+				leaderboardSeparateBoards = overlayLocal.leaderboardSeparateBoards_Overridden ? overlayLocal.leaderboardSeparateBoards : overlayGlobal.leaderboardSeparateBoards,
 				leaderboardMultiClassOffset = overlayLocal.leaderboardMultiClassOffset_Overridden ? overlayLocal.leaderboardMultiClassOffset : overlayGlobal.leaderboardMultiClassOffset,
 				leaderboardMultiClassOffsetType = overlayLocal.leaderboardMultiClassOffset_Overridden ? overlayLocal.leaderboardMultiClassOffsetType : overlayGlobal.leaderboardMultiClassOffsetType,
 
@@ -655,8 +655,7 @@ namespace iRacingTVController
 				leaderboardFirstSlotPosition_Overridden = overlayLocal.leaderboardFirstSlotPosition_Overridden,
 				leaderboardSlotCount_Overridden = overlayLocal.leaderboardSlotCount_Overridden,
 				leaderboardSlotSpacing_Overridden = overlayLocal.leaderboardSlotSpacing_Overridden,
-				leaderboardUseClassColors_Overridden = overlayLocal.leaderboardUseClassColors_Overridden,
-				leaderboardClassColorStrength_Overridden = overlayLocal.leaderboardClassColorStrength_Overridden,
+				leaderboardSeparateBoards_Overridden = overlayLocal.leaderboardSeparateBoards_Overridden,
 				leaderboardMultiClassOffset_Overridden = overlayLocal.leaderboardMultiClassOffset_Overridden,
 
 				trackMapEnabled = overlayLocal.trackMapEnabled_Overridden ? overlayLocal.trackMapEnabled : overlayGlobal.trackMapEnabled,
@@ -816,7 +815,7 @@ namespace iRacingTVController
 						animationSpeed_Overridden = item.Value.animationSpeed_Overridden,
 						tilingEnabled_Overridden = item.Value.tilingEnabled_Overridden,
 						useClassColors_Overridden = item.Value.useClassColors_Overridden,
-						classColorStrength_Overridden = item.Value.classColorStrength_Overridden,
+						classColorStrength_Overridden = item.Value.classColorStrength_Overridden
 					};
 				}
 			}
@@ -835,6 +834,8 @@ namespace iRacingTVController
 						position = item.Value.position_Overridden ? item.Value.position : globalItem.position,
 						size = item.Value.size_Overridden ? item.Value.size : globalItem.size,
 						tintColor = item.Value.tintColor_Overridden ? item.Value.tintColor : globalItem.tintColor,
+						useClassColors = item.Value.useClassColors_Overridden ? item.Value.useClassColors : globalItem.useClassColors,
+						classColorStrength = item.Value.classColorStrength_Overridden ? item.Value.classColorStrength : globalItem.classColorStrength,
 						allowOverflow = item.Value.allowOverflow_Overridden ? item.Value.allowOverflow : globalItem.allowOverflow,
 
 						fontIndex_Overridden = item.Value.fontIndex_Overridden,
@@ -843,6 +844,8 @@ namespace iRacingTVController
 						position_Overridden = item.Value.position_Overridden,
 						size_Overridden = item.Value.size_Overridden,
 						tintColor_Overridden = item.Value.tintColor_Overridden,
+						useClassColors_Overridden = item.Value.useClassColors_Overridden,
+						classColorStrength_Overridden = item.Value.classColorStrength_Overridden,
 						allowOverflow_Overridden = item.Value.allowOverflow_Overridden
 					};
 				}

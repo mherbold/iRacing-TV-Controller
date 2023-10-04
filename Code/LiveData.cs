@@ -338,7 +338,7 @@ namespace iRacingTVController
 								break;
 							}
 
-							if ( normalizedCar.classID == currentClassID )
+							if ( !Settings.overlay.leaderboardSeparateBoards || ( normalizedCar.classID == currentClassID ) )
 							{
 								if ( normalizedCar.carIdx == IRSDK.normalizedData.camCarIdx )
 								{
@@ -399,7 +399,7 @@ namespace iRacingTVController
 				{
 					// skip cars with wrong car class
 
-					if ( normalizedCar.classID != currentClassID )
+					if ( Settings.overlay.leaderboardSeparateBoards && ( normalizedCar.classID != currentClassID ) )
 					{
 						continue;
 					}
@@ -483,11 +483,13 @@ namespace iRacingTVController
 
 						// position text color
 
-						var tintColor = Settings.overlay.textSettingsDataDictionary[ "LeaderboardPosition" ].tintColor;
+						var textSettings = Settings.overlay.textSettingsDataDictionary[ "LeaderboardPosition" ];
 
-						if ( Settings.overlay.leaderboardUseClassColors )
+						var tintColor = textSettings.tintColor;
+
+						if ( textSettings.useClassColors )
 						{
-							liveDataLeaderboardSlot.positionColor = Color.Lerp( tintColor, normalizedCar.classColor, Settings.overlay.leaderboardClassColorStrength );
+							liveDataLeaderboardSlot.positionColor = Color.Lerp( tintColor, normalizedCar.classColor, textSettings.classColorStrength );
 						}
 						else
 						{
@@ -500,11 +502,13 @@ namespace iRacingTVController
 
 						// car number text color
 
-						tintColor = Settings.overlay.textSettingsDataDictionary[ "LeaderboardPositionCarNumber" ].tintColor;
+						textSettings = Settings.overlay.textSettingsDataDictionary[ "LeaderboardPositionCarNumber" ];
 
-						if ( Settings.overlay.leaderboardUseClassColors )
+						tintColor = textSettings.tintColor;
+
+						if ( textSettings.useClassColors )
 						{
-							liveDataLeaderboardSlot.carNumberColor = Color.Lerp( tintColor, normalizedCar.classColor, Settings.overlay.leaderboardClassColorStrength );
+							liveDataLeaderboardSlot.carNumberColor = Color.Lerp( tintColor, normalizedCar.classColor, textSettings.classColorStrength );
 						}
 						else
 						{
@@ -517,11 +521,13 @@ namespace iRacingTVController
 
 						// driver name color
 
-						tintColor = Settings.overlay.textSettingsDataDictionary[ "LeaderboardPositionDriverName" ].tintColor;
+						textSettings = Settings.overlay.textSettingsDataDictionary[ "LeaderboardPositionDriverName" ];
 
-						if ( Settings.overlay.leaderboardUseClassColors )
+						tintColor = textSettings.tintColor;
+
+						if ( textSettings.useClassColors )
 						{
-							liveDataLeaderboardSlot.driverNameColor = Color.Lerp( tintColor, normalizedCar.classColor, Settings.overlay.leaderboardClassColorStrength );
+							liveDataLeaderboardSlot.driverNameColor = Color.Lerp( tintColor, normalizedCar.classColor, textSettings.classColorStrength );
 						}
 						else
 						{
@@ -530,7 +536,7 @@ namespace iRacingTVController
 
 						// telemetry
 
-						var negativeSign = Settings.overlay.telemetryShowAsNegativeNumbers ? "-" : "";
+						var sign = Settings.overlay.telemetryShowAsNegativeNumbers ? "-" : "+";
 
 						liveDataLeaderboardSlot.telemetryText = string.Empty;
 						liveDataLeaderboardSlot.telemetryColor = Settings.overlay.textSettingsDataDictionary[ "LeaderboardPositionTelemetry" ].tintColor;
@@ -547,7 +553,7 @@ namespace iRacingTVController
 								{
 									var deltaTime = normalizedCar.bestLapTime - classLeaderBestLapTime;
 
-									liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{deltaTime:0.000}";
+									liveDataLeaderboardSlot.telemetryText = $"{sign}{deltaTime:0.000}";
 								}
 							}
 
@@ -587,7 +593,7 @@ namespace iRacingTVController
 
 										if ( Settings.overlay.telemetryMode == 0 )
 										{
-											liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{lapPosition:0.000} {Settings.overlay.translationDictionary[ "LapsAbbreviation" ].translation}";
+											liveDataLeaderboardSlot.telemetryText = $"{sign}{lapPosition:0.000} {Settings.overlay.translationDictionary[ "LapsAbbreviation" ].translation}";
 										}
 										else if ( Settings.overlay.telemetryMode == 1 )
 										{
@@ -599,7 +605,7 @@ namespace iRacingTVController
 
 												if ( distanceString != "0" )
 												{
-													liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{distanceString} {Settings.overlay.translationDictionary[ "MetersAbbreviation" ].translation}";
+													liveDataLeaderboardSlot.telemetryText = $"{sign}{distanceString} {Settings.overlay.translationDictionary[ "MetersAbbreviation" ].translation}";
 												}
 											}
 											else
@@ -610,7 +616,7 @@ namespace iRacingTVController
 
 												if ( distanceString != "0" )
 												{
-													liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{distanceString} {Settings.overlay.translationDictionary[ "FeetAbbreviation" ].translation}";
+													liveDataLeaderboardSlot.telemetryText = $"{sign}{distanceString} {Settings.overlay.translationDictionary[ "FeetAbbreviation" ].translation}";
 												}
 											}
 										}
@@ -636,7 +642,7 @@ namespace iRacingTVController
 														}
 													}
 
-													liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{normalizedCar.checkpointTime:0.00}";
+													liveDataLeaderboardSlot.telemetryText = $"{sign}{normalizedCar.checkpointTime:0.00}";
 												}
 											}
 											else if ( normalizedCarClassLeader != null )
@@ -659,7 +665,7 @@ namespace iRacingTVController
 														}
 													}
 
-													liveDataLeaderboardSlot.telemetryText = $"{negativeSign}{normalizedCar.checkpointTime:0.00}";
+													liveDataLeaderboardSlot.telemetryText = $"{sign}{normalizedCar.checkpointTime:0.00}";
 												}
 											}
 										}

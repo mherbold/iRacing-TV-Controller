@@ -748,8 +748,7 @@ namespace iRacingTVController
 			Update( Overlay_Leaderboard_FirstSlotPosition_X, Overlay_Leaderboard_FirstSlotPosition_Y, Settings.overlay.leaderboardFirstSlotPosition, Overlay_Leaderboard_FirstSlotPosition_Override, overlayIsGlobal, Settings.overlay.leaderboardFirstSlotPosition_Overridden );
 			Update( Overlay_Leaderboard_SlotCount, Settings.overlay.leaderboardSlotCount, Overlay_Leaderboard_SlotCount_Override, overlayIsGlobal, Settings.overlay.leaderboardSlotCount_Overridden );
 			Update( Overlay_Leaderboard_SlotSpacing_X, Overlay_Leaderboard_SlotSpacing_Y, Settings.overlay.leaderboardSlotSpacing, Overlay_Leaderboard_SlotSpacing_Override, overlayIsGlobal, Settings.overlay.leaderboardSlotSpacing_Overridden );
-			Update( Overlay_Leaderboard_UseClassColors, Settings.overlay.leaderboardUseClassColors, Overlay_Leaderboard_UseClassColors_Override, overlayIsGlobal, Settings.overlay.leaderboardUseClassColors_Overridden );
-			Update( Overlay_Leaderboard_ClassColorStrength, Settings.overlay.leaderboardClassColorStrength * 255.0f, Overlay_Leaderboard_ClassColorStrength_Override, overlayIsGlobal, Settings.overlay.leaderboardClassColorStrength_Overridden );
+			Update( Overlay_Leaderboard_SeparateBoards, Settings.overlay.leaderboardSeparateBoards, Overlay_Leaderboard_SeparateBoards_Override, overlayIsGlobal, Settings.overlay.leaderboardSeparateBoards_Overridden );
 			Update( Overlay_Leaderboard_MultiClassOffset_X, Overlay_Leaderboard_MultiClassOffset_Y, Settings.overlay.leaderboardMultiClassOffset, Overlay_Leaderboard_MultiClassOffset_Override, overlayIsGlobal, Settings.overlay.leaderboardMultiClassOffset_Overridden );
 			Update( Overlay_Leaderboard_MultiClassOffset_Type, leaderboardMultiClassOffsetTypeOptions.FirstOrDefault( x => x.Value == Settings.overlay.leaderboardMultiClassOffsetType ).Key, Overlay_Leaderboard_MultiClassOffset_Override, overlayIsGlobal, Settings.overlay.leaderboardMultiClassOffset_Overridden );
 
@@ -953,6 +952,8 @@ namespace iRacingTVController
 				Update( Text_Position_X, Text_Position_Y, settings.position, Text_Position_Override, overlayIsGlobal, settings.position_Overridden );
 				Update( Text_Size_W, Text_Size_H, settings.size, Text_Size_Override, overlayIsGlobal, settings.size_Overridden );
 				Update( Text_TintColor_R, Text_TintColor_G, Text_TintColor_B, Text_TintColor_A, settings.tintColor, Text_TintColor_Override, overlayIsGlobal, settings.tintColor_Overridden, Text_TintColor_Palette );
+				Update( Text_UseClassColors, settings.useClassColors, Text_UseClassColors_Override, overlayIsGlobal, settings.useClassColors_Overridden );
+				Update( Text_ClassColorStrength, settings.classColorStrength * 255.0f, Text_ClassColorStrength_Override, overlayIsGlobal, settings.classColorStrength_Overridden );
 				Update( Text_AllowOverflow, settings.allowOverflow, Text_AllowOverflow_Override, overlayIsGlobal, settings.allowOverflow_Overridden );
 
 				initializing--;
@@ -3133,6 +3134,36 @@ namespace iRacingTVController
 					settings.tintColor = new Color( Text_TintColor_R.Value, Text_TintColor_G.Value, Text_TintColor_B.Value, Text_TintColor_A.Value );
 				}
 
+				overridden = Text_UseClassColors_Override.IsChecked ?? false;
+
+				if ( overlaySettings.useClassColors_Overridden != overridden )
+				{
+					overlaySettings.useClassColors_Overridden = overridden;
+
+					UpdateOverlayText();
+				}
+				else
+				{
+					var settings = overlaySettings.useClassColors_Overridden ? overlaySettings : globalSettings;
+
+					settings.useClassColors = Text_UseClassColors.IsChecked ?? false;
+				}
+
+				overridden = Text_ClassColorStrength_Override.IsChecked ?? false;
+
+				if ( overlaySettings.classColorStrength_Overridden != overridden )
+				{
+					overlaySettings.classColorStrength_Overridden = overridden;
+
+					UpdateOverlayText();
+				}
+				else
+				{
+					var settings = overlaySettings.classColorStrength_Overridden ? overlaySettings : globalSettings;
+
+					settings.classColorStrength = (float) ( Text_ClassColorStrength.Value / 255.0f );
+				}
+
 				overridden = Text_AllowOverflow_Override.IsChecked ?? false;
 
 				if ( overlaySettings.allowOverflow_Overridden != overridden )
@@ -3313,34 +3344,19 @@ namespace iRacingTVController
 					overlay.leaderboardSlotSpacing = new Vector2( Overlay_Leaderboard_SlotSpacing_X.Value, Overlay_Leaderboard_SlotSpacing_Y.Value );
 				}
 
-				overridden = Overlay_Leaderboard_UseClassColors_Override.IsChecked ?? false;
+				overridden = Overlay_Leaderboard_SeparateBoards_Override.IsChecked ?? false;
 
-				if ( Settings.overlayLocal.leaderboardUseClassColors_Overridden != overridden )
+				if ( Settings.overlayLocal.leaderboardSeparateBoards_Overridden != overridden )
 				{
-					Settings.overlayLocal.leaderboardUseClassColors_Overridden = overridden;
+					Settings.overlayLocal.leaderboardSeparateBoards_Overridden = overridden;
 
 					Update();
 				}
 				else
 				{
-					var overlay = Settings.overlayLocal.leaderboardUseClassColors_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+					var overlay = Settings.overlayLocal.leaderboardSeparateBoards_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
 
-					overlay.leaderboardUseClassColors = Overlay_Leaderboard_UseClassColors.IsChecked ?? false;
-				}
-
-				overridden = Overlay_Leaderboard_ClassColorStrength_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.leaderboardClassColorStrength_Overridden != overridden )
-				{
-					Settings.overlayLocal.leaderboardClassColorStrength_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.leaderboardClassColorStrength_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.leaderboardClassColorStrength = (float) ( Overlay_Leaderboard_ClassColorStrength.Value / 255.0f );
+					overlay.leaderboardSeparateBoards = Overlay_Leaderboard_SeparateBoards.IsChecked ?? false;
 				}
 
 				overridden = Overlay_Leaderboard_MultiClassOffset_Override.IsChecked ?? false;

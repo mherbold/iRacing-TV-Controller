@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +12,7 @@ using Aydsko.iRacingData;
 using Aydsko.iRacingData.Tracks;
 using Aydsko.iRacingData.Common;
 using Aydsko.iRacingData.Member;
+using System.Threading.Tasks;
 
 namespace iRacingTVController
 {
@@ -26,8 +26,6 @@ namespace iRacingTVController
 		public static int? totalRateLimit = null;
 		public static int? rateLimitRemaining = null;
 		public static DateTimeOffset? rateLimitReset = null;
-
-		public static AsyncMutex asyncMutex = new();
 
 		public static void Initialize( bool showMessageBoxOnSuccess )
 		{
@@ -80,7 +78,14 @@ namespace iRacingTVController
 					{
 						LogFile.Write( "Fetching track assets dictionary...\r\n" );
 
-						var dataResponse = Task.Run( async () => await dataClient.GetTrackAssetsAsync() ).Result;
+						var task = dataClient.GetTrackAssetsAsync();
+
+						task.ConfigureAwait( false );
+						task.Wait();
+
+						var dataResponse = task.Result;
+
+						LogFile.Write( "Track assets dictionary fetched!\r\n" );
 
 						totalRateLimit = dataResponse.TotalRateLimit;
 						rateLimitRemaining = dataResponse.RateLimitRemaining;
@@ -110,7 +115,14 @@ namespace iRacingTVController
 					{
 						LogFile.Write( "Fetching car classes...\r\n" );
 
-						var dataResponse = Task.Run( async () => await dataClient.GetCarClassesAsync() ).Result;
+						var task = dataClient.GetCarClassesAsync();
+
+						task.ConfigureAwait( false );
+						task.Wait();
+
+						var dataResponse = task.Result;
+
+						LogFile.Write( "Car classes fetched!\r\n" );
 
 						totalRateLimit = dataResponse.TotalRateLimit;
 						rateLimitRemaining = dataResponse.RateLimitRemaining;
@@ -163,7 +175,14 @@ namespace iRacingTVController
 
 				var httpClient = new HttpClient();
 
-				var trackAsset = Task.Run( async () => await httpClient.GetStringAsync( url ) ).Result;
+				var task = httpClient.GetStringAsync( url );
+
+				task.ConfigureAwait( false );
+				task.Wait();
+
+				var trackAsset = task.Result;
+
+				LogFile.Write( $"Track asset {url} downloaded!\r\n" );
 
 				return trackAsset;
 			}
@@ -193,24 +212,39 @@ namespace iRacingTVController
 
 		public static async Task<MemberProfile?> GetMemberProfileAsync( int customerID )
 		{
+			MemberProfile? memberProfile = null;
+
 			if ( dataClient != null )
 			{
-				asyncMutex.Acquire();
-
 				Stall();
 
-				var dataResponse = await dataClient.GetMemberProfileAsync( customerID );
+				try
+				{
+					LogFile.Write( $"Fetching member profile for customer ID {customerID}...\r\n" );
 
-				totalRateLimit = dataResponse.TotalRateLimit;
-				rateLimitRemaining = dataResponse.RateLimitRemaining;
-				rateLimitReset = dataResponse.RateLimitReset;
+					var cts = new CancellationTokenSource();
 
-				asyncMutex.Release();
+					cts.CancelAfter( 2000 );
 
-				return dataResponse.Data;
+					var dataResponse = await dataClient.GetMemberProfileAsync( customerID, cts.Token );
+
+					LogFile.Write( $"Member profile for customer ID {customerID} fetched!\r\n" );
+
+					totalRateLimit = dataResponse.TotalRateLimit;
+					rateLimitRemaining = dataResponse.RateLimitRemaining;
+					rateLimitReset = dataResponse.RateLimitReset;
+
+					LogFile.Write( $"totalRateLimit = {totalRateLimit}, rateLimitRemaining = {rateLimitRemaining}, rateLimitReset = {rateLimitReset}\r\n" );
+
+					memberProfile = dataResponse.Data;
+				}
+				catch ( Exception exception )
+				{
+					LogFile.Write( $"Exception thrown - {exception.Message}\r\n" );
+				}
 			}
 
-			return null;
+			return memberProfile;
 		}
 
 		public static void Stall()

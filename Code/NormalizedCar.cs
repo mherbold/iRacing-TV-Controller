@@ -1,11 +1,8 @@
 ﻿
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Controls.Primitives;
 using Aydsko.iRacingData.Common;
 using Aydsko.iRacingData.Member;
 using irsdkSharp.Serialization.Models.Session.DriverInfo;
@@ -225,6 +222,9 @@ namespace iRacingTVController
 			rpm = 0;
 			iRating = 0;
 			license = string.Empty;
+
+			memberProfileRetrieved = false;
+			memberProfile = null;
 
 			for ( var i = 0; i < sessionTimeCheckpoints.Length; i++ )
 			{
@@ -489,13 +489,6 @@ namespace iRacingTVController
 				}
 
 				currentIncidentPoints = driver.CurDriverIncidentCount;
-
-				if ( !memberProfileRetrieved )
-				{
-					memberProfileRetrieved = true;
-
-					Task.Run( async () => memberProfile = await DataApi.GetMemberProfileAsync( driver.UserID ) );
-				}
 			}
 		}
 
@@ -1156,7 +1149,14 @@ namespace iRacingTVController
 				}
 				else if ( ( a.carClass != null ) && ( b.carClass != null ) )
 				{
-					result = b.carClass.RelativeSpeed.CompareTo( a.carClass.RelativeSpeed );
+					if ( a.carClass.RelativeSpeed == b.carClass.RelativeSpeed )
+					{
+						result = a.classID.CompareTo( b.classID );
+					}
+					else
+					{
+						result = b.carClass.RelativeSpeed.CompareTo( a.carClass.RelativeSpeed );
+					}
 				}
 				else
 				{

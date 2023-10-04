@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+
 using irsdkSharp.Models;
 using irsdkSharp.Serialization.Enums.Fastest;
 
@@ -205,23 +207,38 @@ namespace iRacingTVController
 						break;
 					}
 				}
-			}
 
-			for ( var carIdx = 0; carIdx < MaxNumCars; carIdx++ )
-			{
-				var normalizedCar = normalizedCars[ carIdx ];
-
-				var originalDisplayedName = normalizedCar.displayedName;
-
-				for ( var otherCarIdx = carIdx + 1; otherCarIdx < MaxNumCars; otherCarIdx++ )
+				for ( var carIdx = 0; carIdx < MaxNumCars; carIdx++ )
 				{
-					var otherNormalizedCar = normalizedCars[ otherCarIdx ];
+					var normalizedCar = normalizedCars[ carIdx ];
 
-					if ( otherNormalizedCar.displayedName == originalDisplayedName )
+					var originalDisplayedName = normalizedCar.displayedName;
+
+					for ( var otherCarIdx = carIdx + 1; otherCarIdx < MaxNumCars; otherCarIdx++ )
 					{
-						normalizedCar.GenerateDisplayedName( true );
-						otherNormalizedCar.GenerateDisplayedName( true );
+						var otherNormalizedCar = normalizedCars[ otherCarIdx ];
+
+						if ( otherNormalizedCar.displayedName == originalDisplayedName )
+						{
+							normalizedCar.GenerateDisplayedName( true );
+							otherNormalizedCar.GenerateDisplayedName( true );
+						}
 					}
+				}
+
+				Task.Run( async () => await UpdateMemberProfilesAsync() );
+			}
+		}
+
+		public async Task UpdateMemberProfilesAsync()
+		{
+			foreach ( var normalizedCar in normalizedCars )
+			{
+				if ( normalizedCar.includeInLeaderboard && !normalizedCar.memberProfileRetrieved )
+				{
+					normalizedCar.memberProfileRetrieved = true;
+
+					normalizedCar.memberProfile = await DataApi.GetMemberProfileAsync( normalizedCar.userId );
 				}
 			}
 		}
@@ -509,7 +526,14 @@ namespace iRacingTVController
 
 				// class leaderboard sorting
 
-				classLeaderboardSortedNormalizedCars.Sort( NormalizedCar.ClassLeaderboardIndexComparison );
+				if ( Settings.overlay.leaderboardSeparateBoards )
+				{
+					classLeaderboardSortedNormalizedCars.Sort( NormalizedCar.ClassLeaderboardIndexComparison );
+				}
+				else
+				{
+					classLeaderboardSortedNormalizedCars.Sort( NormalizedCar.LapPositionComparison );
+				}
 
 				// lap position relative to class leader for laps down telemetry, also count number of classes, and set displayed position
 
@@ -532,19 +556,22 @@ namespace iRacingTVController
 						break;
 					}
 
-					if ( classLeader.classID != normalizedCar.classID )
+					if ( Settings.overlay.leaderboardSeparateBoards )
 					{
-						classLeader = normalizedCar;
+						if ( classLeader.classID != normalizedCar.classID )
+						{
+							classLeader = normalizedCar;
 
-						leaderboardClass[ numLeaderboardClasses ].numDrivers = 0;
-						leaderboardClass[ numLeaderboardClasses ].classID = classLeader.classID;
-						leaderboardClass[ numLeaderboardClasses ].color = classLeader.classColor;
-						leaderboardClass[ numLeaderboardClasses ].name = classLeader.carClass?.Name ?? string.Empty;
-						leaderboardClass[ numLeaderboardClasses ].shortName = classLeader.carClass?.ShortName ?? string.Empty;
+							leaderboardClass[ numLeaderboardClasses ].numDrivers = 0;
+							leaderboardClass[ numLeaderboardClasses ].classID = classLeader.classID;
+							leaderboardClass[ numLeaderboardClasses ].color = classLeader.classColor;
+							leaderboardClass[ numLeaderboardClasses ].name = classLeader.carClass?.Name ?? string.Empty;
+							leaderboardClass[ numLeaderboardClasses ].shortName = classLeader.carClass?.ShortName ?? string.Empty;
 
-						numLeaderboardClasses++;
+							numLeaderboardClasses++;
 
-						displayedPosition = 1;
+							displayedPosition = 1;
+						}
 					}
 
 					normalizedCar.lapPositionRelativeToClassLeader = classLeader.lapPosition - normalizedCar.lapPosition;

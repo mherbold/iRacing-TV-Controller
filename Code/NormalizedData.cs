@@ -68,6 +68,7 @@ namespace iRacingTVController
 		public int radioTransmitCarIdx;
 
 		public float bestLapTime;
+		public float lowestEstLapTime;
 
 		public float fuelLevel;
 		public float lastLapFuelLevel;
@@ -156,6 +157,7 @@ namespace iRacingTVController
 			radioTransmitCarIdx = -1;
 
 			bestLapTime = 0;
+			lowestEstLapTime = float.MaxValue;
 
 			paceCar = null;
 
@@ -173,6 +175,8 @@ namespace iRacingTVController
 		public void SessionUpdate()
 		{
 			numLeaderboardCars = 0;
+
+			lowestEstLapTime = float.MaxValue;
 
 			if ( IRSDK.session != null )
 			{
@@ -245,6 +249,11 @@ namespace iRacingTVController
 
 		public void SessionNumberChange()
 		{
+			if ( IRSDK.data == null )
+			{
+				return;
+			}
+
 			sessionTime = 0;
 			sessionTimeLastFrame = 0;
 
@@ -324,7 +333,29 @@ namespace iRacingTVController
 
 			displayIsMetric = IRSDK.data.DisplayUnits == 1;
 
-			isInTimedRace = IRSDK.data.SessionLapsTotal == 32767;
+			var lapsIsUnlimited = ( IRSDK.data.SessionLapsTotal == 32767 );
+			var timeIsUnlimited = ( IRSDK.data.SessionTimeTotal == 604800.0f );
+
+			if ( !lapsIsUnlimited && !timeIsUnlimited )
+			{
+				if ( lowestEstLapTime == float.MaxValue )
+				{
+					foreach ( var normalizedCar in normalizedCars )
+					{
+						if ( normalizedCar.includeInLeaderboard )
+						{
+							lowestEstLapTime = Math.Min( lowestEstLapTime, normalizedCar.carClassEstLapTime );
+						}
+					}
+				}
+
+				isInTimedRace = ( ( lowestEstLapTime * IRSDK.data.SessionLapsRemainEx ) > IRSDK.data.SessionTimeRemain );
+			}
+			else
+			{ 
+				isInTimedRace = lapsIsUnlimited;
+			}
+
 			isUnderCaution = ( sessionFlags & ( (uint) SessionFlags.CautionWaving | (uint) SessionFlags.Caution | (uint) SessionFlags.YellowWaving | (uint) SessionFlags.Yellow ) ) != 0;
 			isTalking = IRSDK.data.PushToTalk;
 

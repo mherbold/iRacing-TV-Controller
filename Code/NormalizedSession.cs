@@ -142,7 +142,7 @@ namespace iRacingTVController
 
 				isInPracticeSession = ( sessionType == "Practice" ) || ( sessionType == "Warmup" );
 				isInQualifyingSession = ( sessionType == "Lone Qualify" );
-				isInRaceSession = ( sessionType == "Race" );
+				isInRaceSession = !isInPracticeSession && !isInQualifyingSession;
 			}
 			else
 			{

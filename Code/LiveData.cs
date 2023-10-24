@@ -180,15 +180,7 @@ namespace iRacingTVController
 				if ( normalizedCar.memberProfile != null )
 				{
 					liveDataDrivers[ normalizedCar.carIdx ].memberImageUrl = normalizedCar.memberProfile.ImageUrl;
-
-					foreach ( var field in normalizedCar.memberProfile.ProfileFields )
-					{
-						if ( field.Name == "CLUB_REGION_IMG" )
-						{
-							liveDataDrivers[ normalizedCar.carIdx ].memberClubRegionUrl = $"https://ir-core-sites.iracing.com/members/{field.Value}";
-							break;
-						}
-					}
+					liveDataDrivers[ normalizedCar.carIdx ].memberClubRegionUrl = $"https://ir-core-sites.iracing.com/members/member_images/world_cup/club_logos/club_{normalizedCar.memberProfile.Info.ClubId:000}_long_0128_web.png";
 				}
 				else
 				{
@@ -1056,6 +1048,8 @@ namespace iRacingTVController
 								liveDataIntroDriver.positionText = $"P{normalizedCar.displayedPosition}";
 								liveDataIntroDriver.driverNameText = normalizedCar.userName;
 								liveDataIntroDriver.carNumberText = normalizedCar.carNumber;
+								liveDataIntroDriver.licenseText = normalizedCar.license;
+								liveDataIntroDriver.ratingText = normalizedCar.iRating.ToString();
 
 								if ( normalizedCar.qualifyingTime == -1 )
 								{

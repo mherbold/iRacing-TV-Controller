@@ -3,8 +3,10 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+
 using Aydsko.iRacingData.Common;
 using Aydsko.iRacingData.Member;
+
 using irsdkSharp.Serialization.Models.Session.DriverInfo;
 
 using static iRacingTVController.Unity;
@@ -427,6 +429,18 @@ namespace iRacingTVController
 					var carPath = driver.CarPath.Replace( " ", "%5C" );
 					var customCarTgaFilePath = $"{Settings.editor.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_num_{driver.UserID}.tga";
 					var showSimStampedNumber = 0;
+
+					if ( ( driver.CarIsAI == 1 ) && ( IRSDK.aiRoster != null ) )
+					{
+						foreach ( var aiDriver in IRSDK.aiRoster.drivers )
+						{
+							if ( aiDriver.driverName == driver.UserName )
+							{
+								customCarTgaFilePath = Path.GetDirectoryName( Settings.editor.iracingCustomPaintsAiRosterFile ) + $"\\{aiDriver.carTgaName}";
+								break;
+							}
+						}
+					}
 
 					if ( !File.Exists( customCarTgaFilePath ) )
 					{

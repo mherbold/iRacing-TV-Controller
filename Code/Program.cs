@@ -20,6 +20,7 @@ namespace iRacingTVController
 		public const string AppName = "iRacing-TV";
 
 		public static readonly string documentsFolder = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ) + $"\\{AppName}\\";
+		public static readonly string aiRosterFolder = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ) + "\\iRacing\\airosters";
 
 		public static DispatcherTimer dispatcherTimer = new( DispatcherPriority.Render );
 		public static Stopwatch stopwatch = new();
@@ -51,6 +52,8 @@ namespace iRacingTVController
 			PushToTalk.Initialize();
 			Director.Initialize();
 			Trainer.Initialize();
+
+			IRSDK.ReloadAiRoster();
 
 			Task.Run( () => ProgramAsync() );
 		}

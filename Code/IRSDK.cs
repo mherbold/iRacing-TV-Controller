@@ -1,8 +1,10 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using irsdkSharp;
 using irsdkSharp.Enums;
 using irsdkSharp.Serialization;
@@ -48,6 +50,8 @@ namespace iRacingTVController
 		public static int targetReplayStopFrameNumber = 0;
 
 		public static readonly List<Message> messageBuffer = new();
+
+		public static AiRoster? aiRoster = null;
 
 		public static void Update()
 		{
@@ -389,6 +393,31 @@ namespace iRacingTVController
 			}
 
 			return string.Empty;
+		}
+
+		public static void ReloadAiRoster()
+		{
+			if ( Settings.editor.iracingCustomPaintsAiRosterFile == string.Empty )
+			{
+				aiRoster = null;
+			}
+			else
+			{
+				string aiRosterText = File.ReadAllText( Settings.editor.iracingCustomPaintsAiRosterFile );
+
+				aiRoster = JsonSerializer.Deserialize<AiRoster>( aiRosterText );
+			}
+		}
+
+		public class AiRoster
+		{
+			public class AiDriver
+			{
+				[JsonInclude] public string driverName;
+				[JsonInclude] public string carTgaName;
+			}
+
+			[JsonInclude] public AiDriver[] drivers;
 		}
 	}
 }

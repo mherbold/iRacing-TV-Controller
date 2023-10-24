@@ -14,5 +14,7 @@ namespace iRacingTVController
 		public string driverNameText = string.Empty;
 		public string qualifyingTimeText = string.Empty;
 		public string carNumberText = string.Empty;
+		public string licenseText = string.Empty;
+		public string ratingText = string.Empty;
 	}
 }

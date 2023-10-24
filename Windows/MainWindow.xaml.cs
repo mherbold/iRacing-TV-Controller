@@ -852,6 +852,7 @@ namespace iRacingTVController
 			iRacing_Account_Password.Password = Settings.editor.iracingAccountPassword;
 
 			iRacing_CustomPaints_Directory.Text = Settings.editor.iracingCustomPaintsDirectory;
+			iRacing_CustomPaints_AiRosterFile.Text = Settings.editor.iracingCustomPaintsAiRosterFile;
 
 			iRacing_DriverNames_Suffixes.Text = Settings.editor.iracingDriverNamesSuffixes;
 			iRacing_DriverNames_FormatOption.SelectedItem = formatOptions.FirstOrDefault( x => x.Value == Settings.editor.iracingDriverNameFormatOption ).Key;
@@ -4584,6 +4585,29 @@ namespace iRacingTVController
 			}
 		}
 
+		private void iRacing_CustomPaintsAiRosterFile_Button_Click( object sender, EventArgs e )
+		{
+			string currentFilePath = iRacing_CustomPaints_AiRosterFile.Text;
+
+			var openFileDialog = new OpenFileDialog()
+			{
+				Title = "Select an AI Roster File",
+				Filter = "AI Roster Files (*.json)|*.json|All files (*.*)|*.*",
+				InitialDirectory = ( currentFilePath == string.Empty ) ? Program.aiRosterFolder : Path.GetDirectoryName( currentFilePath ),
+				FileName = currentFilePath,
+				ValidateNames = true,
+				CheckPathExists = true,
+				CheckFileExists = true
+			};
+
+			if ( openFileDialog.ShowDialog() == true )
+			{
+				iRacing_CustomPaints_AiRosterFile.Text = openFileDialog.FileName;
+
+				IRSDK.ReloadAiRoster();
+			}
+		}
+
 		private void iRacing_DataApi_Connect( object sender, EventArgs e )
 		{
 			DataApi.Initialize( true );
@@ -4603,6 +4627,7 @@ namespace iRacingTVController
 				Settings.editor.iracingAccountPassword = iRacing_Account_Password.Password;
 
 				Settings.editor.iracingCustomPaintsDirectory = iRacing_CustomPaints_Directory.Text;
+				Settings.editor.iracingCustomPaintsAiRosterFile = iRacing_CustomPaints_AiRosterFile.Text;
 
 				Settings.editor.iracingDriverNamesSuffixes = iRacing_DriverNames_Suffixes.Text;
 				Settings.editor.iracingDriverNameFormatOption = formatOptions[ (string) iRacing_DriverNames_FormatOption.SelectedItem ];

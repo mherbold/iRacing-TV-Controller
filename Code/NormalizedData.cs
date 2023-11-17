@@ -83,6 +83,7 @@ namespace iRacingTVController
 		public List<NormalizedCar> classLeaderboardSortedNormalizedCars = new( MaxNumCars );
 		public List<NormalizedCar> relativeLapPositionSortedNormalizedCars = new( MaxNumCars );
 		public List<NormalizedCar> fastestTimeSortedNormalizedCars = new( MaxNumCars );
+		public List<NormalizedCar> carNumberSortedNormalizedCars = new( MaxNumCars );
 
 		public NormalizedData()
 		{
@@ -94,6 +95,7 @@ namespace iRacingTVController
 				classLeaderboardSortedNormalizedCars.Add( normalizedCars[ i ] );
 				relativeLapPositionSortedNormalizedCars.Add( normalizedCars[ i ] );
 				fastestTimeSortedNormalizedCars.Add( normalizedCars[ i ] );
+				carNumberSortedNormalizedCars.Add( normalizedCars[ i ] );
 			}
 
 			for ( var i = 0; i < MaxNumClasses; i++ )
@@ -719,6 +721,10 @@ namespace iRacingTVController
 				// sort cars by fastest lap time
 
 				fastestTimeSortedNormalizedCars.Sort( NormalizedCar.FastestTimeComparison );
+
+				// sort cars by car number
+
+				carNumberSortedNormalizedCars.Sort( NormalizedCar.CarNumberComparison );
 			}
 		}
 

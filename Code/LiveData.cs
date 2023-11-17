@@ -903,12 +903,14 @@ namespace iRacingTVController
 
 		public void UpdateVoiceOf()
 		{
-			liveDataVoiceOf.show = ( IRSDK.normalizedData.radioTransmitCarIdx != -1 );
+			liveDataVoiceOf.show = false;
 
 			liveDataVoiceOf.voiceOfText = Settings.overlay.translationDictionary[ "VoiceOf" ].translation;
 
 			if ( IRSDK.normalizedData.radioTransmitCarIdx != -1 )
 			{
+				liveDataVoiceOf.show = true;
+
 				var normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.normalizedData.radioTransmitCarIdx );
 
 				if ( normalizedCar != null )
@@ -916,6 +918,11 @@ namespace iRacingTVController
 					liveDataVoiceOf.driverNameText = normalizedCar.userName;
 
 					liveDataVoiceOf.carIdx = IRSDK.normalizedData.radioTransmitCarIdx;
+				}
+
+				if ( liveDataControlPanel.voiceOfOn )
+				{
+					Director.chyronTimer = 0;
 				}
 			}
 		}
@@ -929,7 +936,7 @@ namespace iRacingTVController
 
 			var normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.normalizedData.camCarIdx );
 
-			if ( ( normalizedCar != null ) && normalizedCar.includeInLeaderboard && Director.showChyron )
+			if ( ( normalizedCar != null ) && normalizedCar.includeInLeaderboard && Director.showChyron && ( !liveDataControlPanel.voiceOfOn || ( IRSDK.normalizedData.radioTransmitCarIdx == -1 ) ) )
 			{
 				liveDataChyron.show = true;
 

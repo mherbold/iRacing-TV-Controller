@@ -1267,5 +1267,43 @@ namespace iRacingTVController
 
 			return result;
 		};
+
+		public static Comparison<NormalizedCar> CarNumberComparison = delegate ( NormalizedCar a, NormalizedCar b )
+		{
+			int result;
+
+			if ( a.includeInLeaderboard && b.includeInLeaderboard )
+			{
+				if ( a.carNumber == b.carNumber )
+				{
+					result = a.carIdx.CompareTo( b.carIdx );
+				}
+				else
+				{
+					try
+					{
+						result = int.Parse( a.carNumber ).CompareTo( int.Parse( b.carNumber ) );
+					}
+					catch
+					{
+						result = a.carNumber.CompareTo( b.carNumber );
+					}
+				}
+			}
+			else if ( a.includeInLeaderboard )
+			{
+				result = -1;
+			}
+			else if ( b.includeInLeaderboard )
+			{
+				result = 1;
+			}
+			else
+			{
+				result = a.carIdx.CompareTo( b.carIdx );
+			}
+
+			return result;
+		};
 	}
 }

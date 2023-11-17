@@ -893,6 +893,8 @@ namespace iRacingTVController
 
 			Editor_Startup_EnableDirector.IsChecked = Settings.editor.editorStartupEnableDirector;
 
+			Editor_ControlPanel_SortByCarNumber.IsChecked = Settings.editor.editorControlPanelSortByCarNumber;
+
 			// turn on/off topmost window attribute
 
 			Topmost = Settings.editor.editorAlwaysOnTop;
@@ -1104,7 +1106,9 @@ namespace iRacingTVController
 					int controlPanelButtonIndex_Front = 0;
 					int controlPanelButtonIndex_Back = 62;
 
-					foreach ( var normalizedCar in IRSDK.normalizedData.relativeLapPositionSortedNormalizedCars )
+					var sortedNormalizedCars = Settings.editor.editorControlPanelSortByCarNumber ? IRSDK.normalizedData.carNumberSortedNormalizedCars : IRSDK.normalizedData.relativeLapPositionSortedNormalizedCars;
+
+					foreach ( var normalizedCar in sortedNormalizedCars )
 					{
 						ControlPanelButton cpb;
 
@@ -4736,6 +4740,8 @@ namespace iRacingTVController
 				Settings.editor.editorTriggersSessionChange = Editor_Triggers_SessionChange.Text;
 
 				Settings.editor.editorStartupEnableDirector = Editor_Startup_EnableDirector.IsChecked ?? false;
+
+				Settings.editor.editorControlPanelSortByCarNumber = Editor_ControlPanel_SortByCarNumber.IsChecked ?? false;
 
 				Settings.saveEditorToFileQueued = true;
 

@@ -57,6 +57,8 @@ namespace iRacingTVController
 
 		public bool editorStartupEnableDirector = false;
 
+		public bool editorControlPanelSortByCarNumber = false;
+
 		public string lastActiveOverlayFilePath = string.Empty;
 		public string lastActiveDirectorFilePath = string.Empty;
 	}

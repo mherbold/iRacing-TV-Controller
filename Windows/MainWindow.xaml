@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.45"
+        Title="iRacing-TV Controller v1.47"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="900" Height="700" MinWidth="900" MinHeight="700" Icon="/Assets/icon/iracing-tv.ico">
     <Grid>
@@ -2634,6 +2634,14 @@
                             <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
                                 <Label Content="Enable Director" Width="100"/>
                                 <CheckBox x:Name="Editor_Startup_EnableDirector" VerticalAlignment="Center" Click="Editor_Update" />
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="Control Panel" Padding="12,6,12,6">
+                        <StackPanel Margin="6,6,6,6">
+                            <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                                <Label Content="Alternate Sort" Width="100"/>
+                                <CheckBox x:Name="Editor_ControlPanel_SortByCarNumber" Content="Check this to sort by car number instead of track position"  VerticalAlignment="Center" Click="Editor_Update" />
                             </StackPanel>
                         </StackPanel>
                     </TabItem>

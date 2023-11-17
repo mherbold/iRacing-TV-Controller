@@ -11,6 +11,7 @@ namespace iRacingTVController
 		public static bool isEnabled = true;
 		public static bool driverWasTalking = false;
 		public static bool showChyron = false;
+		public static float chyronTimer = 0;
 
 		public static int targetCamCarIdx = 0;
 		public static SettingsDirector.CameraType targetCamType = SettingsDirector.CameraType.Intro;
@@ -53,6 +54,7 @@ namespace iRacingTVController
 			else
 			{
 				showChyron = false;
+				chyronTimer += Program.deltaTime;
 
 				IncidentData? currentIncident = IncidentPlayback.GetCurrentIncidentData();
 
@@ -275,6 +277,16 @@ namespace iRacingTVController
 				var previousAutoCamType = autoCamType;
 
 				UpdateAutoCamType( targetNormalizedCar );
+
+				if ( showChyron == false )
+				{
+					chyronTimer = 0;
+				}
+
+				if ( chyronTimer < 2 )
+				{
+					showChyron = false;
+				}
 
 				if ( ( Director.targetCamCarIdx != targetCamCarIdx ) || ( Director.targetCamType != targetCamType ) || ( ( targetCamType == SettingsDirector.CameraType.AutoCam ) && ( autoCamType != previousAutoCamType ) ) )
 				{

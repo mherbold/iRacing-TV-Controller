@@ -248,6 +248,11 @@ namespace iRacingTVController
 
 									SendMessage( message );
 
+									if ( camCarIdx != targetCamCarIdx )
+									{
+										Director.chyronTimer = 0;
+									}
+
 									if ( targetCamSlowSwitchEnabled )
 									{
 										targetCamSlowSwitchEnabled = false;

@@ -228,6 +228,7 @@ namespace iRacingTVController
 					Director_Rules_Rule11_Camera.Items.Add( item );
 					Director_Rules_Rule12_Camera.Items.Add( item );
 					Director_Rules_Rule13_Camera.Items.Add( item );
+					Director_Rules_Rule14_Camera.Items.Add( item );
 				}
 
 				// overlay
@@ -621,6 +622,7 @@ namespace iRacingTVController
 			Update( Director_Cameras_Scenic, Settings.director.camerasScenic, Director_Cameras_Scenic_Override, directorIsGlobal, Settings.director.camerasScenic_Overridden );
 			Update( Director_Cameras_Pits, Settings.director.camerasPits, Director_Cameras_Pits_Override, directorIsGlobal, Settings.director.camerasPits_Overridden );
 			Update( Director_Cameras_StartFinish, Settings.director.camerasStartFinish, Director_Cameras_StartFinish_Override, directorIsGlobal, Settings.director.camerasStartFinish_Overridden );
+			Update( Director_Cameras_Reverse, Settings.director.camerasReverse, Director_Cameras_Reverse_Override, directorIsGlobal, Settings.director.camerasReverse_Overridden );
 			Update( Director_Cameras_Inside, Settings.director.camerasInside, Director_Cameras_Inside_Override, directorIsGlobal, Settings.director.camerasInside_Overridden );
 			Update( Director_Cameras_Close, Settings.director.camerasClose, Director_Cameras_Close_Override, directorIsGlobal, Settings.director.camerasClose_Overridden );
 			Update( Director_Cameras_Medium, Settings.director.camerasMedium, Director_Cameras_Medium_Override, directorIsGlobal, Settings.director.camerasMedium_Overridden );
@@ -674,6 +676,8 @@ namespace iRacingTVController
 			Update( Director_Rules_Rule12_Camera, Settings.director.rule12_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
 			Update( Director_Rules_Rule13_Enabled, Settings.director.rule13_Enabled, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
 			Update( Director_Rules_Rule13_Camera, Settings.director.rule13_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule14_Enabled, Settings.director.rule14_Enabled, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule14_Camera, Settings.director.rule14_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
 
 			Update( Director_AutoCam_Inside_Minimum, Settings.director.autoCamInsideMinimum, Director_AutoCam_Override, directorIsGlobal, Settings.director.autoCam_Overridden );
 			Update( Director_AutoCam_Inside_Maximum, Settings.director.autoCamInsideMaximum, Director_AutoCam_Override, directorIsGlobal, Settings.director.autoCam_Overridden );
@@ -1054,6 +1058,20 @@ namespace iRacingTVController
 							ControlPanel_CameraControl_Manual_Button.BorderThickness = new Thickness( 3.0 );
 						}
 
+						if ( Director.isHolding )
+						{
+							ControlPanel_CameraControl_Hold_Button.BorderBrush = System.Windows.Media.Brushes.Green;
+							ControlPanel_CameraControl_Hold_Button.BorderThickness = new Thickness( 3.0 );
+						}
+						else
+						{
+							ControlPanel_CameraControl_Hold_Button.BorderBrush = System.Windows.Media.Brushes.Gray;
+							ControlPanel_CameraControl_Hold_Button.BorderThickness = new Thickness( 0.5 );
+						}
+
+						ControlPanel_CameraControl_Reset_Button.BorderBrush = System.Windows.Media.Brushes.Gray;
+						ControlPanel_CameraControl_Reset_Button.BorderThickness = new Thickness( 0.5 );
+
 						var normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.targetCamCarIdx );
 
 						if ( normalizedCar != null )
@@ -1082,6 +1100,12 @@ namespace iRacingTVController
 
 						ControlPanel_CameraControl_Manual_Button.BorderBrush = System.Windows.Media.Brushes.Gray;
 						ControlPanel_CameraControl_Manual_Button.BorderThickness = new Thickness( 0.5 );
+
+						ControlPanel_CameraControl_Hold_Button.BorderBrush = System.Windows.Media.Brushes.Gray;
+						ControlPanel_CameraControl_Hold_Button.BorderThickness = new Thickness( 0.5 );
+
+						ControlPanel_CameraControl_Reset_Button.BorderBrush = System.Windows.Media.Brushes.Gray;
+						ControlPanel_CameraControl_Reset_Button.BorderThickness = new Thickness( 0.5 );
 
 						ControlPanel_CameraControl_CarNumber.Text = string.Empty;
 						ControlPanel_CameraControl_DriverName.Text = string.Empty;
@@ -1265,6 +1289,7 @@ namespace iRacingTVController
 					UpdateCameraButton( ControlPanel_Camera_Scenic_Button, cameraType == SettingsDirector.CameraType.Scenic );
 					UpdateCameraButton( ControlPanel_Camera_Pits_Button, cameraType == SettingsDirector.CameraType.Pits );
 					UpdateCameraButton( ControlPanel_Camera_StartFinish_Button, cameraType == SettingsDirector.CameraType.StartFinish );
+					UpdateCameraButton( ControlPanel_Camera_Reverse_Button, cameraType == SettingsDirector.CameraType.Reverse );
 
 					UpdateCameraButton( ControlPanel_Camera_Inside_Button, cameraType == SettingsDirector.CameraType.Inside );
 					UpdateCameraButton( ControlPanel_Camera_Close_Button, cameraType == SettingsDirector.CameraType.Close );
@@ -1344,6 +1369,18 @@ namespace iRacingTVController
 			IRSDK.targetCamFastSwitchEnabled = true;
 		}
 
+		private void ControlPanel_CameraControl_Hold_Button_Click( object sender, RoutedEventArgs e )
+		{
+			Director.isHolding = !Director.isHolding;
+		}
+
+		private void ControlPanel_CameraControl_Reset_Button_Click( object sender, RoutedEventArgs e )
+		{
+			Director.isHolding = false;
+
+			IRSDK.cameraSwitchWaitTimeRemaining = 0;
+		}
+
 		private void ControlPanel_Camera_Scenic_Button_Click( object sender, RoutedEventArgs e )
 		{
 			SetManualCamera( SettingsDirector.CameraType.Scenic );
@@ -1357,6 +1394,11 @@ namespace iRacingTVController
 		private void ControlPanel_Camera_StartFinish_Button_Click( object sender, RoutedEventArgs e )
 		{
 			SetManualCamera( SettingsDirector.CameraType.StartFinish );
+		}
+
+		private void ControlPanel_Camera_Reverse_Button_Click( object sender, RoutedEventArgs e )
+		{
+			SetManualCamera( SettingsDirector.CameraType.Reverse );
 		}
 
 		private void ControlPanel_Camera_Inside_Button_Click( object sender, RoutedEventArgs e )
@@ -1594,6 +1636,16 @@ namespace iRacingTVController
 			cameraSelector.ShowDialog();
 		}
 
+		private void Director_Cameras_Reverse_Button_Click( object sender, EventArgs e )
+		{
+			var cameraSelector = new CameraSelector( Director_Cameras_Reverse )
+			{
+				Owner = this
+			};
+
+			cameraSelector.ShowDialog();
+		}
+
 		private void Director_Cameras_Inside_Button_Click( object sender, EventArgs e )
 		{
 			var cameraSelector = new CameraSelector( Director_Cameras_Inside )
@@ -1796,6 +1848,21 @@ namespace iRacingTVController
 					var director = Settings.directorLocal.camerasStartFinish_Overridden ? Settings.directorLocal : Settings.directorGlobal;
 
 					director.camerasStartFinish = Director_Cameras_StartFinish.Text;
+				}
+
+				overridden = Director_Cameras_Reverse_Override.IsChecked ?? false;
+
+				if ( Settings.directorLocal.camerasReverse_Overridden != overridden )
+				{
+					Settings.directorLocal.camerasReverse_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var director = Settings.directorLocal.camerasReverse_Overridden ? Settings.directorLocal : Settings.directorGlobal;
+
+					director.camerasReverse = Director_Cameras_Reverse.Text;
 				}
 
 				overridden = Director_Cameras_Inside_Override.IsChecked ?? false;
@@ -2201,6 +2268,9 @@ namespace iRacingTVController
 
 					director.rule13_Enabled = Director_Rules_Rule13_Enabled.IsChecked ?? false;
 					director.rule13_Camera = (SettingsDirector.CameraType) Director_Rules_Rule13_Camera.SelectedItem;
+
+					director.rule14_Enabled = Director_Rules_Rule13_Enabled.IsChecked ?? false;
+					director.rule14_Camera = (SettingsDirector.CameraType) Director_Rules_Rule13_Camera.SelectedItem;
 				}
 
 				Settings.saveDirectorToFileQueued = true;

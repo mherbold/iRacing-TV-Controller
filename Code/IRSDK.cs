@@ -135,7 +135,11 @@ namespace iRacingTVController
 				// update wait timers
 
 				sendMessageWaitTimeRemaining = Math.Max( 0, sendMessageWaitTimeRemaining - Program.deltaTime );
-				cameraSwitchWaitTimeRemaining = Math.Max( 0, cameraSwitchWaitTimeRemaining - Program.deltaTime );
+
+				if ( !Director.isHolding )
+				{
+					cameraSwitchWaitTimeRemaining = Math.Max( 0, cameraSwitchWaitTimeRemaining - Program.deltaTime );
+				}
 
 				// if iracing has switched the camera then we need to reset the camera switch wait ticks
 
@@ -238,26 +242,29 @@ namespace iRacingTVController
 					{
 						if ( ( camCarIdx != targetCamCarIdx ) || ( camGroupNumber != targetCamGroupNumber ) )
 						{
-							if ( ( cameraSwitchWaitTimeRemaining <= 0 ) || targetCamFastSwitchEnabled )
+							if ( !Director.isHolding )
 							{
-								var normalizedCar = normalizedData.FindNormalizedCarByCarIdx( targetCamCarIdx );
-
-								if ( normalizedCar != null )
+								if ( ( cameraSwitchWaitTimeRemaining <= 0 ) || targetCamFastSwitchEnabled )
 								{
-									var message = new Message( BroadcastMessageTypes.CamSwitchNum, normalizedCar.carNumberRaw, targetCamGroupNumber, 0 );
+									var normalizedCar = normalizedData.FindNormalizedCarByCarIdx( targetCamCarIdx );
 
-									SendMessage( message );
-
-									if ( camCarIdx != targetCamCarIdx )
+									if ( normalizedCar != null )
 									{
-										Director.chyronTimer = 0;
-									}
+										var message = new Message( BroadcastMessageTypes.CamSwitchNum, normalizedCar.carNumberRaw, targetCamGroupNumber, 0 );
 
-									if ( targetCamSlowSwitchEnabled )
-									{
-										targetCamSlowSwitchEnabled = false;
+										SendMessage( message );
 
-										cameraSwitchWaitTimeRemaining = Settings.director.switchDelayNotInRace;
+										if ( camCarIdx != targetCamCarIdx )
+										{
+											Director.chyronTimer = 0;
+										}
+
+										if ( targetCamSlowSwitchEnabled )
+										{
+											targetCamSlowSwitchEnabled = false;
+
+											cameraSwitchWaitTimeRemaining = Settings.director.switchDelayNotInRace;
+										}
 									}
 								}
 							}
@@ -354,6 +361,10 @@ namespace iRacingTVController
 				case SettingsDirector.CameraType.Custom6:
 					cameraGroupNames = Settings.director.camerasCustom6;
 					break;
+
+				case SettingsDirector.CameraType.Reverse:
+					cameraGroupNames = Settings.director.camerasReverse;
+					break;
 			}
 
 			bool shuffleCamerasInList = ( ( cameraType != SettingsDirector.CameraType.Pits ) && ( cameraType != SettingsDirector.CameraType.StartFinish ) );
@@ -418,11 +429,11 @@ namespace iRacingTVController
 		{
 			public class AiDriver
 			{
-				[JsonInclude] public string driverName;
-				[JsonInclude] public string carTgaName;
+				[JsonInclude] public string driverName = "";
+				[JsonInclude] public string carTgaName = "";
 			}
 
-			[JsonInclude] public AiDriver[] drivers;
+			[JsonInclude] public AiDriver[] drivers = Array.Empty<AiDriver>();
 		}
 	}
 }

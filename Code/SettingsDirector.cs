@@ -26,7 +26,8 @@ namespace iRacingTVController
 			Custom4,
 			Custom5,
 			Custom6,
-			AutoCam
+			AutoCam,
+			Reverse
 		}
 
 		public string filePath = string.Empty;
@@ -38,6 +39,7 @@ namespace iRacingTVController
 		public string camerasScenic = "scenic";
 		public string camerasPits = "pit lane, tv2";
 		public string camerasStartFinish = "s/f line, starter cam, tv2";
+		public string camerasReverse = "rear chase";
 
 		public string camerasInside = "roll bar";
 		public string camerasClose = "tv1";
@@ -59,6 +61,7 @@ namespace iRacingTVController
 		public bool camerasScenic_Overridden = false;
 		public bool camerasPits_Overridden = false;
 		public bool camerasStartFinish_Overridden = false;
+		public bool camerasReverse_Overridden = false;
 
 		public bool camerasInside_Overridden = false;
 		public bool camerasClose_Overridden = false;
@@ -128,7 +131,9 @@ namespace iRacingTVController
 		public bool rule12_Enabled = true;
 		public CameraType rule12_Camera = CameraType.AutoCam;
 		public bool rule13_Enabled = true;
-		public CameraType rule13_Camera = CameraType.AutoCam;
+		public CameraType rule13_Camera = CameraType.Reverse;
+		public bool rule14_Enabled = true;
+		public CameraType rule14_Camera = CameraType.AutoCam;
 
 		public bool rules_Overridden = false;
 

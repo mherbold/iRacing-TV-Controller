@@ -882,6 +882,7 @@ namespace iRacingTVController
 				camerasScenic = directorLocal.camerasScenic_Overridden ? directorLocal.camerasScenic : directorGlobal.camerasScenic,
 				camerasPits = directorLocal.camerasPits_Overridden ? directorLocal.camerasPits : directorGlobal.camerasPits,
 				camerasStartFinish = directorLocal.camerasStartFinish_Overridden ? directorLocal.camerasStartFinish : directorGlobal.camerasStartFinish,
+				camerasReverse = directorLocal.camerasReverse_Overridden ? directorLocal.camerasReverse : directorGlobal.camerasReverse,
 
 				camerasInside = directorLocal.camerasInside_Overridden ? directorLocal.camerasInside : directorGlobal.camerasInside,
 				camerasClose = directorLocal.camerasClose_Overridden ? directorLocal.camerasClose : directorGlobal.camerasClose,
@@ -903,6 +904,7 @@ namespace iRacingTVController
 				camerasScenic_Overridden = directorLocal.camerasScenic_Overridden,
 				camerasPits_Overridden = directorLocal.camerasPits_Overridden,
 				camerasStartFinish_Overridden = directorLocal.camerasStartFinish_Overridden,
+				camerasReverse_Overridden = directorLocal.camerasReverse_Overridden,
 
 				camerasInside_Overridden = directorLocal.camerasInside_Overridden,
 				camerasClose_Overridden = directorLocal.camerasClose_Overridden,
@@ -971,8 +973,8 @@ namespace iRacingTVController
 				rule11_Camera = directorLocal.rules_Overridden ? directorLocal.rule11_Camera : directorGlobal.rule11_Camera,
 				rule12_Enabled = directorLocal.rules_Overridden ? directorLocal.rule12_Enabled : directorGlobal.rule12_Enabled,
 				rule12_Camera = directorLocal.rules_Overridden ? directorLocal.rule12_Camera : directorGlobal.rule12_Camera,
-				rule13_Enabled = directorLocal.rules_Overridden ? directorLocal.rule13_Enabled : directorGlobal.rule13_Enabled,
-				rule13_Camera = directorLocal.rules_Overridden ? directorLocal.rule13_Camera : directorGlobal.rule13_Camera,
+				rule14_Enabled = directorLocal.rules_Overridden ? directorLocal.rule14_Enabled : directorGlobal.rule14_Enabled,
+				rule14_Camera = directorLocal.rules_Overridden ? directorLocal.rule14_Camera : directorGlobal.rule14_Camera,
 
 				rules_Overridden = directorLocal.rules_Overridden,
 

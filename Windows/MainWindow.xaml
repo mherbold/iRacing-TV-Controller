@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.47"
+        Title="iRacing-TV Controller v1.48"
         WindowStartupLocation="CenterScreen"
-        Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="900" Height="700" MinWidth="900" MinHeight="700" Icon="/Assets/icon/iracing-tv.ico">
+        Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="900" Height="700" MinWidth="900" MinHeight="750" Icon="/Assets/icon/iracing-tv.ico">
     <Grid>
         <TabControl>
             <TabItem Header="Control Panel" Padding="12,6,12,6">
@@ -110,7 +110,7 @@
                                     <TextBox x:Name="ControlPanel_CameraControl_CameraGroup" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
                                     <Label Content="Camera Group" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                                 </StackPanel>
-                                <StackPanel Width="360" Margin="3,0,0,0" Grid.Column="4">
+                                <StackPanel Width="380" Margin="3,0,0,0" Grid.Column  ="4">
                                     <TextBox x:Name="ControlPanel_CameraControl_Reason" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
                                     <Label Content="Reason" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                                 </StackPanel>
@@ -144,9 +144,14 @@
                             <Button x:Name="ControlPanel_CameraControl_Director_Button" Height="25" Padding="3,0,3,0" Content="Director" Click="ControlPanel_CameraControl_Director_Button_Click"/>
                             <Button x:Name="ControlPanel_CameraControl_Manual_Button" Height="25" Padding="3,0,3,0" Content="Manual" Click="ControlPanel_CameraControl_Manual_Button_Click"/>
                             <Separator Margin="0,6,0,6"/>
+                            <Button x:Name="ControlPanel_CameraControl_Hold_Button" Height="25" Padding="3,0,3,0" Content="HOLD" Click="ControlPanel_CameraControl_Hold_Button_Click"/>
+                            <Button x:Name="ControlPanel_CameraControl_Reset_Button" Height="25" Padding="3,0,3,0" Content="RESET" Click="ControlPanel_CameraControl_Reset_Button_Click"/>
+                            <Separator Margin="0,6,0,6"/>
                             <Button x:Name="ControlPanel_Camera_Scenic_Button" Content="Scenic" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_Scenic_Button_Click"/>
                             <Button x:Name="ControlPanel_Camera_Pits_Button" Content="Pits" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_Pits_Button_Click"/>
                             <Button x:Name="ControlPanel_Camera_StartFinish_Button" Content="S/F" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_StartFinish_Button_Click"/>
+                            <Button x:Name="ControlPanel_Camera_Reverse_Button" Content="Reverse" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_Reverse_Button_Click"/>
+                            <Separator Margin="0,6,0,6"/>
                             <Button x:Name="ControlPanel_Camera_Inside_Button" Content="Inside" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_Inside_Button_Click"/>
                             <Button x:Name="ControlPanel_Camera_Close_Button" Content="Close" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_Close_Button_Click"/>
                             <Button x:Name="ControlPanel_Camera_Medium_Button" Content="Medium" Height="25" Padding="3,0,3,0" Click="ControlPanel_Camera_Medium_Button_Click"/>
@@ -535,6 +540,18 @@
                                             <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_StartFinish_Button_Click" Grid.Column="2" Height="25"/>
                                             <CheckBox x:Name="Director_Cameras_StartFinish_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                         </Grid>
+                                        <Grid Margin="0,6,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="90"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Reverse"/>
+                                            <TextBox x:Name="Director_Cameras_Reverse" Height="25" Padding="3,0,3,0" VerticalContentAlignment="Center" TextChanged="Director_Update" Grid.Column="1"/>
+                                            <Button Padding="6,0,6,0" Content="🎥" Margin="-1,0,0,0" Click="Director_Cameras_Reverse_Button_Click" Grid.Column="2" Height="25"/>
+                                            <CheckBox x:Name="Director_Cameras_Reverse_Override" VerticalAlignment="Center" Content="Override" Click="Director_Update" Grid.Column="3" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                        </Grid>
                                         <Grid Margin="0,32,0,0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="100"/>
@@ -882,8 +899,13 @@
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="Rule 13" Width="60"/>
-                                        <CheckBox x:Name="Director_Rules_Rule13_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Hottest car, look at hottest car using"/>
+                                        <CheckBox x:Name="Director_Rules_Rule13_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Pace car on track (parade or caution one to green)"/>
                                         <ComboBox x:Name="Director_Rules_Rule13_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Rule 14" Width="60"/>
+                                        <CheckBox x:Name="Director_Rules_Rule14_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Hottest car, look at hottest car using"/>
+                                        <ComboBox x:Name="Director_Rules_Rule14_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
                                     </StackPanel>
                                 </StackPanel>
                             </TabItem>

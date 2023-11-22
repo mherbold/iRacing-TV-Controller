@@ -9,6 +9,7 @@ namespace iRacingTVController
 	public static class Director
 	{
 		public static bool isEnabled = true;
+		public static bool isHolding = false;
 		public static bool driverWasTalking = false;
 		public static bool showChyron = false;
 		public static float chyronTimer = 0;
@@ -179,7 +180,10 @@ namespace iRacingTVController
 				{
 					driverWasTalking = false;
 
-					IRSDK.cameraSwitchWaitTimeRemaining = Settings.director.switchDelayRadioChatter;
+					if ( !isHolding )
+					{
+						IRSDK.cameraSwitchWaitTimeRemaining = Settings.director.switchDelayRadioChatter;
+					}
 				}
 				else if ( Settings.director.rule7_Enabled && ( IRSDK.normalizedSession.isInPracticeSession ) )
 				{
@@ -230,13 +234,22 @@ namespace iRacingTVController
 				}
 				else if ( Settings.director.rule10_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) ) && ( IRSDK.normalizedData.sessionState == SessionState.StateParadeLaps ) ) )
 				{
-					var normalizedCar = leadingOnTrackCar ?? leadingPittedCar;
-
-					if ( normalizedCar != null )
+					if ( ( IRSDK.normalizedData.paceCar != null ) && !IRSDK.normalizedData.paceCar.isOnPitRoad )
 					{
-						targetCamCarIdx = normalizedCar.carIdx;
-						targetCamType = Settings.director.rule10_Camera;
-						targetCamReason = "Rule 10: Cars are doing parade laps.";
+						targetCamCarIdx = 0;
+						targetCamType = Settings.director.rule13_Camera;
+						targetCamReason = "Rule 10: Cars are doing parade laps (pace car on track).";
+					}
+					else
+					{
+						var normalizedCar = leadingOnTrackCar ?? leadingPittedCar;
+
+						if ( normalizedCar != null )
+						{
+							targetCamCarIdx = normalizedCar.carIdx;
+							targetCamType = Settings.director.rule10_Camera;
+							targetCamReason = "Rule 10: Cars are doing parade laps (pace car off track).";
+						}
 					}
 				}
 				else if ( Settings.director.rule11_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) ) && ( IRSDK.normalizedData.sessionState == SessionState.StateGetInCar ) ) )
@@ -261,14 +274,20 @@ namespace iRacingTVController
 						targetCamReason = "Rule 12: Caution flag waving.";
 					}
 				}
-				else if ( Settings.director.rule13_Enabled )
+				else if ( Settings.director.rule13_Enabled && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.OneLapToGreen ) ) != 0 ) )
+				{
+					targetCamCarIdx = 0;
+					targetCamType = SettingsDirector.CameraType.Reverse;
+					targetCamReason = "Rule 13: One lap to green (pace car).";
+				}
+				else if ( Settings.director.rule14_Enabled )
 				{
 					if ( hottestCar != null )
 					{
 						showChyron = true;
 
 						targetCamCarIdx = hottestCar.carIdx;
-						targetCamType = Settings.director.rule13_Camera;
+						targetCamType = Settings.director.rule14_Camera;
 						targetCamReason = "Rule 13: Hottest car.";
 					}
 				}

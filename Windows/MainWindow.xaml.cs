@@ -1183,7 +1183,19 @@ namespace iRacingTVController
 								cpb.label[ 4 ].Content = normalizedCar.displayedName;
 							}
 
-							cpb.label[ 0 ].Content = $"P{normalizedCar.leaderboardIndex}";
+							var label = $"P{normalizedCar.leaderboardIndex}";
+
+							if ( normalizedCar.hasCrossedStartLine )
+							{
+								label += " S";
+							}
+
+							if ( normalizedCar.hasCrossedFinishLine )
+							{
+								label += " F";
+							}
+
+							cpb.label[ 0 ].Content = label;
 							cpb.label[ 1 ].Content = $"#{normalizedCar.carNumber}";
 
 							if ( normalizedCar.heatTotal > 0.025f )

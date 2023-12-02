@@ -358,7 +358,7 @@ namespace iRacingTVController
 				isInTimedRace = lapsIsUnlimited;
 			}
 
-			isUnderCaution = ( sessionFlags & ( (uint) SessionFlags.CautionWaving | (uint) SessionFlags.Caution | (uint) SessionFlags.YellowWaving | (uint) SessionFlags.Yellow ) ) != 0;
+			isUnderCaution = ( sessionFlags & ( (uint) SessionFlags.CautionWaving | (uint) SessionFlags.Caution ) ) != 0;
 			isTalking = IRSDK.data.PushToTalk;
 
 			sessionState = (SessionState) IRSDK.data.SessionState;
@@ -532,7 +532,7 @@ namespace iRacingTVController
 				{
 					leaderboardSortedNormalizedCars.Sort( NormalizedCar.BestLapTimeComparison );
 				}
-				else if ( IRSDK.normalizedSession.isInRaceSession )
+				else
 				{
 					if ( IRSDK.normalizedData.sessionState <= SessionState.StateParadeLaps )
 					{

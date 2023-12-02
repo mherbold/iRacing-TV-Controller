@@ -277,7 +277,7 @@ namespace iRacingTVController
 				{
 					liveDataRaceStatus.showCheckeredFlag = true;
 				}
-				else if ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.CautionWaving | (uint) SessionFlags.YellowWaving ) ) != 0 )
+				else if ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.CautionWaving ) ) != 0 )
 				{
 					liveDataRaceStatus.showYellowFlag = true;
 				}
@@ -1178,7 +1178,7 @@ namespace iRacingTVController
 						hudGapTimeFront = gapTime;
 					}
 
-					liveDataHud.gapTimeFront = $"{hudGapTimeFront:0.00}";
+					liveDataHud.gapTimeFront = $"{hudGapTimeFront:0.00} {normalizedCar.normalizedCarInFront.displayedName} #{normalizedCar.normalizedCarInFront.carNumber} P{normalizedCar.normalizedCarInFront.displayedPosition}";
 				}
 
 				var deltaLapPositionRelativeToClassLeader = normalizedCar.normalizedCarInFront.lapPositionRelativeToClassLeader - normalizedCar.lapPositionRelativeToClassLeader;
@@ -1214,7 +1214,7 @@ namespace iRacingTVController
 						hudGapTimeBack = gapTime;
 					}
 
-					liveDataHud.gapTimeBack = $"{hudGapTimeBack:0.00}";
+					liveDataHud.gapTimeBack = $"{hudGapTimeBack:0.00} {normalizedCar.normalizedCarBehind.displayedName} #{normalizedCar.normalizedCarBehind.carNumber} P{normalizedCar.normalizedCarBehind.displayedPosition}";
 				}
 
 				var deltaLapPositionRelativeToClassLeader = normalizedCar.normalizedCarBehind.lapPositionRelativeToClassLeader - normalizedCar.lapPositionRelativeToClassLeader;

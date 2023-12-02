@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 using Aydsko.iRacingData.Common;
 using Aydsko.iRacingData.Member;
-
+using irsdkSharp.Serialization.Enums.Fastest;
 using irsdkSharp.Serialization.Models.Session.DriverInfo;
 
 using static iRacingTVController.Unity;
@@ -54,6 +54,8 @@ namespace iRacingTVController
 
 		public int currentLap = 0;
 		public int currentLapLastFrame = 0;
+
+		public int lapCompletedLastFrame = 0;
 
 		public float lastLapTime = 0;
 		public float bestLapTime = 0;
@@ -169,6 +171,8 @@ namespace iRacingTVController
 			currentLap = 0;
 			currentLapLastFrame = 0;
 
+			lapCompletedLastFrame = 0;
+
 			lastLapTime = 0;
 			bestLapTime = 0;
 			bestLapTimeLastFrame = 0;
@@ -264,6 +268,8 @@ namespace iRacingTVController
 
 			currentLap = 0;
 			currentLapLastFrame = 0;
+
+			lapCompletedLastFrame = 0;
 
 			lastLapTime = 0;
 			bestLapTime = 0;
@@ -598,31 +604,38 @@ namespace iRacingTVController
 					lapDistPctDelta += 1.0f;
 				}
 
-				if ( car.CarIdxLap <= 0 )
+				var justCrossedStartFinishLine = car.CarIdxLapCompleted > lapCompletedLastFrame;
+
+				lapCompletedLastFrame = car.CarIdxLapCompleted;
+
+				if ( IRSDK.normalizedData.sessionState < SessionState.StateRacing )
 				{
 					hasCrossedStartLine = false;
 					hasCrossedFinishLine = false;
 				}
-				else if ( car.CarIdxLap == 1 )
+				else if ( IRSDK.normalizedData.sessionState == SessionState.StateRacing )
 				{
-					hasCrossedFinishLine = false;
-
-					if ( !isOnPitRoad && ( ( newCarIdxLapDistPct > 0 ) && ( newCarIdxLapDistPct < 0.5 ) ) )
+					if ( justCrossedStartFinishLine || (( car.CarIdxLap == 1 ) && ( lapDistPct <= 0.5f ) ) )
 					{
 						hasCrossedStartLine = true;
 					}
-				}
-				else if ( car.CarIdxLap <= IRSDK.normalizedData.sessionLapsTotal )
-				{
-					hasCrossedStartLine = true;
+
 					hasCrossedFinishLine = false;
 				}
-				else
+				else if ( IRSDK.normalizedData.sessionState == SessionState.StateCheckered )
+				{
+					if ( justCrossedStartFinishLine )
+					{
+						hasCrossedStartLine = true;
+						hasCrossedFinishLine = true;
+					}
+				}
+				else if ( IRSDK.normalizedData.sessionState == SessionState.StateCoolDown )
 				{
 					hasCrossedStartLine = true;
 					hasCrossedFinishLine = true;
 				}
-
+				
 				if ( hasCrossedStartLine )
 				{
 					lapPosition = Math.Max( 0, lapPosition );

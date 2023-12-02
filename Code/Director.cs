@@ -126,13 +126,17 @@ namespace iRacingTVController
 				}
 				else if ( Settings.director.rule3_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateCheckered ) ) )
 				{
+					var maxLapDistPctDelta = 120.0f / IRSDK.normalizedSession.trackLengthInMeters;
+					var minLapDistPct = 1.0 - maxLapDistPctDelta;
+					var maxLapDistPct = maxLapDistPctDelta;
+
 					var highestLapPosition = 0.0f;
 
 					foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardSortedNormalizedCars )
 					{
-						if ( normalizedCar.includeInLeaderboard )
+						if ( normalizedCar.includeInLeaderboard && !normalizedCar.isOnPitRoad && !normalizedCar.isOutOfCar )
 						{
-							if ( normalizedCar.lapPosition < IRSDK.normalizedData.sessionLapsTotal + ( 20.0f / IRSDK.normalizedSession.trackLengthInMeters ) )
+							if ( ( normalizedCar.lapDistPct > minLapDistPct ) || ( normalizedCar.lapDistPct < maxLapDistPct ) )
 							{
 								if ( normalizedCar.lapPosition > highestLapPosition )
 								{
@@ -263,7 +267,7 @@ namespace iRacingTVController
 						targetCamReason = "Rule 11: Drivers are getting into their cars.";
 					}
 				}
-				else if ( Settings.director.rule12_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) ) && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.CautionWaving | (uint) SessionFlags.YellowWaving ) ) != 0 ) ) )
+				else if ( Settings.director.rule12_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) ) && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.CautionWaving ) ) != 0 ) ) )
 				{
 					var normalizedCar = leadingOnTrackCar ?? leadingPittedCar;
 
@@ -331,7 +335,7 @@ namespace iRacingTVController
 			}
 			else
 			{
-				var inCautionButNotWaving = IRSDK.normalizedData.isUnderCaution && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.CautionWaving | (uint) SessionFlags.YellowWaving ) ) == 0 );
+				var inCautionButNotWaving = IRSDK.normalizedData.isUnderCaution && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.CautionWaving ) ) == 0 );
 
 				if ( !inCautionButNotWaving && ( normalizedCar.distanceToCarInFrontInMeters >= Settings.director.autoCamInsideMinimum ) && ( normalizedCar.distanceToCarInFrontInMeters <= Settings.director.autoCamInsideMaximum ) && ( IRSDK.camCarIdx == normalizedCar.carIdx ) )
 				{

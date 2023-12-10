@@ -75,6 +75,7 @@ namespace iRacingTVController
 		public int checkpointIdx = 0;
 		public int checkpointIdxLastFrame = 0;
 		public double[] sessionTimeCheckpoints = new double[ NormalizedSession.MaxNumCheckpoints ];
+		public double[] sessionTimeCheckpointsLastLap = new double[ NormalizedSession.MaxNumCheckpoints ];
 		public float[] speedCheckpoints = new float[ NormalizedSession.MaxNumCheckpoints ];
 
 		public double fastestTime = 0;
@@ -236,6 +237,7 @@ namespace iRacingTVController
 			for ( var i = 0; i < sessionTimeCheckpoints.Length; i++ )
 			{
 				sessionTimeCheckpoints[ i ] = 0;
+				sessionTimeCheckpointsLastLap[ i ] = 0;
 				speedCheckpoints[ i ] = 0;
 				fastestSpeedCheckpoints[ i ] = 0;
 			}
@@ -332,6 +334,7 @@ namespace iRacingTVController
 			for ( var i = 0; i < sessionTimeCheckpoints.Length; i++ )
 			{
 				sessionTimeCheckpoints[ i ] = 0;
+				sessionTimeCheckpointsLastLap[ i ] = 0;
 				speedCheckpoints[ i ] = 0;
 				fastestSpeedCheckpoints[ i ] = 0;
 			}
@@ -615,7 +618,7 @@ namespace iRacingTVController
 				}
 				else if ( IRSDK.normalizedData.sessionState == SessionState.StateRacing )
 				{
-					if ( justCrossedStartFinishLine || (( car.CarIdxLap == 1 ) && ( lapDistPct <= 0.5f ) ) )
+					if ( justCrossedStartFinishLine || ( ( car.CarIdxLap == 1 ) && ( lapDistPct <= 0.5f ) ) )
 					{
 						hasCrossedStartLine = true;
 					}
@@ -635,7 +638,7 @@ namespace iRacingTVController
 					hasCrossedStartLine = true;
 					hasCrossedFinishLine = true;
 				}
-				
+
 				if ( hasCrossedStartLine )
 				{
 					lapPosition = Math.Max( 0, lapPosition );
@@ -694,6 +697,7 @@ namespace iRacingTVController
 				for ( var i = 0; i < sessionTimeCheckpoints.Length; i++ )
 				{
 					sessionTimeCheckpoints[ i ] = 0;
+					sessionTimeCheckpointsLastLap[ i ] = 0;
 					speedCheckpoints[ i ] = 0;
 				}
 
@@ -732,7 +736,7 @@ namespace iRacingTVController
 					numSteps += IRSDK.normalizedSession.numCheckpoints;
 				}
 
-				if ( ( numSteps == 1 ) || ( numSteps > 10 ) )
+				if ( numSteps > 10 )
 				{
 					sessionTimeCheckpoints[ targetCheckpointIdx ] = IRSDK.normalizedData.sessionTime;
 					speedCheckpoints[ targetCheckpointIdx ] = speedInMetersPerSecond;
@@ -746,10 +750,11 @@ namespace iRacingTVController
 
 					var nextCheckpointIdx = ( checkpointIdxLastFrame + 1 ) % IRSDK.normalizedSession.numCheckpoints;
 
-					for ( var step = 0; step < numSteps; step++ )
+					for ( var step = 1; step <= numSteps; step++ )
 					{
 						var t = stepSize * step;
 
+						sessionTimeCheckpointsLastLap[ nextCheckpointIdx ] = sessionTimeCheckpoints[ nextCheckpointIdx ];
 						sessionTimeCheckpoints[ nextCheckpointIdx ] = Program.Lerp( startSessionTime, IRSDK.normalizedData.sessionTime, t );
 						speedCheckpoints[ nextCheckpointIdx ] = (float) Program.Lerp( startSpeed, speedInMetersPerSecond, t );
 

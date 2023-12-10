@@ -30,5 +30,8 @@ namespace iRacingTVController
 
 		public bool showLeftSpotterIndicator = false;
 		public bool showRightSpotterIndicator = false;
+
+		public string lapDelta = string.Empty;
+		public Color lapDeltaColor = Color.white;
 	}
 }

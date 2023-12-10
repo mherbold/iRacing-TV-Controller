@@ -116,7 +116,7 @@ namespace iRacingTVController
 					targetCamType = Settings.director.rule1_Camera;
 					targetCamReason = "Rule 1: Post-race cool down, first place car still connected, look at first place car.";
 				}
-				else if ( Settings.director.rule2_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateRacing ) && Settings.director.preferredCarLockOnEnabled && ( preferredCar != null ) && ( preferredCar.heatTotal >= Settings.director.preferredCarLockOnMinimumHeat ) ) )
+				else if ( Settings.director.rule2_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateRacing ) && Settings.director.preferredCarLockOnEnabled && ( preferredCar != null ) && ( ( preferredCar.heatTotal >= Settings.director.preferredCarLockOnMinimumHeat ) || ( ( preferredCar.normalizedCarBehind?.heatTotal ?? 0 ) >= Settings.director.preferredCarLockOnMinimumHeat ) ) ) )
 				{
 					showChyron = true;
 

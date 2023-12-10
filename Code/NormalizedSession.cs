@@ -8,7 +8,7 @@ namespace iRacingTVController
 	public class NormalizedSession
 	{
 		public const int MaxNumCheckpoints = 3000;
-		public const float CheckpointSpacingInMeters = 5;
+		public const float CheckpointSpacingInMeters = 10;
 
 		public int sessionID = 0;
 		public int subSessionID = 0;

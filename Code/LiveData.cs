@@ -37,6 +37,7 @@ namespace iRacingTVController
 		[JsonInclude, XmlIgnore] public LiveDataEventLog liveDataEventLog = new();
 		public LiveDataHud liveDataHud = new();
 		public LiveDataTrainer liveDataTrainer = new();
+		public LiveDataWebcamStreaming liveDataWebcamStreaming = new();
 
 		public string seriesLogoTextureUrl = string.Empty;
 
@@ -58,6 +59,12 @@ namespace iRacingTVController
 		[NonSerialized, XmlIgnore] public float pitLaneMaxLapDistPct = 0;
 
 		[NonSerialized, XmlIgnore] public float paceCarDistPct = 0;
+
+		[NonSerialized, XmlIgnore] public double interpolatedDeltaTime = 0;
+		[NonSerialized, XmlIgnore] public double interpolatedDeltaInterpolatedDeltaTime = 0;
+		[NonSerialized, XmlIgnore] public double lastInterpolatedDeltaTime = 0;
+		[NonSerialized, XmlIgnore] public Color red = new Color( 1, 0.35f, 0.35f, 1 );
+		[NonSerialized, XmlIgnore] public Color green = new Color( 0.2f, 1, 0.2f, 1 );
 
 		static LiveData()
 		{
@@ -139,6 +146,7 @@ namespace iRacingTVController
 			UpdateEventLog();
 			UpdateHud();
 			UpdateTrainer();
+			UpdateWebcamStreaming();
 
 			seriesLogoTextureUrl = IRSDK.normalizedSession.seriesLogoTextureUrl;
 
@@ -1271,6 +1279,57 @@ namespace iRacingTVController
 				liveDataHud.gear = normalizedCar.gear.ToString();
 			}
 
+			// lap delta
+
+			var tL0 = normalizedCar.sessionTimeCheckpointsLastLap[ 0 ];
+			var tL1 = normalizedCar.sessionTimeCheckpointsLastLap[ normalizedCar.checkpointIdx ];
+
+			var tC0 = normalizedCar.sessionTimeCheckpoints[ 0 ];
+			var tC1 = normalizedCar.sessionTimeCheckpoints[ normalizedCar.checkpointIdx ];
+
+			if ( normalizedCar.checkpointIdx == 0 )
+			{
+				interpolatedDeltaTime = 0;
+				interpolatedDeltaInterpolatedDeltaTime = 0;
+				lastInterpolatedDeltaTime = 0;
+			}
+
+			if ( ( tL0 > 0 ) && ( tL1 >= tL0 ) && ( tC0 > 0 ) && ( tC1 >= tC0 ) )
+			{
+				var lastLapTime = tL1 - tL0;
+				var currentLapTime = tC1 - tC0;
+
+				var deltaTime = currentLapTime - lastLapTime;
+
+				interpolatedDeltaTime = interpolatedDeltaTime * 0.97f + deltaTime * 0.03f;
+
+				var deltaInterpolatedDeltaTime = ( interpolatedDeltaTime - lastInterpolatedDeltaTime ) * 1000;
+
+				interpolatedDeltaInterpolatedDeltaTime = interpolatedDeltaInterpolatedDeltaTime * 0.99f + deltaInterpolatedDeltaTime * 0.01f;
+
+				lastInterpolatedDeltaTime = interpolatedDeltaTime;
+
+				liveDataHud.lapDelta = $"{interpolatedDeltaTime:+0.00;-0.00; 0.00} | {interpolatedDeltaInterpolatedDeltaTime:+0.00;-0.00; 0.00}";
+
+				if ( interpolatedDeltaInterpolatedDeltaTime <= 0 )
+				{
+					liveDataHud.lapDeltaColor = Color.Lerp( Color.white, green, (float) Math.Min( 1, -interpolatedDeltaInterpolatedDeltaTime ) );
+				}
+				else
+				{
+					liveDataHud.lapDeltaColor = Color.Lerp( Color.white, red, (float) Math.Min( 1, interpolatedDeltaInterpolatedDeltaTime ) );
+				}
+			}
+			else
+			{
+				interpolatedDeltaTime = 0;
+				interpolatedDeltaInterpolatedDeltaTime = 0;
+				lastInterpolatedDeltaTime = 0;
+
+				liveDataHud.lapDelta = " -.-- | -.--";
+				liveDataHud.lapDeltaColor = Color.white;
+			}
+
 			// speech to text
 
 			var recognizedString = SpeechToText.GetRecognizingString();
@@ -1353,6 +1412,12 @@ namespace iRacingTVController
 			liveDataTrainer.drawVectorList = Trainer.drawVectorList;
 
 			liveDataTrainer.message = Trainer.message;
+		}
+
+		public void UpdateWebcamStreaming()
+		{
+			liveDataWebcamStreaming.enabled = Settings.editor.editorWebcamStreamingEnabled;
+			liveDataWebcamStreaming.webserverURL = Settings.editor.editorWebcamStreamingWebserverURL;
 		}
 	}
 }

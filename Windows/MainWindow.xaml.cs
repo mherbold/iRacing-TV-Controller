@@ -899,6 +899,9 @@ namespace iRacingTVController
 
 			Editor_ControlPanel_SortByCarNumber.IsChecked = Settings.editor.editorControlPanelSortByCarNumber;
 
+			// Editor_WebcamStreaming_Enabled.IsChecked = Settings.editor.editorWebcamStreamingEnabled;
+			// Editor_WebcamStreaming_WebserverURL.Text = Settings.editor.editorWebcamStreamingWebserverURL;
+
 			// turn on/off topmost window attribute
 
 			Topmost = Settings.editor.editorAlwaysOnTop;
@@ -4824,6 +4827,9 @@ namespace iRacingTVController
 				Settings.editor.editorStartupEnableDirector = Editor_Startup_EnableDirector.IsChecked ?? false;
 
 				Settings.editor.editorControlPanelSortByCarNumber = Editor_ControlPanel_SortByCarNumber.IsChecked ?? false;
+
+//				Settings.editor.editorWebcamStreamingEnabled = Editor_WebcamStreaming_Enabled.IsChecked ?? false;
+//				Settings.editor.editorWebcamStreamingWebserverURL = Editor_WebcamStreaming_WebserverURL.Text;
 
 				Settings.saveEditorToFileQueued = true;
 

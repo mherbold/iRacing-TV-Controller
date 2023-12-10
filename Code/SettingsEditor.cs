@@ -59,6 +59,9 @@ namespace iRacingTVController
 
 		public bool editorControlPanelSortByCarNumber = false;
 
+		public bool editorWebcamStreamingEnabled = false;
+		public string editorWebcamStreamingWebserverURL = string.Empty;
+
 		public string lastActiveOverlayFilePath = string.Empty;
 		public string lastActiveDirectorFilePath = string.Empty;
 	}

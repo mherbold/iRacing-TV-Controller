@@ -417,6 +417,7 @@ namespace iRacingTVController
 				{ "HudGapTimeBack", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 335, y = 25 } } },
 				{ "HudGapTimeFront", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 228, y = 25 } } },
 				{ "HudGear", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 652, y = 25 } } },
+				{ "HudLapDelta", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.Center, position = { x = 960, y = 540 } } },
 				{ "HudLapsToLeader", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 125, y = 25 } } },
 				{ "HudRPM", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 444, y = 25 } } },
 				{ "HudSpeechToText", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 30, alignment = TextAlignmentOptions.Center, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },

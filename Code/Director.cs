@@ -15,7 +15,7 @@ namespace iRacingTVController
 		public static float chyronTimer = 0;
 
 		public static int targetCamCarIdx = 0;
-		public static SettingsDirector.CameraType targetCamType = SettingsDirector.CameraType.Intro;
+		public static SettingsDirector.CameraType targetCamType = SettingsDirector.CameraType.Scenic;
 		public static SettingsDirector.CameraType autoCamType = SettingsDirector.CameraType.Close;
 
 		public static List<NormalizedCar> preferredCarList = new();
@@ -63,6 +63,7 @@ namespace iRacingTVController
 				NormalizedCar? leadingOnTrackCar = null;
 				NormalizedCar? leadingPittedCar = null;
 				NormalizedCar? hottestCar = null;
+				NormalizedCar? slowestOnTrackCar = null;
 				NormalizedCar? incidentCar = ( currentIncident != null ) ? IRSDK.normalizedData.FindNormalizedCarByCarIdx( currentIncident.CarIdx ) : null;
 				NormalizedCar? talkingCar = ( IRSDK.normalizedData.radioTransmitCarIdx != -1 ) ? IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.normalizedData.radioTransmitCarIdx ) : null;
 				NormalizedCar? randomCar = GetRandomNormalizedCar();
@@ -86,6 +87,14 @@ namespace iRacingTVController
 						if ( ( normalizedCar.heatTotal > 0 ) && ( ( hottestCar == null ) || ( normalizedCar.heatTotal > hottestCar.heatTotal ) ) )
 						{
 							hottestCar = normalizedCar;
+						}
+
+						if ( !normalizedCar.isOnPitRoad && !normalizedCar.isOutOfCar )
+						{
+							if ( ( slowestOnTrackCar == null ) || ( normalizedCar.speedInMetersPerSecond < slowestOnTrackCar.speedInMetersPerSecond ) )
+							{
+								slowestOnTrackCar = normalizedCar;
+							}
 						}
 
 						if ( normalizedCar.isPreferredCar )
@@ -114,7 +123,7 @@ namespace iRacingTVController
 				{
 					targetCamCarIdx = firstPlaceCar.carIdx;
 					targetCamType = Settings.director.rule1_Camera;
-					targetCamReason = "Rule 1: Post-race cool down, first place car still connected, look at first place car.";
+					targetCamReason = "Rule 1: Post-race cool down";
 				}
 				else if ( Settings.director.rule2_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateRacing ) && Settings.director.preferredCarLockOnEnabled && ( preferredCar != null ) && ( ( preferredCar.heatTotal >= Settings.director.preferredCarLockOnMinimumHeat ) || ( ( preferredCar.normalizedCarBehind?.heatTotal ?? 0 ) >= Settings.director.preferredCarLockOnMinimumHeat ) ) ) )
 				{
@@ -122,7 +131,7 @@ namespace iRacingTVController
 
 					targetCamCarIdx = preferredCar.carIdx;
 					targetCamType = Settings.director.rule2_Camera;
-					targetCamReason = "Rule 2: Racing, preferred car lock-on enabled, and preferred car heat >= minimum, look at preferred car.";
+					targetCamReason = "Rule 2: Preferred car lock-on";
 				}
 				else if ( Settings.director.rule3_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateCheckered ) ) )
 				{
@@ -145,7 +154,7 @@ namespace iRacingTVController
 									targetCamFastSwitchEnabled = true;
 									targetCamCarIdx = normalizedCar.carIdx;
 									targetCamType = Settings.director.rule3_Camera;
-									targetCamReason = "Rule 3: Racing, checkered flag, look at car nearest to the finish line.";
+									targetCamReason = "Rule 3: Checkered flag";
 
 									driverWasTalking = false;
 								}
@@ -158,7 +167,7 @@ namespace iRacingTVController
 					targetCamFastSwitchEnabled = true;
 					targetCamCarIdx = currentIncident.CarIdx;
 					targetCamType = Settings.director.rule4_Camera;
-					targetCamReason = "Rule 4: Incident.";
+					targetCamReason = "Rule 4: Incident";
 
 					driverWasTalking = false;
 				}
@@ -167,7 +176,7 @@ namespace iRacingTVController
 					targetCamFastSwitchEnabled = true;
 					targetCamCarIdx = leadingOnTrackCar.carIdx;
 					targetCamType = Settings.director.rule5_Camera;
-					targetCamReason = "Rule 5: Racing, green flag is about to be shown or is waving.";
+					targetCamReason = "Rule 5: Green flag is about to be shown or is waving";
 
 					driverWasTalking = false;
 				}
@@ -198,13 +207,13 @@ namespace iRacingTVController
 						targetCamSlowSwitchEnabled = true;
 						targetCamCarIdx = randomCar.carIdx;
 						targetCamType = Settings.director.rule7_Camera;
-						targetCamReason = "Rule 7: Practice session.";
+						targetCamReason = "Rule 7: Practice session";
 					}
 					else
 					{
-						targetCamCarIdx = 0;
-						targetCamType = SettingsDirector.CameraType.Intro;
-						targetCamReason = "Rule 7: Practice session (no cars on track).";
+						targetCamCarIdx = IRSDK.normalizedData.paceCar?.carIdx ?? 0;
+						targetCamType = SettingsDirector.CameraType.Scenic;
+						targetCamReason = "Rule 7: Practice session (no cars on track)";
 					}
 				}
 				else if ( Settings.director.rule8_Enabled && ( IRSDK.normalizedSession.isInQualifyingSession ) )
@@ -216,73 +225,59 @@ namespace iRacingTVController
 						targetCamSlowSwitchEnabled = true;
 						targetCamCarIdx = randomCar.carIdx;
 						targetCamType = Settings.director.rule8_Camera;
-						targetCamReason = "Rule 8: Qualifying session.";
+						targetCamReason = "Rule 8: Qualifying session";
 					}
 					else
 					{
-						targetCamCarIdx = 0;
-						targetCamType = SettingsDirector.CameraType.Intro;
-						targetCamReason = "Rule 8: Qualifying session (no cars on track).";
+						targetCamCarIdx = IRSDK.normalizedData.paceCar?.carIdx ?? 0;
+						targetCamType = SettingsDirector.CameraType.Scenic;
+						targetCamReason = "Rule 8: Qualifying session (no cars on track)";
 					}
 				}
-				else if ( Settings.director.rule9_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) ) && ( IRSDK.normalizedData.sessionState == SessionState.StateWarmup ) ) )
+				else if ( Settings.director.rule9_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) || ( IRSDK.normalizedData.paceCar != null ) ) && ( IRSDK.normalizedData.sessionState == SessionState.StateWarmup ) ) )
 				{
-					var normalizedCar = leadingOnTrackCar ?? leadingPittedCar;
+					var normalizedCar = leadingOnTrackCar ?? leadingPittedCar ?? IRSDK.normalizedData.paceCar;
 
 					if ( normalizedCar != null )
 					{
 						targetCamCarIdx = normalizedCar.carIdx;
 						targetCamType = Settings.director.rule9_Camera;
-						targetCamReason = "Rule 9: Cars are warming up.";
+						targetCamReason = "Rule 9: Cars are warming up";
 					}
 				}
-				else if ( Settings.director.rule10_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) ) && ( IRSDK.normalizedData.sessionState == SessionState.StateParadeLaps ) ) )
+				else if ( Settings.director.rule10_Enabled && ( ( ( IRSDK.normalizedData.paceCar != null ) && !IRSDK.normalizedData.paceCar.isOnPitRoad ) && ( IRSDK.normalizedData.sessionState == SessionState.StateParadeLaps ) ) )
 				{
-					if ( ( IRSDK.normalizedData.paceCar != null ) && !IRSDK.normalizedData.paceCar.isOnPitRoad )
-					{
-						targetCamCarIdx = 0;
-						targetCamType = Settings.director.rule13_Camera;
-						targetCamReason = "Rule 10: Cars are doing parade laps (pace car on track).";
-					}
-					else
-					{
-						var normalizedCar = leadingOnTrackCar ?? leadingPittedCar;
-
-						if ( normalizedCar != null )
-						{
-							targetCamCarIdx = normalizedCar.carIdx;
-							targetCamType = Settings.director.rule10_Camera;
-							targetCamReason = "Rule 10: Cars are doing parade laps (pace car off track).";
-						}
-					}
+					targetCamCarIdx = IRSDK.normalizedData.paceCar.carIdx;
+					targetCamType = Settings.director.rule10_Camera;
+					targetCamReason = "Rule 10: Cars are doing parade laps";
 				}
-				else if ( Settings.director.rule11_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) ) && ( IRSDK.normalizedData.sessionState == SessionState.StateGetInCar ) ) )
+				else if ( Settings.director.rule11_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) || ( IRSDK.normalizedData.paceCar != null ) ) && ( IRSDK.normalizedData.sessionState == SessionState.StateGetInCar ) ) )
 				{
-					var normalizedCar = leadingOnTrackCar ?? leadingPittedCar;
+					var normalizedCar = leadingOnTrackCar ?? leadingPittedCar ?? IRSDK.normalizedData.paceCar;
 
 					if ( normalizedCar != null )
 					{
 						targetCamCarIdx = normalizedCar.carIdx;
 						targetCamType = Settings.director.rule11_Camera;
-						targetCamReason = "Rule 11: Drivers are getting into their cars.";
+						targetCamReason = "Rule 11: Drivers are getting into their cars";
 					}
 				}
-				else if ( Settings.director.rule12_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) ) && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.CautionWaving ) ) != 0 ) ) )
+				else if ( Settings.director.rule12_Enabled && ( ( ( slowestOnTrackCar != null ) || ( firstPlaceCar != null ) ) && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.CautionWaving ) ) != 0 ) ) )
 				{
-					var normalizedCar = leadingOnTrackCar ?? leadingPittedCar;
+					var normalizedCar = slowestOnTrackCar ?? firstPlaceCar;
 
 					if ( normalizedCar != null )
 					{
 						targetCamCarIdx = normalizedCar.carIdx;
 						targetCamType = Settings.director.rule12_Camera;
-						targetCamReason = "Rule 12: Caution flag waving.";
+						targetCamReason = "Rule 12: Caution flag is waving";
 					}
 				}
-				else if ( Settings.director.rule13_Enabled && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.OneLapToGreen ) ) != 0 ) )
+				else if ( Settings.director.rule13_Enabled && ( ( IRSDK.normalizedData.paceCar != null ) && !IRSDK.normalizedData.paceCar.isOnPitRoad ) && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.OneLapToGreen ) ) != 0 ) && ( IRSDK.normalizedData.sessionState >= SessionState.StateParadeLaps ) )
 				{
-					targetCamCarIdx = 0;
-					targetCamType = SettingsDirector.CameraType.Reverse;
-					targetCamReason = "Rule 13: One lap to green (pace car).";
+					targetCamCarIdx = IRSDK.normalizedData.paceCar.carIdx;
+					targetCamType = Settings.director.rule13_Camera;
+					targetCamReason = "Rule 13: One lap to green";
 				}
 				else if ( Settings.director.rule14_Enabled )
 				{
@@ -292,7 +287,7 @@ namespace iRacingTVController
 
 						targetCamCarIdx = hottestCar.carIdx;
 						targetCamType = Settings.director.rule14_Camera;
-						targetCamReason = "Rule 13: Hottest car.";
+						targetCamReason = "Rule 14: Hottest car";
 					}
 				}
 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.50"
+        Title="iRacing-TV Controller v1.51"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="900" Height="765" MinWidth="900" MinHeight="765" Icon="/Assets/icon/iracing-tv.ico">
     <Grid>
@@ -884,7 +884,7 @@
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="Rule 10" Width="60"/>
-                                        <CheckBox x:Name="Director_Rules_Rule10_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Cars are doing parade laps, look at lead car using"/>
+                                        <CheckBox x:Name="Director_Rules_Rule10_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Cars are doing parade laps, look at pace car using"/>
                                         <ComboBox x:Name="Director_Rules_Rule10_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
@@ -894,12 +894,12 @@
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="Rule 12" Width="60"/>
-                                        <CheckBox x:Name="Director_Rules_Rule12_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Caution flag waving, look at lead car using"/>
+                                        <CheckBox x:Name="Director_Rules_Rule12_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Caution flag is waving, look at slowest on-track car using"/>
                                         <ComboBox x:Name="Director_Rules_Rule12_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="Rule 13" Width="60"/>
-                                        <CheckBox x:Name="Director_Rules_Rule13_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="Pace car on track (parade or caution one to green)"/>
+                                        <CheckBox x:Name="Director_Rules_Rule13_Enabled" VerticalAlignment="Center" Click="Director_Rules_Update" Content="One lap to green with pace car on track, look at pace car using"/>
                                         <ComboBox x:Name="Director_Rules_Rule13_Camera" Margin="6,0,0,0" Height="21" VerticalContentAlignment="Center" SelectionChanged="Director_Rules_Update" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">

@@ -32,14 +32,14 @@ namespace iRacingTVController
 
 		public string filePath = string.Empty;
 
-		public string camerasPractice = "tv3";
-		public string camerasQualifying = "tv3";
-		public string camerasIntro = "scenic";
+		public string camerasPractice = "tv3, tv2";
+		public string camerasQualifying = "tv3, tv2";
+		public string camerasIntro = "tv2";
 
 		public string camerasScenic = "scenic";
-		public string camerasPits = "pit lane, tv2";
+		public string camerasPits = "pit lane, pit lane 1, pit lane 2, tv2";
 		public string camerasStartFinish = "s/f line, starter cam, tv2";
-		public string camerasReverse = "rear chase";
+		public string camerasReverse = "gearbox";
 
 		public string camerasInside = "roll bar";
 		public string camerasClose = "tv1";
@@ -76,7 +76,7 @@ namespace iRacingTVController
 		public bool camerasCustom5_Overridden = false;
 		public bool camerasCustom6_Overridden = false;
 
-		public float switchDelayDirector = 8;
+		public float switchDelayDirector = 12;
 		public float switchDelayIracing = 2;
 		public float switchDelayRadioChatter = 1;
 		public float switchDelayNotInRace = 10;
@@ -125,9 +125,9 @@ namespace iRacingTVController
 		public bool rule9_Enabled = true;
 		public CameraType rule9_Camera = CameraType.VeryFar;
 		public bool rule10_Enabled = true;
-		public CameraType rule10_Camera = CameraType.Medium;
+		public CameraType rule10_Camera = CameraType.Reverse;
 		public bool rule11_Enabled = true;
-		public CameraType rule11_Camera = CameraType.Intro;
+		public CameraType rule11_Camera = CameraType.Medium;
 		public bool rule12_Enabled = true;
 		public CameraType rule12_Camera = CameraType.AutoCam;
 		public bool rule13_Enabled = true;

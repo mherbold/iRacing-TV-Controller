@@ -2284,8 +2284,8 @@ namespace iRacingTVController
 					director.rule13_Enabled = Director_Rules_Rule13_Enabled.IsChecked ?? false;
 					director.rule13_Camera = (SettingsDirector.CameraType) Director_Rules_Rule13_Camera.SelectedItem;
 
-					director.rule14_Enabled = Director_Rules_Rule13_Enabled.IsChecked ?? false;
-					director.rule14_Camera = (SettingsDirector.CameraType) Director_Rules_Rule13_Camera.SelectedItem;
+					director.rule14_Enabled = Director_Rules_Rule14_Enabled.IsChecked ?? false;
+					director.rule14_Camera = (SettingsDirector.CameraType) Director_Rules_Rule14_Camera.SelectedItem;
 				}
 
 				Settings.saveDirectorToFileQueued = true;

@@ -187,13 +187,16 @@ namespace iRacingTVController
 
 				if ( normalizedCar.memberProfile != null )
 				{
-					liveDataDrivers[ normalizedCar.carIdx ].memberImageUrl = normalizedCar.memberProfile.ImageUrl;
-					liveDataDrivers[ normalizedCar.carIdx ].memberClubRegionUrl = $"https://ir-core-sites.iracing.com/members/member_images/world_cup/club_logos/club_{normalizedCar.memberProfile.Info.ClubId:000}_long_0128_web.png";
+					liveDataDrivers[ normalizedCar.carIdx ].memberClubRegionTextureUrl = $"https://ir-core-sites.iracing.com/members/member_images/world_cup/club_logos/club_{normalizedCar.memberProfile.Info.ClubId:000}_long_0128_web.png";
 				}
 				else
 				{
-					liveDataDrivers[ normalizedCar.carIdx ].memberImageUrl = string.Empty;
+					liveDataDrivers[ normalizedCar.carIdx ].memberClubRegionTextureUrl = string.Empty;
 				}
+
+				liveDataDrivers[ normalizedCar.carIdx ].memberIdTextureUrl_A = normalizedCar.memberIdTextureUrl_A;
+				liveDataDrivers[ normalizedCar.carIdx ].memberIdTextureUrl_B = normalizedCar.memberIdTextureUrl_B;
+				liveDataDrivers[ normalizedCar.carIdx ].memberIdTextureUrl_C = normalizedCar.memberIdTextureUrl_C;
 			}
 		}
 
@@ -1052,7 +1055,7 @@ namespace iRacingTVController
 
 							var normalizedCar = IRSDK.normalizedData.classLeaderboardSortedNormalizedCars[ driverIndex ];
 
-							if ( normalizedCar.includeInLeaderboard )
+							if ( normalizedCar.includeInLeaderboard && ( normalizedCar.qualifyingPosition < MaxNumDrivers ) )
 							{
 								var rowNumber = Math.Floor( driverIndex / 2.0 );
 								var rowStartTime = ( ( ( driverIndex & 1 ) == 0 ) ? Settings.overlay.introLeftStartTime : Settings.overlay.introRightStartTime ) + rowNumber * Settings.overlay.introStartInterval;

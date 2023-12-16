@@ -241,6 +241,7 @@ namespace iRacingTVController
 				foreach ( var imageType in Enum.GetValues( typeof( SettingsImage.ImageType ) ) )
 				{
 					Image_ImageType.Items.Add( imageType );
+					Image_FallbackType.Items.Add( imageType );
 				}
 
 				foreach ( var fontOption in fontOptions )
@@ -926,6 +927,7 @@ namespace iRacingTVController
 				var settings = Settings.overlay.imageSettingsDataDictionary[ id ];
 
 				Update( Image_ImageType, settings.imageType, Image_ImageType_Override, overlayIsGlobal, settings.imageType_Overridden );
+				Update( Image_FallbackType, settings.fallbackType, Image_FallbackType_Override, overlayIsGlobal, settings.fallbackType_Overridden );
 				Update( Image_FilePath, settings.filePath, Image_FilePath_Override, overlayIsGlobal, settings.filePath_Overridden, Image_FilePath_Button );
 				Update( Image_Position_X, Image_Position_Y, settings.position, Image_Position_Override, overlayIsGlobal, settings.position_Overridden );
 				Update( Image_Size_W, Image_Size_H, settings.size, Image_Size_Override, overlayIsGlobal, settings.size_Overridden );
@@ -2928,6 +2930,21 @@ namespace iRacingTVController
 					{
 						ControlPanel_C6_Button.IsChecked = customLayerOn[ 5 ] = settings.imageType != SettingsImage.ImageType.None;
 					}
+				}
+
+				overridden = Image_FallbackType_Override.IsChecked ?? false;
+
+				if ( overlaySettings.fallbackType_Overridden != overridden )
+				{
+					overlaySettings.fallbackType_Overridden = overridden;
+
+					UpdateOverlayImage();
+				}
+				else
+				{
+					var settings = overlaySettings.fallbackType_Overridden ? overlaySettings : globalSettings;
+
+					settings.fallbackType = (SettingsImage.ImageType) Image_FallbackType.SelectedItem;
 				}
 
 				overridden = Image_FilePath_Override.IsChecked ?? false;

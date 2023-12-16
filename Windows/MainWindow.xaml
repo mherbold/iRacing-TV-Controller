@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.51"
+        Title="iRacing-TV Controller v1.52"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="900" Height="765" MinWidth="900" MinHeight="765" Icon="/Assets/icon/iracing-tv.ico">
     <Grid>
@@ -1110,6 +1110,16 @@
                                         <Label Content="Image Type"/>
                                         <ComboBox x:Name="Image_ImageType" VerticalContentAlignment="Center" Height="25" Grid.Column="1" SelectionChanged="Overlay_Image_Update"/>
                                         <CheckBox x:Name="Image_ImageType_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Image_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0"/>
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Fallback Type"/>
+                                        <ComboBox x:Name="Image_FallbackType" VerticalContentAlignment="Center" Height="25" Grid.Column="1" SelectionChanged="Overlay_Image_Update"/>
+                                        <CheckBox x:Name="Image_FallbackType_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Image_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0"/>
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>

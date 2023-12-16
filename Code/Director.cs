@@ -89,9 +89,9 @@ namespace iRacingTVController
 							hottestCar = normalizedCar;
 						}
 
-						if ( !normalizedCar.isOnPitRoad && !normalizedCar.isOutOfCar )
+						if ( !normalizedCar.isOutOfCar )
 						{
-							if ( ( slowestOnTrackCar == null ) || ( normalizedCar.speedInMetersPerSecond < slowestOnTrackCar.speedInMetersPerSecond ) )
+							if ( ( slowestOnTrackCar == null ) || ( ( !normalizedCar.isOnPitRoad || ( normalizedCar.speedInMetersPerSecond > 2 )  ) && ( normalizedCar.speedInMetersPerSecond < slowestOnTrackCar.speedInMetersPerSecond ) ) )
 							{
 								slowestOnTrackCar = normalizedCar;
 							}

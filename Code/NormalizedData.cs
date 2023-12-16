@@ -195,22 +195,38 @@ namespace iRacingTVController
 					{
 						paceCar = normalizedCar;
 					}
+
+					normalizedCar.qualifyingPosition = MaxNumCars;
+					normalizedCar.qualifyingTime = 0;
 				}
 
-				foreach ( var session in IRSDK.session.SessionInfo.Sessions )
-				{
-					if ( session.SessionName == "QUALIFY" )
-					{
-						if ( session.ResultsPositions != null )
-						{
-							foreach ( var position in session.ResultsPositions )
-							{
-								normalizedCars[ position.CarIdx ].qualifyingPosition = position.Position;
-								normalizedCars[ position.CarIdx ].qualifyingTime = position.Time;
-							}
-						}
+				var qualifyPositions = IRSDK.session.SessionInfo.Sessions[ IRSDK.normalizedSession.sessionNumber ].QualifyPositions;
 
-						break;
+				if ( qualifyPositions != null )
+				{
+					foreach ( var qualifyPosition in qualifyPositions )
+					{
+						normalizedCars[ qualifyPosition.CarIdx ].qualifyingPosition = qualifyPosition.Position;
+						normalizedCars[ qualifyPosition.CarIdx ].qualifyingTime = qualifyPosition.FastestTime;
+					}
+				}
+				else
+				{ 
+					foreach ( var session in IRSDK.session.SessionInfo.Sessions )
+					{
+						if ( session.SessionName == "QUALIFY" )
+						{
+							if ( session.ResultsPositions != null )
+							{
+								foreach ( var position in session.ResultsPositions )
+								{
+									normalizedCars[ position.CarIdx ].qualifyingPosition = position.Position;
+									normalizedCars[ position.CarIdx ].qualifyingTime = position.Time;
+								}
+							}
+
+							break;
+						}
 					}
 				}
 
@@ -565,7 +581,7 @@ namespace iRacingTVController
 				}
 				else
 				{
-					classLeaderboardSortedNormalizedCars.Sort( NormalizedCar.LapPositionComparison );
+					classLeaderboardSortedNormalizedCars.Sort( NormalizedCar.LeaderboardIndexComparison );
 				}
 
 				// lap position relative to class leader for laps down telemetry, also count number of classes, and set displayed position

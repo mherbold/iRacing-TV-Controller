@@ -1,6 +1,6 @@
 [Setup]
 AppName=iRacing-TV
-AppVersion=1.51
+AppVersion=1.52
 AppCopyright=Created by Marvin Herbold
 AppPublisher=Marvin Herbold
 AppPublisherURL=https://herboldracing.com/iracing-tv
@@ -34,6 +34,7 @@ Name: "{userdocs}\iRacing-TV\DirectorSettings"
 Name: "{userdocs}\iRacing-TV\Incidents"
 Name: "{userdocs}\iRacing-TV\SessionFlags"
 Name: "{userdocs}\iRacing-TV\Subtitles"
+Name: "{userdocs}\iRacing-TV\MemberImages"
 
 [Icons]
 Name: "{group}\iRacing-TV Controller"; Filename: "{app}\iRacing-TV Controller.exe"

@@ -796,6 +796,7 @@ namespace iRacingTVController
 					overlay.imageSettingsDataDictionary[ item.Key ] = new SettingsImage()
 					{
 						imageType = item.Value.imageType_Overridden ? item.Value.imageType : globalItem.imageType,
+						fallbackType = item.Value.fallbackType_Overridden ? item.Value.fallbackType : globalItem.fallbackType,
 						filePath = item.Value.filePath_Overridden ? item.Value.filePath : globalItem.filePath,
 						position = item.Value.position_Overridden ? item.Value.position : globalItem.position,
 						size = item.Value.size_Overridden ? item.Value.size : globalItem.size,
@@ -809,6 +810,7 @@ namespace iRacingTVController
 						classColorStrength = item.Value.classColorStrength_Overridden ? item.Value.classColorStrength : globalItem.classColorStrength,
 
 						imageType_Overridden = item.Value.imageType_Overridden,
+						fallbackType_Overridden = item.Value.fallbackType_Overridden,
 						filePath_Overridden = item.Value.filePath_Overridden,
 						position_Overridden = item.Value.position_Overridden,
 						size_Overridden = item.Value.size_Overridden,

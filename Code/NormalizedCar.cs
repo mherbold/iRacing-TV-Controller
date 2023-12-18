@@ -22,6 +22,8 @@ namespace iRacingTVController
 
 		public string userName = string.Empty;
 		public string displayedName = string.Empty;
+		public string givenName = string.Empty;
+		public string familyName = string.Empty;
 
 		public string carNumber = string.Empty;
 		public int carNumberRaw = 0;
@@ -51,6 +53,7 @@ namespace iRacingTVController
 		public int classPosition = 0;
 		public int displayedPosition = 0;
 		public int qualifyingPosition = 0;
+		public int qualifyingClassPosition = 0;
 
 		public int currentLap = 0;
 		public int currentLapLastFrame = 0;
@@ -90,6 +93,13 @@ namespace iRacingTVController
 		public NormalizedCar? normalizedCarInFront = null;
 		public NormalizedCar? normalizedCarBehind = null;
 
+		public float gapTimeFront = 0;
+		public float gapTimeBack = 0;
+
+		public double interpolatedDeltaTime = 0;
+		public double interpolatedDeltaInterpolatedDeltaTime = 0;
+		public double lastInterpolatedDeltaTime = 0;
+
 		public NormalizedCar? normalizedCarForTelemetry = null;
 
 		public float distanceToCarInFrontInMeters = 0;
@@ -105,6 +115,7 @@ namespace iRacingTVController
 		public string carTextureUrl = string.Empty;
 		public string helmetTextureUrl = string.Empty;
 		public string driverTextureUrl = string.Empty;
+		public string memberClubTextureUrl = string.Empty;
 		public string memberIdTextureUrl_A = string.Empty;
 		public string memberIdTextureUrl_B = string.Empty;
 		public string memberIdTextureUrl_C = string.Empty;
@@ -124,6 +135,7 @@ namespace iRacingTVController
 		public float rpm = 0;
 		public int iRating = 0;
 		public string license = string.Empty;
+		public string licenseColor = string.Empty;
 
 		public bool memberProfileRetrieved = false;
 		public MemberProfile? memberProfile = null;
@@ -171,6 +183,7 @@ namespace iRacingTVController
 			classPosition = 0;
 			displayedPosition = 0;
 			qualifyingPosition = 0;
+			qualifyingClassPosition = 0;
 
 			currentLap = 0;
 			currentLapLastFrame = 0;
@@ -204,6 +217,13 @@ namespace iRacingTVController
 			normalizedCarInFront = null;
 			normalizedCarBehind = null;
 
+			gapTimeFront = 0;
+			gapTimeBack = 0;
+
+			interpolatedDeltaTime = 0;
+			interpolatedDeltaInterpolatedDeltaTime = 0;
+			lastInterpolatedDeltaTime = 0;
+
 			normalizedCarForTelemetry = null;
 
 			distanceToCarInFrontInMeters = float.MaxValue;
@@ -233,6 +253,7 @@ namespace iRacingTVController
 			rpm = 0;
 			iRating = 0;
 			license = string.Empty;
+			licenseColor = string.Empty;
 
 			memberProfileRetrieved = false;
 			memberProfile = null;
@@ -301,6 +322,13 @@ namespace iRacingTVController
 
 			normalizedCarInFront = null;
 			normalizedCarBehind = null;
+
+			gapTimeFront = 0;
+			gapTimeBack = 0;
+
+			interpolatedDeltaTime = 0;
+			interpolatedDeltaInterpolatedDeltaTime = 0;
+			lastInterpolatedDeltaTime = 0;
 
 			normalizedCarForTelemetry = null;
 
@@ -402,6 +430,7 @@ namespace iRacingTVController
 
 			iRating = driver.IRating;
 			license = driver.LicString;
+			licenseColor = driver.LicColor;
 
 			includeInLeaderboard = !isSpectator && !isPaceCar;
 
@@ -1052,8 +1081,10 @@ namespace iRacingTVController
 					}
 
 					break;
-
 			}
+
+			givenName = firstName;
+			familyName = lastName;
 		}
 
 		public static Comparison<NormalizedCar> BestLapTimeComparison = delegate ( NormalizedCar a, NormalizedCar b )

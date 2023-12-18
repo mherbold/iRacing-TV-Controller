@@ -267,6 +267,11 @@ namespace iRacingTVController
 					Text_Alignment.Items.Add( textAlignmentOption );
 				}
 
+				foreach ( var contentOption in Enum.GetValues( typeof( SettingsText.Content ) ) )
+				{
+					Text_Content.Items.Add( contentOption );
+				}
+
 				patternOptions.Add( "914", 37 );
 				patternOptions.Add( "Aardvark", 11 );
 				patternOptions.Add( "Aero", 1 );
@@ -967,6 +972,7 @@ namespace iRacingTVController
 				Update( Text_UseClassColors, settings.useClassColors, Text_UseClassColors_Override, overlayIsGlobal, settings.useClassColors_Overridden );
 				Update( Text_ClassColorStrength, settings.classColorStrength * 255.0f, Text_ClassColorStrength_Override, overlayIsGlobal, settings.classColorStrength_Overridden );
 				Update( Text_AllowOverflow, settings.allowOverflow, Text_AllowOverflow_Override, overlayIsGlobal, settings.allowOverflow_Overridden );
+				Update( Text_Content, settings.content, Text_Content_Override, overlayIsGlobal, settings.content_Overridden );
 
 				initializing--;
 			}
@@ -1090,6 +1096,7 @@ namespace iRacingTVController
 							ControlPanel_CameraControl_DriverName.Text = string.Empty;
 						}
 
+						ControlPanel_CameraControl_CameraType.Text = Director.resolvedCamType.ToString();
 						ControlPanel_CameraControl_CameraGroup.Text = IRSDK.GetCamGroupName( IRSDK.targetCamGroupNumber );
 						ControlPanel_CameraControl_Reason.Text = IRSDK.targetCamReason;
 						ControlPanel_CameraControl_Timer.Text = $"{IRSDK.cameraSwitchWaitTimeRemaining:0.0}";
@@ -1360,7 +1367,7 @@ namespace iRacingTVController
 				IRSDK.targetCamFastSwitchEnabled = true;
 				IRSDK.targetCamSlowSwitchEnabled = false;
 				IRSDK.targetCamCarIdx = normalizedCar.carIdx;
-				IRSDK.targetCamGroupNumber = Director.GetCamGroupNumber( normalizedCar, cameraType );
+				IRSDK.targetCamGroupNumber = Director.GetCamGroupNumber( cameraType );
 				IRSDK.targetCamReason = "Manual camera control.";
 			}
 		}
@@ -3286,6 +3293,21 @@ namespace iRacingTVController
 					settings.allowOverflow = Text_AllowOverflow.IsChecked ?? false;
 				}
 
+				overridden = Text_Content_Override.IsChecked ?? false;
+
+				if ( overlaySettings.content_Overridden != overridden )
+				{
+					overlaySettings.content_Overridden = overridden;
+
+					UpdateOverlayText();
+				}
+				else
+				{
+					var settings = overlaySettings.content_Overridden ? overlaySettings : globalSettings;
+
+					settings.content = (SettingsText.Content) Text_Content.SelectedItem;
+				}
+
 				IPC.readyToSendSettings = true;
 
 				Settings.saveOverlayToFileQueued = true;
@@ -4845,8 +4867,8 @@ namespace iRacingTVController
 
 				Settings.editor.editorControlPanelSortByCarNumber = Editor_ControlPanel_SortByCarNumber.IsChecked ?? false;
 
-//				Settings.editor.editorWebcamStreamingEnabled = Editor_WebcamStreaming_Enabled.IsChecked ?? false;
-//				Settings.editor.editorWebcamStreamingWebserverURL = Editor_WebcamStreaming_WebserverURL.Text;
+				//				Settings.editor.editorWebcamStreamingEnabled = Editor_WebcamStreaming_Enabled.IsChecked ?? false;
+				//				Settings.editor.editorWebcamStreamingWebserverURL = Editor_WebcamStreaming_WebserverURL.Text;
 
 				Settings.saveEditorToFileQueued = true;
 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.52"
+        Title="iRacing-TV Controller v1.54"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="900" Height="765" MinWidth="900" MinHeight="765" Icon="/Assets/icon/iracing-tv.ico">
     <Grid>
@@ -107,10 +107,14 @@
                                     <Label Content="Driver Name" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                                 </StackPanel>
                                 <StackPanel Width="90" Margin="3,0,3,0" Grid.Column="3">
+                                    <TextBox x:Name="ControlPanel_CameraControl_CameraType" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
+                                    <Label Content="Camera Type" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                                </StackPanel>
+                                <StackPanel Width="90" Margin="3,0,3,0" Grid.Column="4">
                                     <TextBox x:Name="ControlPanel_CameraControl_CameraGroup" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
                                     <Label Content="Camera Group" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                                 </StackPanel>
-                                <StackPanel Width="380" Margin="3,0,0,0" Grid.Column  ="4">
+                                <StackPanel Margin="3,0,0,0" Grid.Column="5">
                                     <TextBox x:Name="ControlPanel_CameraControl_Reason" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
                                     <Label Content="Reason" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
                                 </StackPanel>
@@ -1411,6 +1415,16 @@
                                         <Label Content="Allow Overflow"/>
                                         <CheckBox x:Name="Text_AllowOverflow" VerticalAlignment="Center" Click="Overlay_Text_Update" Grid.Column="1" />
                                         <CheckBox x:Name="Text_AllowOverflow_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Text_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Content"/>
+                                        <ComboBox x:Name="Text_Content" VerticalContentAlignment="Center" Height="25" Grid.Column="1" SelectionChanged="Overlay_Text_Update"/>
+                                        <CheckBox x:Name="Text_Content_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Text_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                 </StackPanel>
                             </TabItem>

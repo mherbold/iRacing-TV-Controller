@@ -16,8 +16,8 @@ namespace iRacingTVController
 		public Vector2 splitterPosition = Vector2.zero;
 
 		[JsonInclude] public Color classColor = Color.white;
-		[JsonInclude] public string className = string.Empty;
-		public string classNameShort = string.Empty;
+		[JsonInclude] public string textLayer1 = string.Empty;
+		public string textLayer2 = string.Empty;
 
 		[JsonInclude] public LiveDataLeaderboardSlot[] liveDataLeaderboardSlots = new LiveDataLeaderboardSlot[ LiveData.MaxNumDrivers ];
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Media;
+using Windows.Networking;
 
 namespace iRacingTVController
 {
@@ -30,18 +31,35 @@ namespace iRacingTVController
 
 			foreach ( var fontPath in fontsInDirectory )
 			{
-				var fontFamilies = Fonts.GetFontFamilies( fontPath );
+				var typeFaces = Fonts.GetTypefaces( fontPath );
 
-				if ( fontFamilies.Count == 1 )
+				if ( typeFaces.Count == 0 )
 				{
-					var fontFamily = fontFamilies.First();
+					continue;
+				}
 
-					var fontName = fontFamily.Source.Split( "#" ).Last();
+				var typeFace = typeFaces.First();
 
-					if ( !fontPaths.ContainsKey( fontName ) )
-					{
-						fontPaths[ fontName ] = fontPath;
-					}
+				var fontName = typeFace.FontFamily.Source.Split( "#" ).Last();
+
+				if ( typeFace.Stretch.ToString() != "Normal" )
+				{
+					fontName += $" {typeFace.Stretch}";
+				}
+
+				if ( typeFace.Style.ToString() != "Normal" )
+				{
+					fontName += $" {typeFace.Style}";
+				}
+
+				if ( typeFace.Weight.ToString() != "Normal" )
+				{
+					fontName += $" {typeFace.Weight}";
+				}
+
+				if ( !fontPaths.ContainsKey( fontName ) && !fontPaths.ContainsValue( fontPath ) )
+				{
+					fontPaths[ fontName ] = fontPath;
 				}
 			}
 		}

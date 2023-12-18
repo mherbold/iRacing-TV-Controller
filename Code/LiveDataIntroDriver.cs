@@ -10,11 +10,11 @@ namespace iRacingTVController
 
 		public int carIdx = 0;
 
-		public string positionText = string.Empty;
-		public string driverNameText = string.Empty;
-		public string qualifyingTimeText = string.Empty;
-		public string carNumberText = string.Empty;
-		public string licenseText = string.Empty;
-		public string ratingText = string.Empty;
+		public string textLayer1 = string.Empty;
+		public string textLayer2 = string.Empty;
+		public string textLayer3 = string.Empty;
+		public string textLayer4 = string.Empty;
+		public string textLayer5 = string.Empty;
+		public string textLayer6 = string.Empty;
 	}
 }

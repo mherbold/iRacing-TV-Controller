@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using irsdkSharp.Models;
 using irsdkSharp.Serialization.Enums.Fastest;
-
+using static System.Net.Mime.MediaTypeNames;
 using static iRacingTVController.Unity;
 
 namespace iRacingTVController
@@ -197,38 +197,11 @@ namespace iRacingTVController
 					}
 
 					normalizedCar.qualifyingPosition = MaxNumCars;
+					normalizedCar.qualifyingClassPosition = MaxNumCars;
 					normalizedCar.qualifyingTime = 0;
 				}
 
-				var qualifyPositions = IRSDK.session.SessionInfo.Sessions[ IRSDK.normalizedSession.sessionNumber ].QualifyPositions;
-
-				if ( qualifyPositions != null )
-				{
-					foreach ( var qualifyPosition in qualifyPositions )
-					{
-						normalizedCars[ qualifyPosition.CarIdx ].qualifyingPosition = qualifyPosition.Position;
-						normalizedCars[ qualifyPosition.CarIdx ].qualifyingTime = qualifyPosition.FastestTime;
-					}
-				}
-				else
-				{ 
-					foreach ( var session in IRSDK.session.SessionInfo.Sessions )
-					{
-						if ( session.SessionName == "QUALIFY" )
-						{
-							if ( session.ResultsPositions != null )
-							{
-								foreach ( var position in session.ResultsPositions )
-								{
-									normalizedCars[ position.CarIdx ].qualifyingPosition = position.Position;
-									normalizedCars[ position.CarIdx ].qualifyingTime = position.Time;
-								}
-							}
-
-							break;
-						}
-					}
-				}
+				UpdateQualifyingPositions();
 
 				for ( var carIdx = 0; carIdx < MaxNumCars; carIdx++ )
 				{
@@ -247,11 +220,8 @@ namespace iRacingTVController
 						}
 					}
 				}
-
-				Task.Run( async () => await UpdateMemberProfilesAsync() );
 			}
 		}
-
 		public async Task UpdateMemberProfilesAsync()
 		{
 			foreach ( var normalizedCar in normalizedCars )
@@ -261,6 +231,11 @@ namespace iRacingTVController
 					normalizedCar.memberProfileRetrieved = true;
 
 					normalizedCar.memberProfile = await DataApi.GetMemberProfileAsync( normalizedCar.userId );
+
+					if ( normalizedCar.memberProfile != null )
+					{
+						normalizedCar.memberClubTextureUrl = $"https://ir-core-sites.iracing.com/members/member_images/world_cup/club_logos/club_{normalizedCar.memberProfile.Info.ClubId:000}_long_0128_web.png";
+					}
 				}
 			}
 		}
@@ -289,6 +264,52 @@ namespace iRacingTVController
 			foreach ( var normalizedCar in normalizedCars )
 			{
 				normalizedCar.SessionNumberChange();
+
+				normalizedCar.qualifyingPosition = MaxNumCars;
+				normalizedCar.qualifyingClassPosition = MaxNumCars;
+				normalizedCar.qualifyingTime = 0;
+			}
+
+			UpdateQualifyingPositions();
+
+			Task.Run( async () => await UpdateMemberProfilesAsync() );
+		}
+
+		public void UpdateQualifyingPositions()
+		{
+			if ( ( IRSDK.session != null ) && ( IRSDK.normalizedSession.sessionNumber >= 0 ) )
+			{
+				var qualifyPositions = IRSDK.session.SessionInfo.Sessions[ IRSDK.normalizedSession.sessionNumber ].QualifyPositions;
+
+				if ( qualifyPositions != null )
+				{
+					foreach ( var qualifyPosition in qualifyPositions )
+					{
+						normalizedCars[ qualifyPosition.CarIdx ].qualifyingPosition = qualifyPosition.Position;
+						normalizedCars[ qualifyPosition.CarIdx ].qualifyingClassPosition = qualifyPosition.ClassPosition;
+						normalizedCars[ qualifyPosition.CarIdx ].qualifyingTime = qualifyPosition.FastestTime;
+					}
+				}
+				else
+				{
+					foreach ( var session in IRSDK.session.SessionInfo.Sessions )
+					{
+						if ( session.SessionName == "QUALIFY" )
+						{
+							if ( session.ResultsPositions != null )
+							{
+								foreach ( var position in session.ResultsPositions )
+								{
+									normalizedCars[ position.CarIdx ].qualifyingPosition = position.Position;
+									normalizedCars[ position.CarIdx ].qualifyingClassPosition = position.ClassPosition;
+									normalizedCars[ position.CarIdx ].qualifyingTime = position.Time;
+								}
+							}
+
+							break;
+						}
+					}
+				}
 			}
 		}
 
@@ -741,6 +762,94 @@ namespace iRacingTVController
 				// sort cars by car number
 
 				carNumberSortedNormalizedCars.Sort( NormalizedCar.CarNumberComparison );
+
+				// gap times
+
+				if ( !IRSDK.normalizedSession.isInQualifyingSession )
+				{
+					foreach ( var normalizedCar in normalizedCars )
+					{
+						if ( normalizedCar.normalizedCarInFront != null )
+						{
+							var checkpointTimeHis = normalizedCar.normalizedCarInFront.sessionTimeCheckpoints[ normalizedCar.checkpointIdx ];
+							var checkpointTimeMine = normalizedCar.sessionTimeCheckpoints[ normalizedCar.checkpointIdx ];
+
+							if ( ( checkpointTimeHis > 0 ) && ( checkpointTimeMine > 0 ) && ( checkpointTimeMine >= checkpointTimeHis ) )
+							{
+								var gapTime = (float) ( checkpointTimeMine - checkpointTimeHis );
+
+								if ( normalizedCar.carIdxInFrontLastFrame == normalizedCar.normalizedCarInFront.carIdx )
+								{
+									normalizedCar.gapTimeFront = normalizedCar.gapTimeFront * 0.95f + gapTime * 0.05f;
+								}
+								else
+								{
+									normalizedCar.gapTimeFront = gapTime;
+								}
+							}
+						}
+
+						if ( normalizedCar.normalizedCarBehind != null )
+						{
+							var checkpointTimeMine = normalizedCar.sessionTimeCheckpoints[ normalizedCar.normalizedCarBehind.checkpointIdx ];
+							var checkpointTimeHis = normalizedCar.normalizedCarBehind.sessionTimeCheckpoints[ normalizedCar.normalizedCarBehind.checkpointIdx ];
+
+							if ( ( checkpointTimeHis > 0 ) && ( checkpointTimeMine > 0 ) && ( checkpointTimeHis >= checkpointTimeMine ) )
+							{
+								var gapTime = (float) ( checkpointTimeHis - checkpointTimeMine );
+
+								if ( normalizedCar.carIdxBehindLastFrame == normalizedCar.normalizedCarBehind.carIdx )
+								{
+									normalizedCar.gapTimeBack = normalizedCar.gapTimeBack * 0.95f + gapTime * 0.05f;
+								}
+								else
+								{
+									normalizedCar.gapTimeBack = gapTime;
+								}
+							}
+						}
+					}
+				}
+
+				// lap time deltas
+
+				foreach ( var normalizedCar in normalizedCars )
+				{
+					var tL0 = normalizedCar.sessionTimeCheckpointsLastLap[ 0 ];
+					var tL1 = normalizedCar.sessionTimeCheckpointsLastLap[ normalizedCar.checkpointIdx ];
+
+					var tC0 = normalizedCar.sessionTimeCheckpoints[ 0 ];
+					var tC1 = normalizedCar.sessionTimeCheckpoints[ normalizedCar.checkpointIdx ];
+
+					if ( normalizedCar.checkpointIdx == 0 )
+					{
+						normalizedCar.interpolatedDeltaTime = 0;
+						normalizedCar.interpolatedDeltaInterpolatedDeltaTime = 0;
+						normalizedCar.lastInterpolatedDeltaTime = 0;
+					}
+
+					if ( ( tL0 > 0 ) && ( tL1 >= tL0 ) && ( tC0 > 0 ) && ( tC1 >= tC0 ) )
+					{
+						var lastLapTime = tL1 - tL0;
+						var currentLapTime = tC1 - tC0;
+
+						var deltaTime = currentLapTime - lastLapTime;
+
+						normalizedCar.interpolatedDeltaTime = normalizedCar.interpolatedDeltaTime * 0.97f + deltaTime * 0.03f;
+
+						var deltaInterpolatedDeltaTime = ( normalizedCar.interpolatedDeltaTime - normalizedCar.lastInterpolatedDeltaTime ) * 1000;
+
+						normalizedCar.interpolatedDeltaInterpolatedDeltaTime = normalizedCar.interpolatedDeltaInterpolatedDeltaTime * 0.99f + deltaInterpolatedDeltaTime * 0.01f;
+
+						normalizedCar.lastInterpolatedDeltaTime = normalizedCar.interpolatedDeltaTime;
+					}
+					else
+					{
+						normalizedCar.interpolatedDeltaTime = 0;
+						normalizedCar.interpolatedDeltaInterpolatedDeltaTime = 0;
+						normalizedCar.lastInterpolatedDeltaTime = 0;
+					}
+				}
 			}
 		}
 

@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Xml.Serialization;
-
 using static iRacingTVController.Unity;
 
 namespace iRacingTVController
@@ -258,8 +258,8 @@ namespace iRacingTVController
 
 			var defaultFontNames = new string[]
 			{
-				"Revolution Gothic",
-				"Revolution Gothic It",
+				"Revolution Gothic ExtraBold",
+				"Revolution Gothic It ExtraBold",
 				"Arial",
 				"Arial"
 			};
@@ -274,6 +274,11 @@ namespace iRacingTVController
 
 			for ( var fontIndex = 0; fontIndex < settings.fontPaths.Length; fontIndex++ )
 			{
+				if ( !MainWindow.Instance.fontOptions.ContainsKey( settings.fontNames[ fontIndex ] ) )
+				{
+					settings.fontNames[ fontIndex ] = MainWindow.Instance.fontOptions.First().Key;
+				}
+
 				settings.fontPaths[ fontIndex ] = MainWindow.Instance.fontOptions[ settings.fontNames[ fontIndex ] ];
 			}
 
@@ -324,7 +329,7 @@ namespace iRacingTVController
 				{ "RaceStatusGreenFlagLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\race-status-white-flag.png", size = { x = 319, y = 219 }, tintColor = { r = 0.212f, g = 0.871f, b = 0.212f }, frameSize = { x = 319, y = 219 }, frameCount = 35, animationSpeed = 24 } },
 				{ "RaceStatusGreenFlagLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\race-status-green-flag-text.png" } },
 				{ "RaceStatusGreenLight", new SettingsImage(){ imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\race-status-light-green.png", position = { x = 280, y = 130 } } },
-				{ "RaceStatusSeriesLogo", new SettingsImage() { imageType = SettingsImage.ImageType.SeriesLogo, position = { x = 7, y = 7 }, size = { x = 305, y = 103 } } },
+				{ "RaceStatusLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.SeriesLogo, position = { x = 7, y = 7 }, size = { x = 305, y = 103 } } },
 				{ "RaceStatusWhiteLight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\race-status-light-white.png", position = { x = 280, y = 130 } } },
 				{ "RaceStatusYellowFlagLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\race-status-white-flag.png", size = { x = 319, y = 219 }, tintColor = { r = 1, g = 1, b = 0 }, frameSize = { x = 319, y = 219 }, frameCount = 35, animationSpeed = 24 } },
 				{ "RaceStatusYellowFlagLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\race-status-yellow-flag-text.png" } },
@@ -365,7 +370,8 @@ namespace iRacingTVController
 				{ "IntroStatsBackground", "IntroLayer5" },
 				{ "LeaderboardPositionPreferredDriver", "LeaderboardPositionPreferredCar" },
 				{ "PositionSplitter", "LeaderboardPositionSplitter" },
-				{ "SeriesLogo", "RaceStatusSeriesLogo" },
+				{ "RaceStatusSeriesLogo", "RaceStatusLayer1" },
+				{ "SeriesLogo", "RaceStatusLayer1" },
 				{ "TrackMapCurrentTarget", "TrackMapCarCurrentTarget" },
 				{ "VoiceOfCar", "VoiceOfLayer1" },
 				{ "WhiteLight", "RaceStatusWhiteLight" },
@@ -398,69 +404,113 @@ namespace iRacingTVController
 
 			var defaultTextSettings = new Dictionary<string, SettingsText>()
 			{
-				{ "ChyronDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 32, position = { x = 79, y = 10 } } },
-				{ "ChyronGear", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 24, position = { x = 119, y = 84 } } },
-				{ "ChyronGearLabel", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 20, position = { x = 110, y = 64 }, tintColor = { a = 0.5f } } },
-				{ "ChyronHometown", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 24, position = { x = 179, y = 84 } } },
-				{ "ChyronHometownLabel", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 20, position = { x = 179, y = 64 }, tintColor = { a = 0.5f } } },
-				{ "ChyronLicense", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 18, position = { x = 113, y = 43 }, tintColor = { b = 0, a = 0.75f } } },
-				{ "ChyronLicenseLabel", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 20, position = { x = 0, y = 0 }, tintColor = { a = 0.5f } } },
-				{ "ChyronRandom", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 24, position = { x = 20, y = 134 }, size = { x = 450, y = 32 }, allowOverflow = false } },
-				{ "ChyronRandomLabel", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 20, position = { x = 20, y = 112 }, tintColor = { a = 0.5f } } },
-				{ "ChyronRating", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 18, position = { x = 80, y = 43 }, tintColor = { b = 0, a = 0.75f } } },
-				{ "ChyronRatingLabel", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 20, position = { x = 0, y = 0 }, tintColor = { a = 0.5f } } },
-				{ "ChyronRPM", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 24, position = { x = 0, y = 0 } } },
-				{ "ChyronRPMLabel", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 20, position = { x = 0, y = 0 }, tintColor = { a = 0.5f } } },
-				{ "ChyronSpeed", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 24, position = { x = 20, y = 84 } } },
-				{ "ChyronSpeedLabel", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 20, position = { x = 20, y = 64 }, tintColor = { a = 0.5f } } },
-				{ "HudFuel", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 21, y = 25 } } },
-				{ "HudGapTimeBack", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 335, y = 25 } } },
-				{ "HudGapTimeFront", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 228, y = 25 } } },
-				{ "HudGear", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 652, y = 25 } } },
-				{ "HudLapDelta", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.Center, position = { x = 960, y = 540 } } },
-				{ "HudLapsToLeader", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 125, y = 25 } } },
-				{ "HudRPM", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 444, y = 25 } } },
+				{ "ChyronTextLayer1", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 32, position = { x = 79, y = 10 }, content = SettingsText.Content.Driver_Name } },
+				{ "ChyronTextLayer10", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 20, position = { x = 0, y = 0 }, tintColor = { a = 0.5f }, content = SettingsText.Content.Translation_License } },
+				{ "ChyronTextLayer11", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 18, position = { x = 113, y = 43 }, tintColor = { b = 0, a = 0.75f }, content = SettingsText.Content.Driver_License } },
+				{ "ChyronTextLayer12", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 20, position = { x = 179, y = 64 }, tintColor = { a = 0.5f } } },
+				{ "ChyronTextLayer13", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 24, position = { x = 179, y = 84 } } },
+				{ "ChyronTextLayer14", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 20, position = { x = 20, y = 112 }, tintColor = { a = 0.5f } } },
+				{ "ChyronTextLayer15", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 24, position = { x = 20, y = 134 }, size = { x = 450, y = 32 }, allowOverflow = false } },
+				{ "ChyronTextLayer2", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 20, position = { x = 20, y = 64 }, tintColor = { a = 0.5f }, content = SettingsText.Content.Translation_Speed } },
+				{ "ChyronTextLayer3", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 24, position = { x = 20, y = 84 }, content = SettingsText.Content.Driver_Speed } },
+				{ "ChyronTextLayer4", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 20, position = { x = 110, y = 64 }, tintColor = { a = 0.5f }, content = SettingsText.Content.Translation_Gear } },
+				{ "ChyronTextLayer5", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 24, position = { x = 119, y = 84 }, content = SettingsText.Content.Driver_Gear } },
+				{ "ChyronTextLayer6", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 20, position = { x = 0, y = 0 }, tintColor = { a = 0.5f }, content = SettingsText.Content.Translation_RPM } },
+				{ "ChyronTextLayer7", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 24, position = { x = 0, y = 0 }, content = SettingsText.Content.Driver_RPM } },
+				{ "ChyronTextLayer8", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 20, position = { x = 0, y = 0 }, tintColor = { a = 0.5f }, content = SettingsText.Content.Translation_Rating } },
+				{ "ChyronTextLayer9", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 18, position = { x = 80, y = 43 }, tintColor = { b = 0, a = 0.75f }, content = SettingsText.Content.Driver_Rating } },
 				{ "HudSpeechToText", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 30, alignment = TextAlignmentOptions.Center, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
-				{ "HudSpeed", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 541, y = 25 } } },
-				{ "IntroCarNumber", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 50, alignment = TextAlignmentOptions.TopRight, position = { x = 177, y = 86 } } },
-				{ "IntroDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 32, position = { x = -179, y = 110 } } },
-				{ "IntroQualifyingTime", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 32, position = { x = -179, y = 46 }, tintColor = { r = 0.306f, g = 0.832f, b = 1 } } },
-				{ "IntroStartingGridPosition", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 76, position = { x = -180, y = -167 } } },
-				{ "IntroLicense", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 27, position = { x = -125, y = 81 }, tintColor = { b = 0, a = 0.75f } } },
-				{ "IntroRating", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 27, position = { x = -179, y = 81 }, tintColor = { b = 0, a = 0.75f } } },
-				{ "LeaderboardClassName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, alignment = TextAlignmentOptions.Top, position = { x = 159, y = 5 }, tintColor = { r = 0.137f, g = 0.122f, b = 0.125f } } },
-				{ "LeaderboardClassNameShort", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 27, alignment = TextAlignmentOptions.Top, position = { x = 159, y = 5 }, tintColor = { r = 0.137f, g = 0.122f, b = 0.125f } } },
-				{ "LeaderboardCurrentTargetSpeed", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 397, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
-				{ "LeaderboardPosition", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 43, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
-				{ "LeaderboardPositionCarNumber", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 21, alignment = TextAlignmentOptions.Top, position = { x = 76, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
-				{ "LeaderboardPositionDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 21, position = { x = 108, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f }, useClassColors = true } },
-				{ "LeaderboardPositionTelemetry", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 298, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
-				{ "PitLaneCarNumber", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 21, alignment = TextAlignmentOptions.Top, position = { x = 0, y = -35 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
-				{ "RaceStatusCurrentLap", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 27, alignment = TextAlignmentOptions.TopRight, position = { x = 298, y = 175 }, tintColor = { r = 0.737f, g = 0.741f, b = 0.725f } } },
-				{ "RaceStatusLapsRemaining", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, alignment = TextAlignmentOptions.TopRight, position = { x = 269, y = 125 }, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
-				{ "RaceStatusSessionName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, position = { x = 18, y = 125 }, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
-				{ "RaceStatusUnits", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, position = { x = 18, y = 175 }, tintColor = { r = 0.737f, g = 0.741f, b = 0.725f } } },
+				{ "HudTextLayer1", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 21, y = 25 }, content = SettingsText.Content.Player_FuelRemainingInLaps } },
+				{ "HudTextLayer2", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 125, y = 25 }, content = SettingsText.Content.Driver_LapsBehindClassLeader } },
+				{ "HudTextLayer3", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 444, y = 25 }, content = SettingsText.Content.Player_RPM } },
+				{ "HudTextLayer4", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 541, y = 25 }, content = SettingsText.Content.Driver_Speed } },
+				{ "HudTextLayer5", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 652, y = 25 }, content = SettingsText.Content.Driver_Gear } },
+				{ "HudTextLayer6", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 228, y = 25 }, content = SettingsText.Content.Driver_GapTimeToCarInFront } },
+				{ "HudTextLayer7", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 335, y = 25 }, content = SettingsText.Content.Driver_GapTimeToCarBehind } },
+				{ "HudTextLayer8", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.Center, position = { x = 960, y = 540 }, content = SettingsText.Content.Driver_LapDelta } },
+				{ "IntroDriverTextLayer1", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 76, position = { x = -180, y = -167 }, content = SettingsText.Content.Driver_QualifyPosition } },
+				{ "IntroDriverTextLayer2", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 32, position = { x = -179, y = 46 }, tintColor = { r = 0.306f, g = 0.832f, b = 1 }, content = SettingsText.Content.Driver_QualifyTime } },
+				{ "IntroDriverTextLayer3", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 32, position = { x = -179, y = 110 }, content = SettingsText.Content.Driver_Name } },
+				{ "IntroDriverTextLayer4", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 50, alignment = TextAlignmentOptions.TopRight, position = { x = 177, y = 86 }, content = SettingsText.Content.Driver_CarNumber } },
+				{ "IntroDriverTextLayer5", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 27, position = { x = -125, y = 81 }, tintColor = { b = 0, a = 0.75f }, content = SettingsText.Content.Driver_License } },
+				{ "IntroDriverTextLayer6", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 27, position = { x = -179, y = 81 }, tintColor = { b = 0, a = 0.75f }, content = SettingsText.Content.Driver_Rating } },
+				{ "LeaderboardPositionCurrentTargetTextLayer1", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 397, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f }, content = SettingsText.Content.Driver_Speed } },
+				{ "LeaderboardPositionTextLayer1", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 43, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f }, content = SettingsText.Content.Driver_Position } },
+				{ "LeaderboardPositionTextLayer2", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 21, alignment = TextAlignmentOptions.Top, position = { x = 76, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f }, content = SettingsText.Content.Driver_CarNumber } },
+				{ "LeaderboardPositionTextLayer3", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 21, position = { x = 108, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f }, useClassColors = true, content = SettingsText.Content.Driver_Name } },
+				{ "LeaderboardPositionTextLayer4", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 21, alignment = TextAlignmentOptions.TopRight, position = { x = 298, y = 12 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f }, content = SettingsText.Content.Driver_Telemetry } },
+				{ "LeaderboardTextLayer1", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, alignment = TextAlignmentOptions.Top, position = { x = 159, y = 5 }, tintColor = { r = 0.137f, g = 0.122f, b = 0.125f }, content = SettingsText.Content.Leaderboard_ClassName } },
+				{ "LeaderboardTextLayer2", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 27, alignment = TextAlignmentOptions.Top, position = { x = 159, y = 5 }, tintColor = { r = 0.137f, g = 0.122f, b = 0.125f }, content = SettingsText.Content.Leaderboard_ClassNameShort } },
+				{ "PitLaneCarTextLayer1", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 21, alignment = TextAlignmentOptions.Top, position = { x = 0, y = -35 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f }, content = SettingsText.Content.Driver_CarNumber } },
+				{ "RaceStatusTextLayer1", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, position = { x = 18, y = 125 }, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f }, content = SettingsText.Content.Session_Name } },
+				{ "RaceStatusTextLayer2", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, alignment = TextAlignmentOptions.TopRight, position = { x = 269, y = 125 }, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f }, content = SettingsText.Content.Session_LapsRemaining } },
+				{ "RaceStatusTextLayer3", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 27, position = { x = 18, y = 175 }, tintColor = { r = 0.737f, g = 0.741f, b = 0.725f }, content = SettingsText.Content.Translation_Units } },
+				{ "RaceStatusTextLayer4", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 27, alignment = TextAlignmentOptions.TopRight, position = { x = 298, y = 175 }, tintColor = { r = 0.737f, g = 0.741f, b = 0.725f }, content = SettingsText.Content.Session_CurrentLap } },
 				{ "Subtitles", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 35, alignment = TextAlignmentOptions.Center, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
-				{ "TrackMapCarNumber", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 21, alignment = TextAlignmentOptions.Top, position = { x = 0, y = -35 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
+				{ "TrackMapCarTextLayer1", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 21, alignment = TextAlignmentOptions.Top, position = { x = 0, y = -35 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f }, content = SettingsText.Content.Driver_CarNumber } },
 				{ "TrainerMessage", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 21, alignment = TextAlignmentOptions.TopLeft, position = { x = 10, y = 10 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
-				{ "VoiceOf", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 30, position = { x = 30, y = 10 }, tintColor = { r = 0.434f, g = 0.434f, b = 0.434f } } },
-				{ "VoiceOfDriverName", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 38, position = { x = 30, y = 41 }, tintColor = { r = 0.137f, g = 0.122f, b = 0.125f } } },
+				{ "VoiceOfTextLayer1", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 30, position = { x = 30, y = 10 }, tintColor = { r = 0.434f, g = 0.434f, b = 0.434f }, content = SettingsText.Content.Translation_VoiceOf } },
+				{ "VoiceOfTextLayer2", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 38, position = { x = 30, y = 41 }, tintColor = { r = 0.137f, g = 0.122f, b = 0.125f }, content = SettingsText.Content.Driver_Name } },
 			};
 
 			var oldTextSettingNames = new Dictionary<string, string>()
 			{
-				{ "CurrentLap", "RaceStatusCurrentLap" },
-				{ "DriverName", "LeaderboardPositionDriverName" },
-				{ "IntroStatsDriverName", "IntroDriverName" },
-				{ "IntroStatsPosition", "IntroStartingGridPosition" },
-				{ "IntroStatsQualifyingTime", "IntroQualifyingTime" },
-				{ "LapsRemaining", "RaceStatusLapsRemaining" },
-				{ "Place", "LeaderboardPosition" },
-				{ "Position", "LeaderboardPosition" },
-				{ "SessionName", "RaceStatusSessionName" },
-				{ "Speed", "LeaderboardCurrentTargetSpeed" },
-				{ "Telemetry", "LeaderboardPositionTelemetry" },
-				{ "Units", "RaceStatusUnits" },
+				{ "ChyronDriverName", "ChyronTextLayer1" },
+				{ "ChyronGear", "ChyronTextLayer5" },
+				{ "ChyronGearLabel", "ChyronTextLayer4" },
+				{ "ChyronHometown", "ChyronTextLayer13" },
+				{ "ChyronHometownLabel", "ChyronTextLayer12" },
+				{ "ChyronLicense", "ChyronTextLayer11" },
+				{ "ChyronLicenseLabel", "ChyronTextLayer10" },
+				{ "ChyronRandom", "ChyronTextLayer15" },
+				{ "ChyronRandomLabel", "ChyronTextLayer14" },
+				{ "ChyronRating", "ChyronTextLayer9" },
+				{ "ChyronRatingLabel", "ChyronTextLayer8" },
+				{ "ChyronRPM", "ChyronTextLayer7" },
+				{ "ChyronRPMLabel", "ChyronTextLayer6" },
+				{ "ChyronSpeed", "ChyronTextLayer3" },
+				{ "ChyronSpeedLabel", "ChyronTextLayer2" },
+				{ "CurrentLap", "RaceStatusTextLayer4" },
+				{ "DriverName", "LeaderboardPositionTextLayer3" },
+				{ "HudFuel", "HudTextLayer1" },
+				{ "HudGapTimeBack", "HudTextLayer7" },
+				{ "HudGapTimeFront", "HudTextLayer6" },
+				{ "HudGear", "HudTextLayer5" },
+				{ "HudLapDelta", "HudTextLayer8" },
+				{ "HudLapsToLeader", "HudTextLayer2" },
+				{ "HudRPM", "HudTextLayer3" },
+				{ "HudSpeed", "HudTextLayer4" },
+				{ "IntroCarNumber", "IntroDriverTextLayer4" },
+				{ "IntroDriverName", "IntroDriverTextLayer3" },
+				{ "IntroLicense", "IntroDriverTextLayer5" },
+				{ "IntroQualifyingTime", "IntroDriverTextLayer2" },
+				{ "IntroRating", "IntroDriverTextLayer6" },
+				{ "IntroStartingGridPosition", "IntroDriverTextLayer1" },
+				{ "IntroStatsDriverName", "IntroDriverTextLayer3" },
+				{ "IntroStatsPosition", "IntroDriverTextLayer1" },
+				{ "IntroStatsQualifyingTime", "IntroDriverTextLayer2" },
+				{ "LapsRemaining", "RaceStatusTextLayer2" },
+				{ "LeaderboardClassName", "LeaderboardTextLayer1" },
+				{ "LeaderboardClassNameShort", "LeaderboardTextLayer2" },
+				{ "LeaderboardCurrentTargetSpeed", "LeaderboardPositionCurrentTargetTextLayer1" },
+				{ "LeaderboardPosition", "LeaderboardPositionTextLayer1" },
+				{ "LeaderboardPositionCarNumber", "LeaderboardPositionTextLayer2" },
+				{ "LeaderboardPositionDriverName", "LeaderboardPositionTextLayer3" },
+				{ "LeaderboardPositionTelemetry", "LeaderboardPositionTextLayer4" },
+				{ "PitLaneCarNumber", "PitLaneCarTextLayer1" },
+				{ "Place", "LeaderboardPositionTextLayer1" },
+				{ "Position", "LeaderboardPositionTextLayer1" },
+				{ "RaceStatusCurrentLap", "RaceStatusTextLayer4" },
+				{ "RaceStatusLapsRemaining", "RaceStatusTextLayer2" },
+				{ "RaceStatusSessionName", "RaceStatusTextLayer1" },
+				{ "RaceStatusUnits", "RaceStatusTextLayer3" },
+				{ "SessionName", "RaceStatusTextLayer1" },
+				{ "Speed", "LeaderboardPositionCurrentTargetTextLayer1" },
+				{ "Telemetry", "LeaderboardPositionTextLayer4" },
+				{ "TrackMapCarNumber", "TrackMapCarTextLayer1" },
+				{ "Units", "RaceStatusTextLayer3" },
+				{ "VoiceOf", "VoiceOfTextLayer1" },
+				{ "VoiceOfDriverName", "VoiceOfTextLayer2" },
 			};
 
 			foreach ( var item in oldTextSettingNames )
@@ -490,7 +540,6 @@ namespace iRacingTVController
 				{ "Gear", new SettingsTranslation() { translation = "Gear" } },
 				{ "HEAT 1", new SettingsTranslation() { translation = "HEAT 1" } },
 				{ "HEAT 2", new SettingsTranslation() { translation = "HEAT 2" } },
-				{ "Hometown", new SettingsTranslation() { translation = "Hometown" } },
 				{ "iRating", new SettingsTranslation() { translation = "iRating" } },
 				{ "KPH", new SettingsTranslation() { translation = "KPH" } },
 				{ "Lap", new SettingsTranslation() { translation = "LAP" } },
@@ -842,6 +891,7 @@ namespace iRacingTVController
 						useClassColors = item.Value.useClassColors_Overridden ? item.Value.useClassColors : globalItem.useClassColors,
 						classColorStrength = item.Value.classColorStrength_Overridden ? item.Value.classColorStrength : globalItem.classColorStrength,
 						allowOverflow = item.Value.allowOverflow_Overridden ? item.Value.allowOverflow : globalItem.allowOverflow,
+						content = item.Value.content_Overridden ? item.Value.content : globalItem.content,
 
 						fontIndex_Overridden = item.Value.fontIndex_Overridden,
 						fontSize_Overridden = item.Value.fontSize_Overridden,
@@ -851,7 +901,8 @@ namespace iRacingTVController
 						tintColor_Overridden = item.Value.tintColor_Overridden,
 						useClassColors_Overridden = item.Value.useClassColors_Overridden,
 						classColorStrength_Overridden = item.Value.classColorStrength_Overridden,
-						allowOverflow_Overridden = item.Value.allowOverflow_Overridden
+						allowOverflow_Overridden = item.Value.allowOverflow_Overridden,
+						content_Overridden = item.Value.content_Overridden
 					};
 				}
 			}

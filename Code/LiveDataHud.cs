@@ -8,30 +8,33 @@ namespace iRacingTVController
 	[Serializable]
 	public class LiveDataHud
 	{
-		public string fuel = string.Empty;
-		public Color fuelColor = Color.white;
+		public string textLayer1 = string.Empty;
+		public Color textLayer1Color = Color.white;
 
-		public string lapsToLeader = string.Empty;
-		
-		public string rpm = string.Empty;
-		public Color rpmColor = Color.white;
+		public string textLayer2 = string.Empty;
+		public Color textLayer2Color = Color.white;
 
-		public string speed = string.Empty;
+		public string textLayer3 = string.Empty;
+		public Color textLayer3Color = Color.white;
 
-		public string gear = string.Empty;
+		public string textLayer4 = string.Empty;
+		public Color textLayer4Color = Color.white;
 
-		public string gapTimeFront = string.Empty;
-		public Color gapTimeFrontColor = Color.white;
+		public string textLayer5 = string.Empty;
+		public Color textLayer5Color = Color.white;
 
-		public string gapTimeBack = string.Empty;
-		public Color gapTimeBackColor = Color.white;
+		public string textLayer6 = string.Empty;
+		public Color textLayer6Color = Color.white;
+
+		public string textLayer7 = string.Empty;
+		public Color textLayer7Color = Color.white;
+
+		public string textLayer8 = string.Empty;
+		public Color textLayer8Color = Color.white;
 
 		public string speechToText = string.Empty;
 
 		public bool showLeftSpotterIndicator = false;
 		public bool showRightSpotterIndicator = false;
-
-		public string lapDelta = string.Empty;
-		public Color lapDeltaColor = Color.white;
 	}
 }

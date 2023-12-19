@@ -94,10 +94,18 @@ namespace iRacingTVController
 		public bool voiceOfPosition_Overridden = false;
 
 		public bool chyronEnabled = true;
-		public Vector2 chyronPosition = new( 1060, 890 );
+		public Vector2 chyronPosition = new( 1408, 890 );
 
 		public bool chyronEnabled_Overridden = false;
 		public bool chyronPosition_Overridden = false;
+
+		public bool battleChyronEnabled = true;
+		public Vector2 battleChyronPosition = new( 838, 890 );
+		public float battleChyronDistance = 18;
+
+		public bool battleChyronEnabled_Overridden = false;
+		public bool battleChyronPosition_Overridden = false;
+		public bool battleChyronDistance_Overridden = false;
 
 		public bool subtitleEnabled = true;
 		public Vector2 subtitlePosition = new( 1080, 760 );

@@ -67,6 +67,7 @@ namespace iRacingTVController
 		public bool startLightsOn;
 		public bool voiceOfOn;
 		public bool chyronOn;
+		public bool battleChyronOn;
 		public bool subtitlesOn;
 		public bool introOn;
 
@@ -598,15 +599,16 @@ namespace iRacingTVController
 			ControlPanel_StartLights_Button.IsChecked = startLightsOn = Settings.overlay.startLightsEnabled;
 			ControlPanel_VoiceOf_Button.IsChecked = voiceOfOn = Settings.overlay.voiceOfEnabled;
 			ControlPanel_Chyron_Button.IsChecked = chyronOn = Settings.overlay.chyronEnabled;
+			ControlPanel_BattleChyron_Button.IsChecked = battleChyronOn = Settings.overlay.battleChyronEnabled;
 			ControlPanel_Subtitles_Button.IsChecked = subtitlesOn = Settings.overlay.subtitleEnabled;
 			ControlPanel_Intro_Button.IsChecked = introOn = Settings.overlay.introEnabled;
 
-			ControlPanel_C1_Button.IsChecked = customLayerOn[ 0 ] = Settings.overlay.imageSettingsDataDictionary[ "CustomLayer1" ].imageType != SettingsImage.ImageType.None;
-			ControlPanel_C2_Button.IsChecked = customLayerOn[ 1 ] = Settings.overlay.imageSettingsDataDictionary[ "CustomLayer2" ].imageType != SettingsImage.ImageType.None;
-			ControlPanel_C3_Button.IsChecked = customLayerOn[ 2 ] = Settings.overlay.imageSettingsDataDictionary[ "CustomLayer3" ].imageType != SettingsImage.ImageType.None;
-			ControlPanel_C4_Button.IsChecked = customLayerOn[ 3 ] = Settings.overlay.imageSettingsDataDictionary[ "CustomLayer4" ].imageType != SettingsImage.ImageType.None;
-			ControlPanel_C5_Button.IsChecked = customLayerOn[ 4 ] = Settings.overlay.imageSettingsDataDictionary[ "CustomLayer5" ].imageType != SettingsImage.ImageType.None;
-			ControlPanel_C6_Button.IsChecked = customLayerOn[ 5 ] = Settings.overlay.imageSettingsDataDictionary[ "CustomLayer6" ].imageType != SettingsImage.ImageType.None;
+			ControlPanel_C1_Button.IsChecked = customLayerOn[ 0 ] = Settings.overlay.imageSettingsDataDictionary[ "Custom1Layer1" ].imageType != SettingsImage.ImageType.None;
+			ControlPanel_C2_Button.IsChecked = customLayerOn[ 1 ] = Settings.overlay.imageSettingsDataDictionary[ "Custom2Layer1" ].imageType != SettingsImage.ImageType.None;
+			ControlPanel_C3_Button.IsChecked = customLayerOn[ 2 ] = Settings.overlay.imageSettingsDataDictionary[ "Custom3Layer1" ].imageType != SettingsImage.ImageType.None;
+			ControlPanel_C4_Button.IsChecked = customLayerOn[ 3 ] = Settings.overlay.imageSettingsDataDictionary[ "Custom4Layer1" ].imageType != SettingsImage.ImageType.None;
+			ControlPanel_C5_Button.IsChecked = customLayerOn[ 4 ] = Settings.overlay.imageSettingsDataDictionary[ "Custom5Layer1" ].imageType != SettingsImage.ImageType.None;
+			ControlPanel_C6_Button.IsChecked = customLayerOn[ 5 ] = Settings.overlay.imageSettingsDataDictionary[ "Custom6Layer1" ].imageType != SettingsImage.ImageType.None;
 
 			// director
 
@@ -788,6 +790,12 @@ namespace iRacingTVController
 
 			Update( Overlay_Chyron_Enable, Settings.overlay.chyronEnabled, Overlay_Chyron_Enable_Override, overlayIsGlobal, Settings.overlay.chyronEnabled_Overridden );
 			Update( Overlay_Chyron_Position_X, Overlay_Chyron_Position_Y, Settings.overlay.chyronPosition, Overlay_Chyron_Position_Override, overlayIsGlobal, Settings.overlay.chyronPosition_Overridden );
+
+			// overlay - battle chyron
+
+			Update( Overlay_BattleChyron_Enable, Settings.overlay.battleChyronEnabled, Overlay_BattleChyron_Enable_Override, overlayIsGlobal, Settings.overlay.battleChyronEnabled_Overridden );
+			Update( Overlay_BattleChyron_Position_X, Overlay_BattleChyron_Position_Y, Settings.overlay.battleChyronPosition, Overlay_BattleChyron_Position_Override, overlayIsGlobal, Settings.overlay.battleChyronPosition_Overridden );
+			Update( Overlay_BattleChyron_Distance, Settings.overlay.battleChyronDistance, Overlay_BattleChyron_Distance_Override, overlayIsGlobal, Settings.overlay.battleChyronDistance_Overridden );
 
 			// overlay - subtitle
 
@@ -1509,6 +1517,7 @@ namespace iRacingTVController
 			startLightsOn = ControlPanel_StartLights_Button.IsChecked ?? false;
 			voiceOfOn = ControlPanel_VoiceOf_Button.IsChecked ?? false;
 			chyronOn = ControlPanel_Chyron_Button.IsChecked ?? false;
+			battleChyronOn = ControlPanel_BattleChyron_Button.IsChecked ?? false;
 			subtitlesOn = ControlPanel_Subtitles_Button.IsChecked ?? false;
 			introOn = ControlPanel_Intro_Button.IsChecked ?? false;
 
@@ -3828,6 +3837,61 @@ namespace iRacingTVController
 					var overlay = Settings.overlayLocal.chyronPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
 
 					overlay.chyronPosition = new Vector2( Overlay_Chyron_Position_X.Value, Overlay_Chyron_Position_Y.Value );
+				}
+
+				IPC.readyToSendSettings = true;
+
+				Settings.saveOverlayToFileQueued = true;
+			}
+		}
+
+		private void Overlay_BattleChyron_Update( object sender, EventArgs e )
+		{
+			if ( initializing == 0 )
+			{
+				var overridden = Overlay_BattleChyron_Enable_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.battleChyronEnabled_Overridden != overridden )
+				{
+					Settings.overlayLocal.battleChyronEnabled_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.battleChyronEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.battleChyronEnabled = Overlay_BattleChyron_Enable.IsChecked ?? false;
+				}
+
+				overridden = Overlay_BattleChyron_Position_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.battleChyronPosition_Overridden != overridden )
+				{
+					Settings.overlayLocal.battleChyronPosition_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.battleChyronPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.battleChyronPosition = new Vector2( Overlay_BattleChyron_Position_X.Value, Overlay_BattleChyron_Position_Y.Value );
+				}
+
+				overridden = Overlay_BattleChyron_Distance_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.battleChyronDistance_Overridden != overridden )
+				{
+					Settings.overlayLocal.battleChyronDistance_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.battleChyronDistance_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.battleChyronDistance = Overlay_BattleChyron_Distance.Value;
 				}
 
 				IPC.readyToSendSettings = true;

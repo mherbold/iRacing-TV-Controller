@@ -74,6 +74,8 @@ namespace iRacingTVController
 		public float lapDistPctRelativeToLeader = 0;
 		public float lapPositionRelativeToClassLeader = 0;
 
+		public int lapsLed = 0;
+
 		public float checkpointTime = 0;
 		public int checkpointIdx = 0;
 		public int checkpointIdxLastFrame = 0;
@@ -459,7 +461,7 @@ namespace iRacingTVController
 
 					carNumberTextureUrl = $"http://localhost:32034/pk_number.png?size=64&view=0&number={carNumber}&numPat={pattern}&numCol={colorA},{colorB},{colorC}&numSlnt={slant}";
 
-//					LogFile.Write( $"{displayedName}'s car number texture URL = {carNumberTextureUrl}\r\n" );
+					//					LogFile.Write( $"{displayedName}'s car number texture URL = {carNumberTextureUrl}\r\n" );
 				}
 
 				var carDesignMatch = Regex.Match( driver.CarDesignStr, @"(\d+),(.{6}),(.{6}),(.{6})[,.]?(.{6})?" );
@@ -498,7 +500,7 @@ namespace iRacingTVController
 
 					carTextureUrl = $"http://localhost:32034/pk_car.png?size=2&view=1&licCol={licColor}&club={driver.ClubID}&sponsors={driver.CarSponsor_1},{driver.CarSponsor_2}&numShow={showSimStampedNumber}&numPat={numberDesignMatch.Groups[ 1 ].Value}&numCol={numberDesignMatch.Groups[ 3 ].Value},{numberDesignMatch.Groups[ 4 ].Value},{numberDesignMatch.Groups[ 5 ].Value}&numSlnt={numberDesignMatch.Groups[ 2 ].Value}&number={carNumber}&carPath={carPath}&carPat={carDesignMatch.Groups[ 1 ].Value}&carCol={carDesignMatch.Groups[ 2 ].Value},{carDesignMatch.Groups[ 3 ].Value},{carDesignMatch.Groups[ 4 ].Value}&carRimType=2&carRimCol={carDesignMatch.Groups[ 5 ].Value}&carCustPaint={customCarTgaFilePath}";
 
-//					LogFile.Write( $"{displayedName}'s car texture URL = {carTextureUrl}\r\n" );
+					//					LogFile.Write( $"{displayedName}'s car texture URL = {carTextureUrl}\r\n" );
 				}
 
 				var helmetDesignMatch = Regex.Match( driver.HelmetDesignStr, @"(\d+),(.{6}),(.{6}),(.{6})" );
@@ -518,7 +520,7 @@ namespace iRacingTVController
 
 					helmetTextureUrl = $"http://localhost:32034/pk_helmet.png?size=7&hlmtPat={helmetDesignMatch.Groups[ 1 ].Value}&licCol={licColor}&hlmtCol={helmetDesignMatch.Groups[ 2 ].Value},{helmetDesignMatch.Groups[ 3 ].Value},{helmetDesignMatch.Groups[ 4 ].Value}&view=1&hlmtType={helmetType}&hlmtCustPaint={customHelmetTgaFileName}";
 
-//					LogFile.Write( $"{displayedName}'s helmet texture URL = {helmetTextureUrl}\r\n" );
+					//					LogFile.Write( $"{displayedName}'s helmet texture URL = {helmetTextureUrl}\r\n" );
 				}
 
 				var driverDesignMatch = Regex.Match( driver.SuitDesignStr, @"(\d+),(.{6}),(.{6}),(.{6})" );
@@ -539,7 +541,7 @@ namespace iRacingTVController
 
 					driverTextureUrl = $"http://localhost:32034/pk_body.png?size=1&view=2&bodyType={suitType}&suitPat={driverDesignMatch.Groups[ 1 ].Value}&suitCol={driverDesignMatch.Groups[ 2 ].Value},{driverDesignMatch.Groups[ 3 ].Value},{driverDesignMatch.Groups[ 4 ].Value}&hlmtType={helmetType}&hlmtPat={helmetDesignMatch.Groups[ 1 ].Value}&hlmtCol={helmetDesignMatch.Groups[ 2 ].Value},{helmetDesignMatch.Groups[ 3 ].Value},{helmetDesignMatch.Groups[ 4 ].Value}&faceType={faceType}&suitCustPaint={customSuitTgaFileName}";
 
-//					LogFile.Write( $"{displayedName}'s driver texture URL = {driverTextureUrl}\r\n" );
+					//					LogFile.Write( $"{displayedName}'s driver texture URL = {driverTextureUrl}\r\n" );
 				}
 
 				var memberIdTextureFileName = $"{Program.documentsFolder}MemberImages\\A_{driver.UserID}.png";
@@ -643,7 +645,7 @@ namespace iRacingTVController
 			{
 				outOfCarTimer += Program.deltaTime;
 
-				lapDistPctDelta *= 0.99f;
+				lapDistPctDelta *= 0.999f;
 				lapDistPct += lapDistPctDelta;
 				lapPosition += lapDistPctDelta;
 
@@ -675,6 +677,18 @@ namespace iRacingTVController
 				var justCrossedStartFinishLine = car.CarIdxLapCompleted > lapCompletedLastFrame;
 
 				lapCompletedLastFrame = car.CarIdxLapCompleted;
+
+				if ( car.CarIdxLapCompleted == 0 )
+				{
+					lapsLed = 0;
+				}
+				else if ( justCrossedStartFinishLine )
+				{
+					if ( car.CarIdxClassPosition == 1 )
+					{
+						lapsLed++;
+					}
+				}
 
 				if ( IRSDK.normalizedData.sessionState < SessionState.StateRacing )
 				{

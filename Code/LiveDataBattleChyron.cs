@@ -4,7 +4,7 @@ using System;
 namespace iRacingTVController
 {
 	[Serializable]
-	public class LiveDataChyron
+	public class LiveDataBattleChyron
 	{
 		public bool show = false;
 

@@ -15,6 +15,7 @@ namespace iRacingTVController
 	{
 		public const int MaxNumDrivers = 64;
 		public const int MaxNumClasses = 8;
+		public const int MaxNumCustom = 6;
 
 		public static LiveData Instance { get; private set; }
 
@@ -29,6 +30,7 @@ namespace iRacingTVController
 		public LiveDataLeaderboard[]? liveDataLeaderboards = null;
 		public LiveDataVoiceOf liveDataVoiceOf = new();
 		public LiveDataChyron liveDataChyron = new();
+		public LiveDataBattleChyron liveDataBattleChyron = new();
 		public LiveDataSubtitle liveDataSubtitle = new();
 		public LiveDataIntro liveDataIntro = new();
 		public LiveDataStartLights liveDataStartLights = new();
@@ -38,6 +40,7 @@ namespace iRacingTVController
 		public LiveDataHud liveDataHud = new();
 		public LiveDataTrainer liveDataTrainer = new();
 		public LiveDataWebcamStreaming liveDataWebcamStreaming = new();
+		public LiveDataCustom[] liveDataCustom = new LiveDataCustom[ MaxNumCustom ];
 
 		public string seriesLogoTextureUrl = string.Empty;
 
@@ -45,7 +48,6 @@ namespace iRacingTVController
 
 		[NonSerialized, XmlIgnore] public float speechToTextTimer = 0;
 
-		[NonSerialized, XmlIgnore] public int chyronRandomOffset = 0;
 		[NonSerialized, XmlIgnore] public Dictionary<string, string> chyronRandomItemNames;
 		[NonSerialized, XmlIgnore] public string[] chyronAvailableItemLabels;
 		[NonSerialized, XmlIgnore] public string[] chyronAvailableItemValues;
@@ -57,8 +59,8 @@ namespace iRacingTVController
 
 		[NonSerialized, XmlIgnore] public float paceCarDistPct = 0;
 
-		[NonSerialized, XmlIgnore] public Color red = new Color( 1, 0.35f, 0.35f, 1 );
-		[NonSerialized, XmlIgnore] public Color green = new Color( 0.2f, 1, 0.2f, 1 );
+		[NonSerialized, XmlIgnore] public Color red = new( 1, 0.35f, 0.35f, 1 );
+		[NonSerialized, XmlIgnore] public Color green = new( 0.2f, 1, 0.2f, 1 );
 
 		[NonSerialized, XmlIgnore] public float classLeaderBestLapTime = 0.0f;
 		[NonSerialized, XmlIgnore] NormalizedCar? normalizedCarClassLeader = null;
@@ -95,6 +97,11 @@ namespace iRacingTVController
 
 			chyronAvailableItemLabels = new string[ chyronRandomItemNames.Count ];
 			chyronAvailableItemValues = new string[ chyronRandomItemNames.Count ];
+
+			for ( var i = 0; i < MaxNumCustom; i++ )
+			{
+				liveDataCustom[ i ] = new LiveDataCustom();
+			}
 		}
 
 		public void Update()
@@ -139,6 +146,7 @@ namespace iRacingTVController
 			UpdatePitLane();
 			UpdateVoiceOf();
 			UpdateChyron();
+			UpdateBattleChyron();
 			UpdateSubtitle();
 			UpdateIntro();
 			UpdateStartLights();
@@ -146,6 +154,7 @@ namespace iRacingTVController
 			UpdateHud();
 			UpdateTrainer();
 			UpdateWebcamStreaming();
+			UpdateCustom();
 
 			seriesLogoTextureUrl = IRSDK.normalizedSession.seriesLogoTextureUrl;
 
@@ -170,6 +179,7 @@ namespace iRacingTVController
 			liveDataControlPanel.startLightsOn = MainWindow.Instance.startLightsOn;
 			liveDataControlPanel.voiceOfOn = MainWindow.Instance.voiceOfOn;
 			liveDataControlPanel.chyronOn = MainWindow.Instance.chyronOn;
+			liveDataControlPanel.battleChyronOn = MainWindow.Instance.battleChyronOn;
 			liveDataControlPanel.subtitlesOn = MainWindow.Instance.subtitlesOn;
 			liveDataControlPanel.introOn = MainWindow.Instance.introOn;
 			liveDataControlPanel.customLayerOn = MainWindow.Instance.customLayerOn;
@@ -701,11 +711,6 @@ namespace iRacingTVController
 
 		public void UpdateChyron()
 		{
-			if ( IRSDK.normalizedData.camCarIdx != IRSDK.normalizedData.camCarIdxLastFrame )
-			{
-				chyronRandomOffset++;
-			}
-
 			var normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.normalizedData.camCarIdx );
 
 			if ( ( normalizedCar != null ) && normalizedCar.includeInLeaderboard && Director.showChyron && ( !liveDataControlPanel.voiceOfOn || ( IRSDK.normalizedData.radioTransmitCarIdx == -1 ) ) )
@@ -735,6 +740,60 @@ namespace iRacingTVController
 			else
 			{
 				liveDataChyron.show = false;
+			}
+		}
+
+		public void UpdateBattleChyron()
+		{
+			liveDataBattleChyron.show = false;
+
+			var normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.normalizedData.camCarIdx );
+
+			if ( ( normalizedCar != null ) && normalizedCar.includeInLeaderboard && Director.showChyron && ( !liveDataControlPanel.voiceOfOn || ( IRSDK.normalizedData.radioTransmitCarIdx == -1 ) ) )
+			{
+				var nearestDeltaLapPosition = float.MaxValue;
+				NormalizedCar? nearestNormalizedCar = null;
+
+				if ( normalizedCar.normalizedCarInFront != null )
+				{
+					var deltaLapPosition = Math.Abs( normalizedCar.lapPosition - normalizedCar.normalizedCarInFront.lapPosition );
+
+					if ( deltaLapPosition < 0.5f )
+					{
+						nearestDeltaLapPosition = deltaLapPosition;
+						nearestNormalizedCar = normalizedCar.normalizedCarInFront;
+					}
+				}
+
+				if ( nearestNormalizedCar != null )
+				{
+					var distanceInMeters = nearestDeltaLapPosition * IRSDK.normalizedSession.trackLengthInMeters;
+
+					if ( distanceInMeters <= Settings.overlay.battleChyronDistance )
+					{
+						Color color;
+
+						liveDataBattleChyron.show = true;
+
+						liveDataBattleChyron.textLayer1 = GetTextContent( out color, "BattleChyronTextLayer1", nearestNormalizedCar );
+						liveDataBattleChyron.textLayer2 = GetTextContent( out color, "BattleChyronTextLayer2", nearestNormalizedCar );
+						liveDataBattleChyron.textLayer3 = GetTextContent( out color, "BattleChyronTextLayer3", nearestNormalizedCar );
+						liveDataBattleChyron.textLayer4 = GetTextContent( out color, "BattleChyronTextLayer4", nearestNormalizedCar );
+						liveDataBattleChyron.textLayer5 = GetTextContent( out color, "BattleChyronTextLayer5", nearestNormalizedCar );
+						liveDataBattleChyron.textLayer6 = GetTextContent( out color, "BattleChyronTextLayer6", nearestNormalizedCar );
+						liveDataBattleChyron.textLayer7 = GetTextContent( out color, "BattleChyronTextLayer7", nearestNormalizedCar );
+						liveDataBattleChyron.textLayer8 = GetTextContent( out color, "BattleChyronTextLayer8", nearestNormalizedCar );
+						liveDataBattleChyron.textLayer9 = GetTextContent( out color, "BattleChyronTextLayer9", nearestNormalizedCar );
+						liveDataBattleChyron.textLayer10 = GetTextContent( out color, "BattleChyronTextLayer10", nearestNormalizedCar );
+						liveDataBattleChyron.textLayer11 = GetTextContent( out color, "BattleChyronTextLayer11", nearestNormalizedCar );
+						liveDataBattleChyron.textLayer12 = GetTextContent( out color, "BattleChyronTextLayer12", nearestNormalizedCar );
+						liveDataBattleChyron.textLayer13 = GetTextContent( out color, "BattleChyronTextLayer13", nearestNormalizedCar );
+						liveDataBattleChyron.textLayer14 = GetTextContent( out color, "BattleChyronTextLayer14", nearestNormalizedCar );
+						liveDataBattleChyron.textLayer15 = GetTextContent( out color, "BattleChyronTextLayer15", nearestNormalizedCar );
+
+						liveDataBattleChyron.carIdx = nearestNormalizedCar.carIdx;
+					}
+				}
 			}
 		}
 
@@ -946,6 +1005,27 @@ namespace iRacingTVController
 			liveDataWebcamStreaming.webserverURL = Settings.editor.editorWebcamStreamingWebserverURL;
 		}
 
+		public void UpdateCustom()
+		{
+			for ( var i = 0; i < MaxNumCustom; i++ )
+			{
+				var layerNumber = i + 1;
+
+				var custom = liveDataCustom[ i ];
+
+				var normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.normalizedData.camCarIdx );
+
+				if ( normalizedCar != null )
+				{
+					custom.carIdx = normalizedCar.carIdx;
+
+					custom.textLayer1 = GetTextContent( out custom.textLayer1Color, $"Custom{layerNumber}TextLayer1", normalizedCar );
+					custom.textLayer2 = GetTextContent( out custom.textLayer2Color, $"Custom{layerNumber}TextLayer2", normalizedCar );
+					custom.textLayer3 = GetTextContent( out custom.textLayer3Color, $"Custom{layerNumber}TextLayer3", normalizedCar );
+				}
+			}
+		}
+
 		public string GetTextContent( out Color color, string key, NormalizedCar? normalizedCar = null, NormalizedData.LeaderboardClass? leaderboardClass = null )
 		{
 			var settingsText = Settings.overlay.textSettingsDataDictionary[ key ];
@@ -1085,8 +1165,20 @@ namespace iRacingTVController
 					return text;
 				}
 
-				case SettingsText.Content.Driver_License:
+				case SettingsText.Content.Driver_LapsLed:
+				{
+					if ( ( normalizedCar != null ) && ( normalizedCar.lapsLed > 0 ) )
+					{
+						return normalizedCar.lapsLed.ToString();
+					}
+					else
+					{
+						return "";
+					}
+				}
 
+				case SettingsText.Content.Driver_License:
+				{
 					if ( normalizedCar != null )
 					{
 						color = new Color( normalizedCar.licenseColor );
@@ -1097,6 +1189,7 @@ namespace iRacingTVController
 					{
 						return "";
 					}
+				}
 
 				case SettingsText.Content.Driver_Name:
 

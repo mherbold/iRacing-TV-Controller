@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.54"
+        Title="iRacing-TV Controller v1.55"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="900" Height="765" MinWidth="900" MinHeight="765" Icon="/Assets/icon/iracing-tv.ico">
     <Grid>
@@ -197,29 +197,31 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="35"/>
-                            <ColumnDefinition Width="35"/>
-                            <ColumnDefinition Width="35"/>
-                            <ColumnDefinition Width="35"/>
-                            <ColumnDefinition Width="35"/>
-                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="25"/>
                         </Grid.ColumnDefinitions>
-                        <ToggleButton x:Name="ControlPanel_Master_Button" Content="MASTER" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" FontSize="10" />
-                        <ToggleButton x:Name="ControlPanel_RaceStatus_Button" Content="Race Status" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="1" FontSize="10" />
-                        <ToggleButton x:Name="ControlPanel_Leaderboard_Button" Content="Leaderboard" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="2" FontSize="10" />
-                        <ToggleButton x:Name="ControlPanel_TrackMap_Button" Content="Track Map" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="3" FontSize="10" />
-                        <ToggleButton x:Name="ControlPanel_PitLane_Button" Content="Pit Lane" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="4" FontSize="10" />
-                        <ToggleButton x:Name="ControlPanel_StartLights_Button" Content="Start Lights" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="5" FontSize="10" />
-                        <ToggleButton x:Name="ControlPanel_VoiceOf_Button" Content="Voice Of" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="6" FontSize="10" />
-                        <ToggleButton x:Name="ControlPanel_Chyron_Button" Content="Chyron" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="7" FontSize="10" />
-                        <ToggleButton x:Name="ControlPanel_Subtitles_Button" Content="Subtitles" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="8" FontSize="10" />
-                        <ToggleButton x:Name="ControlPanel_Intro_Button" Content="Intro" Height="25" Padding="3,0,3,0" Margin="0,0,6,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="9" FontSize="10" />
-                        <ToggleButton x:Name="ControlPanel_C1_Button" Content="C1" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="10" FontSize="10" />
-                        <ToggleButton x:Name="ControlPanel_C2_Button" Content="C2" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="11" FontSize="10" />
-                        <ToggleButton x:Name="ControlPanel_C3_Button" Content="C3" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="12" FontSize="10" />
-                        <ToggleButton x:Name="ControlPanel_C4_Button" Content="C4" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="13" FontSize="10" />
-                        <ToggleButton x:Name="ControlPanel_C5_Button" Content="C5" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="14" FontSize="10" />
-                        <ToggleButton x:Name="ControlPanel_C6_Button" Content="C6" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="15" FontSize="10" />
+                        <ToggleButton x:Name="ControlPanel_Master_Button" Content="MASTER" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" FontSize="9" />
+                        <ToggleButton x:Name="ControlPanel_RaceStatus_Button" Content="Race Status" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="1" FontSize="9" />
+                        <ToggleButton x:Name="ControlPanel_Leaderboard_Button" Content="Leaderboard" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="2" FontSize="9" />
+                        <ToggleButton x:Name="ControlPanel_TrackMap_Button" Content="Track Map" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="3" FontSize="9" />
+                        <ToggleButton x:Name="ControlPanel_PitLane_Button" Content="Pit Lane" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="4" FontSize="9" />
+                        <ToggleButton x:Name="ControlPanel_StartLights_Button" Content="Start Lights" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="5" FontSize="9" />
+                        <ToggleButton x:Name="ControlPanel_VoiceOf_Button" Content="Voice Of" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="6" FontSize="9" />
+                        <ToggleButton x:Name="ControlPanel_Chyron_Button" Content="Chyron" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="7" FontSize="9" />
+                        <ToggleButton x:Name="ControlPanel_BattleChyron_Button" Content="Battle Chyron" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="8" FontSize="9" />
+                        <ToggleButton x:Name="ControlPanel_Subtitles_Button" Content="Subtitles" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="9" FontSize="9" />
+                        <ToggleButton x:Name="ControlPanel_Intro_Button" Content="Intro" Height="25" Padding="3,0,3,0" Margin="0,0,6,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="10" FontSize="9" />
+                        <ToggleButton x:Name="ControlPanel_C1_Button" Content="C1" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="11" FontSize="9" />
+                        <ToggleButton x:Name="ControlPanel_C2_Button" Content="C2" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="12" FontSize="9" />
+                        <ToggleButton x:Name="ControlPanel_C3_Button" Content="C3" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="13" FontSize="9" />
+                        <ToggleButton x:Name="ControlPanel_C4_Button" Content="C4" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="14" FontSize="9" />
+                        <ToggleButton x:Name="ControlPanel_C5_Button" Content="C5" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="15" FontSize="9" />
+                        <ToggleButton x:Name="ControlPanel_C6_Button" Content="C6" Height="25" Padding="3,0,3,0" Checked="ControlPanel_ToggleButton_Updated" Unchecked="ControlPanel_ToggleButton_Updated" Grid.Column="16" FontSize="9" />
                     </Grid>
                 </Grid>
             </TabItem>
@@ -1844,6 +1846,47 @@
                                         <local:Number x:Name="Overlay_Chyron_Position_Y" ValueChanged="Overlay_Chyron_Update" Grid.Column="3" />
                                         <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
                                         <CheckBox x:Name="Overlay_Chyron_Position_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Chyron_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="Battle Chyron" Padding="12,6,12,6">
+                                <StackPanel Margin="6,6,6,6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Enable"/>
+                                        <CheckBox x:Name="Overlay_BattleChyron_Enable" VerticalAlignment="Center" Click="Overlay_BattleChyron_Update" Grid.Column="1" />
+                                        <CheckBox x:Name="Overlay_BattleChyron_Enable_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_BattleChyron_Update" Grid.Column="2" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Position"/>
+                                        <local:Number x:Name="Overlay_BattleChyron_Position_X" ValueChanged="Overlay_BattleChyron_Update" Grid.Column="1" />
+                                        <Label Content="X" HorizontalContentAlignment="Center" Grid.Column="2" />
+                                        <local:Number x:Name="Overlay_BattleChyron_Position_Y" ValueChanged="Overlay_BattleChyron_Update" Grid.Column="3" />
+                                        <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
+                                        <CheckBox x:Name="Overlay_BattleChyron_Position_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_BattleChyron_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Distance"/>
+                                        <local:Decimal x:Name="Overlay_BattleChyron_Distance" ValueChanged="Overlay_BattleChyron_Update" Grid.Column="1" />
+                                        <Label Content="Show battle chyron if nearest car is less than this many meters away" Margin="3,0,0,0" Grid.Column="2" />
+                                        <CheckBox x:Name="Overlay_BattleChyron_Distance_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_BattleChyron_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                 </StackPanel>
                             </TabItem>

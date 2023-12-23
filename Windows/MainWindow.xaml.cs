@@ -268,6 +268,8 @@ namespace iRacingTVController
 					Text_Alignment.Items.Add( textAlignmentOption );
 				}
 
+				Text_Content.Items.SortDescriptions.Add( new System.ComponentModel.SortDescription( "value", System.ComponentModel.ListSortDirection.Ascending ) );
+
 				foreach ( var contentOption in Enum.GetValues( typeof( SettingsText.Content ) ) )
 				{
 					Text_Content.Items.Add( contentOption );
@@ -790,12 +792,14 @@ namespace iRacingTVController
 
 			Update( Overlay_Chyron_Enable, Settings.overlay.chyronEnabled, Overlay_Chyron_Enable_Override, overlayIsGlobal, Settings.overlay.chyronEnabled_Overridden );
 			Update( Overlay_Chyron_Position_X, Overlay_Chyron_Position_Y, Settings.overlay.chyronPosition, Overlay_Chyron_Position_Override, overlayIsGlobal, Settings.overlay.chyronPosition_Overridden );
+			Update( Overlay_Chyron_Delay, Settings.overlay.chyronDelay, Overlay_Chyron_Delay_Override, overlayIsGlobal, Settings.overlay.chyronDelay_Overridden );
 
 			// overlay - battle chyron
 
 			Update( Overlay_BattleChyron_Enable, Settings.overlay.battleChyronEnabled, Overlay_BattleChyron_Enable_Override, overlayIsGlobal, Settings.overlay.battleChyronEnabled_Overridden );
 			Update( Overlay_BattleChyron_Position_X, Overlay_BattleChyron_Position_Y, Settings.overlay.battleChyronPosition, Overlay_BattleChyron_Position_Override, overlayIsGlobal, Settings.overlay.battleChyronPosition_Overridden );
 			Update( Overlay_BattleChyron_Distance, Settings.overlay.battleChyronDistance, Overlay_BattleChyron_Distance_Override, overlayIsGlobal, Settings.overlay.battleChyronDistance_Overridden );
+			Update( Overlay_BattleChyron_Delay, Settings.overlay.battleChyronDelay, Overlay_BattleChyron_Delay_Override, overlayIsGlobal, Settings.overlay.battleChyronDelay_Overridden );
 
 			// overlay - subtitle
 
@@ -848,6 +852,10 @@ namespace iRacingTVController
 			Update( Overlay_Hud_SpeechToTextPosition_X, Overlay_Hud_SpeechToTextPosition_Y, Settings.overlay.hudSpeechToTextPosition, Overlay_Hud_SpeechToTextPosition_Override, overlayIsGlobal, Settings.overlay.hudSpeechToTextPosition_Overridden );
 			Update( Overlay_Hud_SpeechToTextMaxSize_W, Overlay_Hud_SpeechToTextMaxSize_H, Settings.overlay.hudSpeechToTextMaxSize, Overlay_Hud_SpeechToTextMaxSize_Override, overlayIsGlobal, Settings.overlay.hudSpeechToTextMaxSize_Overridden );
 			Update( Overlay_Hud_SpeechToTextTextPadding_X, Overlay_Hud_SpeechToTextTextPadding_Y, Settings.overlay.hudSpeechToTextTextPadding, Overlay_Hud_SpeechToTextTextPadding_Override, overlayIsGlobal, Settings.overlay.hudSpeechToTextTextPadding_Overridden );
+			Update( Overlay_Hud_LocalWebcamPosition_X, Overlay_Hud_LocalWebcamPosition_Y, Settings.overlay.hudLocalWebcamPosition, Overlay_Hud_LocalWebcamPosition_Override, overlayIsGlobal, Settings.overlay.hudLocalWebcamPosition_Overridden );
+			Update( Overlay_Hud_LocalWebcamSize_W, Overlay_Hud_LocalWebcamSize_H, Settings.overlay.hudLocalWebcamSize, Overlay_Hud_LocalWebcamSize_Override, overlayIsGlobal, Settings.overlay.hudLocalWebcamSize_Overridden );
+			Update( Overlay_Hud_RemoteWebcamPosition_X, Overlay_Hud_RemoteWebcamPosition_Y, Settings.overlay.hudRemoteWebcamPosition, Overlay_Hud_RemoteWebcamPosition_Override, overlayIsGlobal, Settings.overlay.hudRemoteWebcamPosition_Overridden );
+			Update( Overlay_Hud_RemoteWebcamSize_W, Overlay_Hud_RemoteWebcamSize_H, Settings.overlay.hudRemoteWebcamSize, Overlay_Hud_RemoteWebcamSize_Override, overlayIsGlobal, Settings.overlay.hudRemoteWebcamSize_Overridden );
 
 			// overlay - trainer
 
@@ -913,8 +921,9 @@ namespace iRacingTVController
 
 			Editor_ControlPanel_SortByCarNumber.IsChecked = Settings.editor.editorControlPanelSortByCarNumber;
 
-			// Editor_WebcamStreaming_Enabled.IsChecked = Settings.editor.editorWebcamStreamingEnabled;
-			// Editor_WebcamStreaming_WebserverURL.Text = Settings.editor.editorWebcamStreamingWebserverURL;
+			Editor_WebcamStreaming_Enabled.IsChecked = Settings.editor.editorWebcamStreamingEnabled;
+			Editor_WebcamStreaming_WebserverURL.Text = Settings.editor.editorWebcamStreamingWebserverURL;
+			Editor_WebcamStreaming_RoomCode.Text = Settings.editor.editorWebcamStreamingRoomCode;
 
 			// turn on/off topmost window attribute
 
@@ -945,7 +954,7 @@ namespace iRacingTVController
 				Update( Image_Position_X, Image_Position_Y, settings.position, Image_Position_Override, overlayIsGlobal, settings.position_Overridden );
 				Update( Image_Size_W, Image_Size_H, settings.size, Image_Size_Override, overlayIsGlobal, settings.size_Overridden );
 				Update( Image_TintColor_R, Image_TintColor_G, Image_TintColor_B, Image_TintColor_A, settings.tintColor, Image_TintColor_Override, overlayIsGlobal, settings.tintColor_Overridden, Image_TintColor_Palette );
-				Update( Image_Border_L, Image_Border_T, Image_Border_R, Image_Border_B, settings.border, Image_Border_Override, overlayIsGlobal, settings.border_Overridden );
+				Update( Image_Border_L, Image_Border_B, Image_Border_R, Image_Border_T, settings.border, Image_Border_Override, overlayIsGlobal, settings.border_Overridden );
 				Update( Image_Frames_W, Image_Frames_H, settings.frameSize, Image_Frames_Override, overlayIsGlobal, settings.frames_Overridden );
 				Update( Image_Frames_Count, settings.frameCount, Image_Frames_Override, overlayIsGlobal, settings.frames_Overridden );
 				Update( Image_AnimationSpeed, settings.animationSpeed, Image_AnimationSpeed_Override, overlayIsGlobal, settings.animationSpeed_Overridden );
@@ -1104,7 +1113,7 @@ namespace iRacingTVController
 							ControlPanel_CameraControl_DriverName.Text = string.Empty;
 						}
 
-						ControlPanel_CameraControl_CameraType.Text = Director.resolvedCamType.ToString();
+						ControlPanel_CameraControl_CameraType.Text = IRSDK.targetCameraType.ToString();
 						ControlPanel_CameraControl_CameraGroup.Text = IRSDK.GetCamGroupName( IRSDK.targetCamGroupNumber );
 						ControlPanel_CameraControl_Reason.Text = IRSDK.targetCamReason;
 						ControlPanel_CameraControl_Timer.Text = $"{IRSDK.cameraSwitchWaitTimeRemaining:0.0}";
@@ -3035,7 +3044,7 @@ namespace iRacingTVController
 				{
 					var settings = overlaySettings.border_Overridden ? overlaySettings : globalSettings;
 
-					settings.border = new Vector4( Image_Border_L.Value, Image_Border_T.Value, Image_Border_R.Value, Image_Border_B.Value );
+					settings.border = new Vector4( Image_Border_L.Value, Image_Border_B.Value, Image_Border_R.Value, Image_Border_T.Value );
 				}
 
 				overridden = Image_Frames_Override.IsChecked ?? false;
@@ -3839,6 +3848,21 @@ namespace iRacingTVController
 					overlay.chyronPosition = new Vector2( Overlay_Chyron_Position_X.Value, Overlay_Chyron_Position_Y.Value );
 				}
 
+				overridden = Overlay_Chyron_Delay_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.chyronDelay_Overridden != overridden )
+				{
+					Settings.overlayLocal.chyronDelay_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.chyronDelay_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.chyronDelay = Overlay_Chyron_Delay.Value;
+				}
+
 				IPC.readyToSendSettings = true;
 
 				Settings.saveOverlayToFileQueued = true;
@@ -3892,6 +3916,21 @@ namespace iRacingTVController
 					var overlay = Settings.overlayLocal.battleChyronDistance_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
 
 					overlay.battleChyronDistance = Overlay_BattleChyron_Distance.Value;
+				}
+
+				overridden = Overlay_BattleChyron_Delay_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.battleChyronDelay_Overridden != overridden )
+				{
+					Settings.overlayLocal.battleChyronDelay_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.battleChyronDelay_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.battleChyronDelay = Overlay_BattleChyron_Delay.Value;
 				}
 
 				IPC.readyToSendSettings = true;
@@ -4600,6 +4639,66 @@ namespace iRacingTVController
 					overlay.hudSpeechToTextTextPadding = new Vector2Int( Overlay_Hud_SpeechToTextTextPadding_X.Value, Overlay_Hud_SpeechToTextTextPadding_Y.Value );
 				}
 
+				overridden = Overlay_Hud_LocalWebcamPosition_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.hudLocalWebcamPosition_Overridden != overridden )
+				{
+					Settings.overlayLocal.hudLocalWebcamPosition_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.hudLocalWebcamPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.hudLocalWebcamPosition = new Vector2( Overlay_Hud_LocalWebcamPosition_X.Value, Overlay_Hud_LocalWebcamPosition_Y.Value );
+				}
+
+				overridden = Overlay_Hud_LocalWebcamSize_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.hudLocalWebcamSize_Overridden != overridden )
+				{
+					Settings.overlayLocal.hudLocalWebcamSize_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.hudLocalWebcamSize_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.hudLocalWebcamSize = new Vector2( Overlay_Hud_LocalWebcamSize_W.Value, Overlay_Hud_LocalWebcamSize_H.Value );
+				}
+
+				overridden = Overlay_Hud_RemoteWebcamPosition_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.hudRemoteWebcamPosition_Overridden != overridden )
+				{
+					Settings.overlayLocal.hudRemoteWebcamPosition_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.hudRemoteWebcamPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.hudRemoteWebcamPosition = new Vector2( Overlay_Hud_RemoteWebcamPosition_X.Value, Overlay_Hud_RemoteWebcamPosition_Y.Value );
+				}
+
+				overridden = Overlay_Hud_RemoteWebcamSize_Override.IsChecked ?? false;
+
+				if ( Settings.overlayLocal.hudRemoteWebcamSize_Overridden != overridden )
+				{
+					Settings.overlayLocal.hudRemoteWebcamSize_Overridden = overridden;
+
+					Update();
+				}
+				else
+				{
+					var overlay = Settings.overlayLocal.hudRemoteWebcamSize_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
+
+					overlay.hudRemoteWebcamSize = new Vector2( Overlay_Hud_RemoteWebcamSize_W.Value, Overlay_Hud_RemoteWebcamSize_H.Value );
+				}
+
 				IPC.readyToSendSettings = true;
 
 				Settings.saveOverlayToFileQueued = true;
@@ -4931,8 +5030,9 @@ namespace iRacingTVController
 
 				Settings.editor.editorControlPanelSortByCarNumber = Editor_ControlPanel_SortByCarNumber.IsChecked ?? false;
 
-				//				Settings.editor.editorWebcamStreamingEnabled = Editor_WebcamStreaming_Enabled.IsChecked ?? false;
-				//				Settings.editor.editorWebcamStreamingWebserverURL = Editor_WebcamStreaming_WebserverURL.Text;
+				Settings.editor.editorWebcamStreamingEnabled = Editor_WebcamStreaming_Enabled.IsChecked ?? false;
+				Settings.editor.editorWebcamStreamingWebserverURL = Editor_WebcamStreaming_WebserverURL.Text;
+				Settings.editor.editorWebcamStreamingRoomCode = Editor_WebcamStreaming_RoomCode.Text;
 
 				Settings.saveEditorToFileQueued = true;
 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.55"
+        Title="iRacing-TV Controller v1.56"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="900" Height="765" MinWidth="900" MinHeight="765" Icon="/Assets/icon/iracing-tv.ico">
     <Grid>
@@ -1847,6 +1847,17 @@
                                         <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
                                         <CheckBox x:Name="Overlay_Chyron_Position_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Chyron_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Delay"/>
+                                        <local:Decimal x:Name="Overlay_Chyron_Delay" ValueChanged="Overlay_Chyron_Update" Grid.Column="1" />
+                                        <Label Content="Don't show the chyron until this many seconds after switching cars" Margin="3,0,0,0" Grid.Column="2" />
+                                        <CheckBox x:Name="Overlay_Chyron_Delay_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Chyron_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
                                 </StackPanel>
                             </TabItem>
                             <TabItem Header="Battle Chyron" Padding="12,6,12,6">
@@ -1887,6 +1898,17 @@
                                         <local:Decimal x:Name="Overlay_BattleChyron_Distance" ValueChanged="Overlay_BattleChyron_Update" Grid.Column="1" />
                                         <Label Content="Show battle chyron if nearest car is less than this many meters away" Margin="3,0,0,0" Grid.Column="2" />
                                         <CheckBox x:Name="Overlay_BattleChyron_Distance_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_BattleChyron_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Delay"/>
+                                        <local:Decimal x:Name="Overlay_BattleChyron_Delay" ValueChanged="Overlay_BattleChyron_Update" Grid.Column="1" />
+                                        <Label Content="Don't show the battle chyron until this many seconds after green" Margin="3,0,0,0" Grid.Column="2" />
+                                        <CheckBox x:Name="Overlay_BattleChyron_Delay_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_BattleChyron_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                 </StackPanel>
                             </TabItem>
@@ -2312,7 +2334,7 @@
                                 <StackPanel Margin="6,6,6,6">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="150"/>
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
@@ -2322,7 +2344,7 @@
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="150"/>
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="25"/>
                                             <ColumnDefinition Width="100"/>
@@ -2336,9 +2358,9 @@
                                         <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
                                         <CheckBox x:Name="Overlay_Hud_Position_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Hud_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
-                                    <Grid Margin="0,6,0,0">
+                                    <Grid Margin="0,18,0,0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="150"/>
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="25"/>
                                             <ColumnDefinition Width="100"/>
@@ -2354,7 +2376,7 @@
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="150"/>
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="25"/>
                                             <ColumnDefinition Width="100"/>
@@ -2370,7 +2392,7 @@
                                     </Grid>
                                     <Grid Margin="0,6,0,0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="150"/>
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="25"/>
                                             <ColumnDefinition Width="100"/>
@@ -2383,6 +2405,70 @@
                                         <local:Number x:Name="Overlay_Hud_SpeechToTextTextPadding_Y" ValueChanged="Overlay_Hud_Update" Grid.Column="3" />
                                         <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
                                         <CheckBox x:Name="Overlay_Hud_SpeechToTextTextPadding_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Hud_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,18,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Local Webcam Position"/>
+                                        <local:Number x:Name="Overlay_Hud_LocalWebcamPosition_X" ValueChanged="Overlay_Hud_Update" Grid.Column="1" />
+                                        <Label Content="X" HorizontalContentAlignment="Center" Grid.Column="2" />
+                                        <local:Number x:Name="Overlay_Hud_LocalWebcamPosition_Y" ValueChanged="Overlay_Hud_Update" Grid.Column="3" />
+                                        <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
+                                        <CheckBox x:Name="Overlay_Hud_LocalWebcamPosition_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Hud_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Local Webcam Size"/>
+                                        <local:Number x:Name="Overlay_Hud_LocalWebcamSize_W" ValueChanged="Overlay_Hud_Update" Grid.Column="1" />
+                                        <Label Content="W" HorizontalContentAlignment="Center" Grid.Column="2" />
+                                        <local:Number x:Name="Overlay_Hud_LocalWebcamSize_H" ValueChanged="Overlay_Hud_Update" Grid.Column="3" />
+                                        <Label Content="H" HorizontalContentAlignment="Center" Grid.Column="4" />
+                                        <CheckBox x:Name="Overlay_Hud_LocalWebcamSize_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Hud_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,18,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Remote Webcam Position"/>
+                                        <local:Number x:Name="Overlay_Hud_RemoteWebcamPosition_X" ValueChanged="Overlay_Hud_Update" Grid.Column="1" />
+                                        <Label Content="X" HorizontalContentAlignment="Center" Grid.Column="2" />
+                                        <local:Number x:Name="Overlay_Hud_RemoteWebcamPosition_Y" ValueChanged="Overlay_Hud_Update" Grid.Column="3" />
+                                        <Label Content="Y" HorizontalContentAlignment="Center" Grid.Column="4" />
+                                        <CheckBox x:Name="Overlay_Hud_RemoteWebcamPosition_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Hud_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
+                                    </Grid>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Remote Webcam Size"/>
+                                        <local:Number x:Name="Overlay_Hud_RemoteWebcamSize_W" ValueChanged="Overlay_Hud_Update" Grid.Column="1" />
+                                        <Label Content="W" HorizontalContentAlignment="Center" Grid.Column="2" />
+                                        <local:Number x:Name="Overlay_Hud_RemoteWebcamSize_H" ValueChanged="Overlay_Hud_Update" Grid.Column="3" />
+                                        <Label Content="H" HorizontalContentAlignment="Center" Grid.Column="4" />
+                                        <CheckBox x:Name="Overlay_Hud_RemoteWebcamSize_Override" VerticalAlignment="Center" Content="Override" Click="Overlay_Hud_Update" Grid.Column="5" HorizontalAlignment="Right" Margin="6,0,0,0" />
                                     </Grid>
                                 </StackPanel>
                             </TabItem>
@@ -2734,7 +2820,6 @@
                             </StackPanel>
                         </StackPanel>
                     </TabItem>
-                    <!--
                     <TabItem Header="Webcam Streaming" Padding="12,6,12,6">
                         <StackPanel Margin="6,6,6,6">
                             <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
@@ -2745,9 +2830,12 @@
                                 <Label Content="Webserver URL" Width="100"/>
                                 <TextBox x:Name="Editor_WebcamStreaming_WebserverURL" Width="300" Height="25" Padding="3,0,3,0"  VerticalContentAlignment="Center" TextChanged="Editor_Update" />
                             </StackPanel>
+                            <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                                <Label Content="Room Code" Width="100"/>
+                                <TextBox x:Name="Editor_WebcamStreaming_RoomCode" Width="100" Height="25" Padding="3,0,3,0"  VerticalContentAlignment="Center" TextChanged="Editor_Update" />
+                            </StackPanel>
                         </StackPanel>
                     </TabItem>
-                    -->
                 </TabControl>
             </TabItem>
         </TabControl>

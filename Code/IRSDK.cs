@@ -34,6 +34,7 @@ namespace iRacingTVController
 		public static int camCarIdx = 0;
 		public static int camGroupNumber = 0;
 		public static int camCameraNumber = 0;
+		public static SettingsDirector.CameraType currentCameraType = SettingsDirector.CameraType.Medium;
 
 		public static bool targetCamEnabled = false;
 		public static bool targetCamFastSwitchEnabled = false;
@@ -41,6 +42,7 @@ namespace iRacingTVController
 		public static int targetCamCarIdx = 0;
 		public static int targetCamGroupNumber = 0;
 		public static string targetCamReason = string.Empty;
+		public static SettingsDirector.CameraType targetCameraType = SettingsDirector.CameraType.Medium;
 
 		public static bool targetReplayStartFrameNumberEnabled = false;
 		public static int targetReplayStartFrameNumber = 0;
@@ -265,6 +267,8 @@ namespace iRacingTVController
 
 											cameraSwitchWaitTimeRemaining = Settings.director.switchDelayNotInRace;
 										}
+
+										currentCameraType = targetCameraType;
 									}
 								}
 							}

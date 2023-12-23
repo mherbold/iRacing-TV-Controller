@@ -60,7 +60,8 @@ namespace iRacingTVController
 		public bool editorControlPanelSortByCarNumber = false;
 
 		public bool editorWebcamStreamingEnabled = false;
-		public string editorWebcamStreamingWebserverURL = string.Empty;
+		public string editorWebcamStreamingWebserverURL = "ws://192.168.0.xxx";
+		public string editorWebcamStreamingRoomCode = "12345";
 
 		public string lastActiveOverlayFilePath = string.Empty;
 		public string lastActiveDirectorFilePath = string.Empty;

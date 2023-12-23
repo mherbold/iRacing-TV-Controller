@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using irsdkSharp.Models;
 using irsdkSharp.Serialization.Enums.Fastest;
-using static System.Net.Mime.MediaTypeNames;
+
 using static iRacingTVController.Unity;
 
 namespace iRacingTVController
@@ -196,8 +196,8 @@ namespace iRacingTVController
 						paceCar = normalizedCar;
 					}
 
-					normalizedCar.qualifyingPosition = MaxNumCars;
-					normalizedCar.qualifyingClassPosition = MaxNumCars;
+					normalizedCar.qualifyingPosition = MaxNumCars + 1;
+					normalizedCar.qualifyingClassPosition = MaxNumCars + 1;
 					normalizedCar.qualifyingTime = 0;
 				}
 
@@ -265,8 +265,8 @@ namespace iRacingTVController
 			{
 				normalizedCar.SessionNumberChange();
 
-				normalizedCar.qualifyingPosition = MaxNumCars;
-				normalizedCar.qualifyingClassPosition = MaxNumCars;
+				normalizedCar.qualifyingPosition = MaxNumCars + 1;
+				normalizedCar.qualifyingClassPosition = MaxNumCars + 1;
 				normalizedCar.qualifyingTime = 0;
 			}
 
@@ -285,8 +285,8 @@ namespace iRacingTVController
 				{
 					foreach ( var qualifyPosition in qualifyPositions )
 					{
-						normalizedCars[ qualifyPosition.CarIdx ].qualifyingPosition = qualifyPosition.Position;
-						normalizedCars[ qualifyPosition.CarIdx ].qualifyingClassPosition = qualifyPosition.ClassPosition;
+						normalizedCars[ qualifyPosition.CarIdx ].qualifyingPosition = qualifyPosition.Position + 1;
+						normalizedCars[ qualifyPosition.CarIdx ].qualifyingClassPosition = qualifyPosition.ClassPosition + 1;
 						normalizedCars[ qualifyPosition.CarIdx ].qualifyingTime = qualifyPosition.FastestTime;
 					}
 				}
@@ -301,8 +301,8 @@ namespace iRacingTVController
 								foreach ( var position in session.ResultsPositions )
 								{
 									normalizedCars[ position.CarIdx ].qualifyingPosition = position.Position;
-									normalizedCars[ position.CarIdx ].qualifyingClassPosition = position.ClassPosition;
-									normalizedCars[ position.CarIdx ].qualifyingTime = position.Time;
+									normalizedCars[ position.CarIdx ].qualifyingClassPosition = position.ClassPosition + 1;
+									normalizedCars[ position.CarIdx ].qualifyingTime = position.FastestTime;
 								}
 							}
 

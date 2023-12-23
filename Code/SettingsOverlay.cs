@@ -33,7 +33,7 @@ namespace iRacingTVController
 		public bool[] fontNames_Overridden = new bool[ MaxNumFonts ];
 
 		public bool startLightsEnabled = true;
-		public Vector2 startLightsPosition = new( 900,-20 );
+		public Vector2 startLightsPosition = new( 735, -20 );
 
 		public bool startLightsEnabled_Overridden = false;
 		public bool startLightsPosition_Overridden = false;
@@ -88,27 +88,31 @@ namespace iRacingTVController
 		public bool pitLaneLength_Overridden = false;
 
 		public bool voiceOfEnabled = true;
-		public Vector2 voiceOfPosition = new( 1920, 550 );
+		public Vector2 voiceOfPosition = new( 730, 30 );
 
 		public bool voiceOfEnabled_Overridden = false;
 		public bool voiceOfPosition_Overridden = false;
 
 		public bool chyronEnabled = true;
 		public Vector2 chyronPosition = new( 1408, 890 );
+		public float chyronDelay = 2.0f;
 
 		public bool chyronEnabled_Overridden = false;
 		public bool chyronPosition_Overridden = false;
+		public bool chyronDelay_Overridden = false;
 
 		public bool battleChyronEnabled = true;
 		public Vector2 battleChyronPosition = new( 838, 890 );
 		public float battleChyronDistance = 18;
+		public float battleChyronDelay = 30;
 
 		public bool battleChyronEnabled_Overridden = false;
 		public bool battleChyronPosition_Overridden = false;
 		public bool battleChyronDistance_Overridden = false;
+		public bool battleChyronDelay_Overridden = false;
 
 		public bool subtitleEnabled = true;
-		public Vector2 subtitlePosition = new( 1080, 760 );
+		public Vector2 subtitlePosition = new( 990, 220 );
 		public Vector2 subtitleMaxSize = new( 1250, 190 );
 		public Vector2Int subtitleTextPadding = new( 24, 12 );
 
@@ -177,12 +181,20 @@ namespace iRacingTVController
 		public Vector2 hudSpeechToTextPosition = new( 340, -100 );
 		public Vector2 hudSpeechToTextMaxSize = new( 1250, 190 );
 		public Vector2Int hudSpeechToTextTextPadding = new( 24, 12 );
+		public Vector2 hudLocalWebcamPosition = new( 960, 840 );
+		public Vector2 hudLocalWebcamSize = new( 320, 240 );
+		public Vector2 hudRemoteWebcamPosition = new( 640, 840 );
+		public Vector2 hudRemoteWebcamSize = new( 320, 240 );
 
 		public bool hudEnabled_Overridden = false;
 		public bool hudPosition_Overridden = false;
 		public bool hudSpeechToTextPosition_Overridden = false;
 		public bool hudSpeechToTextMaxSize_Overridden = false;
 		public bool hudSpeechToTextTextPadding_Overridden = false;
+		public bool hudLocalWebcamPosition_Overridden = false;
+		public bool hudLocalWebcamSize_Overridden = false;
+		public bool hudRemoteWebcamPosition_Overridden = false;
+		public bool hudRemoteWebcamSize_Overridden = false;
 
 		public bool trainerEnabled = false;
 		public Vector2 trainerPosition = new( 640, 540 );

@@ -67,6 +67,8 @@ namespace iRacingTVController
 		[NonSerialized, XmlIgnore] NormalizedCar? normalizedCarInFront = null;
 		[NonSerialized, XmlIgnore] bool splitLeaderboard = false;
 
+		[NonSerialized, XmlIgnore] float battleChyronTimer = 0;
+
 		static LiveData()
 		{
 			Instance = new LiveData();
@@ -747,51 +749,76 @@ namespace iRacingTVController
 		{
 			liveDataBattleChyron.show = false;
 
-			var normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.normalizedData.camCarIdx );
-
-			if ( ( normalizedCar != null ) && normalizedCar.includeInLeaderboard && Director.showChyron && ( !liveDataControlPanel.voiceOfOn || ( IRSDK.normalizedData.radioTransmitCarIdx == -1 ) ) )
+			if ( !IRSDK.normalizedSession.isInRaceSession )
 			{
-				var nearestDeltaLapPosition = float.MaxValue;
-				NormalizedCar? nearestNormalizedCar = null;
+				return;
+			}
 
-				if ( normalizedCar.normalizedCarInFront != null )
+			if ( ( IRSDK.normalizedData.sessionState < SessionState.StateRacing ) || ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.CautionWaving | (uint) SessionFlags.Caution | (uint) SessionFlags.GreenHeld ) ) != 0 ) )
+			{
+				battleChyronTimer = Settings.overlay.battleChyronDelay;
+
+				return;
+			}
+
+			if ( battleChyronTimer > 0 )
+			{
+				battleChyronTimer -= Program.deltaTime;
+
+				if ( battleChyronTimer > 0 )
 				{
-					var deltaLapPosition = Math.Abs( normalizedCar.lapPosition - normalizedCar.normalizedCarInFront.lapPosition );
-
-					if ( deltaLapPosition < 0.5f )
-					{
-						nearestDeltaLapPosition = deltaLapPosition;
-						nearestNormalizedCar = normalizedCar.normalizedCarInFront;
-					}
+					return;
 				}
+			}
 
-				if ( nearestNormalizedCar != null )
+			if ( ( IRSDK.currentCameraType == SettingsDirector.CameraType.Inside ) || ( IRSDK.currentCameraType == SettingsDirector.CameraType.Close ) )
+			{
+				var normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.normalizedData.camCarIdx );
+
+				if ( ( normalizedCar != null ) && normalizedCar.includeInLeaderboard && !normalizedCar.isOnPitRoad && Director.showChyron && ( !liveDataControlPanel.voiceOfOn || ( IRSDK.normalizedData.radioTransmitCarIdx == -1 ) ) )
 				{
-					var distanceInMeters = nearestDeltaLapPosition * IRSDK.normalizedSession.trackLengthInMeters;
+					var nearestDeltaLapPosition = float.MaxValue;
+					NormalizedCar? nearestNormalizedCar = null;
 
-					if ( distanceInMeters <= Settings.overlay.battleChyronDistance )
+					if ( normalizedCar.normalizedCarInFront != null )
 					{
-						Color color;
+						var deltaLapPosition = Math.Abs( normalizedCar.lapPosition - normalizedCar.normalizedCarInFront.lapPosition );
 
-						liveDataBattleChyron.show = true;
+						if ( deltaLapPosition < 0.5f )
+						{
+							nearestDeltaLapPosition = deltaLapPosition;
+							nearestNormalizedCar = normalizedCar.normalizedCarInFront;
+						}
+					}
 
-						liveDataBattleChyron.textLayer1 = GetTextContent( out color, "BattleChyronTextLayer1", nearestNormalizedCar );
-						liveDataBattleChyron.textLayer2 = GetTextContent( out color, "BattleChyronTextLayer2", nearestNormalizedCar );
-						liveDataBattleChyron.textLayer3 = GetTextContent( out color, "BattleChyronTextLayer3", nearestNormalizedCar );
-						liveDataBattleChyron.textLayer4 = GetTextContent( out color, "BattleChyronTextLayer4", nearestNormalizedCar );
-						liveDataBattleChyron.textLayer5 = GetTextContent( out color, "BattleChyronTextLayer5", nearestNormalizedCar );
-						liveDataBattleChyron.textLayer6 = GetTextContent( out color, "BattleChyronTextLayer6", nearestNormalizedCar );
-						liveDataBattleChyron.textLayer7 = GetTextContent( out color, "BattleChyronTextLayer7", nearestNormalizedCar );
-						liveDataBattleChyron.textLayer8 = GetTextContent( out color, "BattleChyronTextLayer8", nearestNormalizedCar );
-						liveDataBattleChyron.textLayer9 = GetTextContent( out color, "BattleChyronTextLayer9", nearestNormalizedCar );
-						liveDataBattleChyron.textLayer10 = GetTextContent( out color, "BattleChyronTextLayer10", nearestNormalizedCar );
-						liveDataBattleChyron.textLayer11 = GetTextContent( out color, "BattleChyronTextLayer11", nearestNormalizedCar );
-						liveDataBattleChyron.textLayer12 = GetTextContent( out color, "BattleChyronTextLayer12", nearestNormalizedCar );
-						liveDataBattleChyron.textLayer13 = GetTextContent( out color, "BattleChyronTextLayer13", nearestNormalizedCar );
-						liveDataBattleChyron.textLayer14 = GetTextContent( out color, "BattleChyronTextLayer14", nearestNormalizedCar );
-						liveDataBattleChyron.textLayer15 = GetTextContent( out color, "BattleChyronTextLayer15", nearestNormalizedCar );
+					if ( nearestNormalizedCar != null )
+					{
+						var distanceInMeters = nearestDeltaLapPosition * IRSDK.normalizedSession.trackLengthInMeters;
 
-						liveDataBattleChyron.carIdx = nearestNormalizedCar.carIdx;
+						if ( distanceInMeters <= Settings.overlay.battleChyronDistance )
+						{
+							Color color;
+
+							liveDataBattleChyron.show = true;
+
+							liveDataBattleChyron.textLayer1 = GetTextContent( out color, "BattleChyronTextLayer1", nearestNormalizedCar );
+							liveDataBattleChyron.textLayer2 = GetTextContent( out color, "BattleChyronTextLayer2", nearestNormalizedCar );
+							liveDataBattleChyron.textLayer3 = GetTextContent( out color, "BattleChyronTextLayer3", nearestNormalizedCar );
+							liveDataBattleChyron.textLayer4 = GetTextContent( out color, "BattleChyronTextLayer4", nearestNormalizedCar );
+							liveDataBattleChyron.textLayer5 = GetTextContent( out color, "BattleChyronTextLayer5", nearestNormalizedCar );
+							liveDataBattleChyron.textLayer6 = GetTextContent( out color, "BattleChyronTextLayer6", nearestNormalizedCar );
+							liveDataBattleChyron.textLayer7 = GetTextContent( out color, "BattleChyronTextLayer7", nearestNormalizedCar );
+							liveDataBattleChyron.textLayer8 = GetTextContent( out color, "BattleChyronTextLayer8", nearestNormalizedCar );
+							liveDataBattleChyron.textLayer9 = GetTextContent( out color, "BattleChyronTextLayer9", nearestNormalizedCar );
+							liveDataBattleChyron.textLayer10 = GetTextContent( out color, "BattleChyronTextLayer10", nearestNormalizedCar );
+							liveDataBattleChyron.textLayer11 = GetTextContent( out color, "BattleChyronTextLayer11", nearestNormalizedCar );
+							liveDataBattleChyron.textLayer12 = GetTextContent( out color, "BattleChyronTextLayer12", nearestNormalizedCar );
+							liveDataBattleChyron.textLayer13 = GetTextContent( out color, "BattleChyronTextLayer13", nearestNormalizedCar );
+							liveDataBattleChyron.textLayer14 = GetTextContent( out color, "BattleChyronTextLayer14", nearestNormalizedCar );
+							liveDataBattleChyron.textLayer15 = GetTextContent( out color, "BattleChyronTextLayer15", nearestNormalizedCar );
+
+							liveDataBattleChyron.carIdx = nearestNormalizedCar.carIdx;
+						}
 					}
 				}
 			}
@@ -1003,6 +1030,7 @@ namespace iRacingTVController
 		{
 			liveDataWebcamStreaming.enabled = Settings.editor.editorWebcamStreamingEnabled;
 			liveDataWebcamStreaming.webserverURL = Settings.editor.editorWebcamStreamingWebserverURL;
+			liveDataWebcamStreaming.roomCode = Settings.editor.editorWebcamStreamingRoomCode;
 		}
 
 		public void UpdateCustom()
@@ -1199,22 +1227,31 @@ namespace iRacingTVController
 
 					return ( normalizedCar?.displayedPosition >= 1 ) ? normalizedCar.displayedPosition.ToString() : "";
 
+				case SettingsText.Content.Driver_Position_WithP:
+
+					return ( normalizedCar?.displayedPosition >= 1 ) ? "P" + normalizedCar.displayedPosition.ToString() : "";
+
+				case SettingsText.Content.Driver_Position_Ordinal:
+
+					return ( normalizedCar?.displayedPosition >= 1 ) ? GetOrdinal( normalizedCar.displayedPosition ) : "";
+
 				case SettingsText.Content.Driver_QualifyPosition:
 
-					if ( normalizedCar != null )
-					{
-						return $"P{normalizedCar.qualifyingClassPosition}";
-					}
-					else
-					{
-						return "";
-					}
+					return ( normalizedCar?.qualifyingClassPosition >= 1 ) ? normalizedCar.qualifyingClassPosition.ToString() : "";
+
+				case SettingsText.Content.Driver_QualifyPosition_WithP:
+
+					return ( normalizedCar?.qualifyingClassPosition >= 1 ) ? "P" + normalizedCar.qualifyingClassPosition.ToString() : "";
+
+				case SettingsText.Content.Driver_QualifyPosition_Ordinal:
+
+					return ( normalizedCar?.qualifyingClassPosition >= 1 ) ? GetOrdinal( normalizedCar.qualifyingClassPosition ) : "";
 
 				case SettingsText.Content.Driver_QualifyTime:
 				{
 					if ( normalizedCar != null )
 					{
-						if ( normalizedCar.qualifyingTime == -1 )
+						if ( normalizedCar.qualifyingTime < 0 )
 						{
 							return Settings.overlay.translationDictionary[ "DidNotQualify" ].translation;
 						}
@@ -1579,6 +1616,34 @@ namespace iRacingTVController
 			}
 
 			return tintColor;
+		}
+
+		public static string GetOrdinal( int number )
+		{
+			if ( number <= 0 )
+			{
+				return number.ToString();
+			}
+
+			switch ( number % 100 )
+			{
+				case 11:
+				case 12:
+				case 13:
+					return number + "th";
+			}
+
+			switch ( number % 10 )
+			{
+				case 1:
+					return number + "st";
+				case 2:
+					return number + "nd";
+				case 3:
+					return number + "rd";
+				default:
+					return number + "th";
+			}
 		}
 	}
 }

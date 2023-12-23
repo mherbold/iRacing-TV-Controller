@@ -178,6 +178,8 @@ namespace iRacingTVController
 					targetCamType = Settings.director.rule5_Camera;
 					targetCamReason = "Rule 5: Green flag is about to be shown or is waving";
 
+					IRSDK.cameraSwitchWaitTimeRemaining = 4;
+
 					driverWasTalking = false;
 				}
 				else if ( Settings.director.rule6_Enabled && ( talkingCar != null ) )
@@ -268,6 +270,11 @@ namespace iRacingTVController
 
 					if ( normalizedCar != null )
 					{
+						if ( normalizedCar.speedInMetersPerSecond < 3 )
+						{
+							allowShowChyron = true;
+						}
+
 						targetCamCarIdx = normalizedCar.carIdx;
 						targetCamType = Settings.director.rule12_Camera;
 						targetCamReason = "Rule 12: Caution flag is waving";
@@ -306,6 +313,7 @@ namespace iRacingTVController
 					IRSDK.targetCamCarIdx = targetCamCarIdx;
 					IRSDK.targetCamGroupNumber = GetCamGroupNumber( targetCamType );
 					IRSDK.targetCamReason = targetCamReason;
+					IRSDK.targetCameraType = resolvedCamType;
 
 					MainWindow.Instance.cameraType = targetCamType;
 				}
@@ -315,7 +323,7 @@ namespace iRacingTVController
 
 			if ( allowShowChyron )
 			{
-				if ( ( resolvedCamType == SettingsDirector.CameraType.Pits ) || ( resolvedCamType == SettingsDirector.CameraType.Inside ) || ( resolvedCamType == SettingsDirector.CameraType.Close ) || ( resolvedCamType == SettingsDirector.CameraType.Medium ) )
+				if ( ( IRSDK.currentCameraType == SettingsDirector.CameraType.Pits ) || ( IRSDK.currentCameraType == SettingsDirector.CameraType.Inside ) || ( IRSDK.currentCameraType == SettingsDirector.CameraType.Close ) || ( IRSDK.currentCameraType == SettingsDirector.CameraType.Medium ) )
 				{
 					showChyron = true;
 				}
@@ -328,7 +336,7 @@ namespace iRacingTVController
 				chyronTimer = 0;
 			}
 
-			if ( chyronTimer < 2 )
+			if ( chyronTimer < Settings.overlay.chyronDelay )
 			{
 				showChyron = false;
 			}

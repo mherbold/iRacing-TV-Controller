@@ -9,7 +9,9 @@ namespace iRacingTVController
 	[Serializable]
 	public class SettingsOverlay
 	{
-		public string filePath = string.Empty;
+		public const string defaultFilePath = "default overlay settings";
+
+		public string filePath = defaultFilePath;
 
 		public override string ToString()
 		{

@@ -84,6 +84,7 @@ namespace iRacingTVController
 		public SortedDictionary<string, Guid> controllerOptions = new();
 		public SortedDictionary<string, string> audioCaptureDeviceOptions = new();
 		public SortedDictionary<string, string> audioRenderDeviceOptions = new();
+		public SortedDictionary<string, SettingsText.Content> textContentOptions = new();
 
 		static MainWindow()
 		{
@@ -268,11 +269,16 @@ namespace iRacingTVController
 					Text_Alignment.Items.Add( textAlignmentOption );
 				}
 
-				Text_Content.Items.SortDescriptions.Add( new System.ComponentModel.SortDescription( "value", System.ComponentModel.ListSortDirection.Ascending ) );
-
-				foreach ( var contentOption in Enum.GetValues( typeof( SettingsText.Content ) ) )
+				foreach ( var item in Enum.GetValues( typeof( SettingsText.Content ) ) )
 				{
-					Text_Content.Items.Add( contentOption );
+					var content = (SettingsText.Content) item;
+
+					textContentOptions.Add( content.ToString(), content );
+				}
+
+				foreach ( var item in textContentOptions )
+				{
+					Text_Content.Items.Add( item.Key );
 				}
 
 				patternOptions.Add( "914", 37 );
@@ -457,127 +463,127 @@ namespace iRacingTVController
 
 		// update
 
-		public void Update( TextBox textBoxInput, string text, CheckBox overrideCheckBox, bool isGlobal, bool isOverridden, Button? extraButton = null )
+		public void Update( TextBox textBoxInput, string text, CheckBox overrideCheckBox, bool isOverridden, Button? extraButton = null )
 		{
-			textBoxInput.IsEnabled = isGlobal || isOverridden;
+			textBoxInput.IsEnabled = isOverridden;
 			textBoxInput.Text = text;
-			overrideCheckBox.IsEnabled = !isGlobal;
+			overrideCheckBox.IsEnabled = true;
 			overrideCheckBox.IsChecked = isOverridden;
 
 			if ( extraButton != null )
 			{
-				extraButton.IsEnabled = isGlobal || isOverridden;
+				extraButton.IsEnabled = isOverridden;
 			}
 		}
 
-		public void Update( Decimal decimalInput, float value, CheckBox overrideCheckBox, bool isGlobal, bool isOverridden )
+		public void Update( Decimal decimalInput, float value, CheckBox overrideCheckBox, bool isOverridden )
 		{
-			decimalInput.IsEnabled = isGlobal || isOverridden;
+			decimalInput.IsEnabled = isOverridden;
 			decimalInput.Value = value;
-			overrideCheckBox.IsEnabled = !isGlobal;
+			overrideCheckBox.IsEnabled = true;
 			overrideCheckBox.IsChecked = isOverridden;
 		}
 
-		public void Update( Slider sliderInput, float value, CheckBox overrideCheckBox, bool isGlobal, bool isOverridden )
+		public void Update( Slider sliderInput, float value, CheckBox overrideCheckBox, bool isOverridden )
 		{
-			sliderInput.IsEnabled = isGlobal || isOverridden;
+			sliderInput.IsEnabled = isOverridden;
 			sliderInput.Value = value;
-			overrideCheckBox.IsEnabled = !isGlobal;
+			overrideCheckBox.IsEnabled = true;
 			overrideCheckBox.IsChecked = isOverridden;
 		}
 
-		public void Update( CheckBox checkBoxInput, bool value, CheckBox overrideCheckBox, bool isGlobal, bool isOverridden )
+		public void Update( CheckBox checkBoxInput, bool value, CheckBox overrideCheckBox, bool isOverridden )
 		{
-			checkBoxInput.IsEnabled = isGlobal || isOverridden;
+			checkBoxInput.IsEnabled = isOverridden;
 			checkBoxInput.IsChecked = value;
-			overrideCheckBox.IsEnabled = !isGlobal;
+			overrideCheckBox.IsEnabled = true;
 			overrideCheckBox.IsChecked = isOverridden;
 		}
 
-		public void Update( RadioButton radioButtonInput, bool value, CheckBox overrideCheckBox, bool isGlobal, bool isOverridden )
+		public void Update( RadioButton radioButtonInput, bool value, CheckBox overrideCheckBox, bool isOverridden )
 		{
-			radioButtonInput.IsEnabled = isGlobal || isOverridden;
+			radioButtonInput.IsEnabled = isOverridden;
 			radioButtonInput.IsChecked = value;
-			overrideCheckBox.IsEnabled = !isGlobal;
+			overrideCheckBox.IsEnabled = true;
 			overrideCheckBox.IsChecked = isOverridden;
 		}
 
-		public void Update( ComboBox comboBoxInput, object value, CheckBox overrideCheckBox, bool isGlobal, bool isOverridden )
+		public void Update( ComboBox comboBoxInput, object value, CheckBox overrideCheckBox, bool isOverridden )
 		{
-			comboBoxInput.IsEnabled = isGlobal || isOverridden;
+			comboBoxInput.IsEnabled = isOverridden;
 			comboBoxInput.SelectedItem = value;
-			overrideCheckBox.IsEnabled = !isGlobal;
+			overrideCheckBox.IsEnabled = true;
 			overrideCheckBox.IsChecked = isOverridden;
 		}
 
-		public void Update( Number numberInput, int value, CheckBox overrideCheckBox, bool isGlobal, bool isOverridden )
+		public void Update( Number numberInput, int value, CheckBox overrideCheckBox, bool isOverridden )
 		{
-			numberInput.IsEnabled = isGlobal || isOverridden;
+			numberInput.IsEnabled = isOverridden;
 			numberInput.Value = value;
-			overrideCheckBox.IsEnabled = !isGlobal;
+			overrideCheckBox.IsEnabled = true;
 			overrideCheckBox.IsChecked = isOverridden;
 		}
 
-		public void Update( Number numberInput1, Number numberInput2, Vector2Int value, CheckBox overrideCheckBox, bool isGlobal, bool isOverridden )
+		public void Update( Number numberInput1, Number numberInput2, Vector2Int value, CheckBox overrideCheckBox, bool isOverridden )
 		{
-			numberInput1.IsEnabled = isGlobal || isOverridden;
-			numberInput2.IsEnabled = isGlobal || isOverridden;
+			numberInput1.IsEnabled = isOverridden;
+			numberInput2.IsEnabled = isOverridden;
 			numberInput1.Value = value.x;
 			numberInput2.Value = value.y;
-			overrideCheckBox.IsEnabled = !isGlobal;
+			overrideCheckBox.IsEnabled = true;
 			overrideCheckBox.IsChecked = isOverridden;
 		}
 
-		public void Update( Number numberInput1, Number numberInput2, Vector2 value, CheckBox overrideCheckBox, bool isGlobal, bool isOverridden )
+		public void Update( Number numberInput1, Number numberInput2, Vector2 value, CheckBox overrideCheckBox, bool isOverridden )
 		{
-			numberInput1.IsEnabled = isGlobal || isOverridden;
-			numberInput2.IsEnabled = isGlobal || isOverridden;
+			numberInput1.IsEnabled = isOverridden;
+			numberInput2.IsEnabled = isOverridden;
 			numberInput1.Value = (int) value.x;
 			numberInput2.Value = (int) value.y;
-			overrideCheckBox.IsEnabled = !isGlobal;
+			overrideCheckBox.IsEnabled = true;
 			overrideCheckBox.IsChecked = isOverridden;
 		}
 
-		public void Update( Decimal decimalInput1, Decimal decimalInput2, Vector2 value, CheckBox overrideCheckBox, bool isGlobal, bool isOverridden )
+		public void Update( Decimal decimalInput1, Decimal decimalInput2, Vector2 value, CheckBox overrideCheckBox, bool isOverridden )
 		{
-			decimalInput1.IsEnabled = isGlobal || isOverridden;
-			decimalInput2.IsEnabled = isGlobal || isOverridden;
+			decimalInput1.IsEnabled = isOverridden;
+			decimalInput2.IsEnabled = isOverridden;
 			decimalInput1.Value = value.x;
 			decimalInput2.Value = value.y;
-			overrideCheckBox.IsEnabled = !isGlobal;
+			overrideCheckBox.IsEnabled = true;
 			overrideCheckBox.IsChecked = isOverridden;
 		}
 
-		public void Update( Decimal decimalInput1, Decimal decimalInput2, Decimal decimalInput3, Decimal decimalInput4, Color value, CheckBox overrideCheckBox, bool isGlobal, bool isOverridden, Button? extraButton = null )
+		public void Update( Decimal decimalInput1, Decimal decimalInput2, Decimal decimalInput3, Decimal decimalInput4, Color value, CheckBox overrideCheckBox, bool isOverridden, Button? extraButton = null )
 		{
-			decimalInput1.IsEnabled = isGlobal || isOverridden;
-			decimalInput2.IsEnabled = isGlobal || isOverridden;
-			decimalInput3.IsEnabled = isGlobal || isOverridden;
-			decimalInput4.IsEnabled = isGlobal || isOverridden;
+			decimalInput1.IsEnabled = isOverridden;
+			decimalInput2.IsEnabled = isOverridden;
+			decimalInput3.IsEnabled = isOverridden;
+			decimalInput4.IsEnabled = isOverridden;
 			decimalInput1.Value = value.r;
 			decimalInput2.Value = value.g;
 			decimalInput3.Value = value.b;
 			decimalInput4.Value = value.a;
-			overrideCheckBox.IsEnabled = !isGlobal;
+			overrideCheckBox.IsEnabled = true;
 			overrideCheckBox.IsChecked = isOverridden;
 
 			if ( extraButton != null )
 			{
-				extraButton.IsEnabled = isGlobal || isOverridden;
+				extraButton.IsEnabled = isOverridden;
 			}
 		}
 
-		public void Update( Decimal decimalInput1, Decimal decimalInput2, Decimal decimalInput3, Decimal decimalInput4, Vector4 value, CheckBox overrideCheckBox, bool isGlobal, bool isOverridden )
+		public void Update( Decimal decimalInput1, Decimal decimalInput2, Decimal decimalInput3, Decimal decimalInput4, Vector4 value, CheckBox overrideCheckBox, bool isOverridden )
 		{
-			decimalInput1.IsEnabled = isGlobal || isOverridden;
-			decimalInput2.IsEnabled = isGlobal || isOverridden;
-			decimalInput3.IsEnabled = isGlobal || isOverridden;
-			decimalInput4.IsEnabled = isGlobal || isOverridden;
+			decimalInput1.IsEnabled = isOverridden;
+			decimalInput2.IsEnabled = isOverridden;
+			decimalInput3.IsEnabled = isOverridden;
+			decimalInput4.IsEnabled = isOverridden;
 			decimalInput1.Value = value.x;
 			decimalInput2.Value = value.y;
 			decimalInput3.Value = value.z;
 			decimalInput4.Value = value.w;
-			overrideCheckBox.IsEnabled = !isGlobal;
+			overrideCheckBox.IsEnabled = true;
 			overrideCheckBox.IsChecked = isOverridden;
 		}
 
@@ -587,9 +593,6 @@ namespace iRacingTVController
 
 			Settings.UpdateCombinedDirector();
 			Settings.UpdateCombinedOverlay();
-
-			var directorIsGlobal = Settings.directorLocal.filePath == Settings.relativeGlobalDirectorSettingsFilePath;
-			var overlayIsGlobal = Settings.overlayLocal.filePath == Settings.relativeGlobalOverlaySettingsFilePath;
 
 			// control panel
 
@@ -626,74 +629,74 @@ namespace iRacingTVController
 				}
 			}
 
-			Update( Director_Cameras_Practice, Settings.director.camerasPractice, Director_Cameras_Practice_Override, directorIsGlobal, Settings.director.camerasPractice_Overridden );
-			Update( Director_Cameras_Qualifying, Settings.director.camerasQualifying, Director_Cameras_Qualifying_Override, directorIsGlobal, Settings.director.camerasQualifying_Overridden );
-			Update( Director_Cameras_Intro, Settings.director.camerasIntro, Director_Cameras_Intro_Override, directorIsGlobal, Settings.director.camerasIntro_Overridden );
-			Update( Director_Cameras_Scenic, Settings.director.camerasScenic, Director_Cameras_Scenic_Override, directorIsGlobal, Settings.director.camerasScenic_Overridden );
-			Update( Director_Cameras_Pits, Settings.director.camerasPits, Director_Cameras_Pits_Override, directorIsGlobal, Settings.director.camerasPits_Overridden );
-			Update( Director_Cameras_StartFinish, Settings.director.camerasStartFinish, Director_Cameras_StartFinish_Override, directorIsGlobal, Settings.director.camerasStartFinish_Overridden );
-			Update( Director_Cameras_Reverse, Settings.director.camerasReverse, Director_Cameras_Reverse_Override, directorIsGlobal, Settings.director.camerasReverse_Overridden );
-			Update( Director_Cameras_Inside, Settings.director.camerasInside, Director_Cameras_Inside_Override, directorIsGlobal, Settings.director.camerasInside_Overridden );
-			Update( Director_Cameras_Close, Settings.director.camerasClose, Director_Cameras_Close_Override, directorIsGlobal, Settings.director.camerasClose_Overridden );
-			Update( Director_Cameras_Medium, Settings.director.camerasMedium, Director_Cameras_Medium_Override, directorIsGlobal, Settings.director.camerasMedium_Overridden );
-			Update( Director_Cameras_Far, Settings.director.camerasFar, Director_Cameras_Far_Override, directorIsGlobal, Settings.director.camerasFar_Overridden );
-			Update( Director_Cameras_VeryFar, Settings.director.camerasVeryFar, Director_Cameras_VeryFar_Override, directorIsGlobal, Settings.director.camerasVeryFar_Overridden );
-			Update( Director_Cameras_Custom1, Settings.director.camerasCustom1, Director_Cameras_Custom1_Override, directorIsGlobal, Settings.director.camerasCustom1_Overridden );
-			Update( Director_Cameras_Custom2, Settings.director.camerasCustom2, Director_Cameras_Custom2_Override, directorIsGlobal, Settings.director.camerasCustom2_Overridden );
-			Update( Director_Cameras_Custom3, Settings.director.camerasCustom3, Director_Cameras_Custom3_Override, directorIsGlobal, Settings.director.camerasCustom3_Overridden );
-			Update( Director_Cameras_Custom4, Settings.director.camerasCustom4, Director_Cameras_Custom4_Override, directorIsGlobal, Settings.director.camerasCustom4_Overridden );
-			Update( Director_Cameras_Custom5, Settings.director.camerasCustom5, Director_Cameras_Custom5_Override, directorIsGlobal, Settings.director.camerasCustom5_Overridden );
-			Update( Director_Cameras_Custom6, Settings.director.camerasCustom6, Director_Cameras_Custom6_Override, directorIsGlobal, Settings.director.camerasCustom6_Overridden );
+			Update( Director_Cameras_Practice, Settings.director.camerasPractice, Director_Cameras_Practice_Override, Settings.director.camerasPractice_Overridden, Director_Cameras_Practice_Button );
+			Update( Director_Cameras_Qualifying, Settings.director.camerasQualifying, Director_Cameras_Qualifying_Override, Settings.director.camerasQualifying_Overridden, Director_Cameras_Qualifying_Button );
+			Update( Director_Cameras_Intro, Settings.director.camerasIntro, Director_Cameras_Intro_Override, Settings.director.camerasIntro_Overridden, Director_Cameras_Intro_Button );
+			Update( Director_Cameras_Scenic, Settings.director.camerasScenic, Director_Cameras_Scenic_Override, Settings.director.camerasScenic_Overridden, Director_Cameras_Scenic_Button );
+			Update( Director_Cameras_Pits, Settings.director.camerasPits, Director_Cameras_Pits_Override, Settings.director.camerasPits_Overridden, Director_Cameras_Pits_Button );
+			Update( Director_Cameras_StartFinish, Settings.director.camerasStartFinish, Director_Cameras_StartFinish_Override, Settings.director.camerasStartFinish_Overridden, Director_Cameras_StartFinish_Button );
+			Update( Director_Cameras_Reverse, Settings.director.camerasReverse, Director_Cameras_Reverse_Override, Settings.director.camerasReverse_Overridden, Director_Cameras_Reverse_Button );
+			Update( Director_Cameras_Inside, Settings.director.camerasInside, Director_Cameras_Inside_Override, Settings.director.camerasInside_Overridden, Director_Cameras_Inside_Button );
+			Update( Director_Cameras_Close, Settings.director.camerasClose, Director_Cameras_Close_Override, Settings.director.camerasClose_Overridden, Director_Cameras_Close_Button );
+			Update( Director_Cameras_Medium, Settings.director.camerasMedium, Director_Cameras_Medium_Override, Settings.director.camerasMedium_Overridden, Director_Cameras_Medium_Button );
+			Update( Director_Cameras_Far, Settings.director.camerasFar, Director_Cameras_Far_Override, Settings.director.camerasFar_Overridden, Director_Cameras_Far_Button );
+			Update( Director_Cameras_VeryFar, Settings.director.camerasVeryFar, Director_Cameras_VeryFar_Override, Settings.director.camerasVeryFar_Overridden, Director_Cameras_VeryFar_Button );
+			Update( Director_Cameras_Custom1, Settings.director.camerasCustom1, Director_Cameras_Custom1_Override, Settings.director.camerasCustom1_Overridden, Director_Cameras_Custom1_Button );
+			Update( Director_Cameras_Custom2, Settings.director.camerasCustom2, Director_Cameras_Custom2_Override, Settings.director.camerasCustom2_Overridden, Director_Cameras_Custom2_Button );
+			Update( Director_Cameras_Custom3, Settings.director.camerasCustom3, Director_Cameras_Custom3_Override, Settings.director.camerasCustom3_Overridden, Director_Cameras_Custom3_Button );
+			Update( Director_Cameras_Custom4, Settings.director.camerasCustom4, Director_Cameras_Custom4_Override, Settings.director.camerasCustom4_Overridden, Director_Cameras_Custom4_Button );
+			Update( Director_Cameras_Custom5, Settings.director.camerasCustom5, Director_Cameras_Custom5_Override, Settings.director.camerasCustom5_Overridden, Director_Cameras_Custom5_Button );
+			Update( Director_Cameras_Custom6, Settings.director.camerasCustom6, Director_Cameras_Custom6_Override, Settings.director.camerasCustom6_Overridden, Director_Cameras_Custom6_Button );
 
-			Update( Director_SwitchDelay_Director, Settings.director.switchDelayDirector, Director_SwitchDelay_Director_Override, directorIsGlobal, Settings.director.switchDelayDirector_Overridden );
-			Update( Director_SwitchDelay_iRacing, Settings.director.switchDelayIracing, Director_SwitchDelay_iRacing_Override, directorIsGlobal, Settings.director.switchDelayIracing_Overridden );
-			Update( Director_SwitchDelay_RadioChatter, Settings.director.switchDelayRadioChatter, Director_SwitchDelay_RadioChatter_Override, directorIsGlobal, Settings.director.switchDelayRadioChatter_Overridden );
-			Update( Director_SwitchDelay_NotInRace, Settings.director.switchDelayNotInRace, Director_SwitchDelay_NotInRace_Override, directorIsGlobal, Settings.director.switchDelayNotInRace_Overridden );
+			Update( Director_SwitchDelay_Director, Settings.director.switchDelayDirector, Director_SwitchDelay_Director_Override, Settings.director.switchDelayDirector_Overridden );
+			Update( Director_SwitchDelay_iRacing, Settings.director.switchDelayIracing, Director_SwitchDelay_iRacing_Override, Settings.director.switchDelayIracing_Overridden );
+			Update( Director_SwitchDelay_RadioChatter, Settings.director.switchDelayRadioChatter, Director_SwitchDelay_RadioChatter_Override, Settings.director.switchDelayRadioChatter_Overridden );
+			Update( Director_SwitchDelay_NotInRace, Settings.director.switchDelayNotInRace, Director_SwitchDelay_NotInRace_Override, Settings.director.switchDelayNotInRace_Overridden );
 
-			Update( Director_Heat_MaxGapTime, Settings.director.heatMaxGapTime, Director_Heat_MaxGapTime_Override, directorIsGlobal, Settings.director.heatMaxGapTime_Overridden );
-			Update( Director_Heat_OvertakeBonus, Settings.director.heatOvertakeBonus, Director_Heat_OvertakeBonus_Override, directorIsGlobal, Settings.director.heatOvertakeBonus_Overridden );
-			Update( Director_Heat_PositionBattle, Settings.director.heatPositionBattle, Director_Heat_PositionBattle_Override, directorIsGlobal, Settings.director.heatPositionBattle_Overridden );
-			Update( Director_Heat_Bias, Settings.director.heatBias, Director_Heat_Bias_Override, directorIsGlobal, Settings.director.heatBias_Overridden );
+			Update( Director_Heat_MaxGapTime, Settings.director.heatMaxGapTime, Director_Heat_MaxGapTime_Override, Settings.director.heatMaxGapTime_Overridden );
+			Update( Director_Heat_OvertakeBonus, Settings.director.heatOvertakeBonus, Director_Heat_OvertakeBonus_Override, Settings.director.heatOvertakeBonus_Overridden );
+			Update( Director_Heat_PositionBattle, Settings.director.heatPositionBattle, Director_Heat_PositionBattle_Override, Settings.director.heatPositionBattle_Overridden );
+			Update( Director_Heat_Bias, Settings.director.heatBias, Director_Heat_Bias_Override, Settings.director.heatBias_Overridden );
 
-			Update( Director_PreferredCar_UserIds, Settings.director.preferredCarUserIds, Director_PreferredCar_UserIds_Override, directorIsGlobal, Settings.director.preferredCarUserIds_Overridden );
-			Update( Director_PreferredCar_CarNumbers, Settings.director.preferredCarCarNumbers, Director_PreferredCar_CarNumbers_Override, directorIsGlobal, Settings.director.preferredCarCarNumbers_Overridden );
-			Update( Director_PreferredCar_LockOnEnabled, Settings.director.preferredCarLockOnEnabled, Director_PreferredCar_LockOnEnabled_Override, directorIsGlobal, Settings.director.preferredCarLockOnEnabled_Overridden );
-			Update( Director_PreferredCar_LockOnMinimumHeat, Settings.director.preferredCarLockOnMinimumHeat, Director_PreferredCar_LockOnMinimumHeat_Override, directorIsGlobal, Settings.director.preferredCarLockOnMinimumHeat_Overridden );
+			Update( Director_PreferredCar_UserIds, Settings.director.preferredCarUserIds, Director_PreferredCar_UserIds_Override, Settings.director.preferredCarUserIds_Overridden );
+			Update( Director_PreferredCar_CarNumbers, Settings.director.preferredCarCarNumbers, Director_PreferredCar_CarNumbers_Override, Settings.director.preferredCarCarNumbers_Overridden );
+			Update( Director_PreferredCar_LockOnEnabled, Settings.director.preferredCarLockOnEnabled, Director_PreferredCar_LockOnEnabled_Override, Settings.director.preferredCarLockOnEnabled_Overridden );
+			Update( Director_PreferredCar_LockOnMinimumHeat, Settings.director.preferredCarLockOnMinimumHeat, Director_PreferredCar_LockOnMinimumHeat_Override, Settings.director.preferredCarLockOnMinimumHeat_Overridden );
 
-			Update( Director_Rules_Rule1_Enabled, Settings.director.rule1_Enabled, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule1_Camera, Settings.director.rule1_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule2_Enabled, Settings.director.rule2_Enabled, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule2_Camera, Settings.director.rule2_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule3_Enabled, Settings.director.rule3_Enabled, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule3_Camera, Settings.director.rule3_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule4_Enabled, Settings.director.rule4_Enabled, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule4_Camera, Settings.director.rule4_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule5_Enabled, Settings.director.rule5_Enabled, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule5_Camera, Settings.director.rule5_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule6_Enabled, Settings.director.rule6_Enabled, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule6_Camera, Settings.director.rule6_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule7_Enabled, Settings.director.rule7_Enabled, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule7_Camera, Settings.director.rule7_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule8_Enabled, Settings.director.rule8_Enabled, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule8_Camera, Settings.director.rule8_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule9_Enabled, Settings.director.rule9_Enabled, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule9_Camera, Settings.director.rule9_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule10_Enabled, Settings.director.rule10_Enabled, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule10_Camera, Settings.director.rule10_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule11_Enabled, Settings.director.rule11_Enabled, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule11_Camera, Settings.director.rule11_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule12_Enabled, Settings.director.rule12_Enabled, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule12_Camera, Settings.director.rule12_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule13_Enabled, Settings.director.rule13_Enabled, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule13_Camera, Settings.director.rule13_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule14_Enabled, Settings.director.rule14_Enabled, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
-			Update( Director_Rules_Rule14_Camera, Settings.director.rule14_Camera, Director_Rules_Override, directorIsGlobal, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule1_Enabled, Settings.director.rule1_Enabled, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule1_Camera, Settings.director.rule1_Camera, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule2_Enabled, Settings.director.rule2_Enabled, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule2_Camera, Settings.director.rule2_Camera, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule3_Enabled, Settings.director.rule3_Enabled, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule3_Camera, Settings.director.rule3_Camera, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule4_Enabled, Settings.director.rule4_Enabled, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule4_Camera, Settings.director.rule4_Camera, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule5_Enabled, Settings.director.rule5_Enabled, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule5_Camera, Settings.director.rule5_Camera, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule6_Enabled, Settings.director.rule6_Enabled, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule6_Camera, Settings.director.rule6_Camera, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule7_Enabled, Settings.director.rule7_Enabled, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule7_Camera, Settings.director.rule7_Camera, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule8_Enabled, Settings.director.rule8_Enabled, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule8_Camera, Settings.director.rule8_Camera, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule9_Enabled, Settings.director.rule9_Enabled, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule9_Camera, Settings.director.rule9_Camera, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule10_Enabled, Settings.director.rule10_Enabled, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule10_Camera, Settings.director.rule10_Camera, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule11_Enabled, Settings.director.rule11_Enabled, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule11_Camera, Settings.director.rule11_Camera, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule12_Enabled, Settings.director.rule12_Enabled, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule12_Camera, Settings.director.rule12_Camera, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule13_Enabled, Settings.director.rule13_Enabled, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule13_Camera, Settings.director.rule13_Camera, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule14_Enabled, Settings.director.rule14_Enabled, Director_Rules_Override, Settings.director.rules_Overridden );
+			Update( Director_Rules_Rule14_Camera, Settings.director.rule14_Camera, Director_Rules_Override, Settings.director.rules_Overridden );
 
-			Update( Director_AutoCam_Inside_Minimum, Settings.director.autoCamInsideMinimum, Director_AutoCam_Override, directorIsGlobal, Settings.director.autoCam_Overridden );
-			Update( Director_AutoCam_Inside_Maximum, Settings.director.autoCamInsideMaximum, Director_AutoCam_Override, directorIsGlobal, Settings.director.autoCam_Overridden );
-			Update( Director_AutoCam_Close_Maximum, Settings.director.autoCamCloseMaximum, Director_AutoCam_Override, directorIsGlobal, Settings.director.autoCam_Overridden );
-			Update( Director_AutoCam_Medium_Maximum, Settings.director.autoCamMediumMaximum, Director_AutoCam_Override, directorIsGlobal, Settings.director.autoCam_Overridden );
-			Update( Director_AutoCam_Far_Maximum, Settings.director.autoCamFarMaximum, Director_AutoCam_Override, directorIsGlobal, Settings.director.autoCam_Overridden );
+			Update( Director_AutoCam_Inside_Minimum, Settings.director.autoCamInsideMinimum, Director_AutoCam_Override, Settings.director.autoCam_Overridden );
+			Update( Director_AutoCam_Inside_Maximum, Settings.director.autoCamInsideMaximum, Director_AutoCam_Override, Settings.director.autoCam_Overridden );
+			Update( Director_AutoCam_Close_Maximum, Settings.director.autoCamCloseMaximum, Director_AutoCam_Override, Settings.director.autoCam_Overridden );
+			Update( Director_AutoCam_Medium_Maximum, Settings.director.autoCamMediumMaximum, Director_AutoCam_Override, Settings.director.autoCam_Overridden );
+			Update( Director_AutoCam_Far_Maximum, Settings.director.autoCamFarMaximum, Director_AutoCam_Override, Settings.director.autoCam_Overridden );
 
 			// overlay
 
@@ -713,15 +716,15 @@ namespace iRacingTVController
 
 			// overlay - general
 
-			Update( Overlay_General_Position_X, Overlay_General_Position_Y, Settings.overlay.position, Overlay_General_Position_Override, overlayIsGlobal, Settings.overlay.position_Overridden );
-			Update( Overlay_General_Size_W, Overlay_General_Size_H, Settings.overlay.size, Overlay_General_Size_Override, overlayIsGlobal, Settings.overlay.size_Overridden );
+			Update( Overlay_General_Position_X, Overlay_General_Position_Y, Settings.overlay.position, Overlay_General_Position_Override, Settings.overlay.position_Overridden );
+			Update( Overlay_General_Size_W, Overlay_General_Size_H, Settings.overlay.size, Overlay_General_Size_Override, Settings.overlay.size_Overridden );
 
 			// overlay - fonts
 
-			Update( Overlay_Font_FontA_Name, Settings.overlay.fontNames[ 0 ], Overlay_Font_FontA_Name_Override, overlayIsGlobal, Settings.overlay.fontNames_Overridden[ 0 ] );
-			Update( Overlay_Font_FontB_Name, Settings.overlay.fontNames[ 1 ], Overlay_Font_FontB_Name_Override, overlayIsGlobal, Settings.overlay.fontNames_Overridden[ 1 ] );
-			Update( Overlay_Font_FontC_Name, Settings.overlay.fontNames[ 2 ], Overlay_Font_FontC_Name_Override, overlayIsGlobal, Settings.overlay.fontNames_Overridden[ 2 ] );
-			Update( Overlay_Font_FontD_Name, Settings.overlay.fontNames[ 3 ], Overlay_Font_FontD_Name_Override, overlayIsGlobal, Settings.overlay.fontNames_Overridden[ 3 ] );
+			Update( Overlay_Font_FontA_Name, Settings.overlay.fontNames[ 0 ], Overlay_Font_FontA_Name_Override, Settings.overlay.fontNames_Overridden[ 0 ] );
+			Update( Overlay_Font_FontB_Name, Settings.overlay.fontNames[ 1 ], Overlay_Font_FontB_Name_Override, Settings.overlay.fontNames_Overridden[ 1 ] );
+			Update( Overlay_Font_FontC_Name, Settings.overlay.fontNames[ 2 ], Overlay_Font_FontC_Name_Override, Settings.overlay.fontNames_Overridden[ 2 ] );
+			Update( Overlay_Font_FontD_Name, Settings.overlay.fontNames[ 3 ], Overlay_Font_FontD_Name_Override, Settings.overlay.fontNames_Overridden[ 3 ] );
 
 			// overlay - images
 
@@ -747,122 +750,122 @@ namespace iRacingTVController
 
 			// overlay - start lights
 
-			Update( Overlay_StartLights_Enable, Settings.overlay.startLightsEnabled, Overlay_StartLights_Enable_Override, overlayIsGlobal, Settings.overlay.startLightsEnabled_Overridden );
-			Update( Overlay_StartLights_Position_X, Overlay_StartLights_Position_Y, Settings.overlay.startLightsPosition, Overlay_StartLights_Position_Override, overlayIsGlobal, Settings.overlay.startLightsPosition_Overridden );
+			Update( Overlay_StartLights_Enable, Settings.overlay.startLightsEnabled, Overlay_StartLights_Enable_Override, Settings.overlay.startLightsEnabled_Overridden );
+			Update( Overlay_StartLights_Position_X, Overlay_StartLights_Position_Y, Settings.overlay.startLightsPosition, Overlay_StartLights_Position_Override, Settings.overlay.startLightsPosition_Overridden );
 
 			// overlay - race status
 
-			Update( Overlay_RaceStatus_Enable, Settings.overlay.raceStatusEnabled, Overlay_RaceStatus_Enable_Override, overlayIsGlobal, Settings.overlay.raceStatusEnabled_Overridden );
-			Update( Overlay_RaceStatus_Position_X, Overlay_RaceStatus_Position_Y, Settings.overlay.raceStatusPosition, Overlay_RaceStatus_Position_Override, overlayIsGlobal, Settings.overlay.raceStatusPosition_Overridden );
+			Update( Overlay_RaceStatus_Enable, Settings.overlay.raceStatusEnabled, Overlay_RaceStatus_Enable_Override, Settings.overlay.raceStatusEnabled_Overridden );
+			Update( Overlay_RaceStatus_Position_X, Overlay_RaceStatus_Position_Y, Settings.overlay.raceStatusPosition, Overlay_RaceStatus_Position_Override, Settings.overlay.raceStatusPosition_Overridden );
 
 			// overlay - leaderboard
 
-			Update( Overlay_Leaderboard_Enable, Settings.overlay.leaderboardEnabled, Overlay_Leaderboard_Enable_Override, overlayIsGlobal, Settings.overlay.leaderboardEnabled_Overridden );
-			Update( Overlay_Leaderboard_Position_X, Overlay_Leaderboard_Position_Y, Settings.overlay.leaderboardPosition, Overlay_Leaderboard_Position_Override, overlayIsGlobal, Settings.overlay.leaderboardPosition_Overridden );
-			Update( Overlay_Leaderboard_FirstSlotPosition_X, Overlay_Leaderboard_FirstSlotPosition_Y, Settings.overlay.leaderboardFirstSlotPosition, Overlay_Leaderboard_FirstSlotPosition_Override, overlayIsGlobal, Settings.overlay.leaderboardFirstSlotPosition_Overridden );
-			Update( Overlay_Leaderboard_SlotCount, Settings.overlay.leaderboardSlotCount, Overlay_Leaderboard_SlotCount_Override, overlayIsGlobal, Settings.overlay.leaderboardSlotCount_Overridden );
-			Update( Overlay_Leaderboard_SlotSpacing_X, Overlay_Leaderboard_SlotSpacing_Y, Settings.overlay.leaderboardSlotSpacing, Overlay_Leaderboard_SlotSpacing_Override, overlayIsGlobal, Settings.overlay.leaderboardSlotSpacing_Overridden );
-			Update( Overlay_Leaderboard_SeparateBoards, Settings.overlay.leaderboardSeparateBoards, Overlay_Leaderboard_SeparateBoards_Override, overlayIsGlobal, Settings.overlay.leaderboardSeparateBoards_Overridden );
-			Update( Overlay_Leaderboard_MultiClassOffset_X, Overlay_Leaderboard_MultiClassOffset_Y, Settings.overlay.leaderboardMultiClassOffset, Overlay_Leaderboard_MultiClassOffset_Override, overlayIsGlobal, Settings.overlay.leaderboardMultiClassOffset_Overridden );
-			Update( Overlay_Leaderboard_MultiClassOffset_Type, leaderboardMultiClassOffsetTypeOptions.FirstOrDefault( x => x.Value == Settings.overlay.leaderboardMultiClassOffsetType ).Key, Overlay_Leaderboard_MultiClassOffset_Override, overlayIsGlobal, Settings.overlay.leaderboardMultiClassOffset_Overridden );
+			Update( Overlay_Leaderboard_Enable, Settings.overlay.leaderboardEnabled, Overlay_Leaderboard_Enable_Override, Settings.overlay.leaderboardEnabled_Overridden );
+			Update( Overlay_Leaderboard_Position_X, Overlay_Leaderboard_Position_Y, Settings.overlay.leaderboardPosition, Overlay_Leaderboard_Position_Override, Settings.overlay.leaderboardPosition_Overridden );
+			Update( Overlay_Leaderboard_FirstSlotPosition_X, Overlay_Leaderboard_FirstSlotPosition_Y, Settings.overlay.leaderboardFirstSlotPosition, Overlay_Leaderboard_FirstSlotPosition_Override, Settings.overlay.leaderboardFirstSlotPosition_Overridden );
+			Update( Overlay_Leaderboard_SlotCount, Settings.overlay.leaderboardSlotCount, Overlay_Leaderboard_SlotCount_Override, Settings.overlay.leaderboardSlotCount_Overridden );
+			Update( Overlay_Leaderboard_SlotSpacing_X, Overlay_Leaderboard_SlotSpacing_Y, Settings.overlay.leaderboardSlotSpacing, Overlay_Leaderboard_SlotSpacing_Override, Settings.overlay.leaderboardSlotSpacing_Overridden );
+			Update( Overlay_Leaderboard_SeparateBoards, Settings.overlay.leaderboardSeparateBoards, Overlay_Leaderboard_SeparateBoards_Override, Settings.overlay.leaderboardSeparateBoards_Overridden );
+			Update( Overlay_Leaderboard_MultiClassOffset_X, Overlay_Leaderboard_MultiClassOffset_Y, Settings.overlay.leaderboardMultiClassOffset, Overlay_Leaderboard_MultiClassOffset_Override, Settings.overlay.leaderboardMultiClassOffset_Overridden );
+			Update( Overlay_Leaderboard_MultiClassOffset_Type, leaderboardMultiClassOffsetTypeOptions.FirstOrDefault( x => x.Value == Settings.overlay.leaderboardMultiClassOffsetType ).Key, Overlay_Leaderboard_MultiClassOffset_Override, Settings.overlay.leaderboardMultiClassOffset_Overridden );
 
 			// overlay - track map
 
-			Update( Overlay_TrackMap_Enable, Settings.overlay.trackMapEnabled, Overlay_TrackMap_Enable_Override, overlayIsGlobal, Settings.overlay.trackMapEnabled_Overridden );
-			Update( Overlay_TrackMap_Reverse, Settings.overlay.trackMapReverse, Overlay_TrackMap_Reverse_Override, overlayIsGlobal, Settings.overlay.trackMapReverse_Overridden );
-			Update( Overlay_TrackMap_Position_X, Overlay_TrackMap_Position_Y, Settings.overlay.trackMapPosition, Overlay_TrackMap_Position_Override, overlayIsGlobal, Settings.overlay.trackMapPosition_Overridden );
-			Update( Overlay_TrackMap_Size_W, Overlay_TrackMap_Size_H, Settings.overlay.trackMapSize, Overlay_TrackMap_Size_Override, overlayIsGlobal, Settings.overlay.trackMapSize_Overridden );
-			Update( Overlay_TrackMap_TextureFilePath, Settings.overlay.trackMapTextureFilePath, Overlay_TrackMap_TextureFilePath_Override, overlayIsGlobal, Settings.overlay.trackMapTextureFilePath_Overridden, Overlay_TrackMap_TextureFilePath_Button );
-			Update( Overlay_TrackMap_LineThickness, Settings.overlay.trackMapLineThickness, Overlay_TrackMap_LineThickness_Override, overlayIsGlobal, Settings.overlay.trackMapLineThickness_Overridden );
-			Update( Overlay_TrackMap_LineColor_R, Overlay_TrackMap_LineColor_G, Overlay_TrackMap_LineColor_B, Overlay_TrackMap_LineColor_A, Settings.overlay.trackMapLineColor, Overlay_TrackMap_LineColor_Override, overlayIsGlobal, Settings.overlay.trackMapLineColor_Overridden );
-			Update( Overlay_TrackMap_StartFinishOffset, Settings.overlay.trackMapStartFinishOffset, Overlay_TrackMap_StartFinishOffset_Override, overlayIsGlobal, Settings.overlay.trackMapStartFinishOffset_Overridden );
+			Update( Overlay_TrackMap_Enable, Settings.overlay.trackMapEnabled, Overlay_TrackMap_Enable_Override, Settings.overlay.trackMapEnabled_Overridden );
+			Update( Overlay_TrackMap_Reverse, Settings.overlay.trackMapReverse, Overlay_TrackMap_Reverse_Override, Settings.overlay.trackMapReverse_Overridden );
+			Update( Overlay_TrackMap_Position_X, Overlay_TrackMap_Position_Y, Settings.overlay.trackMapPosition, Overlay_TrackMap_Position_Override, Settings.overlay.trackMapPosition_Overridden );
+			Update( Overlay_TrackMap_Size_W, Overlay_TrackMap_Size_H, Settings.overlay.trackMapSize, Overlay_TrackMap_Size_Override, Settings.overlay.trackMapSize_Overridden );
+			Update( Overlay_TrackMap_TextureFilePath, Settings.overlay.trackMapTextureFilePath, Overlay_TrackMap_TextureFilePath_Override, Settings.overlay.trackMapTextureFilePath_Overridden, Overlay_TrackMap_TextureFilePath_Button );
+			Update( Overlay_TrackMap_LineThickness, Settings.overlay.trackMapLineThickness, Overlay_TrackMap_LineThickness_Override, Settings.overlay.trackMapLineThickness_Overridden );
+			Update( Overlay_TrackMap_LineColor_R, Overlay_TrackMap_LineColor_G, Overlay_TrackMap_LineColor_B, Overlay_TrackMap_LineColor_A, Settings.overlay.trackMapLineColor, Overlay_TrackMap_LineColor_Override, Settings.overlay.trackMapLineColor_Overridden, Overlay_TrackMap_LineColor_Palette );
+			Update( Overlay_TrackMap_StartFinishOffset, Settings.overlay.trackMapStartFinishOffset, Overlay_TrackMap_StartFinishOffset_Override, Settings.overlay.trackMapStartFinishOffset_Overridden );
 
 			// overlay - pit lane
 
-			Update( Overlay_PitLane_Enable, Settings.overlay.pitLaneEnabled, Overlay_PitLane_Enable_Override, overlayIsGlobal, Settings.overlay.pitLaneEnabled_Overridden );
-			Update( Overlay_PitLane_Position_X, Overlay_PitLane_Position_Y, Settings.overlay.pitLanePosition, Overlay_PitLane_Position_Override, overlayIsGlobal, Settings.overlay.pitLanePosition_Overridden );
-			Update( Overlay_PitLane_Length, Settings.overlay.pitLaneLength, Overlay_PitLane_Length_Override, overlayIsGlobal, Settings.overlay.pitLaneLength_Overridden );
+			Update( Overlay_PitLane_Enable, Settings.overlay.pitLaneEnabled, Overlay_PitLane_Enable_Override, Settings.overlay.pitLaneEnabled_Overridden );
+			Update( Overlay_PitLane_Position_X, Overlay_PitLane_Position_Y, Settings.overlay.pitLanePosition, Overlay_PitLane_Position_Override, Settings.overlay.pitLanePosition_Overridden );
+			Update( Overlay_PitLane_Length, Settings.overlay.pitLaneLength, Overlay_PitLane_Length_Override, Settings.overlay.pitLaneLength_Overridden );
 
 			// overlay - voice of
 
-			Update( Overlay_VoiceOf_Enable, Settings.overlay.voiceOfEnabled, Overlay_VoiceOf_Enable_Override, overlayIsGlobal, Settings.overlay.voiceOfEnabled_Overridden );
-			Update( Overlay_VoiceOf_Position_X, Overlay_VoiceOf_Position_Y, Settings.overlay.voiceOfPosition, Overlay_VoiceOf_Position_Override, overlayIsGlobal, Settings.overlay.voiceOfPosition_Overridden );
+			Update( Overlay_VoiceOf_Enable, Settings.overlay.voiceOfEnabled, Overlay_VoiceOf_Enable_Override, Settings.overlay.voiceOfEnabled_Overridden );
+			Update( Overlay_VoiceOf_Position_X, Overlay_VoiceOf_Position_Y, Settings.overlay.voiceOfPosition, Overlay_VoiceOf_Position_Override, Settings.overlay.voiceOfPosition_Overridden );
 
 			// overlay - chyron
 
-			Update( Overlay_Chyron_Enable, Settings.overlay.chyronEnabled, Overlay_Chyron_Enable_Override, overlayIsGlobal, Settings.overlay.chyronEnabled_Overridden );
-			Update( Overlay_Chyron_Position_X, Overlay_Chyron_Position_Y, Settings.overlay.chyronPosition, Overlay_Chyron_Position_Override, overlayIsGlobal, Settings.overlay.chyronPosition_Overridden );
-			Update( Overlay_Chyron_Delay, Settings.overlay.chyronDelay, Overlay_Chyron_Delay_Override, overlayIsGlobal, Settings.overlay.chyronDelay_Overridden );
+			Update( Overlay_Chyron_Enable, Settings.overlay.chyronEnabled, Overlay_Chyron_Enable_Override, Settings.overlay.chyronEnabled_Overridden );
+			Update( Overlay_Chyron_Position_X, Overlay_Chyron_Position_Y, Settings.overlay.chyronPosition, Overlay_Chyron_Position_Override, Settings.overlay.chyronPosition_Overridden );
+			Update( Overlay_Chyron_Delay, Settings.overlay.chyronDelay, Overlay_Chyron_Delay_Override, Settings.overlay.chyronDelay_Overridden );
 
 			// overlay - battle chyron
 
-			Update( Overlay_BattleChyron_Enable, Settings.overlay.battleChyronEnabled, Overlay_BattleChyron_Enable_Override, overlayIsGlobal, Settings.overlay.battleChyronEnabled_Overridden );
-			Update( Overlay_BattleChyron_Position_X, Overlay_BattleChyron_Position_Y, Settings.overlay.battleChyronPosition, Overlay_BattleChyron_Position_Override, overlayIsGlobal, Settings.overlay.battleChyronPosition_Overridden );
-			Update( Overlay_BattleChyron_Distance, Settings.overlay.battleChyronDistance, Overlay_BattleChyron_Distance_Override, overlayIsGlobal, Settings.overlay.battleChyronDistance_Overridden );
-			Update( Overlay_BattleChyron_Delay, Settings.overlay.battleChyronDelay, Overlay_BattleChyron_Delay_Override, overlayIsGlobal, Settings.overlay.battleChyronDelay_Overridden );
+			Update( Overlay_BattleChyron_Enable, Settings.overlay.battleChyronEnabled, Overlay_BattleChyron_Enable_Override, Settings.overlay.battleChyronEnabled_Overridden );
+			Update( Overlay_BattleChyron_Position_X, Overlay_BattleChyron_Position_Y, Settings.overlay.battleChyronPosition, Overlay_BattleChyron_Position_Override, Settings.overlay.battleChyronPosition_Overridden );
+			Update( Overlay_BattleChyron_Distance, Settings.overlay.battleChyronDistance, Overlay_BattleChyron_Distance_Override, Settings.overlay.battleChyronDistance_Overridden );
+			Update( Overlay_BattleChyron_Delay, Settings.overlay.battleChyronDelay, Overlay_BattleChyron_Delay_Override, Settings.overlay.battleChyronDelay_Overridden );
 
 			// overlay - subtitle
 
-			Update( Overlay_Subtitle_Enable, Settings.overlay.subtitleEnabled, Overlay_Subtitle_Enable_Override, overlayIsGlobal, Settings.overlay.subtitleEnabled_Overridden );
-			Update( Overlay_Subtitle_Position_X, Overlay_Subtitle_Position_Y, Settings.overlay.subtitlePosition, Overlay_Subtitle_Position_Override, overlayIsGlobal, Settings.overlay.subtitlePosition_Overridden );
-			Update( Overlay_Subtitle_MaxSize_W, Overlay_Subtitle_MaxSize_H, Settings.overlay.subtitleMaxSize, Overlay_Subtitle_MaxSize_Override, overlayIsGlobal, Settings.overlay.subtitleMaxSize_Overridden );
-			Update( Overlay_Subtitle_TextPadding_X, Overlay_Subtitle_TextPadding_Y, Settings.overlay.subtitleTextPadding, Overlay_Subtitle_TextPadding_Override, overlayIsGlobal, Settings.overlay.subtitleTextPadding_Overridden );
+			Update( Overlay_Subtitle_Enable, Settings.overlay.subtitleEnabled, Overlay_Subtitle_Enable_Override, Settings.overlay.subtitleEnabled_Overridden );
+			Update( Overlay_Subtitle_Position_X, Overlay_Subtitle_Position_Y, Settings.overlay.subtitlePosition, Overlay_Subtitle_Position_Override, Settings.overlay.subtitlePosition_Overridden );
+			Update( Overlay_Subtitle_MaxSize_W, Overlay_Subtitle_MaxSize_H, Settings.overlay.subtitleMaxSize, Overlay_Subtitle_MaxSize_Override, Settings.overlay.subtitleMaxSize_Overridden );
+			Update( Overlay_Subtitle_TextPadding_X, Overlay_Subtitle_TextPadding_Y, Settings.overlay.subtitleTextPadding, Overlay_Subtitle_TextPadding_Override, Settings.overlay.subtitleTextPadding_Overridden );
 
 			// overlay - car number
 
-			Update( Overlay_CarNumber_OverrideEnable, Settings.overlay.carNumberOverrideEnabled, Overlay_CarNumber_OverrideEnable_Override, overlayIsGlobal, Settings.overlay.carNumberOverrideEnabled_Overridden );
-			Update( Overlay_CarNumber_ColorA_R, Overlay_CarNumber_ColorA_G, Overlay_CarNumber_ColorA_B, Overlay_CarNumber_ColorA_A, Settings.overlay.carNumberColorA, Overlay_CarNumber_ColorA_Override, overlayIsGlobal, Settings.overlay.carNumberColorA_Overridden, Overlay_CarNumber_ColorA_Palette );
-			Update( Overlay_CarNumber_ColorB_R, Overlay_CarNumber_ColorB_G, Overlay_CarNumber_ColorB_B, Overlay_CarNumber_ColorB_A, Settings.overlay.carNumberColorB, Overlay_CarNumber_ColorB_Override, overlayIsGlobal, Settings.overlay.carNumberColorB_Overridden, Overlay_CarNumber_ColorB_Palette );
-			Update( Overlay_CarNumber_ColorC_R, Overlay_CarNumber_ColorC_G, Overlay_CarNumber_ColorC_B, Overlay_CarNumber_ColorC_A, Settings.overlay.carNumberColorC, Overlay_CarNumber_ColorC_Override, overlayIsGlobal, Settings.overlay.carNumberColorC_Overridden, Overlay_CarNumber_ColorC_Palette );
-			Update( Overlay_CarNumber_Pattern, patternOptions.FirstOrDefault( x => x.Value == Settings.overlay.carNumberPattern ).Key, Overlay_CarNumber_Pattern_Override, overlayIsGlobal, Settings.overlay.carNumberPattern_Overridden );
-			Update( Overlay_CarNumber_Slant, slantOptions.FirstOrDefault( x => x.Value == Settings.overlay.carNumberSlant ).Key, Overlay_CarNumber_Slant_Override, overlayIsGlobal, Settings.overlay.carNumberSlant_Overridden );
+			Update( Overlay_CarNumber_OverrideEnable, Settings.overlay.carNumberOverrideEnabled, Overlay_CarNumber_OverrideEnable_Override, Settings.overlay.carNumberOverrideEnabled_Overridden );
+			Update( Overlay_CarNumber_ColorA_R, Overlay_CarNumber_ColorA_G, Overlay_CarNumber_ColorA_B, Overlay_CarNumber_ColorA_A, Settings.overlay.carNumberColorA, Overlay_CarNumber_ColorA_Override, Settings.overlay.carNumberColorA_Overridden, Overlay_CarNumber_ColorA_Palette );
+			Update( Overlay_CarNumber_ColorB_R, Overlay_CarNumber_ColorB_G, Overlay_CarNumber_ColorB_B, Overlay_CarNumber_ColorB_A, Settings.overlay.carNumberColorB, Overlay_CarNumber_ColorB_Override, Settings.overlay.carNumberColorB_Overridden, Overlay_CarNumber_ColorB_Palette );
+			Update( Overlay_CarNumber_ColorC_R, Overlay_CarNumber_ColorC_G, Overlay_CarNumber_ColorC_B, Overlay_CarNumber_ColorC_A, Settings.overlay.carNumberColorC, Overlay_CarNumber_ColorC_Override, Settings.overlay.carNumberColorC_Overridden, Overlay_CarNumber_ColorC_Palette );
+			Update( Overlay_CarNumber_Pattern, patternOptions.FirstOrDefault( x => x.Value == Settings.overlay.carNumberPattern ).Key, Overlay_CarNumber_Pattern_Override, Settings.overlay.carNumberPattern_Overridden );
+			Update( Overlay_CarNumber_Slant, slantOptions.FirstOrDefault( x => x.Value == Settings.overlay.carNumberSlant ).Key, Overlay_CarNumber_Slant_Override, Settings.overlay.carNumberSlant_Overridden );
 
 			// overlay - telemetry
 
-			Update( Overlay_Telemetry_PitColor_R, Overlay_Telemetry_PitColor_G, Overlay_Telemetry_PitColor_B, Overlay_Telemetry_PitColor_A, Settings.overlay.telemetryPitColor, Overlay_Telemetry_PitColor_Override, overlayIsGlobal, Settings.overlay.telemetryPitColor_Overridden, Overlay_Telemetry_PitColor_Palette );
-			Update( Overlay_Telemetry_OutColor_R, Overlay_Telemetry_OutColor_G, Overlay_Telemetry_OutColor_B, Overlay_Telemetry_OutColor_A, Settings.overlay.telemetryOutColor, Overlay_Telemetry_OutColor_Override, overlayIsGlobal, Settings.overlay.telemetryOutColor_Overridden, Overlay_Telemetry_OutColor_Palette );
-			Update( Overlay_Telemetry_IsInBetweenCars, Settings.overlay.telemetryIsBetweenCars, Overlay_Telemetry_IsInBetweenCars_Override, overlayIsGlobal, Settings.overlay.telemetryIsBetweenCars_Overridden );
-			Update( Overlay_Telemetry_Mode_ShowLaps, ( Settings.overlay.telemetryMode == 0 ), Overlay_Telemetry_Mode_Override, overlayIsGlobal, Settings.overlay.telemetryMode_Overridden );
-			Update( Overlay_TelemetryMode_ShowDistance, ( Settings.overlay.telemetryMode == 1 ), Overlay_Telemetry_Mode_Override, overlayIsGlobal, Settings.overlay.telemetryMode_Overridden );
-			Update( Overlay_Telemetry_Mode_ShowTime, ( Settings.overlay.telemetryMode == 2 ), Overlay_Telemetry_Mode_Override, overlayIsGlobal, Settings.overlay.telemetryMode_Overridden );
-			Update( Overlay_Telemetry_ShowAsNegativeNumbers, Settings.overlay.telemetryShowAsNegativeNumbers, Overlay_Telemetry_ShowAsNegativeNumbers_Override, overlayIsGlobal, Settings.overlay.telemetryShowAsNegativeNumbers_Overridden );
+			Update( Overlay_Telemetry_PitColor_R, Overlay_Telemetry_PitColor_G, Overlay_Telemetry_PitColor_B, Overlay_Telemetry_PitColor_A, Settings.overlay.telemetryPitColor, Overlay_Telemetry_PitColor_Override, Settings.overlay.telemetryPitColor_Overridden, Overlay_Telemetry_PitColor_Palette );
+			Update( Overlay_Telemetry_OutColor_R, Overlay_Telemetry_OutColor_G, Overlay_Telemetry_OutColor_B, Overlay_Telemetry_OutColor_A, Settings.overlay.telemetryOutColor, Overlay_Telemetry_OutColor_Override, Settings.overlay.telemetryOutColor_Overridden, Overlay_Telemetry_OutColor_Palette );
+			Update( Overlay_Telemetry_IsInBetweenCars, Settings.overlay.telemetryIsBetweenCars, Overlay_Telemetry_IsInBetweenCars_Override, Settings.overlay.telemetryIsBetweenCars_Overridden );
+			Update( Overlay_Telemetry_Mode_ShowLaps, ( Settings.overlay.telemetryMode == 0 ), Overlay_Telemetry_Mode_Override, Settings.overlay.telemetryMode_Overridden );
+			Update( Overlay_TelemetryMode_ShowDistance, ( Settings.overlay.telemetryMode == 1 ), Overlay_Telemetry_Mode_Override, Settings.overlay.telemetryMode_Overridden );
+			Update( Overlay_Telemetry_Mode_ShowTime, ( Settings.overlay.telemetryMode == 2 ), Overlay_Telemetry_Mode_Override, Settings.overlay.telemetryMode_Overridden );
+			Update( Overlay_Telemetry_ShowAsNegativeNumbers, Settings.overlay.telemetryShowAsNegativeNumbers, Overlay_Telemetry_ShowAsNegativeNumbers_Override, Settings.overlay.telemetryShowAsNegativeNumbers_Overridden );
 
 			// overlay - intro
 
-			Update( Overlay_Intro_Enable, Settings.overlay.introEnabled, Overlay_Intro_Enable_Override, overlayIsGlobal, Settings.overlay.introEnabled_Overridden );
-			Update( Overlay_Intro_LeftPosition_X, Overlay_Intro_LeftPosition_Y, Settings.overlay.introLeftPosition, Overlay_Intro_LeftPosition_Override, overlayIsGlobal, Settings.overlay.introLeftPosition_Overridden );
-			Update( Overlay_Intro_LeftScale, Settings.overlay.introLeftScale, Overlay_Intro_LeftScale_Override, overlayIsGlobal, Settings.overlay.introLeftScale_Overridden );
-			Update( Overlay_Intro_RightPosition_X, Overlay_Intro_RightPosition_Y, Settings.overlay.introRightPosition, Overlay_Intro_RightPosition_Override, overlayIsGlobal, Settings.overlay.introRightPosition_Overridden );
-			Update( Overlay_Intro_RightScale, Settings.overlay.introRightScale, Overlay_Intro_RightScale_Override, overlayIsGlobal, Settings.overlay.introRightScale_Overridden );
-			Update( Overlay_Intro_LeftStartTime, Settings.overlay.introLeftStartTime, Overlay_Intro_StartTime_Override, overlayIsGlobal, Settings.overlay.introStartTime_Overridden );
-			Update( Overlay_Intro_RightStartTime, Settings.overlay.introRightStartTime, Overlay_Intro_StartTime_Override, overlayIsGlobal, Settings.overlay.introStartTime_Overridden );
-			Update( Overlay_Intro_StartInterval, Settings.overlay.introStartInterval, Overlay_Intro_StartInterval_Override, overlayIsGlobal, Settings.overlay.introStartInterval_Overridden );
-			Update( Overlay_Intro_LeftInAnimationNumber, inAnimationOptions.FirstOrDefault( x => x.Value == Settings.overlay.introLeftInAnimationNumber ).Key, Overlay_Intro_InAnimationNumber_Override, overlayIsGlobal, Settings.overlay.introInAnimationNumber_Overridden );
-			Update( Overlay_Intro_RightInAnimationNumber, inAnimationOptions.FirstOrDefault( x => x.Value == Settings.overlay.introRightInAnimationNumber ).Key, Overlay_Intro_InAnimationNumber_Override, overlayIsGlobal, Settings.overlay.introInAnimationNumber_Overridden );
-			Update( Overlay_Intro_LeftOutAnimationNumber, outAnimationOptions.FirstOrDefault( x => x.Value == Settings.overlay.introLeftOutAnimationNumber ).Key, Overlay_Intro_OutAnimationNumber_Override, overlayIsGlobal, Settings.overlay.introOutAnimationNumber_Overridden );
-			Update( Overlay_Intro_RightOutAnimationNumber, outAnimationOptions.FirstOrDefault( x => x.Value == Settings.overlay.introRightOutAnimationNumber ).Key, Overlay_Intro_OutAnimationNumber_Override, overlayIsGlobal, Settings.overlay.introOutAnimationNumber_Overridden );
-			Update( Overlay_Intro_InTime, Settings.overlay.introInTime, Overlay_Intro_InTime_Override, overlayIsGlobal, Settings.overlay.introInTime_Overridden );
-			Update( Overlay_Intro_HoldTime, Settings.overlay.introHoldTime, Overlay_Intro_HoldTime_Override, overlayIsGlobal, Settings.overlay.introHoldTime_Overridden );
-			Update( Overlay_Intro_OutTime, Settings.overlay.introOutTime, Overlay_Intro_OutTime_Override, overlayIsGlobal, Settings.overlay.introOutTime_Overridden );
+			Update( Overlay_Intro_Enable, Settings.overlay.introEnabled, Overlay_Intro_Enable_Override, Settings.overlay.introEnabled_Overridden );
+			Update( Overlay_Intro_LeftPosition_X, Overlay_Intro_LeftPosition_Y, Settings.overlay.introLeftPosition, Overlay_Intro_LeftPosition_Override, Settings.overlay.introLeftPosition_Overridden );
+			Update( Overlay_Intro_LeftScale, Settings.overlay.introLeftScale, Overlay_Intro_LeftScale_Override, Settings.overlay.introLeftScale_Overridden );
+			Update( Overlay_Intro_RightPosition_X, Overlay_Intro_RightPosition_Y, Settings.overlay.introRightPosition, Overlay_Intro_RightPosition_Override, Settings.overlay.introRightPosition_Overridden );
+			Update( Overlay_Intro_RightScale, Settings.overlay.introRightScale, Overlay_Intro_RightScale_Override, Settings.overlay.introRightScale_Overridden );
+			Update( Overlay_Intro_LeftStartTime, Settings.overlay.introLeftStartTime, Overlay_Intro_StartTime_Override, Settings.overlay.introStartTime_Overridden );
+			Update( Overlay_Intro_RightStartTime, Settings.overlay.introRightStartTime, Overlay_Intro_StartTime_Override, Settings.overlay.introStartTime_Overridden );
+			Update( Overlay_Intro_StartInterval, Settings.overlay.introStartInterval, Overlay_Intro_StartInterval_Override, Settings.overlay.introStartInterval_Overridden );
+			Update( Overlay_Intro_LeftInAnimationNumber, inAnimationOptions.FirstOrDefault( x => x.Value == Settings.overlay.introLeftInAnimationNumber ).Key, Overlay_Intro_InAnimationNumber_Override, Settings.overlay.introInAnimationNumber_Overridden );
+			Update( Overlay_Intro_RightInAnimationNumber, inAnimationOptions.FirstOrDefault( x => x.Value == Settings.overlay.introRightInAnimationNumber ).Key, Overlay_Intro_InAnimationNumber_Override, Settings.overlay.introInAnimationNumber_Overridden );
+			Update( Overlay_Intro_LeftOutAnimationNumber, outAnimationOptions.FirstOrDefault( x => x.Value == Settings.overlay.introLeftOutAnimationNumber ).Key, Overlay_Intro_OutAnimationNumber_Override, Settings.overlay.introOutAnimationNumber_Overridden );
+			Update( Overlay_Intro_RightOutAnimationNumber, outAnimationOptions.FirstOrDefault( x => x.Value == Settings.overlay.introRightOutAnimationNumber ).Key, Overlay_Intro_OutAnimationNumber_Override, Settings.overlay.introOutAnimationNumber_Overridden );
+			Update( Overlay_Intro_InTime, Settings.overlay.introInTime, Overlay_Intro_InTime_Override, Settings.overlay.introInTime_Overridden );
+			Update( Overlay_Intro_HoldTime, Settings.overlay.introHoldTime, Overlay_Intro_HoldTime_Override, Settings.overlay.introHoldTime_Overridden );
+			Update( Overlay_Intro_OutTime, Settings.overlay.introOutTime, Overlay_Intro_OutTime_Override, Settings.overlay.introOutTime_Overridden );
 
 			// overlay - hud
 
-			Update( Overlay_Hud_Enable, Settings.overlay.hudEnabled, Overlay_Hud_Enable_Override, overlayIsGlobal, Settings.overlay.hudEnabled_Overridden );
-			Update( Overlay_Hud_Position_X, Overlay_Hud_Position_Y, Settings.overlay.hudPosition, Overlay_Hud_Position_Override, overlayIsGlobal, Settings.overlay.hudPosition_Overridden );
-			Update( Overlay_Hud_SpeechToTextPosition_X, Overlay_Hud_SpeechToTextPosition_Y, Settings.overlay.hudSpeechToTextPosition, Overlay_Hud_SpeechToTextPosition_Override, overlayIsGlobal, Settings.overlay.hudSpeechToTextPosition_Overridden );
-			Update( Overlay_Hud_SpeechToTextMaxSize_W, Overlay_Hud_SpeechToTextMaxSize_H, Settings.overlay.hudSpeechToTextMaxSize, Overlay_Hud_SpeechToTextMaxSize_Override, overlayIsGlobal, Settings.overlay.hudSpeechToTextMaxSize_Overridden );
-			Update( Overlay_Hud_SpeechToTextTextPadding_X, Overlay_Hud_SpeechToTextTextPadding_Y, Settings.overlay.hudSpeechToTextTextPadding, Overlay_Hud_SpeechToTextTextPadding_Override, overlayIsGlobal, Settings.overlay.hudSpeechToTextTextPadding_Overridden );
-			Update( Overlay_Hud_LocalWebcamPosition_X, Overlay_Hud_LocalWebcamPosition_Y, Settings.overlay.hudLocalWebcamPosition, Overlay_Hud_LocalWebcamPosition_Override, overlayIsGlobal, Settings.overlay.hudLocalWebcamPosition_Overridden );
-			Update( Overlay_Hud_LocalWebcamSize_W, Overlay_Hud_LocalWebcamSize_H, Settings.overlay.hudLocalWebcamSize, Overlay_Hud_LocalWebcamSize_Override, overlayIsGlobal, Settings.overlay.hudLocalWebcamSize_Overridden );
-			Update( Overlay_Hud_RemoteWebcamPosition_X, Overlay_Hud_RemoteWebcamPosition_Y, Settings.overlay.hudRemoteWebcamPosition, Overlay_Hud_RemoteWebcamPosition_Override, overlayIsGlobal, Settings.overlay.hudRemoteWebcamPosition_Overridden );
-			Update( Overlay_Hud_RemoteWebcamSize_W, Overlay_Hud_RemoteWebcamSize_H, Settings.overlay.hudRemoteWebcamSize, Overlay_Hud_RemoteWebcamSize_Override, overlayIsGlobal, Settings.overlay.hudRemoteWebcamSize_Overridden );
+			Update( Overlay_Hud_Enable, Settings.overlay.hudEnabled, Overlay_Hud_Enable_Override, Settings.overlay.hudEnabled_Overridden );
+			Update( Overlay_Hud_Position_X, Overlay_Hud_Position_Y, Settings.overlay.hudPosition, Overlay_Hud_Position_Override, Settings.overlay.hudPosition_Overridden );
+			Update( Overlay_Hud_SpeechToTextPosition_X, Overlay_Hud_SpeechToTextPosition_Y, Settings.overlay.hudSpeechToTextPosition, Overlay_Hud_SpeechToTextPosition_Override, Settings.overlay.hudSpeechToTextPosition_Overridden );
+			Update( Overlay_Hud_SpeechToTextMaxSize_W, Overlay_Hud_SpeechToTextMaxSize_H, Settings.overlay.hudSpeechToTextMaxSize, Overlay_Hud_SpeechToTextMaxSize_Override, Settings.overlay.hudSpeechToTextMaxSize_Overridden );
+			Update( Overlay_Hud_SpeechToTextTextPadding_X, Overlay_Hud_SpeechToTextTextPadding_Y, Settings.overlay.hudSpeechToTextTextPadding, Overlay_Hud_SpeechToTextTextPadding_Override, Settings.overlay.hudSpeechToTextTextPadding_Overridden );
+			Update( Overlay_Hud_LocalWebcamPosition_X, Overlay_Hud_LocalWebcamPosition_Y, Settings.overlay.hudLocalWebcamPosition, Overlay_Hud_LocalWebcamPosition_Override, Settings.overlay.hudLocalWebcamPosition_Overridden );
+			Update( Overlay_Hud_LocalWebcamSize_W, Overlay_Hud_LocalWebcamSize_H, Settings.overlay.hudLocalWebcamSize, Overlay_Hud_LocalWebcamSize_Override, Settings.overlay.hudLocalWebcamSize_Overridden );
+			Update( Overlay_Hud_RemoteWebcamPosition_X, Overlay_Hud_RemoteWebcamPosition_Y, Settings.overlay.hudRemoteWebcamPosition, Overlay_Hud_RemoteWebcamPosition_Override, Settings.overlay.hudRemoteWebcamPosition_Overridden );
+			Update( Overlay_Hud_RemoteWebcamSize_W, Overlay_Hud_RemoteWebcamSize_H, Settings.overlay.hudRemoteWebcamSize, Overlay_Hud_RemoteWebcamSize_Override, Settings.overlay.hudRemoteWebcamSize_Overridden );
 
 			// overlay - trainer
 
-			Update( Overlay_Trainer_Enable, Settings.overlay.trainerEnabled, Overlay_Trainer_Enable_Override, overlayIsGlobal, Settings.overlay.trainerEnabled_Overridden );
-			Update( Overlay_Trainer_Position_X, Overlay_Trainer_Position_Y, Settings.overlay.trainerPosition, Overlay_Trainer_Position_Override, overlayIsGlobal, Settings.overlay.trainerPosition_Overridden );
-			Update( Overlay_Trainer_Size_W, Overlay_Trainer_Size_H, Settings.overlay.trainerSize, Overlay_Trainer_Size_Override, overlayIsGlobal, Settings.overlay.trainerSize_Overridden );
-			Update( Overlay_Trainer_SpeedScale, Settings.overlay.trainerSpeedScale, Overlay_Trainer_SpeedScale_Override, overlayIsGlobal, Settings.overlay.trainerSpeedScale_Overridden );
+			Update( Overlay_Trainer_Enable, Settings.overlay.trainerEnabled, Overlay_Trainer_Enable_Override, Settings.overlay.trainerEnabled_Overridden );
+			Update( Overlay_Trainer_Position_X, Overlay_Trainer_Position_Y, Settings.overlay.trainerPosition, Overlay_Trainer_Position_Override, Settings.overlay.trainerPosition_Overridden );
+			Update( Overlay_Trainer_Size_W, Overlay_Trainer_Size_H, Settings.overlay.trainerSize, Overlay_Trainer_Size_Override, Settings.overlay.trainerSize_Overridden );
+			Update( Overlay_Trainer_SpeedScale, Settings.overlay.trainerSpeedScale, Overlay_Trainer_SpeedScale_Override, Settings.overlay.trainerSpeedScale_Overridden );
 
 			// web page
 
@@ -944,23 +947,21 @@ namespace iRacingTVController
 
 				Settings.UpdateCombinedOverlay();
 
-				var overlayIsGlobal = Settings.overlayLocal.filePath == Settings.relativeGlobalOverlaySettingsFilePath;
-
 				var settings = Settings.overlay.imageSettingsDataDictionary[ id ];
 
-				Update( Image_ImageType, settings.imageType, Image_ImageType_Override, overlayIsGlobal, settings.imageType_Overridden );
-				Update( Image_FallbackType, settings.fallbackType, Image_FallbackType_Override, overlayIsGlobal, settings.fallbackType_Overridden );
-				Update( Image_FilePath, settings.filePath, Image_FilePath_Override, overlayIsGlobal, settings.filePath_Overridden, Image_FilePath_Button );
-				Update( Image_Position_X, Image_Position_Y, settings.position, Image_Position_Override, overlayIsGlobal, settings.position_Overridden );
-				Update( Image_Size_W, Image_Size_H, settings.size, Image_Size_Override, overlayIsGlobal, settings.size_Overridden );
-				Update( Image_TintColor_R, Image_TintColor_G, Image_TintColor_B, Image_TintColor_A, settings.tintColor, Image_TintColor_Override, overlayIsGlobal, settings.tintColor_Overridden, Image_TintColor_Palette );
-				Update( Image_Border_L, Image_Border_B, Image_Border_R, Image_Border_T, settings.border, Image_Border_Override, overlayIsGlobal, settings.border_Overridden );
-				Update( Image_Frames_W, Image_Frames_H, settings.frameSize, Image_Frames_Override, overlayIsGlobal, settings.frames_Overridden );
-				Update( Image_Frames_Count, settings.frameCount, Image_Frames_Override, overlayIsGlobal, settings.frames_Overridden );
-				Update( Image_AnimationSpeed, settings.animationSpeed, Image_AnimationSpeed_Override, overlayIsGlobal, settings.animationSpeed_Overridden );
-				Update( Image_TilingEnabled, settings.tilingEnabled, Image_TilingEnabled_Override, overlayIsGlobal, settings.tilingEnabled_Overridden );
-				Update( Image_UseClassColors, settings.useClassColors, Image_UseClassColors_Override, overlayIsGlobal, settings.useClassColors_Overridden );
-				Update( Image_ClassColorStrength, settings.classColorStrength * 255.0f, Image_ClassColorStrength_Override, overlayIsGlobal, settings.classColorStrength_Overridden );
+				Update( Image_ImageType, settings.imageType, Image_ImageType_Override, settings.imageType_Overridden );
+				Update( Image_FallbackType, settings.fallbackType, Image_FallbackType_Override, settings.fallbackType_Overridden );
+				Update( Image_FilePath, settings.filePath, Image_FilePath_Override, settings.filePath_Overridden, Image_FilePath_Button );
+				Update( Image_Position_X, Image_Position_Y, settings.position, Image_Position_Override, settings.position_Overridden );
+				Update( Image_Size_W, Image_Size_H, settings.size, Image_Size_Override, settings.size_Overridden );
+				Update( Image_TintColor_R, Image_TintColor_G, Image_TintColor_B, Image_TintColor_A, settings.tintColor, Image_TintColor_Override, settings.tintColor_Overridden, Image_TintColor_Palette );
+				Update( Image_Border_L, Image_Border_B, Image_Border_R, Image_Border_T, settings.border, Image_Border_Override, settings.border_Overridden );
+				Update( Image_Frames_W, Image_Frames_H, settings.frameSize, Image_Frames_Override, settings.frames_Overridden );
+				Update( Image_Frames_Count, settings.frameCount, Image_Frames_Override, settings.frames_Overridden );
+				Update( Image_AnimationSpeed, settings.animationSpeed, Image_AnimationSpeed_Override, settings.animationSpeed_Overridden );
+				Update( Image_TilingEnabled, settings.tilingEnabled, Image_TilingEnabled_Override, settings.tilingEnabled_Overridden );
+				Update( Image_UseClassColors, settings.useClassColors, Image_UseClassColors_Override, settings.useClassColors_Overridden );
+				Update( Image_ClassColorStrength, settings.classColorStrength * 255.0f, Image_ClassColorStrength_Override, settings.classColorStrength_Overridden );
 
 				initializing--;
 			}
@@ -976,20 +977,18 @@ namespace iRacingTVController
 
 				Settings.UpdateCombinedOverlay();
 
-				var overlayIsGlobal = Settings.overlayLocal.filePath == Settings.relativeGlobalOverlaySettingsFilePath;
-
 				var settings = Settings.overlay.textSettingsDataDictionary[ id ];
 
-				Update( Text_FontIndex, settings.fontIndex, Text_FontIndex_Override, overlayIsGlobal, settings.fontIndex_Overridden );
-				Update( Text_FontSize, settings.fontSize, Text_FontSize_Override, overlayIsGlobal, settings.fontSize_Overridden );
-				Update( Text_Alignment, settings.alignment, Text_Alignment_Override, overlayIsGlobal, settings.alignment_Overridden );
-				Update( Text_Position_X, Text_Position_Y, settings.position, Text_Position_Override, overlayIsGlobal, settings.position_Overridden );
-				Update( Text_Size_W, Text_Size_H, settings.size, Text_Size_Override, overlayIsGlobal, settings.size_Overridden );
-				Update( Text_TintColor_R, Text_TintColor_G, Text_TintColor_B, Text_TintColor_A, settings.tintColor, Text_TintColor_Override, overlayIsGlobal, settings.tintColor_Overridden, Text_TintColor_Palette );
-				Update( Text_UseClassColors, settings.useClassColors, Text_UseClassColors_Override, overlayIsGlobal, settings.useClassColors_Overridden );
-				Update( Text_ClassColorStrength, settings.classColorStrength * 255.0f, Text_ClassColorStrength_Override, overlayIsGlobal, settings.classColorStrength_Overridden );
-				Update( Text_AllowOverflow, settings.allowOverflow, Text_AllowOverflow_Override, overlayIsGlobal, settings.allowOverflow_Overridden );
-				Update( Text_Content, settings.content, Text_Content_Override, overlayIsGlobal, settings.content_Overridden );
+				Update( Text_FontIndex, settings.fontIndex, Text_FontIndex_Override, settings.fontIndex_Overridden );
+				Update( Text_FontSize, settings.fontSize, Text_FontSize_Override, settings.fontSize_Overridden );
+				Update( Text_Alignment, settings.alignment, Text_Alignment_Override, settings.alignment_Overridden );
+				Update( Text_Position_X, Text_Position_Y, settings.position, Text_Position_Override, settings.position_Overridden );
+				Update( Text_Size_W, Text_Size_H, settings.size, Text_Size_Override, settings.size_Overridden );
+				Update( Text_TintColor_R, Text_TintColor_G, Text_TintColor_B, Text_TintColor_A, settings.tintColor, Text_TintColor_Override, settings.tintColor_Overridden, Text_TintColor_Palette );
+				Update( Text_UseClassColors, settings.useClassColors, Text_UseClassColors_Override, settings.useClassColors_Overridden );
+				Update( Text_ClassColorStrength, settings.classColorStrength * 255.0f, Text_ClassColorStrength_Override, settings.classColorStrength_Overridden );
+				Update( Text_AllowOverflow, settings.allowOverflow, Text_AllowOverflow_Override, settings.allowOverflow_Overridden );
+				Update( Text_Content, textContentOptions.FirstOrDefault( x => x.Value == settings.content ).Key, Text_Content_Override, settings.content_Overridden );
 
 				initializing--;
 			}
@@ -2684,36 +2683,14 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overridden = Overlay_General_Position_Override.IsChecked ?? false;
+				var update = false;
 
-				if ( Settings.overlayLocal.position_Overridden != overridden )
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.position_Overridden, Overlay_General_Position_Override, ref Settings.overlayLocal.position, Overlay_General_Position_X, Overlay_General_Position_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.size_Overridden, Overlay_General_Size_Override, ref Settings.overlayLocal.size, Overlay_General_Size_W, Overlay_General_Size_H );
+
+				if ( update )
 				{
-					Settings.overlayLocal.position_Overridden = overridden;
-
 					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.position_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.position.x = Overlay_General_Position_X.Value;
-					overlay.position.y = Overlay_General_Position_Y.Value;
-				}
-
-				overridden = Overlay_General_Size_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.size_Overridden != overridden )
-				{
-					Settings.overlayLocal.size_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.size_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.size.x = Overlay_General_Size_W.Value;
-					overlay.size.y = Overlay_General_Size_H.Value;
 				}
 
 				IPC.readyToSendSettings = true;
@@ -3173,157 +3150,24 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overlaySettings = Settings.overlayLocal.textSettingsDataDictionary[ (string) Overlay_Text_ID.SelectedItem ];
-				var globalSettings = Settings.overlayGlobal.textSettingsDataDictionary[ (string) Overlay_Text_ID.SelectedItem ];
+				var update = false;
 
-				var overridden = Text_FontIndex_Override.IsChecked ?? false;
+				var textSettings = Settings.overlayLocal.textSettingsDataDictionary[ (string) Overlay_Text_ID.SelectedItem ];
 
-				if ( overlaySettings.fontIndex_Overridden != overridden )
+				update |= UpdateOverlaySetting( ref textSettings.fontIndex_Overridden, Text_FontIndex_Override, ref textSettings.fontIndex, Text_FontIndex );
+				update |= UpdateOverlaySetting( ref textSettings.fontSize_Overridden, Text_FontSize_Override, ref textSettings.fontSize, Text_FontSize );
+				update |= UpdateOverlaySetting( ref textSettings.alignment_Overridden, Text_Alignment_Override, ref textSettings.alignment, Text_Alignment );
+				update |= UpdateOverlaySetting( ref textSettings.position_Overridden, Text_Position_Override, ref textSettings.position, Text_Position_X, Text_Position_Y );
+				update |= UpdateOverlaySetting( ref textSettings.size_Overridden, Text_Size_Override, ref textSettings.size, Text_Size_W, Text_Size_H );
+				update |= UpdateOverlaySetting( ref textSettings.tintColor_Overridden, Text_TintColor_Override, ref textSettings.tintColor, Text_TintColor_R, Text_TintColor_G, Text_TintColor_B, Text_TintColor_A );
+				update |= UpdateOverlaySetting( ref textSettings.useClassColors_Overridden, Text_UseClassColors_Override, ref textSettings.useClassColors, Text_UseClassColors );
+				update |= UpdateOverlaySetting( ref textSettings.classColorStrength_Overridden, Text_ClassColorStrength_Override, ref textSettings.classColorStrength, Text_ClassColorStrength, 255 );
+				update |= UpdateOverlaySetting( ref textSettings.allowOverflow_Overridden, Text_AllowOverflow_Override, ref textSettings.allowOverflow, Text_AllowOverflow );
+				update |= UpdateOverlaySetting( ref textSettings.content_Overridden, Text_Content_Override, ref textSettings.content, Text_Content, textContentOptions );
+
+				if ( update )
 				{
-					overlaySettings.fontIndex_Overridden = overridden;
-
 					UpdateOverlayText();
-				}
-				else
-				{
-					var settings = overlaySettings.fontIndex_Overridden ? overlaySettings : globalSettings;
-
-					settings.fontIndex = (SettingsText.FontIndex) Text_FontIndex.SelectedItem;
-				}
-
-				overridden = Text_FontSize_Override.IsChecked ?? false;
-
-				if ( overlaySettings.fontSize_Overridden != overridden )
-				{
-					overlaySettings.fontSize_Overridden = overridden;
-
-					UpdateOverlayText();
-				}
-				else
-				{
-					var settings = overlaySettings.fontSize_Overridden ? overlaySettings : globalSettings;
-
-					settings.fontSize = Text_FontSize.Value;
-				}
-
-				overridden = Text_Alignment_Override.IsChecked ?? false;
-
-				if ( overlaySettings.alignment_Overridden != overridden )
-				{
-					overlaySettings.alignment_Overridden = overridden;
-
-					UpdateOverlayText();
-				}
-				else
-				{
-					var settings = overlaySettings.alignment_Overridden ? overlaySettings : globalSettings;
-
-					settings.alignment = (TextAlignmentOptions) Text_Alignment.SelectedItem;
-				}
-
-				overridden = Text_Position_Override.IsChecked ?? false;
-
-				if ( overlaySettings.position_Overridden != overridden )
-				{
-					overlaySettings.position_Overridden = overridden;
-
-					UpdateOverlayText();
-				}
-				else
-				{
-					var settings = overlaySettings.position_Overridden ? overlaySettings : globalSettings;
-
-					settings.position = new Vector2( Text_Position_X.Value, Text_Position_Y.Value );
-				}
-
-				overridden = Text_Size_Override.IsChecked ?? false;
-
-				if ( overlaySettings.size_Overridden != overridden )
-				{
-					overlaySettings.size_Overridden = overridden;
-
-					UpdateOverlayText();
-				}
-				else
-				{
-					var settings = overlaySettings.size_Overridden ? overlaySettings : globalSettings;
-
-					settings.size = new Vector2( Text_Size_W.Value, Text_Size_H.Value );
-				}
-
-				overridden = Text_TintColor_Override.IsChecked ?? false;
-
-				if ( overlaySettings.tintColor_Overridden != overridden )
-				{
-					overlaySettings.tintColor_Overridden = overridden;
-
-					UpdateOverlayText();
-				}
-				else
-				{
-					var settings = overlaySettings.tintColor_Overridden ? overlaySettings : globalSettings;
-
-					settings.tintColor = new Color( Text_TintColor_R.Value, Text_TintColor_G.Value, Text_TintColor_B.Value, Text_TintColor_A.Value );
-				}
-
-				overridden = Text_UseClassColors_Override.IsChecked ?? false;
-
-				if ( overlaySettings.useClassColors_Overridden != overridden )
-				{
-					overlaySettings.useClassColors_Overridden = overridden;
-
-					UpdateOverlayText();
-				}
-				else
-				{
-					var settings = overlaySettings.useClassColors_Overridden ? overlaySettings : globalSettings;
-
-					settings.useClassColors = Text_UseClassColors.IsChecked ?? false;
-				}
-
-				overridden = Text_ClassColorStrength_Override.IsChecked ?? false;
-
-				if ( overlaySettings.classColorStrength_Overridden != overridden )
-				{
-					overlaySettings.classColorStrength_Overridden = overridden;
-
-					UpdateOverlayText();
-				}
-				else
-				{
-					var settings = overlaySettings.classColorStrength_Overridden ? overlaySettings : globalSettings;
-
-					settings.classColorStrength = (float) ( Text_ClassColorStrength.Value / 255.0f );
-				}
-
-				overridden = Text_AllowOverflow_Override.IsChecked ?? false;
-
-				if ( overlaySettings.allowOverflow_Overridden != overridden )
-				{
-					overlaySettings.allowOverflow_Overridden = overridden;
-
-					UpdateOverlayText();
-				}
-				else
-				{
-					var settings = overlaySettings.allowOverflow_Overridden ? overlaySettings : globalSettings;
-
-					settings.allowOverflow = Text_AllowOverflow.IsChecked ?? false;
-				}
-
-				overridden = Text_Content_Override.IsChecked ?? false;
-
-				if ( overlaySettings.content_Overridden != overridden )
-				{
-					overlaySettings.content_Overridden = overridden;
-
-					UpdateOverlayText();
-				}
-				else
-				{
-					var settings = overlaySettings.content_Overridden ? overlaySettings : globalSettings;
-
-					settings.content = (SettingsText.Content) Text_Content.SelectedItem;
 				}
 
 				IPC.readyToSendSettings = true;
@@ -3336,34 +3180,14 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overridden = Overlay_StartLights_Enable_Override.IsChecked ?? false;
+				var update = false;
 
-				if ( Settings.overlayLocal.startLightsEnabled_Overridden != overridden )
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.startLightsEnabled_Overridden, Overlay_StartLights_Enable_Override, ref Settings.overlayLocal.startLightsEnabled, Overlay_StartLights_Enable );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.startLightsPosition_Overridden, Overlay_StartLights_Position_Override, ref Settings.overlayLocal.startLightsPosition, Overlay_StartLights_Position_X, Overlay_StartLights_Position_Y );
+
+				if ( update )
 				{
-					Settings.overlayLocal.startLightsEnabled_Overridden = overridden;
-
 					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.startLightsEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.startLightsEnabled = Overlay_StartLights_Enable.IsChecked ?? false;
-				}
-
-				overridden = Overlay_StartLights_Position_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.startLightsPosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.startLightsPosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.startLightsPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.startLightsPosition = new Vector2( Overlay_StartLights_Position_X.Value, Overlay_StartLights_Position_Y.Value );
 				}
 
 				IPC.readyToSendSettings = true;
@@ -3376,34 +3200,14 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overridden = Overlay_RaceStatus_Enable_Override.IsChecked ?? false;
+				var update = false;
 
-				if ( Settings.overlayLocal.raceStatusEnabled_Overridden != overridden )
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.raceStatusEnabled_Overridden, Overlay_RaceStatus_Enable_Override, ref Settings.overlayLocal.raceStatusEnabled, Overlay_RaceStatus_Enable );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.raceStatusPosition_Overridden, Overlay_RaceStatus_Position_Override, ref Settings.overlayLocal.raceStatusPosition, Overlay_RaceStatus_Position_X, Overlay_RaceStatus_Position_Y );
+
+				if ( update )
 				{
-					Settings.overlayLocal.raceStatusEnabled_Overridden = overridden;
-
 					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.raceStatusEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.raceStatusEnabled = Overlay_RaceStatus_Enable.IsChecked ?? false;
-				}
-
-				overridden = Overlay_RaceStatus_Position_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.raceStatusPosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.raceStatusPosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.raceStatusPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.raceStatusPosition = new Vector2( Overlay_RaceStatus_Position_X.Value, Overlay_RaceStatus_Position_Y.Value );
 				}
 
 				IPC.readyToSendSettings = true;
@@ -3416,110 +3220,20 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overridden = Overlay_Leaderboard_Enable_Override.IsChecked ?? false;
+				var update = false;
 
-				if ( Settings.overlayLocal.leaderboardEnabled_Overridden != overridden )
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.leaderboardEnabled_Overridden, Overlay_Leaderboard_Enable_Override, ref Settings.overlayLocal.leaderboardEnabled, Overlay_Leaderboard_Enable );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.leaderboardPosition_Overridden, Overlay_Leaderboard_Position_Override, ref Settings.overlayLocal.leaderboardPosition, Overlay_Leaderboard_Position_X, Overlay_Leaderboard_Position_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.leaderboardFirstSlotPosition_Overridden, Overlay_Leaderboard_FirstSlotPosition_Override, ref Settings.overlayLocal.leaderboardFirstSlotPosition, Overlay_Leaderboard_FirstSlotPosition_X, Overlay_Leaderboard_FirstSlotPosition_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.leaderboardSlotCount_Overridden, Overlay_Leaderboard_SlotCount_Override, ref Settings.overlayLocal.leaderboardSlotCount, Overlay_Leaderboard_SlotCount );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.leaderboardSlotSpacing_Overridden, Overlay_Leaderboard_SlotSpacing_Override, ref Settings.overlayLocal.leaderboardSlotSpacing, Overlay_Leaderboard_SlotSpacing_X, Overlay_Leaderboard_SlotSpacing_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.leaderboardSeparateBoards_Overridden, Overlay_Leaderboard_SeparateBoards_Override, ref Settings.overlayLocal.leaderboardSeparateBoards, Overlay_Leaderboard_SeparateBoards );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.leaderboardMultiClassOffset_Overridden, Overlay_Leaderboard_MultiClassOffset_Override, ref Settings.overlayLocal.leaderboardMultiClassOffset, Overlay_Leaderboard_MultiClassOffset_X, Overlay_Leaderboard_MultiClassOffset_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.leaderboardMultiClassOffset_Overridden, Overlay_Leaderboard_MultiClassOffset_Override, ref Settings.overlayLocal.leaderboardMultiClassOffsetType, Overlay_Leaderboard_MultiClassOffset_Type, leaderboardMultiClassOffsetTypeOptions );
+
+				if ( update )
 				{
-					Settings.overlayLocal.leaderboardEnabled_Overridden = overridden;
-
 					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.leaderboardEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.leaderboardEnabled = Overlay_Leaderboard_Enable.IsChecked ?? false;
-				}
-
-				overridden = Overlay_Leaderboard_Position_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.leaderboardPosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.leaderboardPosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.leaderboardPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.leaderboardPosition = new Vector2( Overlay_Leaderboard_Position_X.Value, Overlay_Leaderboard_Position_Y.Value );
-				}
-
-				overridden = Overlay_Leaderboard_FirstSlotPosition_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.leaderboardFirstSlotPosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.leaderboardFirstSlotPosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.leaderboardFirstSlotPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.leaderboardFirstSlotPosition = new Vector2( Overlay_Leaderboard_FirstSlotPosition_X.Value, Overlay_Leaderboard_FirstSlotPosition_Y.Value );
-				}
-
-				overridden = Overlay_Leaderboard_SlotCount_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.leaderboardSlotCount_Overridden != overridden )
-				{
-					Settings.overlayLocal.leaderboardSlotCount_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.leaderboardSlotCount_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.leaderboardSlotCount = (int) Overlay_Leaderboard_SlotCount.Value;
-				}
-
-				overridden = Overlay_Leaderboard_SlotSpacing_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.leaderboardSlotSpacing_Overridden != overridden )
-				{
-					Settings.overlayLocal.leaderboardSlotSpacing_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.leaderboardSlotSpacing_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.leaderboardSlotSpacing = new Vector2( Overlay_Leaderboard_SlotSpacing_X.Value, Overlay_Leaderboard_SlotSpacing_Y.Value );
-				}
-
-				overridden = Overlay_Leaderboard_SeparateBoards_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.leaderboardSeparateBoards_Overridden != overridden )
-				{
-					Settings.overlayLocal.leaderboardSeparateBoards_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.leaderboardSeparateBoards_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.leaderboardSeparateBoards = Overlay_Leaderboard_SeparateBoards.IsChecked ?? false;
-				}
-
-				overridden = Overlay_Leaderboard_MultiClassOffset_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.leaderboardMultiClassOffset_Overridden != overridden )
-				{
-					Settings.overlayLocal.leaderboardMultiClassOffset_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.leaderboardMultiClassOffset_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.leaderboardMultiClassOffset = new Vector2( Overlay_Leaderboard_MultiClassOffset_X.Value, Overlay_Leaderboard_MultiClassOffset_Y.Value );
-					overlay.leaderboardMultiClassOffsetType = leaderboardMultiClassOffsetTypeOptions[ (string) Overlay_Leaderboard_MultiClassOffset_Type.SelectedItem ];
 				}
 
 				IPC.readyToSendSettings = true;
@@ -3587,129 +3301,20 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overridden = Overlay_TrackMap_Enable_Override.IsChecked ?? false;
+				var update = false;
 
-				if ( Settings.overlayLocal.trackMapEnabled_Overridden != overridden )
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.trackMapEnabled_Overridden, Overlay_TrackMap_Enable_Override, ref Settings.overlayLocal.trackMapEnabled, Overlay_TrackMap_Enable );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.trackMapReverse_Overridden, Overlay_TrackMap_Reverse_Override, ref Settings.overlayLocal.trackMapReverse, Overlay_TrackMap_Reverse );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.trackMapPosition_Overridden, Overlay_TrackMap_Position_Override, ref Settings.overlayLocal.trackMapPosition, Overlay_TrackMap_Position_X, Overlay_TrackMap_Position_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.trackMapSize_Overridden, Overlay_TrackMap_Size_Override, ref Settings.overlayLocal.trackMapSize, Overlay_TrackMap_Size_W, Overlay_TrackMap_Size_H );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.trackMapTextureFilePath_Overridden, Overlay_TrackMap_TextureFilePath_Override, ref Settings.overlayLocal.trackMapTextureFilePath, Overlay_TrackMap_TextureFilePath );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.trackMapLineThickness_Overridden, Overlay_TrackMap_LineThickness_Override, ref Settings.overlayLocal.trackMapLineThickness, Overlay_TrackMap_LineThickness );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.trackMapLineColor_Overridden, Overlay_TrackMap_LineColor_Override, ref Settings.overlayLocal.trackMapLineColor, Overlay_TrackMap_LineColor_R, Overlay_TrackMap_LineColor_G, Overlay_TrackMap_LineColor_B, Overlay_TrackMap_LineColor_A );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.trackMapStartFinishOffset_Overridden, Overlay_TrackMap_StartFinishOffset_Override, ref Settings.overlayLocal.trackMapStartFinishOffset, Overlay_TrackMap_StartFinishOffset );
+
+				if ( update )
 				{
-					Settings.overlayLocal.trackMapEnabled_Overridden = overridden;
-
 					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.trackMapEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.trackMapEnabled = Overlay_TrackMap_Enable.IsChecked ?? false;
-				}
-
-				overridden = Overlay_TrackMap_Reverse_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.trackMapReverse_Overridden != overridden )
-				{
-					Settings.overlayLocal.trackMapReverse_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.trackMapReverse_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.trackMapReverse = Overlay_TrackMap_Reverse.IsChecked ?? false;
-				}
-
-				overridden = Overlay_TrackMap_Position_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.trackMapPosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.trackMapPosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.trackMapPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.trackMapPosition.x = Overlay_TrackMap_Position_X.Value;
-					overlay.trackMapPosition.y = Overlay_TrackMap_Position_Y.Value;
-				}
-
-				overridden = Overlay_TrackMap_Size_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.trackMapSize_Overridden != overridden )
-				{
-					Settings.overlayLocal.trackMapSize_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.trackMapSize_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.trackMapSize.x = Overlay_TrackMap_Size_W.Value;
-					overlay.trackMapSize.y = Overlay_TrackMap_Size_H.Value;
-				}
-
-				overridden = Overlay_TrackMap_TextureFilePath_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.trackMapTextureFilePath_Overridden != overridden )
-				{
-					Settings.overlayLocal.trackMapTextureFilePath_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.trackMapTextureFilePath_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.trackMapTextureFilePath = Overlay_TrackMap_TextureFilePath.Text;
-				}
-
-				overridden = Overlay_TrackMap_LineThickness_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.trackMapLineThickness_Overridden != overridden )
-				{
-					Settings.overlayLocal.trackMapLineThickness_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.trackMapLineThickness_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.trackMapLineThickness = Overlay_TrackMap_LineThickness.Value;
-				}
-
-				overridden = Overlay_TrackMap_LineColor_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.trackMapLineColor_Overridden != overridden )
-				{
-					Settings.overlayLocal.trackMapLineColor_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.trackMapLineColor_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.trackMapLineColor.r = Overlay_TrackMap_LineColor_R.Value;
-					overlay.trackMapLineColor.g = Overlay_TrackMap_LineColor_G.Value;
-					overlay.trackMapLineColor.b = Overlay_TrackMap_LineColor_B.Value;
-					overlay.trackMapLineColor.a = Overlay_TrackMap_LineColor_A.Value;
-				}
-
-				overridden = Overlay_TrackMap_StartFinishOffset_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.trackMapStartFinishOffset_Overridden != overridden )
-				{
-					Settings.overlayLocal.trackMapStartFinishOffset_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.trackMapStartFinishOffset_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.trackMapStartFinishOffset = (int) Overlay_TrackMap_StartFinishOffset.Value;
 				}
 
 				IPC.readyToSendSettings = true;
@@ -3722,50 +3327,15 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overridden = Overlay_PitLane_Enable_Override.IsChecked ?? false;
+				var update = false;
 
-				if ( Settings.overlayLocal.pitLaneEnabled_Overridden != overridden )
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.pitLaneEnabled_Overridden, Overlay_PitLane_Enable_Override, ref Settings.overlayLocal.pitLaneEnabled, Overlay_PitLane_Enable );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.pitLanePosition_Overridden, Overlay_PitLane_Position_Override, ref Settings.overlayLocal.pitLanePosition, Overlay_PitLane_Position_X, Overlay_PitLane_Position_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.pitLaneLength_Overridden, Overlay_PitLane_Length_Override, ref Settings.overlayLocal.pitLaneLength, Overlay_PitLane_Length );
+
+				if ( update )
 				{
-					Settings.overlayLocal.pitLaneEnabled_Overridden = overridden;
-
 					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.pitLaneEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.pitLaneEnabled = Overlay_PitLane_Enable.IsChecked ?? false;
-				}
-
-				overridden = Overlay_PitLane_Position_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.pitLanePosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.pitLanePosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.pitLanePosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.pitLanePosition.x = Overlay_PitLane_Position_X.Value;
-					overlay.pitLanePosition.y = Overlay_PitLane_Position_Y.Value;
-				}
-
-				overridden = Overlay_PitLane_Length_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.pitLaneLength_Overridden != overridden )
-				{
-					Settings.overlayLocal.pitLaneLength_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.pitLaneLength_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.pitLaneLength = Overlay_PitLane_Length.Value;
 				}
 
 				IPC.readyToSendSettings = true;
@@ -3778,34 +3348,14 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overridden = Overlay_VoiceOf_Enable_Override.IsChecked ?? false;
+				var update = false;
 
-				if ( Settings.overlayLocal.voiceOfEnabled_Overridden != overridden )
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.voiceOfEnabled_Overridden, Overlay_VoiceOf_Enable_Override, ref Settings.overlayLocal.voiceOfEnabled, Overlay_VoiceOf_Enable );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.voiceOfPosition_Overridden, Overlay_VoiceOf_Position_Override, ref Settings.overlayLocal.voiceOfPosition, Overlay_VoiceOf_Position_X, Overlay_VoiceOf_Position_Y );
+
+				if ( update )
 				{
-					Settings.overlayLocal.voiceOfEnabled_Overridden = overridden;
-
 					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.voiceOfEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.voiceOfEnabled = Overlay_VoiceOf_Enable.IsChecked ?? false;
-				}
-
-				overridden = Overlay_VoiceOf_Position_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.voiceOfPosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.voiceOfPosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.voiceOfPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.voiceOfPosition = new Vector2( Overlay_VoiceOf_Position_X.Value, Overlay_VoiceOf_Position_Y.Value );
 				}
 
 				IPC.readyToSendSettings = true;
@@ -3818,49 +3368,15 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overridden = Overlay_Chyron_Enable_Override.IsChecked ?? false;
+				var update = false;
 
-				if ( Settings.overlayLocal.chyronEnabled_Overridden != overridden )
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.chyronEnabled_Overridden, Overlay_Chyron_Enable_Override, ref Settings.overlayLocal.chyronEnabled, Overlay_Chyron_Enable );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.chyronPosition_Overridden, Overlay_Chyron_Position_Override, ref Settings.overlayLocal.chyronPosition, Overlay_Chyron_Position_X, Overlay_Chyron_Position_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.chyronDelay_Overridden, Overlay_Chyron_Delay_Override, ref Settings.overlayLocal.chyronDelay, Overlay_Chyron_Delay );
+
+				if ( update )
 				{
-					Settings.overlayLocal.chyronEnabled_Overridden = overridden;
-
 					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.chyronEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.chyronEnabled = Overlay_Chyron_Enable.IsChecked ?? false;
-				}
-
-				overridden = Overlay_Chyron_Position_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.chyronPosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.chyronPosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.chyronPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.chyronPosition = new Vector2( Overlay_Chyron_Position_X.Value, Overlay_Chyron_Position_Y.Value );
-				}
-
-				overridden = Overlay_Chyron_Delay_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.chyronDelay_Overridden != overridden )
-				{
-					Settings.overlayLocal.chyronDelay_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.chyronDelay_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.chyronDelay = Overlay_Chyron_Delay.Value;
 				}
 
 				IPC.readyToSendSettings = true;
@@ -3873,64 +3389,16 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overridden = Overlay_BattleChyron_Enable_Override.IsChecked ?? false;
+				var update = false;
 
-				if ( Settings.overlayLocal.battleChyronEnabled_Overridden != overridden )
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.battleChyronEnabled_Overridden, Overlay_BattleChyron_Enable_Override, ref Settings.overlayLocal.battleChyronEnabled, Overlay_BattleChyron_Enable );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.battleChyronPosition_Overridden, Overlay_BattleChyron_Position_Override, ref Settings.overlayLocal.battleChyronPosition, Overlay_BattleChyron_Position_X, Overlay_BattleChyron_Position_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.battleChyronDistance_Overridden, Overlay_BattleChyron_Distance_Override, ref Settings.overlayLocal.battleChyronDistance, Overlay_BattleChyron_Distance );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.battleChyronDelay_Overridden, Overlay_BattleChyron_Delay_Override, ref Settings.overlayLocal.battleChyronDelay, Overlay_BattleChyron_Delay );
+
+				if ( update )
 				{
-					Settings.overlayLocal.battleChyronEnabled_Overridden = overridden;
-
 					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.battleChyronEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.battleChyronEnabled = Overlay_BattleChyron_Enable.IsChecked ?? false;
-				}
-
-				overridden = Overlay_BattleChyron_Position_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.battleChyronPosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.battleChyronPosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.battleChyronPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.battleChyronPosition = new Vector2( Overlay_BattleChyron_Position_X.Value, Overlay_BattleChyron_Position_Y.Value );
-				}
-
-				overridden = Overlay_BattleChyron_Distance_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.battleChyronDistance_Overridden != overridden )
-				{
-					Settings.overlayLocal.battleChyronDistance_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.battleChyronDistance_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.battleChyronDistance = Overlay_BattleChyron_Distance.Value;
-				}
-
-				overridden = Overlay_BattleChyron_Delay_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.battleChyronDelay_Overridden != overridden )
-				{
-					Settings.overlayLocal.battleChyronDelay_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.battleChyronDelay_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.battleChyronDelay = Overlay_BattleChyron_Delay.Value;
 				}
 
 				IPC.readyToSendSettings = true;
@@ -3943,64 +3411,16 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overridden = Overlay_Subtitle_Enable_Override.IsChecked ?? false;
+				var update = false;
 
-				if ( Settings.overlayLocal.subtitleEnabled_Overridden != overridden )
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.subtitleEnabled_Overridden, Overlay_Subtitle_Enable_Override, ref Settings.overlayLocal.subtitleEnabled, Overlay_Subtitle_Enable );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.subtitlePosition_Overridden, Overlay_Subtitle_Position_Override, ref Settings.overlayLocal.subtitlePosition, Overlay_Subtitle_Position_X, Overlay_Subtitle_Position_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.subtitleMaxSize_Overridden, Overlay_Subtitle_MaxSize_Override, ref Settings.overlayLocal.subtitleMaxSize, Overlay_Subtitle_MaxSize_W, Overlay_Subtitle_MaxSize_H );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.subtitleTextPadding_Overridden, Overlay_Subtitle_TextPadding_Override, ref Settings.overlayLocal.subtitleTextPadding, Overlay_Subtitle_TextPadding_X, Overlay_Subtitle_TextPadding_Y );
+
+				if ( update )
 				{
-					Settings.overlayLocal.subtitleEnabled_Overridden = overridden;
-
 					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.subtitleEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.subtitleEnabled = Overlay_Subtitle_Enable.IsChecked ?? false;
-				}
-
-				overridden = Overlay_Subtitle_Position_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.subtitlePosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.subtitlePosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.subtitlePosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.subtitlePosition = new Vector2( Overlay_Subtitle_Position_X.Value, Overlay_Subtitle_Position_Y.Value );
-				}
-
-				overridden = Overlay_Subtitle_MaxSize_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.subtitleMaxSize_Overridden != overridden )
-				{
-					Settings.overlayLocal.subtitleMaxSize_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.subtitleMaxSize_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.subtitleMaxSize = new Vector2( Overlay_Subtitle_MaxSize_W.Value, Overlay_Subtitle_MaxSize_H.Value );
-				}
-
-				overridden = Overlay_Subtitle_TextPadding_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.subtitleTextPadding_Overridden != overridden )
-				{
-					Settings.overlayLocal.subtitleTextPadding_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.subtitleTextPadding_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.subtitleTextPadding = new Vector2Int( Overlay_Subtitle_TextPadding_X.Value, Overlay_Subtitle_TextPadding_Y.Value );
 				}
 
 				IPC.readyToSendSettings = true;
@@ -4109,101 +3529,25 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overridden = Overlay_CarNumber_OverrideEnable_Override.IsChecked ?? false;
+				var update = false;
 
-				if ( Settings.overlayLocal.carNumberOverrideEnabled_Overridden != overridden )
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.carNumberOverrideEnabled_Overridden, Overlay_CarNumber_OverrideEnable_Override, ref Settings.overlayLocal.carNumberOverrideEnabled, Overlay_CarNumber_OverrideEnable );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.carNumberColorA_Overridden, Overlay_CarNumber_ColorA_Override, ref Settings.overlayLocal.carNumberColorA, Overlay_CarNumber_ColorA_R, Overlay_CarNumber_ColorA_G, Overlay_CarNumber_ColorA_B, Overlay_CarNumber_ColorA_A );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.carNumberColorB_Overridden, Overlay_CarNumber_ColorB_Override, ref Settings.overlayLocal.carNumberColorB, Overlay_CarNumber_ColorB_R, Overlay_CarNumber_ColorB_G, Overlay_CarNumber_ColorB_B, Overlay_CarNumber_ColorB_A );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.carNumberColorC_Overridden, Overlay_CarNumber_ColorC_Override, ref Settings.overlayLocal.carNumberColorC, Overlay_CarNumber_ColorC_R, Overlay_CarNumber_ColorC_G, Overlay_CarNumber_ColorC_B, Overlay_CarNumber_ColorC_A );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.carNumberPattern_Overridden, Overlay_CarNumber_Pattern_Override, ref Settings.overlayLocal.carNumberPattern, Overlay_CarNumber_Pattern, patternOptions );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.carNumberSlant_Overridden, Overlay_CarNumber_Slant_Override, ref Settings.overlayLocal.carNumberSlant, Overlay_CarNumber_Slant, slantOptions );
+
+				if ( update )
 				{
-					Settings.overlayLocal.carNumberOverrideEnabled_Overridden = overridden;
-
 					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.carNumberOverrideEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.carNumberOverrideEnabled = Overlay_CarNumber_OverrideEnable.IsChecked ?? false;
-				}
-
-				overridden = Overlay_CarNumber_ColorA_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.carNumberColorA_Overridden != overridden )
-				{
-					Settings.overlayLocal.carNumberColorA_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.carNumberColorA_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.carNumberColorA = new Color( Overlay_CarNumber_ColorA_R.Value, Overlay_CarNumber_ColorA_G.Value, Overlay_CarNumber_ColorA_B.Value, Overlay_CarNumber_ColorA_A.Value );
-				}
-
-				overridden = Overlay_CarNumber_ColorB_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.carNumberColorB_Overridden != overridden )
-				{
-					Settings.overlayLocal.carNumberColorB_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.carNumberColorB_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.carNumberColorB = new Color( Overlay_CarNumber_ColorB_R.Value, Overlay_CarNumber_ColorB_G.Value, Overlay_CarNumber_ColorB_B.Value, Overlay_CarNumber_ColorB_A.Value );
-				}
-
-				overridden = Overlay_CarNumber_ColorC_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.carNumberColorC_Overridden != overridden )
-				{
-					Settings.overlayLocal.carNumberColorC_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.carNumberColorC_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.carNumberColorC = new Color( Overlay_CarNumber_ColorC_R.Value, Overlay_CarNumber_ColorC_G.Value, Overlay_CarNumber_ColorC_B.Value, Overlay_CarNumber_ColorC_A.Value );
-				}
-
-				overridden = Overlay_CarNumber_Pattern_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.carNumberPattern_Overridden != overridden )
-				{
-					Settings.overlayLocal.carNumberPattern_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.carNumberPattern_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.carNumberPattern = patternOptions[ (string) Overlay_CarNumber_Pattern.SelectedItem ];
-				}
-
-				overridden = Overlay_CarNumber_Slant_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.carNumberSlant_Overridden != overridden )
-				{
-					Settings.overlayLocal.carNumberSlant_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.carNumberSlant_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.carNumberSlant = slantOptions[ (string) Overlay_CarNumber_Slant.SelectedItem ];
 				}
 
 				IPC.readyToSendSettings = true;
 
-				Settings.UpdateCombinedOverlay();
-
 				Settings.saveOverlayToFileQueued = true;
+
+				Settings.UpdateCombinedOverlay();
 
 				IRSDK.normalizedData.SessionUpdate();
 			}
@@ -4277,88 +3621,18 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overridden = Overlay_Telemetry_PitColor_Override.IsChecked ?? false;
+				var update = false;
 
-				if ( Settings.overlayLocal.telemetryPitColor_Overridden != overridden )
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.telemetryPitColor_Overridden, Overlay_Telemetry_PitColor_Override, ref Settings.overlayLocal.telemetryPitColor, Overlay_Telemetry_PitColor_R, Overlay_Telemetry_PitColor_G, Overlay_Telemetry_PitColor_B, Overlay_Telemetry_PitColor_A );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.telemetryOutColor_Overridden, Overlay_Telemetry_OutColor_Override, ref Settings.overlayLocal.telemetryOutColor, Overlay_Telemetry_OutColor_R, Overlay_Telemetry_OutColor_G, Overlay_Telemetry_OutColor_B, Overlay_Telemetry_OutColor_A );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.telemetryIsBetweenCars_Overridden, Overlay_Telemetry_IsInBetweenCars_Override, ref Settings.overlayLocal.telemetryIsBetweenCars, Overlay_Telemetry_IsInBetweenCars );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.telemetryIsBetweenCars_Overridden, Overlay_Telemetry_IsInBetweenCars_Override, ref Settings.overlayLocal.telemetryIsBetweenCars, Overlay_Telemetry_IsInBetweenCars );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.telemetryMode_Overridden, Overlay_Telemetry_Mode_Override, ref Settings.overlayLocal.telemetryMode, Overlay_Telemetry_Mode_ShowLaps, Overlay_TelemetryMode_ShowDistance, Overlay_Telemetry_Mode_ShowTime );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.telemetryShowAsNegativeNumbers_Overridden, Overlay_Telemetry_ShowAsNegativeNumbers_Override, ref Settings.overlayLocal.telemetryShowAsNegativeNumbers, Overlay_Telemetry_ShowAsNegativeNumbers );
+
+				if ( update )
 				{
-					Settings.overlayLocal.telemetryPitColor_Overridden = overridden;
-
 					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.telemetryPitColor_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.telemetryPitColor = new Color( Overlay_Telemetry_PitColor_R.Value, Overlay_Telemetry_PitColor_G.Value, Overlay_Telemetry_PitColor_B.Value, Overlay_Telemetry_PitColor_A.Value );
-				}
-
-				overridden = Overlay_Telemetry_OutColor_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.telemetryOutColor_Overridden != overridden )
-				{
-					Settings.overlayLocal.telemetryOutColor_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.telemetryOutColor_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.telemetryOutColor = new Color( Overlay_Telemetry_OutColor_R.Value, Overlay_Telemetry_OutColor_G.Value, Overlay_Telemetry_OutColor_B.Value, Overlay_Telemetry_OutColor_A.Value );
-				}
-
-				overridden = Overlay_Telemetry_IsInBetweenCars_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.telemetryIsBetweenCars_Overridden != overridden )
-				{
-					Settings.overlayLocal.telemetryIsBetweenCars_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.telemetryIsBetweenCars_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.telemetryIsBetweenCars = Overlay_Telemetry_IsInBetweenCars.IsChecked ?? false;
-				}
-
-				overridden = Overlay_Telemetry_Mode_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.telemetryMode_Overridden != overridden )
-				{
-					Settings.overlayLocal.telemetryMode_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.telemetryMode_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.telemetryMode = 0;
-
-					if ( Overlay_TelemetryMode_ShowDistance.IsChecked == true )
-					{
-						overlay.telemetryMode = 1;
-					}
-					else if ( Overlay_Telemetry_Mode_ShowTime.IsChecked == true )
-					{
-						overlay.telemetryMode = 2;
-					}
-				}
-
-				overridden = Overlay_Telemetry_ShowAsNegativeNumbers_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.telemetryShowAsNegativeNumbers_Overridden != overridden )
-				{
-					Settings.overlayLocal.telemetryShowAsNegativeNumbers_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.telemetryShowAsNegativeNumbers_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.telemetryShowAsNegativeNumbers = Overlay_Telemetry_ShowAsNegativeNumbers.IsChecked ?? false;
 				}
 
 				IPC.readyToSendSettings = true;
@@ -4371,187 +3645,24 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overridden = Overlay_Intro_Enable_Override.IsChecked ?? false;
+				var update = false;
 
-				if ( Settings.overlayLocal.introEnabled_Overridden != overridden )
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.introEnabled_Overridden, Overlay_Intro_Enable_Override, ref Settings.overlayLocal.introEnabled, Overlay_Intro_Enable );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.introLeftPosition_Overridden, Overlay_Intro_LeftPosition_Override, ref Settings.overlayLocal.introLeftPosition, Overlay_Intro_LeftPosition_X, Overlay_Intro_LeftPosition_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.introLeftScale_Overridden, Overlay_Intro_LeftScale_Override, ref Settings.overlayLocal.introLeftScale, Overlay_Intro_LeftScale );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.introRightPosition_Overridden, Overlay_Intro_RightPosition_Override, ref Settings.overlayLocal.introRightPosition, Overlay_Intro_RightPosition_X, Overlay_Intro_RightPosition_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.introRightScale_Overridden, Overlay_Intro_RightScale_Override, ref Settings.overlayLocal.introRightScale, Overlay_Intro_RightScale );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.introStartTime_Overridden, Overlay_Intro_StartTime_Override, ref Settings.overlayLocal.introLeftStartTime, Overlay_Intro_LeftStartTime, ref Settings.overlayLocal.introRightStartTime, Overlay_Intro_RightStartTime );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.introStartInterval_Overridden, Overlay_Intro_StartInterval_Override, ref Settings.overlayLocal.introStartInterval, Overlay_Intro_StartInterval );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.introInAnimationNumber_Overridden, Overlay_Intro_InAnimationNumber_Override, ref Settings.overlayLocal.introLeftInAnimationNumber, Overlay_Intro_LeftInAnimationNumber, ref Settings.overlayLocal.introRightInAnimationNumber, Overlay_Intro_RightInAnimationNumber, inAnimationOptions );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.introOutAnimationNumber_Overridden, Overlay_Intro_OutAnimationNumber_Override, ref Settings.overlayLocal.introLeftOutAnimationNumber, Overlay_Intro_LeftOutAnimationNumber, ref Settings.overlayLocal.introRightOutAnimationNumber, Overlay_Intro_RightOutAnimationNumber, outAnimationOptions );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.introInTime_Overridden, Overlay_Intro_InTime_Override, ref Settings.overlayLocal.introInTime, Overlay_Intro_InTime );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.introHoldTime_Overridden, Overlay_Intro_HoldTime_Override, ref Settings.overlayLocal.introHoldTime, Overlay_Intro_HoldTime );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.introOutTime_Overridden, Overlay_Intro_OutTime_Override, ref Settings.overlayLocal.introOutTime, Overlay_Intro_OutTime );
+
+				if ( update )
 				{
-					Settings.overlayLocal.introEnabled_Overridden = overridden;
-
 					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.introEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.introEnabled = Overlay_Intro_Enable.IsChecked ?? false;
-				}
-
-				overridden = Overlay_Intro_LeftPosition_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.introLeftPosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.introLeftPosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.introLeftPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.introLeftPosition = new Vector2( Overlay_Intro_LeftPosition_X.Value, Overlay_Intro_LeftPosition_Y.Value );
-				}
-
-				overridden = Overlay_Intro_LeftScale_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.introLeftScale_Overridden != overridden )
-				{
-					Settings.overlayLocal.introLeftScale_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.introLeftScale_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.introLeftScale = Overlay_Intro_LeftScale.Value;
-				}
-
-				overridden = Overlay_Intro_RightPosition_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.introRightPosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.introRightPosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.introRightPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.introRightPosition = new Vector2( Overlay_Intro_RightPosition_X.Value, Overlay_Intro_RightPosition_Y.Value );
-				}
-
-				overridden = Overlay_Intro_RightScale_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.introRightScale_Overridden != overridden )
-				{
-					Settings.overlayLocal.introRightScale_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.introRightScale_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.introRightScale = Overlay_Intro_RightScale.Value;
-				}
-
-				overridden = Overlay_Intro_StartTime_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.introStartTime_Overridden != overridden )
-				{
-					Settings.overlayLocal.introStartTime_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.introStartTime_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.introLeftStartTime = Overlay_Intro_LeftStartTime.Value;
-					overlay.introRightStartTime = Overlay_Intro_RightStartTime.Value;
-				}
-
-				overridden = Overlay_Intro_StartInterval_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.introStartInterval_Overridden != overridden )
-				{
-					Settings.overlayLocal.introStartInterval_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.introStartInterval_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.introStartInterval = Overlay_Intro_StartInterval.Value;
-				}
-
-				overridden = Overlay_Intro_InAnimationNumber_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.introInAnimationNumber_Overridden != overridden )
-				{
-					Settings.overlayLocal.introInAnimationNumber_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.introInAnimationNumber_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.introLeftInAnimationNumber = inAnimationOptions[ (string) Overlay_Intro_LeftInAnimationNumber.SelectedItem ];
-					overlay.introRightInAnimationNumber = inAnimationOptions[ (string) Overlay_Intro_RightInAnimationNumber.SelectedItem ];
-				}
-
-				overridden = Overlay_Intro_OutAnimationNumber_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.introOutAnimationNumber_Overridden != overridden )
-				{
-					Settings.overlayLocal.introOutAnimationNumber_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.introOutAnimationNumber_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.introLeftOutAnimationNumber = outAnimationOptions[ (string) Overlay_Intro_LeftOutAnimationNumber.SelectedItem ];
-					overlay.introRightOutAnimationNumber = outAnimationOptions[ (string) Overlay_Intro_RightOutAnimationNumber.SelectedItem ];
-				}
-
-				overridden = Overlay_Intro_InTime_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.introInTime_Overridden != overridden )
-				{
-					Settings.overlayLocal.introInTime_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.introInTime_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.introInTime = Overlay_Intro_InTime.Value;
-				}
-
-				overridden = Overlay_Intro_HoldTime_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.introHoldTime_Overridden != overridden )
-				{
-					Settings.overlayLocal.introHoldTime_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.introHoldTime_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.introHoldTime = Overlay_Intro_HoldTime.Value;
-				}
-
-				overridden = Overlay_Intro_OutTime_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.introOutTime_Overridden != overridden )
-				{
-					Settings.overlayLocal.introOutTime_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.introOutTime_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.introOutTime = Overlay_Intro_OutTime.Value;
 				}
 
 				IPC.readyToSendSettings = true;
@@ -4564,139 +3675,21 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overridden = Overlay_Hud_Enable_Override.IsChecked ?? false;
+				var update = false;
 
-				if ( Settings.overlayLocal.hudEnabled_Overridden != overridden )
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.hudEnabled_Overridden, Overlay_Hud_Enable_Override, ref Settings.overlayLocal.hudEnabled, Overlay_Hud_Enable );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.hudPosition_Overridden, Overlay_Hud_Position_Override, ref Settings.overlayLocal.hudPosition, Overlay_Hud_Position_X, Overlay_Hud_Position_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.hudSpeechToTextPosition_Overridden, Overlay_Hud_SpeechToTextPosition_Override, ref Settings.overlayLocal.hudSpeechToTextPosition, Overlay_Hud_SpeechToTextPosition_X, Overlay_Hud_SpeechToTextPosition_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.hudSpeechToTextMaxSize_Overridden, Overlay_Hud_SpeechToTextMaxSize_Override, ref Settings.overlayLocal.hudSpeechToTextMaxSize, Overlay_Hud_SpeechToTextMaxSize_W, Overlay_Hud_SpeechToTextMaxSize_H );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.hudSpeechToTextTextPadding_Overridden, Overlay_Hud_SpeechToTextTextPadding_Override, ref Settings.overlayLocal.hudSpeechToTextTextPadding, Overlay_Hud_SpeechToTextTextPadding_X, Overlay_Hud_SpeechToTextTextPadding_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.hudLocalWebcamPosition_Overridden, Overlay_Hud_LocalWebcamPosition_Override, ref Settings.overlayLocal.hudLocalWebcamPosition, Overlay_Hud_LocalWebcamPosition_X, Overlay_Hud_LocalWebcamPosition_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.hudLocalWebcamSize_Overridden, Overlay_Hud_LocalWebcamSize_Override, ref Settings.overlayLocal.hudLocalWebcamSize, Overlay_Hud_LocalWebcamSize_W, Overlay_Hud_LocalWebcamSize_H );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.hudRemoteWebcamPosition_Overridden, Overlay_Hud_RemoteWebcamPosition_Override, ref Settings.overlayLocal.hudRemoteWebcamPosition, Overlay_Hud_RemoteWebcamPosition_X, Overlay_Hud_RemoteWebcamPosition_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.hudRemoteWebcamSize_Overridden, Overlay_Hud_RemoteWebcamSize_Override, ref Settings.overlayLocal.hudRemoteWebcamSize, Overlay_Hud_RemoteWebcamSize_W, Overlay_Hud_RemoteWebcamSize_H );
+
+				if ( update )
 				{
-					Settings.overlayLocal.hudEnabled_Overridden = overridden;
-
 					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.hudEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.hudEnabled = Overlay_Hud_Enable.IsChecked ?? false;
-				}
-
-				overridden = Overlay_Hud_Position_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.hudPosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.hudPosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.hudPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.hudPosition = new Vector2( Overlay_Hud_Position_X.Value, Overlay_Hud_Position_Y.Value );
-				}
-
-				overridden = Overlay_Hud_SpeechToTextPosition_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.hudSpeechToTextPosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.hudSpeechToTextPosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.hudSpeechToTextPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.hudSpeechToTextPosition = new Vector2( Overlay_Hud_SpeechToTextPosition_X.Value, Overlay_Hud_SpeechToTextPosition_Y.Value );
-				}
-
-				overridden = Overlay_Hud_SpeechToTextMaxSize_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.hudSpeechToTextMaxSize_Overridden != overridden )
-				{
-					Settings.overlayLocal.hudSpeechToTextMaxSize_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.hudSpeechToTextMaxSize_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.hudSpeechToTextMaxSize = new Vector2( Overlay_Hud_SpeechToTextMaxSize_W.Value, Overlay_Hud_SpeechToTextMaxSize_H.Value );
-				}
-
-				overridden = Overlay_Hud_SpeechToTextTextPadding_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.hudSpeechToTextTextPadding_Overridden != overridden )
-				{
-					Settings.overlayLocal.hudSpeechToTextTextPadding_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.hudSpeechToTextTextPadding_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.hudSpeechToTextTextPadding = new Vector2Int( Overlay_Hud_SpeechToTextTextPadding_X.Value, Overlay_Hud_SpeechToTextTextPadding_Y.Value );
-				}
-
-				overridden = Overlay_Hud_LocalWebcamPosition_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.hudLocalWebcamPosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.hudLocalWebcamPosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.hudLocalWebcamPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.hudLocalWebcamPosition = new Vector2( Overlay_Hud_LocalWebcamPosition_X.Value, Overlay_Hud_LocalWebcamPosition_Y.Value );
-				}
-
-				overridden = Overlay_Hud_LocalWebcamSize_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.hudLocalWebcamSize_Overridden != overridden )
-				{
-					Settings.overlayLocal.hudLocalWebcamSize_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.hudLocalWebcamSize_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.hudLocalWebcamSize = new Vector2( Overlay_Hud_LocalWebcamSize_W.Value, Overlay_Hud_LocalWebcamSize_H.Value );
-				}
-
-				overridden = Overlay_Hud_RemoteWebcamPosition_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.hudRemoteWebcamPosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.hudRemoteWebcamPosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.hudRemoteWebcamPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.hudRemoteWebcamPosition = new Vector2( Overlay_Hud_RemoteWebcamPosition_X.Value, Overlay_Hud_RemoteWebcamPosition_Y.Value );
-				}
-
-				overridden = Overlay_Hud_RemoteWebcamSize_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.hudRemoteWebcamSize_Overridden != overridden )
-				{
-					Settings.overlayLocal.hudRemoteWebcamSize_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.hudRemoteWebcamSize_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.hudRemoteWebcamSize = new Vector2( Overlay_Hud_RemoteWebcamSize_W.Value, Overlay_Hud_RemoteWebcamSize_H.Value );
 				}
 
 				IPC.readyToSendSettings = true;
@@ -4709,72 +3702,240 @@ namespace iRacingTVController
 		{
 			if ( initializing == 0 )
 			{
-				var overridden = Overlay_Trainer_Enable_Override.IsChecked ?? false;
+				var update = false;
 
-				if ( Settings.overlayLocal.trainerEnabled_Overridden != overridden )
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.trainerEnabled_Overridden, Overlay_Trainer_Enable_Override, ref Settings.overlayLocal.trainerEnabled, Overlay_Trainer_Enable );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.trainerPosition_Overridden, Overlay_Trainer_Position_Override, ref Settings.overlayLocal.trainerPosition, Overlay_Trainer_Position_X, Overlay_Trainer_Position_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.trainerSize_Overridden, Overlay_Trainer_Size_Override, ref Settings.overlayLocal.trainerSize, Overlay_Trainer_Size_W, Overlay_Trainer_Size_H );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.trainerSpeedScale_Overridden, Overlay_Trainer_SpeedScale_Override, ref Settings.overlayLocal.trainerSpeedScale, Overlay_Trainer_SpeedScale );
+
+				if ( update )
 				{
-					Settings.overlayLocal.trainerEnabled_Overridden = overridden;
-
 					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.trainerEnabled_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.trainerEnabled = Overlay_Trainer_Enable.IsChecked ?? false;
-				}
-
-				overridden = Overlay_Trainer_Position_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.trainerPosition_Overridden != overridden )
-				{
-					Settings.overlayLocal.trainerPosition_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.trainerPosition_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.trainerPosition.x = Overlay_Trainer_Position_X.Value;
-					overlay.trainerPosition.y = Overlay_Trainer_Position_Y.Value;
-				}
-
-				overridden = Overlay_Trainer_Size_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.trainerSize_Overridden != overridden )
-				{
-					Settings.overlayLocal.trainerSize_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.trainerSize_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.trainerSize.x = Overlay_Trainer_Size_W.Value;
-					overlay.trainerSize.y = Overlay_Trainer_Size_H.Value;
-				}
-
-				overridden = Overlay_Trainer_SpeedScale_Override.IsChecked ?? false;
-
-				if ( Settings.overlayLocal.trainerSpeedScale_Overridden != overridden )
-				{
-					Settings.overlayLocal.trainerSpeedScale_Overridden = overridden;
-
-					Update();
-				}
-				else
-				{
-					var overlay = Settings.overlayLocal.trainerSpeedScale_Overridden ? Settings.overlayLocal : Settings.overlayGlobal;
-
-					overlay.trainerSpeedScale = Overlay_Trainer_SpeedScale.Value;
 				}
 
 				IPC.readyToSendSettings = true;
 
 				Settings.saveOverlayToFileQueued = true;
 			}
+		}
+
+		private bool UpdateOverlaySetting( ref bool overrideSetting, CheckBox overrideCheckbox, ref string value, TextBox textBoxInput )
+		{
+			if ( overrideCheckbox.IsChecked != overrideSetting )
+			{
+				overrideSetting = overrideCheckbox.IsChecked ?? false;
+
+				return true;
+			}
+
+			value = textBoxInput.Text;
+
+			return false;
+		}
+
+		private bool UpdateOverlaySetting( ref bool overrideSetting, CheckBox overrideCheckbox, ref bool value, CheckBox checkBoxInput )
+		{
+			if ( overrideCheckbox.IsChecked != overrideSetting )
+			{
+				overrideSetting = overrideCheckbox.IsChecked ?? false;
+
+				return true;
+			}
+
+			value = checkBoxInput.IsChecked ?? false;
+
+			return false;
+		}
+
+		private bool UpdateOverlaySetting( ref bool overrideSetting, CheckBox overrideCheckbox, ref int value, RadioButton checkBoxInput1, RadioButton checkBoxInput2, RadioButton checkBoxInput3 )
+		{
+			if ( overrideCheckbox.IsChecked != overrideSetting )
+			{
+				overrideSetting = overrideCheckbox.IsChecked ?? false;
+
+				return true;
+			}
+
+			if ( checkBoxInput1.IsChecked ?? false )
+			{
+				value = 0;
+			}
+			if ( checkBoxInput2.IsChecked ?? false )
+			{
+				value = 1;
+			}
+			else if ( checkBoxInput3.IsChecked ?? false )
+			{
+				value = 2;
+			}
+			else
+			{
+				value = 0;
+			}
+
+			return false;
+		}
+
+		private bool UpdateOverlaySetting( ref bool overrideSetting, CheckBox overrideCheckbox, ref int value, Number numberInput )
+		{
+			if ( overrideCheckbox.IsChecked != overrideSetting )
+			{
+				overrideSetting = overrideCheckbox.IsChecked ?? false;
+
+				return true;
+			}
+
+			value = numberInput.Value;
+
+			return false;
+		}
+
+		private bool UpdateOverlaySetting( ref bool overrideSetting, CheckBox overrideCheckbox, ref int value, Slider sliderInput )
+		{
+			if ( overrideCheckbox.IsChecked != overrideSetting )
+			{
+				overrideSetting = overrideCheckbox.IsChecked ?? false;
+
+				return true;
+			}
+
+			value = (int) sliderInput.Value;
+
+			return false;
+		}
+
+		private bool UpdateOverlaySetting( ref bool overrideSetting, CheckBox overrideCheckbox, ref float value, Slider sliderInput, float scale )
+		{
+			if ( overrideCheckbox.IsChecked != overrideSetting )
+			{
+				overrideSetting = overrideCheckbox.IsChecked ?? false;
+
+				return true;
+			}
+
+			value = (float) sliderInput.Value / scale;
+
+			return false;
+		}
+
+		private bool UpdateOverlaySetting( ref bool overrideSetting, CheckBox overrideCheckbox, ref float value, Decimal decimalInput )
+		{
+			if ( overrideCheckbox.IsChecked != overrideSetting )
+			{
+				overrideSetting = overrideCheckbox.IsChecked ?? false;
+
+				return true;
+			}
+
+			value = decimalInput.Value;
+
+			return false;
+		}
+
+		private bool UpdateOverlaySetting( ref bool overrideSetting, CheckBox overrideCheckbox, ref float value1, Decimal decimalInput1, ref float value2, Decimal decimalInput2 )
+		{
+			if ( overrideCheckbox.IsChecked != overrideSetting )
+			{
+				overrideSetting = overrideCheckbox.IsChecked ?? false;
+
+				return true;
+			}
+
+			value1 = decimalInput1.Value;
+			value2 = decimalInput2.Value;
+
+			return false;
+		}
+
+		private bool UpdateOverlaySetting( ref bool overrideSetting, CheckBox overrideCheckbox, ref Vector2 value, Number numberInput1, Number numberInput2 )
+		{
+			if ( overrideCheckbox.IsChecked != overrideSetting )
+			{
+				overrideSetting = overrideCheckbox.IsChecked ?? false;
+
+				return true;
+			}
+
+			value.x = numberInput1.Value;
+			value.y = numberInput2.Value;
+
+			return false;
+		}
+
+		private bool UpdateOverlaySetting( ref bool overrideSetting, CheckBox overrideCheckbox, ref Vector2Int value, Number numberInput1, Number numberInput2 )
+		{
+			if ( overrideCheckbox.IsChecked != overrideSetting )
+			{
+				overrideSetting = overrideCheckbox.IsChecked ?? false;
+
+				return true;
+			}
+
+			value.x = numberInput1.Value;
+			value.y = numberInput2.Value;
+
+			return false;
+		}
+
+		private bool UpdateOverlaySetting<type>( ref bool overrideSetting, CheckBox overrideCheckbox, ref type value, ComboBox comboBoxInput, SortedDictionary<string, type> dictionary )
+		{
+			if ( overrideCheckbox.IsChecked != overrideSetting )
+			{
+				overrideSetting = overrideCheckbox.IsChecked ?? false;
+
+				return true;
+			}
+
+			value = dictionary[ (string) comboBoxInput.SelectedItem ];
+
+			return false;
+		}
+
+		private bool UpdateOverlaySetting( ref bool overrideSetting, CheckBox overrideCheckbox, ref int value1, ComboBox comboBoxInput1, ref int value2, ComboBox comboBoxInput2, SortedDictionary<string, int> dictionary )
+		{
+			if ( overrideCheckbox.IsChecked != overrideSetting )
+			{
+				overrideSetting = overrideCheckbox.IsChecked ?? false;
+
+				return true;
+			}
+
+			value1 = dictionary[ (string) comboBoxInput1.SelectedItem ];
+			value2 = dictionary[ (string) comboBoxInput2.SelectedItem ];
+
+			return false;
+		}
+
+		private bool UpdateOverlaySetting( ref bool overrideSetting, CheckBox overrideCheckbox, ref Color value, Decimal decimalInput1, Decimal decimalInput2, Decimal decimalInput3, Decimal decimalInput4 )
+		{
+			if ( overrideCheckbox.IsChecked != overrideSetting )
+			{
+				overrideSetting = overrideCheckbox.IsChecked ?? false;
+
+				return true;
+			}
+
+			value.r = decimalInput1.Value;
+			value.g = decimalInput2.Value;
+			value.b = decimalInput3.Value;
+			value.a = decimalInput4.Value;
+
+			return false;
+		}
+
+		private bool UpdateOverlaySetting<type>( ref bool overrideSetting, CheckBox overrideCheckbox, ref type value, ComboBox comboBoxInput )
+		{
+			if ( overrideCheckbox.IsChecked != overrideSetting )
+			{
+				overrideSetting = overrideCheckbox.IsChecked ?? false;
+
+				return true;
+			}
+
+			value = (type) comboBoxInput.SelectedItem;
+
+			return false;
 		}
 
 		// web page

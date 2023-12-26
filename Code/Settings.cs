@@ -17,15 +17,12 @@ namespace iRacingTVController
 		public const string DirectorSettingsFolderName = "DirectorSettings";
 
 		public const string EditorSettingsFileName = "Editor.xml";
-		public const string GlobalSettingsFileName = "Global.xml";
 
 		public static string editorSettingsFolder = Program.documentsFolder;
 		public static string overlaySettingsFolder = Program.documentsFolder + OverlaySettingsFolderName + "\\";
 		public static string directorSettingsFolder = Program.documentsFolder + DirectorSettingsFolderName + "\\";
 
 		public static string relativeEditorSettingsFilePath = GetRelativePath( editorSettingsFolder + EditorSettingsFileName );
-		public static string relativeGlobalOverlaySettingsFilePath = GetRelativePath( overlaySettingsFolder + GlobalSettingsFileName );
-		public static string relativeGlobalDirectorSettingsFilePath = GetRelativePath( directorSettingsFolder + GlobalSettingsFileName );
 
 		public static SettingsEditor editor = new();
 
@@ -55,8 +52,12 @@ namespace iRacingTVController
 		{
 			LogFile.Write( "Initializing settings...\r\n" );
 
+			// initialize default settings
+
 			FixSettings( overlayGlobal );
 			FixSettings( overlayLocal );
+
+			// create directories
 
 			if ( !Directory.Exists( Program.documentsFolder ) )
 			{
@@ -77,6 +78,26 @@ namespace iRacingTVController
 				LogFile.Write( $"Directory {directorSettingsFolder} does not exist, creating it...\r\n" );
 
 				Directory.CreateDirectory( directorSettingsFolder );
+			}
+
+			// delete obsolete files
+
+			var obsoleteFilePath = $"{overlaySettingsFolder}Global.xml";
+
+			if ( File.Exists( obsoleteFilePath ) )
+			{
+				var renamedFilePath = $"{overlaySettingsFolder}Global (obsolete - delete me).xml";
+
+				File.Move( obsoleteFilePath, renamedFilePath );
+			}
+
+			obsoleteFilePath = $"{directorSettingsFolder}Global.xml";
+
+			if ( File.Exists( obsoleteFilePath ) )
+			{
+				var renamedFilePath = $"{directorSettingsFolder}Global (obsolete - delete me).xml";
+
+				File.Move( obsoleteFilePath, renamedFilePath );
 			}
 
 			// editor
@@ -108,13 +129,6 @@ namespace iRacingTVController
 
 			// overlay
 
-			if ( !File.Exists( relativeGlobalOverlaySettingsFilePath ) )
-			{
-				overlayGlobal.filePath = relativeGlobalOverlaySettingsFilePath;
-
-				Save( relativeGlobalOverlaySettingsFilePath, overlayGlobal );
-			}
-
 			var overlaySettingsFilePaths = Directory.EnumerateFiles( overlaySettingsFolder );
 
 			foreach ( var overlaySettingsFilePath in overlaySettingsFilePaths )
@@ -129,11 +143,6 @@ namespace iRacingTVController
 
 					FixSettings( settings );
 
-					if ( relativeOverlaySettingsFilePath == relativeGlobalOverlaySettingsFilePath )
-					{
-						overlayGlobal = settings;
-					}
-
 					overlayList.Add( settings );
 
 					if ( settings.filePath == editor.lastActiveOverlayFilePath )
@@ -147,7 +156,7 @@ namespace iRacingTVController
 				}
 			}
 
-			if ( overlayList.Count == 1 )
+			if ( overlayList.Count == 0 )
 			{
 				overlayLocal.filePath = GetRelativePath( overlaySettingsFolder + "My new overlay.xml" );
 
@@ -156,19 +165,12 @@ namespace iRacingTVController
 				saveOverlayToFileQueued = true;
 			}
 
-			if ( overlayLocal.filePath == string.Empty )
+			if ( overlayLocal.filePath == SettingsOverlay.defaultFilePath )
 			{
-				overlayLocal = overlayList[ 1 ];
+				overlayLocal = overlayList[ 0 ];
 			}
 
 			// director
-
-			if ( !File.Exists( relativeGlobalDirectorSettingsFilePath ) )
-			{
-				directorGlobal.filePath = relativeGlobalDirectorSettingsFilePath;
-
-				Save( relativeGlobalDirectorSettingsFilePath, directorGlobal );
-			}
 
 			var directorSettingsFilePaths = Directory.EnumerateFiles( directorSettingsFolder );
 
@@ -181,11 +183,6 @@ namespace iRacingTVController
 					var settings = (SettingsDirector) Load( relativeDirectorSettingsFilePath, typeof( SettingsDirector ) );
 
 					settings.filePath = relativeDirectorSettingsFilePath;
-
-					if ( relativeDirectorSettingsFilePath == relativeGlobalDirectorSettingsFilePath )
-					{
-						directorGlobal = settings;
-					}
 
 					directorList.Add( settings );
 
@@ -200,7 +197,7 @@ namespace iRacingTVController
 				}
 			}
 
-			if ( directorList.Count == 1 )
+			if ( directorList.Count == 0 )
 			{
 				directorLocal.filePath = GetRelativePath( directorSettingsFolder + "My new director.xml" );
 
@@ -209,9 +206,9 @@ namespace iRacingTVController
 				saveDirectorToFileQueued = true;
 			}
 
-			if ( directorLocal.filePath == string.Empty )
+			if ( directorLocal.filePath == SettingsDirector.defaultFilePath )
 			{
-				directorLocal = directorList[ 1 ];
+				directorLocal = directorList[ 0 ];
 			}
 
 			IPC.readyToSendSettings = true;
@@ -252,7 +249,7 @@ namespace iRacingTVController
 
 		public static void FixSettings( SettingsOverlay settings )
 		{
-			LogFile.Write( $"Fixing up overlay settings {settings.filePath}...\r\n" );
+			LogFile.Write( $"Fixing up overlay settings for {settings.filePath}...\r\n" );
 
 			settings.trackMapTextureFilePath = GetRelativePath( settings.trackMapTextureFilePath );
 
@@ -665,7 +662,6 @@ namespace iRacingTVController
 		{
 			try
 			{
-				Save( overlayGlobal.filePath, overlayGlobal );
 				Save( overlayLocal.filePath, overlayLocal );
 			}
 			catch ( IOException )
@@ -681,7 +677,6 @@ namespace iRacingTVController
 		{
 			try
 			{
-				Save( directorGlobal.filePath, directorGlobal );
 				Save( directorLocal.filePath, directorLocal );
 			}
 			catch ( IOException )

@@ -30,7 +30,9 @@ namespace iRacingTVController
 			Reverse
 		}
 
-		public string filePath = string.Empty;
+		public const string defaultFilePath = "default director settings";
+
+		public string filePath = defaultFilePath;
 
 		public string camerasPractice = "tv3, tv2";
 		public string camerasQualifying = "tv3, tv2";

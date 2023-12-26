@@ -839,7 +839,7 @@ namespace iRacingTVController
 			{
 				liveDataIntro.show = false;
 			}
-			else if ( IRSDK.normalizedData.sessionTimeDelta > 0 )
+			else if ( IRSDK.normalizedData.sessionTimeDelta >= 0 )
 			{
 				liveDataIntro.show = false;
 

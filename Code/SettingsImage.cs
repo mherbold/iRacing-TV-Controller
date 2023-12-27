@@ -15,12 +15,14 @@ namespace iRacingTVController
 			SeriesLogo = 2,
 			CarNumber = 3,
 			Car = 4,
-			Helmet = 5,
+			CarLogo = 7,
 			Driver = 6,
+			Helmet = 5,
 			MemberClubRegion = 8,
 			MemberID_A = 9,
 			MemberID_B = 10,
-			MemberID_C = 11
+			MemberID_C = 11,
+			TrackLogo = 12
 		}
 
 		public ImageType imageType = ImageType.None;

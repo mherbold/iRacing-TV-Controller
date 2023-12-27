@@ -43,6 +43,7 @@ namespace iRacingTVController
 		public LiveDataCustom[] liveDataCustom = new LiveDataCustom[ MaxNumCustom ];
 
 		public string seriesLogoTextureUrl = string.Empty;
+		public string trackLogoTextureUrl = string.Empty;
 
 		[NonSerialized, XmlIgnore] public int[] lastFrameBottomSplitFirstPosition = new int[ MaxNumClasses ];
 
@@ -159,6 +160,7 @@ namespace iRacingTVController
 			UpdateCustom();
 
 			seriesLogoTextureUrl = IRSDK.normalizedSession.seriesLogoTextureUrl;
+			trackLogoTextureUrl = IRSDK.normalizedSession.trackLogoTextureUrl;
 
 			IPC.readyToSendLiveData = true;
 		}
@@ -191,10 +193,11 @@ namespace iRacingTVController
 		{
 			foreach ( var normalizedCar in IRSDK.normalizedData.normalizedCars )
 			{
+				liveDataDrivers[ normalizedCar.carIdx ].carLogoTextureUrl = normalizedCar.carLogoTextureUrl;
 				liveDataDrivers[ normalizedCar.carIdx ].carNumberTextureUrl = normalizedCar.carNumberTextureUrl;
 				liveDataDrivers[ normalizedCar.carIdx ].carTextureUrl = normalizedCar.carTextureUrl;
-				liveDataDrivers[ normalizedCar.carIdx ].helmetTextureUrl = normalizedCar.helmetTextureUrl;
 				liveDataDrivers[ normalizedCar.carIdx ].driverTextureUrl = normalizedCar.driverTextureUrl;
+				liveDataDrivers[ normalizedCar.carIdx ].helmetTextureUrl = normalizedCar.helmetTextureUrl;
 				liveDataDrivers[ normalizedCar.carIdx ].memberClubRegionTextureUrl = normalizedCar.memberClubTextureUrl;
 				liveDataDrivers[ normalizedCar.carIdx ].memberIdTextureUrl_A = normalizedCar.memberIdTextureUrl_A;
 				liveDataDrivers[ normalizedCar.carIdx ].memberIdTextureUrl_B = normalizedCar.memberIdTextureUrl_B;

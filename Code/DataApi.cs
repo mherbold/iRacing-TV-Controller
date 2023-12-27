@@ -1,18 +1,18 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using Aydsko.iRacingData;
-using Aydsko.iRacingData.Tracks;
+using Aydsko.iRacingData.Cars;
 using Aydsko.iRacingData.Common;
 using Aydsko.iRacingData.Member;
-using System.Threading.Tasks;
+using Aydsko.iRacingData.Tracks;
 
 namespace iRacingTVController
 {
@@ -22,6 +22,7 @@ namespace iRacingTVController
 
 		public static IReadOnlyDictionary<string, TrackAssets>? trackAssetsDictionary = null;
 		public static CarClass[]? carClasses = null;
+		public static IReadOnlyDictionary<string, CarAssetDetail>? carAssetDetailsDictionary = null;
 
 		public static int? totalRateLimit = null;
 		public static int? rateLimitRemaining = null;
@@ -57,6 +58,11 @@ namespace iRacingTVController
 				}
 
 				if ( !GetCarClasses() )
+				{
+					return;
+				}
+
+				if ( !GetCarAssetDetails() )
 				{
 					return;
 				}
@@ -142,6 +148,43 @@ namespace iRacingTVController
 			return false;
 		}
 
+		public static bool GetCarAssetDetails()
+		{
+			if ( dataClient != null )
+			{
+				if ( carAssetDetailsDictionary == null )
+				{
+					try
+					{
+						LogFile.Write( "Fetching car asset details...\r\n" );
+
+						var task = dataClient.GetCarAssetDetailsAsync();
+
+						task.ConfigureAwait( false );
+						task.Wait();
+
+						var dataResponse = task.Result;
+
+						LogFile.Write( "Car asset details fetched!\r\n" );
+
+						totalRateLimit = dataResponse.TotalRateLimit;
+						rateLimitRemaining = dataResponse.RateLimitRemaining;
+						rateLimitReset = dataResponse.RateLimitReset;
+
+						carAssetDetailsDictionary = dataResponse.Data;
+
+						return true;
+					}
+					catch ( Exception exception )
+					{
+						MessageBox.Show( MainWindow.Instance, $"Could not connect to iRacing Data API to get the car classes.\r\n\r\n{exception.Message}", "iRacing Data API Error", MessageBoxButton.OK, MessageBoxImage.Information );
+					}
+				}
+			}
+
+			return false;
+		}
+
 		public static string? GetTrackMapLayerUrl( int trackID, string layerName )
 		{
 			if ( trackAssetsDictionary != null )
@@ -208,6 +251,36 @@ namespace iRacingTVController
 			}
 
 			return null;
+		}
+
+		public static string GetCarLogoUrl( string carID )
+		{
+			if ( carAssetDetailsDictionary != null )
+			{
+				var carAssetDetails = carAssetDetailsDictionary[ carID ];
+
+				if ( carAssetDetails != null )
+				{
+					return $"{CarAssetDetail.ImagePathBase}{carAssetDetails.Logo}";
+				}
+			}
+
+			return string.Empty;
+		}
+
+		public static string GetTrackLogoUrl( string trackID )
+		{
+			if ( trackAssetsDictionary != null )
+			{
+				var trackAssets = trackAssetsDictionary[ trackID ];
+
+				if ( trackAssets != null )
+				{
+					return $"{TrackAssets.ImagePathBase}{trackAssets.Logo}";
+				}
+			}
+
+			return string.Empty;
 		}
 
 		public static async Task<MemberProfile?> GetMemberProfileAsync( int customerID )

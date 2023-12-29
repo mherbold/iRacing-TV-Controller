@@ -5,11 +5,19 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+
 using irsdkSharp;
 using irsdkSharp.Enums;
 using irsdkSharp.Serialization;
 using irsdkSharp.Serialization.Models.Data;
 using irsdkSharp.Serialization.Models.Session;
+
+using CsvHelper;
+using System.Globalization;
+using System.Diagnostics;
+using System.Reflection;
+using System.Dynamic;
+using System.Windows;
 
 namespace iRacingTVController
 {
@@ -54,6 +62,11 @@ namespace iRacingTVController
 		public static readonly List<Message> messageBuffer = new();
 
 		public static AiRoster? aiRoster = null;
+
+		public static string driverCsvFilePath = string.Empty;
+		public static Dictionary<int, IDictionary<string, object>>? driverCsvFile = null;
+		public static FileSystemWatcher? driverCsvFileWatcher = null;
+		public static bool driverCsvFileNeedsToBeReloaded = false;
 
 		public static void Update()
 		{
@@ -109,6 +122,84 @@ namespace iRacingTVController
 			}
 
 			wasConnected = isConnected;
+
+			if ( driverCsvFilePath != Settings.overlayLocal.driverCsvFilePath )
+			{
+				driverCsvFilePath = Settings.overlayLocal.driverCsvFilePath;
+				driverCsvFile = null;
+				driverCsvFileWatcher = null;
+				driverCsvFileNeedsToBeReloaded = true;
+			}
+
+			if ( driverCsvFileNeedsToBeReloaded )
+			{
+				driverCsvFileNeedsToBeReloaded = false;
+
+				if ( driverCsvFilePath != string.Empty )
+				{
+					ReadDriverCsvFileIntoDictionary();
+
+					var fullPath = Settings.GetFullPath( driverCsvFilePath );
+
+					var directory = Path.GetDirectoryName( fullPath );
+					var fileName = Path.GetFileName( fullPath );
+
+					if ( directory != null )
+					{
+						driverCsvFileWatcher = new()
+						{
+							Path = directory,
+							NotifyFilter = NotifyFilters.LastWrite,
+							Filter = fileName,
+							EnableRaisingEvents = true,
+							IncludeSubdirectories = false
+						};
+
+						driverCsvFileWatcher.Changed += OnDriverCsvFileChanged;
+					}
+				}
+			}
+		}
+
+		private static void OnDriverCsvFileChanged( object sender, FileSystemEventArgs e )
+		{
+			driverCsvFileNeedsToBeReloaded = true;
+		}
+
+		private static void ReadDriverCsvFileIntoDictionary()
+		{
+			try
+			{
+				driverCsvFile = new();
+
+				using var reader = new StreamReader( driverCsvFilePath );
+				using var csv = new CsvReader( reader, CultureInfo.InvariantCulture );
+
+				var records = csv.GetRecords<dynamic>();
+
+				foreach ( IDictionary<string, object> dictionary in records )
+				{
+					if ( dictionary.ContainsKey( "ID" ) )
+					{
+						var id = dictionary[ "ID" ];
+
+						if ( id != null )
+						{
+							driverCsvFile.Add( int.Parse( (string) id ), dictionary );
+						}
+					}
+					else
+					{
+						throw new Exception( "The 'ID' column does not exist!" );
+					}
+				}
+			}
+			catch ( Exception exception )
+			{
+				driverCsvFile = null;
+
+				MessageBox.Show( MainWindow.Instance, $"We could not load the driver CSV file '{driverCsvFilePath}'.\r\n\r\nThe error message is as follows:\r\n\r\n{exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
+			}
 		}
 
 		public static void AddMessage( BroadcastMessageTypes msg, int var1, int var2, int var3 )

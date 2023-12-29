@@ -944,6 +944,14 @@ namespace iRacingTVController
 			liveDataHud.textLayer6 = GetTextContent( out liveDataHud.textLayer6Color, "HudTextLayer6", normalizedCar );
 			liveDataHud.textLayer7 = GetTextContent( out liveDataHud.textLayer7Color, "HudTextLayer7", normalizedCar );
 			liveDataHud.textLayer8 = GetTextContent( out liveDataHud.textLayer8Color, "HudTextLayer8", normalizedCar );
+			liveDataHud.textLayer9 = GetTextContent( out liveDataHud.textLayer9Color, "HudTextLayer9", normalizedCar );
+			liveDataHud.textLayer10 = GetTextContent( out liveDataHud.textLayer10Color, "HudTextLayer10", normalizedCar );
+			liveDataHud.textLayer11 = GetTextContent( out liveDataHud.textLayer11Color, "HudTextLayer11", normalizedCar );
+			liveDataHud.textLayer12 = GetTextContent( out liveDataHud.textLayer12Color, "HudTextLayer12", normalizedCar );
+			liveDataHud.textLayer13 = GetTextContent( out liveDataHud.textLayer13Color, "HudTextLayer13", normalizedCar );
+			liveDataHud.textLayer14 = GetTextContent( out liveDataHud.textLayer14Color, "HudTextLayer14", normalizedCar );
+			liveDataHud.textLayer15 = GetTextContent( out liveDataHud.textLayer15Color, "HudTextLayer15", normalizedCar );
+			liveDataHud.textLayer16 = GetTextContent( out liveDataHud.textLayer16Color, "HudTextLayer16", normalizedCar );
 
 			// speech to text
 
@@ -1073,11 +1081,23 @@ namespace iRacingTVController
 
 					return normalizedCar?.carNumber ?? "";
 
+				case SettingsText.Content.Driver_CsvProperty:
+
+					return GetCsvProperty( settingsText, normalizedCar );
+
 				case SettingsText.Content.Driver_FamilyName:
 
 					return normalizedCar?.familyName ?? "";
 
-				case SettingsText.Content.Driver_GapTimeToCarBehind:
+				case SettingsText.Content.Driver_CarBehind_CarNumber:
+
+					return ( normalizedCar?.normalizedCarBehind != null ) ? $"#{normalizedCar.normalizedCarBehind.carNumber}" : "";
+
+				case SettingsText.Content.Driver_CarBehind_CsvProperty:
+
+					return GetCsvProperty( settingsText, normalizedCar?.normalizedCarBehind );
+
+				case SettingsText.Content.Driver_CarBehind_GapTime:
 				{
 					var text = "-.--";
 
@@ -1103,7 +1123,23 @@ namespace iRacingTVController
 					return text;
 				}
 
-				case SettingsText.Content.Driver_GapTimeToCarInFront:
+				case SettingsText.Content.Driver_CarBehind_Name:
+
+					return normalizedCar?.normalizedCarBehind?.displayedName ?? "";
+
+				case SettingsText.Content.Driver_CarBehind_Position:
+
+					return ( normalizedCar?.normalizedCarBehind?.displayedPosition >= 1 ) ? "P" + normalizedCar.normalizedCarBehind.displayedPosition.ToString() : "";
+
+				case SettingsText.Content.Driver_CarInFront_CarNumber:
+
+					return ( normalizedCar?.normalizedCarInFront != null ) ? $"#{normalizedCar.normalizedCarInFront.carNumber}" : "";
+
+				case SettingsText.Content.Driver_CarInFront_CsvProperty:
+
+					return GetCsvProperty( settingsText, normalizedCar?.normalizedCarInFront );
+
+				case SettingsText.Content.Driver_CarInFront_GapTime:
 				{
 					var text = "-.--";
 
@@ -1128,6 +1164,14 @@ namespace iRacingTVController
 
 					return text;
 				}
+
+				case SettingsText.Content.Driver_CarInFront_Name:
+
+					return normalizedCar?.normalizedCarInFront?.displayedName ?? "";
+
+				case SettingsText.Content.Driver_CarInFront_Position:
+
+					return ( normalizedCar?.normalizedCarInFront?.displayedPosition >= 1 ) ? "P" + normalizedCar.normalizedCarInFront.displayedPosition.ToString() : "";
 
 				case SettingsText.Content.Driver_Gear:
 				{
@@ -1619,6 +1663,36 @@ namespace iRacingTVController
 			}
 
 			return tintColor;
+		}
+
+		public static string GetCsvProperty( SettingsText settingsText, NormalizedCar? normalizedCar )
+		{
+			if ( ( IRSDK.driverCsvFile != null ) && ( normalizedCar != null ) )
+			{
+				if ( IRSDK.driverCsvFile.ContainsKey( normalizedCar.userId ) )
+				{
+					var record = IRSDK.driverCsvFile[ normalizedCar.userId ];
+
+					if ( record != null )
+					{
+						if ( record.ContainsKey( settingsText.csvProperty ) )
+						{
+							var value = record[ settingsText.csvProperty ];
+
+							if ( value != null )
+							{
+								return (string) value;
+							}
+						}
+						else
+						{
+							return "(key not found)";
+						}
+					}
+				}
+			}
+
+			return string.Empty;
 		}
 
 		public static string GetOrdinal( int number )

@@ -1,6 +1,6 @@
 ﻿
 using System;
-
+using System.Xml.Serialization;
 using static iRacingTVController.Unity;
 
 namespace iRacingTVController
@@ -17,13 +17,23 @@ namespace iRacingTVController
 			FontD
 		};
 
-		public enum Content // last used = 36
+		public enum Content // last used = 45
 		{
 			None = 0,
 			Driver_CarNumber = 1,
 			Driver_FamilyName = 2,
-			Driver_GapTimeToCarBehind = 3,
-			Driver_GapTimeToCarInFront = 4,
+			Driver_CarBehind_CarNumber = 40,
+			Driver_CarBehind_CsvProperty = 44,
+			[XmlEnum( Name = "Driver_GapTimeToCarBehind" )]
+			Driver_CarBehind_GapTime = 3,
+			Driver_CarBehind_Name = 38,
+			Driver_CarBehind_Position = 42,
+			Driver_CarInFront_CarNumber = 41,
+			Driver_CarInFront_CsvProperty = 45,
+			[XmlEnum( Name = "Driver_GapTimeToCarInFront" )]
+			Driver_CarInFront_GapTime = 4,
+			Driver_CarInFront_Name = 39,
+			Driver_CarInFront_Position = 43,
 			Driver_Gear = 5,
 			Driver_GivenName = 6,
 			Driver_LapDelta = 7,
@@ -42,6 +52,7 @@ namespace iRacingTVController
 			Driver_RPM = 15,
 			Driver_Speed = 16,
 			Driver_Telemetry = 17,
+			Driver_CsvProperty = 37,
 			Leaderboard_ClassName = 18,
 			Leaderboard_ClassNameShort = 19,
 			Player_FuelRemainingInLaps = 20,
@@ -68,6 +79,7 @@ namespace iRacingTVController
 		public float classColorStrength = 0.5f;
 		public bool allowOverflow = true;
 		public Content content = Content.None;
+		public string csvProperty = string.Empty;
 
 		public bool fontIndex_Overridden = false;
 		public bool fontSize_Overridden = false;
@@ -79,5 +91,6 @@ namespace iRacingTVController
 		public bool classColorStrength_Overridden = false;
 		public bool allowOverflow_Overridden = false;
 		public bool content_Overridden = false;
+		public bool csvProperty_Overridden = false;
 	}
 }

@@ -32,6 +32,30 @@ namespace iRacingTVController
 		public string textLayer8 = string.Empty;
 		public Color textLayer8Color = Color.white;
 
+		public string textLayer9 = string.Empty;
+		public Color textLayer9Color = Color.white;
+
+		public string textLayer10 = string.Empty;
+		public Color textLayer10Color = Color.white;
+
+		public string textLayer11 = string.Empty;
+		public Color textLayer11Color = Color.white;
+
+		public string textLayer12 = string.Empty;
+		public Color textLayer12Color = Color.white;
+
+		public string textLayer13 = string.Empty;
+		public Color textLayer13Color = Color.white;
+
+		public string textLayer14 = string.Empty;
+		public Color textLayer14Color = Color.white;
+
+		public string textLayer15 = string.Empty;
+		public Color textLayer15Color = Color.white;
+
+		public string textLayer16 = string.Empty;
+		public Color textLayer16Color = Color.white;
+
 		public string speechToText = string.Empty;
 
 		public bool showLeftSpotterIndicator = false;

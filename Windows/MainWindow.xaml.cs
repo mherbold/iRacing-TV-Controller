@@ -718,6 +718,7 @@ namespace iRacingTVController
 
 			Update( Overlay_General_Position_X, Overlay_General_Position_Y, Settings.overlay.position, Overlay_General_Position_Override, Settings.overlay.position_Overridden );
 			Update( Overlay_General_Size_W, Overlay_General_Size_H, Settings.overlay.size, Overlay_General_Size_Override, Settings.overlay.size_Overridden );
+			Update( Overlay_General_DriverCsvFilePath, Settings.overlay.driverCsvFilePath, Overlay_General_DriverCsvFilePath_Override, Settings.overlay.driverCsvFilePath_Overridden, Overlay_General_DriverCsvFilePath_Button );
 
 			// overlay - fonts
 
@@ -989,6 +990,7 @@ namespace iRacingTVController
 				Update( Text_ClassColorStrength, settings.classColorStrength * 255.0f, Text_ClassColorStrength_Override, settings.classColorStrength_Overridden );
 				Update( Text_AllowOverflow, settings.allowOverflow, Text_AllowOverflow_Override, settings.allowOverflow_Overridden );
 				Update( Text_Content, textContentOptions.FirstOrDefault( x => x.Value == settings.content ).Key, Text_Content_Override, settings.content_Overridden );
+				Update( Text_CsvProperty, settings.csvProperty, Text_CsvProperty_Override, settings.csvProperty_Overridden );
 
 				initializing--;
 			}
@@ -2679,7 +2681,30 @@ namespace iRacingTVController
 			}
 		}
 
-		private void Overlay_General_Position_Size_Update( object sender, EventArgs e )
+		private void Overlay_General_DriverCsvFilePath_Button_Click( object sender, EventArgs e )
+		{
+			string currentFilePath = Overlay_General_DriverCsvFilePath.Text;
+
+			currentFilePath = Settings.GetFullPath( currentFilePath );
+
+			var openFileDialog = new OpenFileDialog()
+			{
+				Title = "Select a CSV File",
+				Filter = "CSV Files (*.csv)|*.csv|All files (*.*)|*.*",
+				InitialDirectory = ( currentFilePath == string.Empty ) ? Program.documentsFolder : Path.GetDirectoryName( currentFilePath ),
+				FileName = currentFilePath,
+				ValidateNames = true,
+				CheckPathExists = true,
+				CheckFileExists = true
+			};
+
+			if ( openFileDialog.ShowDialog() == true )
+			{
+				Overlay_General_DriverCsvFilePath.Text = Settings.GetRelativePath( openFileDialog.FileName );
+			}
+		}
+
+		private void Overlay_General_Update( object sender, EventArgs e )
 		{
 			if ( initializing == 0 )
 			{
@@ -2687,6 +2712,7 @@ namespace iRacingTVController
 
 				update |= UpdateOverlaySetting( ref Settings.overlayLocal.position_Overridden, Overlay_General_Position_Override, ref Settings.overlayLocal.position, Overlay_General_Position_X, Overlay_General_Position_Y );
 				update |= UpdateOverlaySetting( ref Settings.overlayLocal.size_Overridden, Overlay_General_Size_Override, ref Settings.overlayLocal.size, Overlay_General_Size_W, Overlay_General_Size_H );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.driverCsvFilePath_Overridden, Overlay_General_DriverCsvFilePath_Override, ref Settings.overlayLocal.driverCsvFilePath, Overlay_General_DriverCsvFilePath );
 
 				if ( update )
 				{
@@ -3164,6 +3190,7 @@ namespace iRacingTVController
 				update |= UpdateOverlaySetting( ref textSettings.classColorStrength_Overridden, Text_ClassColorStrength_Override, ref textSettings.classColorStrength, Text_ClassColorStrength, 255 );
 				update |= UpdateOverlaySetting( ref textSettings.allowOverflow_Overridden, Text_AllowOverflow_Override, ref textSettings.allowOverflow, Text_AllowOverflow );
 				update |= UpdateOverlaySetting( ref textSettings.content_Overridden, Text_Content_Override, ref textSettings.content, Text_Content, textContentOptions );
+				update |= UpdateOverlaySetting( ref textSettings.csvProperty_Overridden, Text_CsvProperty_Override, ref textSettings.csvProperty, Text_CsvProperty );
 
 				if ( update )
 				{

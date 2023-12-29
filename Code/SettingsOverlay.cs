@@ -25,9 +25,11 @@ namespace iRacingTVController
 
 		public Vector2Int position = new( 0, 0 );
 		public Vector2Int size = new( 1920, 1080 );
+		public string driverCsvFilePath = string.Empty;
 
 		public bool position_Overridden = false;
 		public bool size_Overridden = false;
+		public bool driverCsvFilePath_Overridden = false;
 
 		public string[] fontNames = new string[ MaxNumFonts ];
 		public string[] fontPaths = new string[ MaxNumFonts ];

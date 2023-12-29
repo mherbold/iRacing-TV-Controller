@@ -481,9 +481,17 @@ namespace iRacingTVController
 				{ "HudTextLayer3", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 444, y = 25 }, content = SettingsText.Content.Player_RPM } },
 				{ "HudTextLayer4", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 541, y = 25 }, content = SettingsText.Content.Driver_Speed } },
 				{ "HudTextLayer5", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 652, y = 25 }, content = SettingsText.Content.Driver_Gear } },
-				{ "HudTextLayer6", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 228, y = 25 }, content = SettingsText.Content.Driver_GapTimeToCarInFront } },
-				{ "HudTextLayer7", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 335, y = 25 }, content = SettingsText.Content.Driver_GapTimeToCarBehind } },
+				{ "HudTextLayer6", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 228, y = 25 }, content = SettingsText.Content.Driver_CarInFront_GapTime } },
+				{ "HudTextLayer7", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.TopLeft, position = { x = 335, y = 25 }, content = SettingsText.Content.Driver_CarBehind_GapTime } },
 				{ "HudTextLayer8", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 22, alignment = TextAlignmentOptions.Center, position = { x = 960, y = 540 }, content = SettingsText.Content.Driver_LapDelta } },
+				{ "HudTextLayer9", new SettingsText() },
+				{ "HudTextLayer10", new SettingsText() },
+				{ "HudTextLayer11", new SettingsText() },
+				{ "HudTextLayer12", new SettingsText() },
+				{ "HudTextLayer13", new SettingsText() },
+				{ "HudTextLayer14", new SettingsText() },
+				{ "HudTextLayer15", new SettingsText() },
+				{ "HudTextLayer16", new SettingsText() },
 				{ "IntroDriverTextLayer1", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 76, position = { x = -180, y = -167 }, content = SettingsText.Content.Driver_QualifyPosition_WithP } },
 				{ "IntroDriverTextLayer2", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 32, position = { x = -179, y = 46 }, tintColor = { r = 0.306f, g = 0.832f, b = 1 }, content = SettingsText.Content.Driver_QualifyTime } },
 				{ "IntroDriverTextLayer3", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 32, position = { x = -179, y = 110 }, content = SettingsText.Content.Driver_Name } },
@@ -709,9 +717,11 @@ namespace iRacingTVController
 
 				position = overlayLocal.position_Overridden ? overlayLocal.position : overlayGlobal.position,
 				size = overlayLocal.size_Overridden ? overlayLocal.size : overlayGlobal.size,
+				driverCsvFilePath = overlayLocal.driverCsvFilePath_Overridden ? overlayLocal.driverCsvFilePath : overlayGlobal.driverCsvFilePath,
 
 				position_Overridden = overlayLocal.position_Overridden,
 				size_Overridden = overlayLocal.size_Overridden,
+				driverCsvFilePath_Overridden = overlayLocal.driverCsvFilePath_Overridden,
 
 				fontNames = new string[ SettingsOverlay.MaxNumFonts ] {
 					overlayLocal.fontNames_Overridden[ 0 ] ? overlayLocal.fontNames[ 0 ] : overlayGlobal.fontNames[ 0 ],
@@ -966,6 +976,7 @@ namespace iRacingTVController
 						classColorStrength = item.Value.classColorStrength_Overridden ? item.Value.classColorStrength : globalItem.classColorStrength,
 						allowOverflow = item.Value.allowOverflow_Overridden ? item.Value.allowOverflow : globalItem.allowOverflow,
 						content = item.Value.content_Overridden ? item.Value.content : globalItem.content,
+						csvProperty = item.Value.csvProperty_Overridden ? item.Value.csvProperty : globalItem.csvProperty,
 
 						fontIndex_Overridden = item.Value.fontIndex_Overridden,
 						fontSize_Overridden = item.Value.fontSize_Overridden,
@@ -976,7 +987,8 @@ namespace iRacingTVController
 						useClassColors_Overridden = item.Value.useClassColors_Overridden,
 						classColorStrength_Overridden = item.Value.classColorStrength_Overridden,
 						allowOverflow_Overridden = item.Value.allowOverflow_Overridden,
-						content_Overridden = item.Value.content_Overridden
+						content_Overridden = item.Value.content_Overridden,
+						csvProperty_Overridden = item.Value.csvProperty_Overridden,
 					};
 				}
 			}

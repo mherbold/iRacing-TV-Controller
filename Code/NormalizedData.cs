@@ -839,7 +839,7 @@ namespace iRacingTVController
 
 						var deltaInterpolatedDeltaTime = ( normalizedCar.interpolatedDeltaTime - normalizedCar.lastInterpolatedDeltaTime ) * 1000;
 
-						normalizedCar.interpolatedDeltaInterpolatedDeltaTime = normalizedCar.interpolatedDeltaInterpolatedDeltaTime * 0.99f + deltaInterpolatedDeltaTime * 0.01f;
+						normalizedCar.interpolatedDeltaInterpolatedDeltaTime = normalizedCar.interpolatedDeltaInterpolatedDeltaTime * 0.97f + deltaInterpolatedDeltaTime * 0.03f;
 
 						normalizedCar.lastInterpolatedDeltaTime = normalizedCar.interpolatedDeltaTime;
 					}

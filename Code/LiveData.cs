@@ -1131,6 +1131,10 @@ namespace iRacingTVController
 
 					return ( normalizedCar?.normalizedCarBehind?.displayedPosition >= 1 ) ? "P" + normalizedCar.normalizedCarBehind.displayedPosition.ToString() : "";
 
+				case SettingsText.Content.Driver_CarBehind_UserID:
+
+					return normalizedCar?.normalizedCarBehind?.userId.ToString() ?? "";
+
 				case SettingsText.Content.Driver_CarInFront_CarNumber:
 
 					return ( normalizedCar?.normalizedCarInFront != null ) ? $"#{normalizedCar.normalizedCarInFront.carNumber}" : "";
@@ -1172,6 +1176,10 @@ namespace iRacingTVController
 				case SettingsText.Content.Driver_CarInFront_Position:
 
 					return ( normalizedCar?.normalizedCarInFront?.displayedPosition >= 1 ) ? "P" + normalizedCar.normalizedCarInFront.displayedPosition.ToString() : "";
+
+				case SettingsText.Content.Driver_CarInFront_UserID:
+
+					return normalizedCar?.normalizedCarInFront?.userId.ToString() ?? "";
 
 				case SettingsText.Content.Driver_Gear:
 				{
@@ -1508,6 +1516,10 @@ namespace iRacingTVController
 						return text;
 					}
 				}
+
+				case SettingsText.Content.Driver_UserID:
+
+					return normalizedCar?.userId.ToString() ?? "";
 
 				case SettingsText.Content.Leaderboard_ClassName:
 				{

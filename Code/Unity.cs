@@ -257,7 +257,7 @@ namespace iRacingTVController
 			}
 		}
 
-		[Serializable]
+		[Serializable, Flags]
 		public enum TextAlignmentOptions
 		{
 			TopLeft = HorizontalAlignmentOptions.Left | VerticalAlignmentOptions.Top,
@@ -305,16 +305,26 @@ namespace iRacingTVController
 			Converted = 0xFFFF
 		};
 
-		[Serializable]
+		[Serializable, Flags]
 		public enum HorizontalAlignmentOptions
 		{
-			Left = 0x1, Center = 0x2, Right = 0x4, Justified = 0x8, Flush = 0x10, Geometry = 0x20
+			Left = 0x1,
+			Center = 0x2,
+			Right = 0x4,
+			Justified = 0x8,
+			Flush = 0x10,
+			Geometry = 0x20
 		}
 
-		[Serializable]
+		[Serializable, Flags]
 		public enum VerticalAlignmentOptions
 		{
-			Top = 0x100, Middle = 0x200, Bottom = 0x400, Baseline = 0x800, Geometry = 0x1000, Capline = 0x2000,
+			Top = 0x100,
+			Middle = 0x200,
+			Bottom = 0x400,
+			Baseline = 0x800,
+			Geometry = 0x1000,
+			Capline = 0x2000
 		}
 	}
 }

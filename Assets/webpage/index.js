@@ -125,9 +125,9 @@ function updateLeaderboards( liveDataLeaderboards )
     {
         var liveDataLeaderboard = liveDataLeaderboards[ liveDataLeaderboardIndex++ ];
 
-        var domLeaderboardClassName = domLeaderboard.querySelector( ".leaderboard-class-name" );
+        var domLeaderboardClassName = domLeaderboard.querySelector( ".leaderboard-text-layer-1" );
 
-        domLeaderboardClassName.textContent = liveDataLeaderboard.className;
+        domLeaderboardClassName.textContent = liveDataLeaderboard.textLayer1;
 
         var domLeaderboardPositions = domLeaderboard.querySelectorAll( ".leaderboard-position" );
 
@@ -145,26 +145,26 @@ function updateLeaderboards( liveDataLeaderboards )
 
                 if ( liveDataLeaderboardSlot.show )
                 {
-                    var targetDomLeaderboardPositionIndex = parseInt( liveDataLeaderboardSlot.positionText ) - 1;
+                    var targetDomLeaderboardPositionIndex = parseInt( liveDataLeaderboardSlot.textLayer1 ) - 1;
 
                     if ( targetDomLeaderboardPositionIndex == domLeaderboardPositionIndex )
                     {
                         domLeaderboardPosition.classList.remove( "d-none" );
 
-                        var domLeaderboardPositionPosition = domLeaderboardPosition.querySelector( ".leaderboard-position-position" );
-                        domLeaderboardPositionPosition.textContent = liveDataLeaderboardSlot.positionText;
+                        var domLeaderboardPositionTextLayer1 = domLeaderboardPosition.querySelector( ".leaderboard-position-text-layer-1" );
+                        domLeaderboardPositionTextLayer1.textContent = liveDataLeaderboardSlot.textLayer1;
 
-                        var domLeaderboardCarNumber = domLeaderboardPosition.querySelector( ".leaderboard-position-car-number" );
-                        domLeaderboardCarNumber.textContent = liveDataLeaderboardSlot.carNumberText;
+                        var domLeaderboardTextLayer2 = domLeaderboardPosition.querySelector( ".leaderboard-position-text-layer-2" );
+                        domLeaderboardTextLayer2.textContent = liveDataLeaderboardSlot.textLayer2;
 
-                        var domLeaderboardDriverName = domLeaderboardPosition.querySelector( ".leaderboard-position-driver-name" );
-                        domLeaderboardDriverName.textContent = liveDataLeaderboardSlot.driverNameText;
+                        var domLeaderboardTextLayer3 = domLeaderboardPosition.querySelector( ".leaderboard-position-text-layer-3" );
+                        domLeaderboardTextLayer3.textContent = liveDataLeaderboardSlot.textLayer3;
 
-                        var domLeaderboardTelemetry = domLeaderboardPosition.querySelector( ".leaderboard-position-telemetry" );
-                        domLeaderboardTelemetry.textContent = liveDataLeaderboardSlot.telemetryText;
+                        var domLeaderboardTextLayer4 = domLeaderboardPosition.querySelector( ".leaderboard-position-text-layer-4" );
+                        domLeaderboardTextLayer4.textContent = liveDataLeaderboardSlot.textLayer4;
 
-                        var domLeaderboardSpeed = domLeaderboardPosition.querySelector( ".leaderboard-position-speed" );
-                        domLeaderboardSpeed.textContent = liveDataLeaderboardSlot.speedText;
+                        var domLeaderboardCurrentTargetTextLayer1 = domLeaderboardPosition.querySelector( ".leaderboard-position-current-target-text-layer-1" );
+                        domLeaderboardCurrentTargetTextLayer1.textContent = liveDataLeaderboardSlot.currentTargetTextLayer1;
 
                         liveDataLeaderboardSlotFound = true;
 
@@ -295,7 +295,7 @@ function updateTrackMap( liveDataTrackMap )
 
             ctx.fillStyle = app.setting.trackMap.carTextStyle;
 
-            ctx.fillText( liveDataTrackMapCar.carNumber, x, y );
+            ctx.fillText( liveDataTrackMapCar.textLayer1, x, y );
         }
     }
 }
@@ -351,10 +351,10 @@ function updateRaceStatus( liveDataRaceStatus )
     toggleVisibility( app.dom.raceStatus.yellowLight, liveDataRaceStatus.showYellowLight );
     toggleVisibility( app.dom.raceStatus.whiteLight, liveDataRaceStatus.showWhiteLight );
 
-    app.dom.raceStatus.sessionName.textContent = liveDataRaceStatus.sessionNameText;
-    app.dom.raceStatus.lapsRemaining.textContent = liveDataRaceStatus.lapsRemainingText;
-    app.dom.raceStatus.units.textContent = liveDataRaceStatus.unitsText;
-    app.dom.raceStatus.currentLap.textContent = liveDataRaceStatus.currentLapText;
+    app.dom.raceStatus.textLayer1.textContent = liveDataRaceStatus.textLayer1;
+    app.dom.raceStatus.textLayer2.textContent = liveDataRaceStatus.textLayer2;
+    app.dom.raceStatus.textLayer3.textContent = liveDataRaceStatus.textLayer3;
+    app.dom.raceStatus.textLayer4.textContent = liveDataRaceStatus.textLayer14;
 }
 
 function update( liveData )
@@ -433,10 +433,10 @@ function init()
     app.dom.raceStatus.greenFlag = document.querySelector( ".race-status-green-flag" );
     app.dom.raceStatus.yellowFlag = document.querySelector( ".race-status-yellow-flag" );
     app.dom.raceStatus.checkeredFlag = document.querySelector( ".race-status-checkered-flag" );
-    app.dom.raceStatus.sessionName = document.querySelector( ".race-status-session-name" );
-    app.dom.raceStatus.lapsRemaining = document.querySelector( ".race-status-laps-remaining" );
-    app.dom.raceStatus.units = document.querySelector( ".race-status-units" )
-    app.dom.raceStatus.currentLap = document.querySelector( ".race-status-current-lap" );
+    app.dom.raceStatus.textLayer1 = document.querySelector( ".race-status-text-layer-1" );
+    app.dom.raceStatus.textLayer2 = document.querySelector( ".race-status-text-layer-2" );
+    app.dom.raceStatus.textLayer3 = document.querySelector( ".race-status-text-layer-3" )
+    app.dom.raceStatus.textLayer4 = document.querySelector( ".race-status-text-layer-4" );
 
     app.setting.trackMap.lineWidth = parseFloat( app.dom.trackMap.canvas.getAttribute( "data-line-width" ) );
     app.setting.trackMap.strokeStyle = app.dom.trackMap.canvas.getAttribute( "data-stroke-style" );

@@ -61,6 +61,7 @@ namespace iRacingTVController
 
 		public int lapCompletedLastFrame = 0;
 
+		public float currentLapTime = 0;
 		public float lastLapTime = 0;
 		public float bestLapTime = 0;
 		public float bestLapTimeLastFrame = 0;
@@ -194,6 +195,7 @@ namespace iRacingTVController
 
 			lapCompletedLastFrame = 0;
 
+			currentLapTime = 0;
 			lastLapTime = 0;
 			bestLapTime = 0;
 			bestLapTimeLastFrame = 0;
@@ -308,6 +310,7 @@ namespace iRacingTVController
 
 			lapCompletedLastFrame = 0;
 
+			currentLapTime = 0;
 			lastLapTime = 0;
 			bestLapTime = 0;
 			bestLapTimeLastFrame = 0;
@@ -763,17 +766,8 @@ namespace iRacingTVController
 				currentLapLastFrame = currentLap;
 			}
 
-			if ( currentLap == ( currentLapLastFrame + 1 ) )
-			{
-				if ( sessionTimeCheckpoints[ 0 ] > 0 )
-				{
-					lastLapTime = (float) ( IRSDK.normalizedData.sessionTime - sessionTimeCheckpoints[ 0 ] );
-				}
-				else
-				{
-					lastLapTime = 0;
-				}
-			}
+			currentLapTime = car.CarIdxEstTime;
+			lastLapTime = car.CarIdxLastLapTime;
 
 			distanceMovedInMeters = lapDistPctDelta * IRSDK.normalizedSession.trackLengthInMeters;
 			speedInMetersPerSecond = distanceMovedInMeters / (float) IRSDK.normalizedData.sessionTimeDelta;

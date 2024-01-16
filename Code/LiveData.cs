@@ -28,6 +28,7 @@ namespace iRacingTVController
 		[JsonInclude] public LiveDataRaceStatus liveDataRaceStatus = new();
 		[JsonInclude, XmlIgnore] public LiveDataLeaderboard[]? liveDataLeaderboardsWebPage = null;
 		public LiveDataLeaderboard[]? liveDataLeaderboards = null;
+		public LiveDataRaceResult liveDataRaceResult = new();
 		public LiveDataVoiceOf liveDataVoiceOf = new();
 		public LiveDataChyron liveDataChyron = new();
 		public LiveDataBattleChyron liveDataBattleChyron = new();
@@ -69,6 +70,10 @@ namespace iRacingTVController
 		[NonSerialized, XmlIgnore] bool splitLeaderboard = false;
 
 		[NonSerialized, XmlIgnore] float battleChyronTimer = 0;
+
+		[NonSerialized, XmlIgnore] public int raceResultPageCount = 0;
+		[NonSerialized, XmlIgnore] public int raceResultCurrentPage = 0;
+		[NonSerialized, XmlIgnore] float raceResultTimer = 0;
 
 		static LiveData()
 		{
@@ -145,6 +150,7 @@ namespace iRacingTVController
 			UpdateRaceStatus();
 			UpdateLeaderboard( ref liveDataLeaderboardsWebPage, false );
 			UpdateLeaderboard( ref liveDataLeaderboards, true );
+			UpdateRaceResult();
 			UpdateTrackMap();
 			UpdatePitLane();
 			UpdateVoiceOf();
@@ -178,6 +184,7 @@ namespace iRacingTVController
 			liveDataControlPanel.masterOn = MainWindow.Instance.masterOn;
 			liveDataControlPanel.raceStatusOn = MainWindow.Instance.raceStatusOn;
 			liveDataControlPanel.leaderboardOn = MainWindow.Instance.leaderboardOn;
+			liveDataControlPanel.raceResultOn = MainWindow.Instance.raceResultOn;
 			liveDataControlPanel.trackMapOn = MainWindow.Instance.trackMapOn;
 			liveDataControlPanel.pitLaneOn = MainWindow.Instance.pitLaneOn;
 			liveDataControlPanel.startLightsOn = MainWindow.Instance.startLightsOn;
@@ -455,7 +462,6 @@ namespace iRacingTVController
 						liveDataLeaderboardSlot.textLayer3 = GetTextContent( out liveDataLeaderboardSlot.textLayer3Color, "LeaderboardPositionTextLayer3", normalizedCar, currentLeaderboardClass );
 						liveDataLeaderboardSlot.textLayer4 = GetTextContent( out liveDataLeaderboardSlot.textLayer4Color, "LeaderboardPositionTextLayer4", normalizedCar, currentLeaderboardClass );
 
-
 						// current target
 
 						if ( !IRSDK.normalizedSession.isInQualifyingSession && !normalizedCar.isOutOfCar )
@@ -507,6 +513,154 @@ namespace iRacingTVController
 
 					lastFrameBottomSplitFirstPosition[ classIndex ] = bottomSplitFirstSlotIndex;
 				}
+			}
+		}
+
+		public void UpdateRaceResult()
+		{
+			// don't show race result until it is time
+
+			if ( IRSDK.normalizedData.sessionState < SessionState.StateCoolDown )
+			{
+				raceResultCurrentPage = 0;
+				raceResultTimer = 0;
+
+				liveDataRaceResult.show = false;
+
+				return;
+			}
+
+			// run the timer
+
+			raceResultTimer += (float) IRSDK.normalizedData.sessionTimeDelta;
+
+			// figure out how many race result pages we have
+
+			raceResultPageCount = 0;
+
+			for ( var i = 0; i < IRSDK.normalizedData.numLeaderboardClasses; i++ )
+			{
+				raceResultPageCount += 1 + ( ( IRSDK.normalizedData.leaderboardClass[ i ].numDrivers - 1 ) / Settings.overlay.raceResultSlotCount );
+			}
+
+			// calculate total duration of race results (0 if manual)
+
+			var totalDuration = raceResultPageCount * Settings.overlay.raceResultInterval;
+
+			// is it time to show the first page?
+
+			if ( raceResultTimer < Settings.overlay.raceResultStartTime )
+			{
+				liveDataRaceResult.show = false;
+
+				return;
+			}
+
+			// are we done showing the race results?
+
+			var timeOffset = raceResultTimer - Settings.overlay.raceResultStartTime;
+
+			if ( ( totalDuration > 0 ) && ( timeOffset > totalDuration ) )
+			{
+				liveDataRaceResult.show = false;
+
+				return;
+			}
+
+			// set up page metadata
+
+			var pageClassIndex = new int[ raceResultPageCount ];
+			var pageSlotIndex = new int[ raceResultPageCount ];
+
+			var slotIndex = 0;
+			var pageIndex = 0;
+
+			for ( var i = 0; i < IRSDK.normalizedData.numLeaderboardClasses; i++ )
+			{
+				slotIndex = 0;
+
+				var pagesThisClass = 1 + ( ( IRSDK.normalizedData.leaderboardClass[ i ].numDrivers - 1 ) / Settings.overlay.raceResultSlotCount );
+
+				for ( var j = 0; j < pagesThisClass; j++ )
+				{
+					pageClassIndex[ pageIndex ] = i;
+					pageSlotIndex[ pageIndex ] = slotIndex;
+
+					slotIndex += Settings.overlay.raceResultSlotCount;
+
+					pageIndex++;
+				}
+			}
+
+			// figure out which page we are on
+
+			if ( totalDuration > 0 )
+			{
+				raceResultCurrentPage = (int) Math.Floor( timeOffset / Settings.overlay.raceResultInterval );
+			}
+
+			// build the race result
+
+			Color color;
+
+			var raceResultClass = IRSDK.normalizedData.leaderboardClass[ pageClassIndex[ raceResultCurrentPage ] ];
+
+			liveDataRaceResult.show = true;
+
+			liveDataRaceResult.backgroundSize = Settings.overlay.raceResultSlotSpacing * Settings.overlay.raceResultSlotCount;
+			liveDataRaceResult.classColor = raceResultClass.color;
+			liveDataRaceResult.textLayer1 = GetTextContent( out color, "RaceResultTextLayer1", null, raceResultClass );
+			liveDataRaceResult.textLayer2 = GetTextContent( out color, "RaceResultTextLayer2", null, raceResultClass );
+
+			// clear out the race result slots
+
+			for ( var i = 0; i < liveDataRaceResult.liveDataRaceResultSlots.Length; i++ )
+			{
+				var liveDataRaceResultSlot = liveDataRaceResult.liveDataRaceResultSlots[ i ];
+
+				liveDataRaceResultSlot.show = false;
+			}
+
+			// build the race result slots
+
+			slotIndex = 0;
+
+			var numSlots = Math.Min( Settings.overlay.raceResultSlotCount, ( raceResultClass.numDrivers - pageSlotIndex[ raceResultCurrentPage ] ) );
+
+			foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardSortedNormalizedCars )
+			{
+				if ( !normalizedCar.includeInLeaderboard )
+				{
+					continue;
+				}
+
+				if ( normalizedCar.classID != raceResultClass.classID )
+				{
+					continue;
+				}
+
+				if ( slotIndex >= pageSlotIndex[ raceResultCurrentPage ] )
+				{
+					var liveDataRaceResultSlot = liveDataRaceResult.liveDataRaceResultSlots[ normalizedCar.carIdx ];
+
+					liveDataRaceResultSlot.show = true;
+
+					liveDataRaceResultSlot.showPreferredCar = normalizedCar.isPreferredCar;
+					liveDataRaceResultSlot.offset = new Vector2( Settings.overlay.raceResultSlotSpacing.x, -Settings.overlay.raceResultSlotSpacing.y ) * ( slotIndex - pageSlotIndex[ raceResultCurrentPage ] ) + new Vector2( Settings.overlay.raceResultFirstSlotPosition.x, -Settings.overlay.raceResultFirstSlotPosition.y );
+					liveDataRaceResultSlot.textLayer1 = GetTextContent( out liveDataRaceResultSlot.textLayer1Color, "RaceResultPositionTextLayer1", normalizedCar, raceResultClass );
+					liveDataRaceResultSlot.textLayer2 = GetTextContent( out liveDataRaceResultSlot.textLayer2Color, "RaceResultPositionTextLayer2", normalizedCar, raceResultClass );
+					liveDataRaceResultSlot.textLayer3 = GetTextContent( out liveDataRaceResultSlot.textLayer3Color, "RaceResultPositionTextLayer3", normalizedCar, raceResultClass );
+					liveDataRaceResultSlot.textLayer4 = GetTextContent( out liveDataRaceResultSlot.textLayer4Color, "RaceResultPositionTextLayer4", normalizedCar, raceResultClass );
+
+					numSlots--;
+
+					if ( numSlots == 0 )
+					{
+						break;
+					}
+				}
+
+				slotIndex++;
 			}
 		}
 
@@ -1085,10 +1239,6 @@ namespace iRacingTVController
 
 					return GetCsvProperty( settingsText, normalizedCar );
 
-				case SettingsText.Content.Driver_FamilyName:
-
-					return normalizedCar?.familyName ?? "";
-
 				case SettingsText.Content.Driver_CarBehind_CarNumber:
 
 					return ( normalizedCar?.normalizedCarBehind != null ) ? $"#{normalizedCar.normalizedCarBehind.carNumber}" : "";
@@ -1181,6 +1331,14 @@ namespace iRacingTVController
 
 					return normalizedCar?.normalizedCarInFront?.userId.ToString() ?? "";
 
+				case SettingsText.Content.Driver_FamilyName:
+
+					return normalizedCar?.familyName ?? "";
+
+				case SettingsText.Content.Driver_FullName:
+
+					return normalizedCar?.userName ?? "";
+
 				case SettingsText.Content.Driver_Gear:
 				{
 					if ( normalizedCar != null )
@@ -1259,6 +1417,39 @@ namespace iRacingTVController
 						return "";
 					}
 				}
+
+				case SettingsText.Content.Driver_LapTime_Current:
+
+					if ( normalizedCar != null )
+					{
+						if ( ( normalizedCar.currentLapTime < 5 ) && ( normalizedCar.lastLapTime > 0 ) )
+						{
+							return Program.GetTimeString( normalizedCar.lastLapTime, true );
+						}
+						else if ( normalizedCar.currentLapTime > 0 )
+						{
+							return Program.GetTimeString( normalizedCar.currentLapTime, true );
+						}
+						else
+						{
+							return "--.---";
+						}
+					}
+					else
+					{
+						return "--.---";
+					}
+
+				case SettingsText.Content.Driver_LapTime_LastLap:
+
+					if ( ( normalizedCar != null ) && ( normalizedCar.lastLapTime > 0 ) )
+					{
+						return Program.GetTimeString( normalizedCar.lastLapTime, true );
+					}
+					else
+					{
+						return "--.---";
+					}
 
 				case SettingsText.Content.Driver_License:
 				{

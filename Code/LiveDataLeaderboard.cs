@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Text.Json.Serialization;
+
 using static iRacingTVController.Unity;
 
 namespace iRacingTVController

@@ -17,10 +17,9 @@ namespace iRacingTVController
 			FontD
 		};
 
-		public enum Content // last used = 45
+		public enum Content // last used = 51
 		{
 			None = 0,
-			Driver_FamilyName = 2,
 			Driver_CarNumber = 1,
 			Driver_CarBehind_CsvProperty = 44,
 			Driver_CarBehind_CarNumber = 40,
@@ -37,11 +36,15 @@ namespace iRacingTVController
 			Driver_CarInFront_Position = 43,
 			Driver_CarInFront_UserID = 47,
 			Driver_CsvProperty = 37,
+			Driver_FamilyName = 2,
+			Driver_FullName = 51,
 			Driver_Gear = 5,
 			Driver_GivenName = 6,
 			Driver_LapDelta = 7,
 			Driver_LapsBehindClassLeader = 8,
 			Driver_LapsLed = 32,
+			Driver_LapTime_Current = 49,
+			Driver_LapTime_LastLap = 50,
 			Driver_License = 9,
 			Driver_Name = 10,
 			Driver_Position = 11,

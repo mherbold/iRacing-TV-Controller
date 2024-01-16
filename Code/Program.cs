@@ -151,7 +151,7 @@ namespace iRacingTVController
 				}
 				else
 				{
-					return time.ToString( @"ss\.fff" );
+					return time.ToString( @"s\.fff" );
 				}
 			}
 			else

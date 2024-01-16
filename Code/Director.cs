@@ -127,7 +127,10 @@ namespace iRacingTVController
 				}
 				else if ( Settings.director.rule2_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateRacing ) && Settings.director.preferredCarLockOnEnabled && ( preferredCar != null ) && ( ( preferredCar.heatTotal >= Settings.director.preferredCarLockOnMinimumHeat ) || ( ( preferredCar.normalizedCarBehind?.heatTotal ?? 0 ) >= Settings.director.preferredCarLockOnMinimumHeat ) ) ) )
 				{
-					allowShowChyron = true;
+					if ( Settings.overlay.chyronShowDuringRace )
+					{
+						allowShowChyron = true;
+					}
 
 					targetCamCarIdx = preferredCar.carIdx;
 					targetCamType = Settings.director.rule2_Camera;
@@ -204,7 +207,10 @@ namespace iRacingTVController
 				{
 					if ( randomCar != null )
 					{
-						allowShowChyron = true;
+						if ( Settings.overlay.chyronShowDuringPractice )
+						{
+							allowShowChyron = true;
+						}
 
 						targetCamSlowSwitchEnabled = true;
 						targetCamCarIdx = randomCar.carIdx;
@@ -222,7 +228,10 @@ namespace iRacingTVController
 				{
 					if ( randomCar != null )
 					{
-						allowShowChyron = true;
+						if ( Settings.overlay.chyronShowDuringQualifying )
+						{
+							allowShowChyron = true;
+						}
 
 						targetCamSlowSwitchEnabled = true;
 						targetCamCarIdx = randomCar.carIdx;
@@ -272,7 +281,10 @@ namespace iRacingTVController
 					{
 						if ( normalizedCar.speedInMetersPerSecond < 3 )
 						{
-							allowShowChyron = true;
+							if ( Settings.overlay.chyronShowDuringRace )
+							{
+								allowShowChyron = true;
+							}
 						}
 
 						targetCamCarIdx = normalizedCar.carIdx;
@@ -290,7 +302,10 @@ namespace iRacingTVController
 				{
 					if ( hottestCar != null )
 					{
-						allowShowChyron = true;
+						if ( Settings.overlay.chyronShowDuringRace )
+						{
+							allowShowChyron = true;
+						}
 
 						targetCamCarIdx = hottestCar.carIdx;
 						targetCamType = Settings.director.rule14_Camera;
@@ -313,6 +328,7 @@ namespace iRacingTVController
 					IRSDK.targetCamCarIdx = targetCamCarIdx;
 					IRSDK.targetCamGroupNumber = GetCamGroupNumber( targetCamType );
 					IRSDK.targetCamReason = targetCamReason;
+
 					IRSDK.targetCameraType = resolvedCamType;
 
 					MainWindow.Instance.cameraType = targetCamType;
@@ -323,7 +339,7 @@ namespace iRacingTVController
 
 			if ( allowShowChyron )
 			{
-				if ( ( IRSDK.currentCameraType == SettingsDirector.CameraType.Pits ) || ( IRSDK.currentCameraType == SettingsDirector.CameraType.Inside ) || ( IRSDK.currentCameraType == SettingsDirector.CameraType.Close ) || ( IRSDK.currentCameraType == SettingsDirector.CameraType.Medium ) )
+				if ( ( IRSDK.currentCameraType == SettingsDirector.CameraType.Practice ) || ( IRSDK.currentCameraType == SettingsDirector.CameraType.Qualifying ) || ( IRSDK.currentCameraType == SettingsDirector.CameraType.Pits ) || ( IRSDK.currentCameraType == SettingsDirector.CameraType.Inside ) || ( IRSDK.currentCameraType == SettingsDirector.CameraType.Close ) || ( IRSDK.currentCameraType == SettingsDirector.CameraType.Medium ) )
 				{
 					showChyron = true;
 				}

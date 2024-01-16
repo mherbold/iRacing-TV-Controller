@@ -65,6 +65,22 @@ namespace iRacingTVController
 		public bool leaderboardSeparateBoards_Overridden = false;
 		public bool leaderboardMultiClassOffset_Overridden = false;
 
+		public bool raceResultEnabled = true;
+		public Vector2 raceResultPosition = new( 960, 96 );
+		public Vector2 raceResultFirstSlotPosition = new( 0, 80 );
+		public int raceResultSlotCount = 10;
+		public Vector2 raceResultSlotSpacing = new( 0, 64 );
+		public float raceResultStartTime = 2;
+		public float raceResultInterval = 10;
+
+		public bool raceResultEnabled_Overridden = false;
+		public bool raceResultPosition_Overridden = false;
+		public bool raceResultFirstSlotPosition_Overridden = false;
+		public bool raceResultSlotCount_Overridden = false;
+		public bool raceResultSlotSpacing_Overridden = false;
+		public bool raceResultStartTime_Overridden = false;
+		public bool raceResultInterval_Overridden = false;
+
 		public bool trackMapEnabled = true;
 		public bool trackMapReverse = false;
 		public Vector2 trackMapPosition = new( 1460, 50 );
@@ -98,10 +114,16 @@ namespace iRacingTVController
 		public bool voiceOfPosition_Overridden = false;
 
 		public bool chyronEnabled = true;
+		public bool chyronShowDuringPractice = false;
+		public bool chyronShowDuringQualifying = false;
+		public bool chyronShowDuringRace = true;
 		public Vector2 chyronPosition = new( 1408, 890 );
 		public float chyronDelay = 2.0f;
 
 		public bool chyronEnabled_Overridden = false;
+		public bool chyronShowDuringPractice_Overridden = false;
+		public bool chyronShowDuringQualifying_Overridden = false;
+		public bool chyronShowDuringRace_Overridden = false;
 		public bool chyronPosition_Overridden = false;
 		public bool chyronDelay_Overridden = false;
 

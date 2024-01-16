@@ -62,6 +62,7 @@ namespace iRacingTVController
 		public bool masterOn;
 		public bool raceStatusOn;
 		public bool leaderboardOn;
+		public bool raceResultOn;
 		public bool trackMapOn;
 		public bool pitLaneOn;
 		public bool startLightsOn;
@@ -599,6 +600,7 @@ namespace iRacingTVController
 			ControlPanel_Master_Button.IsChecked = masterOn = true;
 			ControlPanel_RaceStatus_Button.IsChecked = raceStatusOn = Settings.overlay.raceStatusEnabled;
 			ControlPanel_Leaderboard_Button.IsChecked = leaderboardOn = Settings.overlay.leaderboardEnabled;
+			ControlPanel_RaceResult_Button.IsChecked = raceResultOn = Settings.overlay.raceResultEnabled;
 			ControlPanel_TrackMap_Button.IsChecked = trackMapOn = Settings.overlay.trackMapEnabled;
 			ControlPanel_PitLane_Button.IsChecked = pitLaneOn = Settings.overlay.pitLaneEnabled;
 			ControlPanel_StartLights_Button.IsChecked = startLightsOn = Settings.overlay.startLightsEnabled;
@@ -770,6 +772,16 @@ namespace iRacingTVController
 			Update( Overlay_Leaderboard_MultiClassOffset_X, Overlay_Leaderboard_MultiClassOffset_Y, Settings.overlay.leaderboardMultiClassOffset, Overlay_Leaderboard_MultiClassOffset_Override, Settings.overlay.leaderboardMultiClassOffset_Overridden );
 			Update( Overlay_Leaderboard_MultiClassOffset_Type, leaderboardMultiClassOffsetTypeOptions.FirstOrDefault( x => x.Value == Settings.overlay.leaderboardMultiClassOffsetType ).Key, Overlay_Leaderboard_MultiClassOffset_Override, Settings.overlay.leaderboardMultiClassOffset_Overridden );
 
+			// overlay - race result
+
+			Update( Overlay_RaceResult_Enable, Settings.overlay.raceResultEnabled, Overlay_RaceResult_Enable_Override, Settings.overlay.raceResultEnabled_Overridden );
+			Update( Overlay_RaceResult_Position_X, Overlay_RaceResult_Position_Y, Settings.overlay.raceResultPosition, Overlay_RaceResult_Position_Override, Settings.overlay.raceResultPosition_Overridden );
+			Update( Overlay_RaceResult_FirstSlotPosition_X, Overlay_RaceResult_FirstSlotPosition_Y, Settings.overlay.raceResultFirstSlotPosition, Overlay_RaceResult_FirstSlotPosition_Override, Settings.overlay.raceResultFirstSlotPosition_Overridden );
+			Update( Overlay_RaceResult_SlotCount, Settings.overlay.raceResultSlotCount, Overlay_RaceResult_SlotCount_Override, Settings.overlay.raceResultSlotCount_Overridden );
+			Update( Overlay_RaceResult_SlotSpacing_X, Overlay_RaceResult_SlotSpacing_Y, Settings.overlay.raceResultSlotSpacing, Overlay_RaceResult_SlotSpacing_Override, Settings.overlay.raceResultSlotSpacing_Overridden );
+			Update( Overlay_RaceResult_StartTime, Settings.overlay.raceResultStartTime, Overlay_RaceResult_StartTime_Override, Settings.overlay.raceResultStartTime_Overridden );
+			Update( Overlay_RaceResult_Interval, Settings.overlay.raceResultInterval, Overlay_RaceResult_Interval_Override, Settings.overlay.raceResultInterval_Overridden );
+
 			// overlay - track map
 
 			Update( Overlay_TrackMap_Enable, Settings.overlay.trackMapEnabled, Overlay_TrackMap_Enable_Override, Settings.overlay.trackMapEnabled_Overridden );
@@ -795,6 +807,9 @@ namespace iRacingTVController
 			// overlay - chyron
 
 			Update( Overlay_Chyron_Enable, Settings.overlay.chyronEnabled, Overlay_Chyron_Enable_Override, Settings.overlay.chyronEnabled_Overridden );
+			Update( Overlay_Chyron_ShowDuringPractice, Settings.overlay.chyronShowDuringPractice, Overlay_Chyron_ShowDuringPractice_Override, Settings.overlay.chyronShowDuringPractice_Overridden );
+			Update( Overlay_Chyron_ShowDuringQualifying, Settings.overlay.chyronShowDuringQualifying, Overlay_Chyron_ShowDuringQualifying_Override, Settings.overlay.chyronShowDuringQualifying_Overridden );
+			Update( Overlay_Chyron_ShowDuringRace, Settings.overlay.chyronShowDuringRace, Overlay_Chyron_ShowDuringRace_Override, Settings.overlay.chyronShowDuringRace_Overridden );
 			Update( Overlay_Chyron_Position_X, Overlay_Chyron_Position_Y, Settings.overlay.chyronPosition, Overlay_Chyron_Position_Override, Settings.overlay.chyronPosition_Overridden );
 			Update( Overlay_Chyron_Delay, Settings.overlay.chyronDelay, Overlay_Chyron_Delay_Override, Settings.overlay.chyronDelay_Overridden );
 
@@ -1387,6 +1402,8 @@ namespace iRacingTVController
 				IRSDK.targetCamCarIdx = normalizedCar.carIdx;
 				IRSDK.targetCamGroupNumber = Director.GetCamGroupNumber( cameraType );
 				IRSDK.targetCamReason = "Manual camera control.";
+
+				IRSDK.targetCameraType = cameraType;
 			}
 		}
 
@@ -1522,6 +1539,7 @@ namespace iRacingTVController
 			masterOn = ControlPanel_Master_Button.IsChecked ?? false;
 			raceStatusOn = ControlPanel_RaceStatus_Button.IsChecked ?? false;
 			leaderboardOn = ControlPanel_Leaderboard_Button.IsChecked ?? false;
+			raceResultOn = ControlPanel_RaceResult_Button.IsChecked ?? false;
 			trackMapOn = ControlPanel_TrackMap_Button.IsChecked ?? false;
 			pitLaneOn = ControlPanel_PitLane_Button.IsChecked ?? false;
 			startLightsOn = ControlPanel_StartLights_Button.IsChecked ?? false;
@@ -3269,6 +3287,31 @@ namespace iRacingTVController
 			}
 		}
 
+		private void Overlay_RaceResult_Update( object sender, EventArgs e )
+		{
+			if ( initializing == 0 )
+			{
+				var update = false;
+
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.raceResultEnabled_Overridden, Overlay_RaceResult_Enable_Override, ref Settings.overlayLocal.raceResultEnabled, Overlay_RaceResult_Enable );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.raceResultPosition_Overridden, Overlay_RaceResult_Position_Override, ref Settings.overlayLocal.raceResultPosition, Overlay_RaceResult_Position_X, Overlay_RaceResult_Position_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.raceResultFirstSlotPosition_Overridden, Overlay_RaceResult_FirstSlotPosition_Override, ref Settings.overlayLocal.raceResultFirstSlotPosition, Overlay_RaceResult_FirstSlotPosition_X, Overlay_RaceResult_FirstSlotPosition_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.raceResultSlotCount_Overridden, Overlay_RaceResult_SlotCount_Override, ref Settings.overlayLocal.raceResultSlotCount, Overlay_RaceResult_SlotCount );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.raceResultSlotSpacing_Overridden, Overlay_RaceResult_SlotSpacing_Override, ref Settings.overlayLocal.raceResultSlotSpacing, Overlay_RaceResult_SlotSpacing_X, Overlay_RaceResult_SlotSpacing_Y );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.raceResultStartTime_Overridden, Overlay_RaceResult_StartTime_Override, ref Settings.overlayLocal.raceResultStartTime, Overlay_RaceResult_StartTime );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.raceResultInterval_Overridden, Overlay_RaceResult_Interval_Override, ref Settings.overlayLocal.raceResultInterval, Overlay_RaceResult_Interval );
+
+				if ( update )
+				{
+					Update();
+				}
+
+				IPC.readyToSendSettings = true;
+
+				Settings.saveOverlayToFileQueued = true;
+			}
+		}
+
 		private void Overlay_TrackMap_TextureFilePath_Button_Click( object sender, EventArgs e )
 		{
 			string currentFilePath = Overlay_TrackMap_TextureFilePath.Text;
@@ -3398,6 +3441,9 @@ namespace iRacingTVController
 				var update = false;
 
 				update |= UpdateOverlaySetting( ref Settings.overlayLocal.chyronEnabled_Overridden, Overlay_Chyron_Enable_Override, ref Settings.overlayLocal.chyronEnabled, Overlay_Chyron_Enable );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.chyronShowDuringPractice_Overridden, Overlay_Chyron_ShowDuringPractice_Override, ref Settings.overlayLocal.chyronShowDuringPractice, Overlay_Chyron_ShowDuringPractice );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.chyronShowDuringQualifying_Overridden, Overlay_Chyron_ShowDuringQualifying_Override, ref Settings.overlayLocal.chyronShowDuringQualifying, Overlay_Chyron_ShowDuringQualifying );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.chyronShowDuringRace_Overridden, Overlay_Chyron_ShowDuringRace_Override, ref Settings.overlayLocal.chyronShowDuringRace, Overlay_Chyron_ShowDuringRace );
 				update |= UpdateOverlaySetting( ref Settings.overlayLocal.chyronPosition_Overridden, Overlay_Chyron_Position_Override, ref Settings.overlayLocal.chyronPosition, Overlay_Chyron_Position_X, Overlay_Chyron_Position_Y );
 				update |= UpdateOverlaySetting( ref Settings.overlayLocal.chyronDelay_Overridden, Overlay_Chyron_Delay_Override, ref Settings.overlayLocal.chyronDelay, Overlay_Chyron_Delay );
 
@@ -4245,6 +4291,28 @@ namespace iRacingTVController
 			}
 
 			return null;
+		}
+
+		private void Window_KeyDown( object sender, System.Windows.Input.KeyEventArgs e )
+		{
+			if ( e.Key == System.Windows.Input.Key.PageUp )
+			{
+				LiveData.Instance.raceResultCurrentPage--;
+
+				if ( LiveData.Instance.raceResultCurrentPage < 0 )
+				{
+					LiveData.Instance.raceResultCurrentPage = 0;
+				}
+			}
+			else if ( e.Key == System.Windows.Input.Key.PageDown )
+			{
+				LiveData.Instance.raceResultCurrentPage++;
+
+				if ( LiveData.Instance.raceResultCurrentPage >= LiveData.Instance.raceResultPageCount )
+				{
+					LiveData.Instance.raceResultCurrentPage = LiveData.Instance.raceResultPageCount - 1;
+				}
+			}
 		}
 	}
 }

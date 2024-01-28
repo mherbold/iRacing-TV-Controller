@@ -52,6 +52,27 @@ namespace iRacingTVController
 			return currentSessionFlagsData;
 		}
 
+		public static SessionFlagsData? FindFirstGreenFlagDropInCurrentSession()
+		{
+			foreach ( var sessionFlagsData in sessionFlagsDataList )
+			{
+				if ( sessionFlagsData.SessionNumber > IRSDK.normalizedSession.sessionNumber )
+				{
+					break;
+				}
+
+				if ( sessionFlagsData.SessionNumber == IRSDK.normalizedSession.sessionNumber )
+				{
+					if ( ( sessionFlagsData.SessionFlags & (uint) SessionFlags.Green ) != 0 )
+					{
+						return sessionFlagsData;
+					}
+				}
+			}
+
+			return null;
+		}
+
 		public static void Update()
 		{
 			if ( IRSDK.isConnected )

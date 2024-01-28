@@ -1775,7 +1775,7 @@ namespace iRacingTVController
 				{
 					if ( IRSDK.normalizedData.isInTimedRace || !IRSDK.normalizedSession.isInRaceSession )
 					{
-						return Program.GetTimeString( Math.Ceiling( IRSDK.normalizedData.sessionTimeTotal - IRSDK.normalizedData.sessionTimeRemaining ), false ) + " | " + Program.GetTimeString( IRSDK.normalizedData.sessionTimeTotal, false );
+						return Program.GetTimeString( Math.Floor( IRSDK.normalizedData.sessionTimeTotal - IRSDK.normalizedData.sessionTimeRemaining ), false ) + " | " + Program.GetTimeString( IRSDK.normalizedData.sessionTimeTotal, false );
 					}
 					else
 					{
@@ -1787,7 +1787,7 @@ namespace iRacingTVController
 				{
 					if ( IRSDK.normalizedData.isInTimedRace || !IRSDK.normalizedSession.isInRaceSession )
 					{
-						return Program.GetTimeString( IRSDK.normalizedData.sessionTimeRemaining, false );
+						return Program.GetTimeString( Math.Ceiling( IRSDK.normalizedData.sessionTimeRemaining ), false );
 					}
 					else if ( IRSDK.normalizedData.sessionLapsRemaining == 1 )
 					{

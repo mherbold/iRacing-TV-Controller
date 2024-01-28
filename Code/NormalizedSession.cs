@@ -39,6 +39,8 @@ namespace iRacingTVController
 
 		public int numCheckpoints = MaxNumCheckpoints;
 
+		public double greenFlagDropSessionTime = 0;
+
 		public NormalizedSession()
 		{
 			Reset();
@@ -73,6 +75,8 @@ namespace iRacingTVController
 			blinkRpm = 0;
 
 			numCheckpoints = MaxNumCheckpoints;
+
+			greenFlagDropSessionTime = 0;
 		}
 
 		// called only when header session info version number changes
@@ -116,8 +120,6 @@ namespace iRacingTVController
 
 			numCheckpoints = (int) Math.Clamp( Math.Ceiling( trackLengthInMeters / CheckpointSpacingInMeters ), 2, MaxNumCheckpoints );
 
-			LogFile.Write( $"Session ID:{sessionID}, Subsession ID:{subSessionID}, Session count:{sessionCount}, Is replay:{isReplay}, Track ID:{trackID}, Track length:{trackLengthInMeters}m, Track type:{trackType}, Is dirt track:{isDirtTrack}, Num checkpoints:{numCheckpoints}.\r\n" );
-
 			if ( isReplay )
 			{
 				SessionFlagsPlayback.Load();
@@ -146,6 +148,20 @@ namespace iRacingTVController
 				isInPracticeSession = ( sessionType == "Practice" ) || ( sessionType == "Warmup" );
 				isInQualifyingSession = ( sessionType == "Lone Qualify" );
 				isInRaceSession = !isInPracticeSession && !isInQualifyingSession;
+
+				if ( isReplay )
+				{
+					var sessionFlagsData = SessionFlagsPlayback.FindFirstGreenFlagDropInCurrentSession();
+
+					if ( sessionFlagsData == null )
+					{
+						greenFlagDropSessionTime = 0;
+					}
+					else
+					{
+						greenFlagDropSessionTime = sessionFlagsData.SessionTime;
+					}
+				}
 			}
 			else
 			{
@@ -154,9 +170,11 @@ namespace iRacingTVController
 				isInPracticeSession = false;
 				isInQualifyingSession = false;
 				isInRaceSession = false;
+
+				greenFlagDropSessionTime = 0;
 			}
 
-			LogFile.Write( $"Session number:{sessionNumber}, Session name:{sessionName}.\r\n" );
+			LogFile.Write( $"Session ID:{sessionID}, Subsession ID:{subSessionID}, Session count:{sessionCount}, Session number:{sessionNumber}, Session name:{sessionName}, Is replay:{isReplay}, Track ID:{trackID}, Track length:{trackLengthInMeters}m, Track type:{trackType}, Is dirt track:{isDirtTrack}, Num checkpoints:{numCheckpoints}.\r\n" );
 		}
 	}
 }

@@ -137,26 +137,33 @@ namespace iRacingTVController
 
 		public static string GetTimeString( double timeInSeconds, bool includeMilliseconds )
 		{
-			TimeSpan time = TimeSpan.FromSeconds( timeInSeconds );
+			try
+			{
+				TimeSpan time = TimeSpan.FromSeconds( timeInSeconds );
 
-			if ( time.Hours > 0 )
-			{
-				return time.ToString( @"h\:mm\:ss" );
-			}
-			else if ( includeMilliseconds )
-			{
-				if ( time.Minutes > 0 )
+				if ( time.Hours > 0 )
 				{
-					return time.ToString( @"m\:ss\.fff" );
+					return time.ToString( @"h\:mm\:ss" );
+				}
+				else if ( includeMilliseconds )
+				{
+					if ( time.Minutes > 0 )
+					{
+						return time.ToString( @"m\:ss\.fff" );
+					}
+					else
+					{
+						return time.ToString( @"s\.fff" );
+					}
 				}
 				else
 				{
-					return time.ToString( @"s\.fff" );
+					return time.ToString( @"m\:ss" );
 				}
 			}
-			else
+			catch ( Exception )
 			{
-				return time.ToString( @"m\:ss" );
+				return "--:--";
 			}
 		}
 

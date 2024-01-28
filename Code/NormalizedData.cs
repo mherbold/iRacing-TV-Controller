@@ -401,7 +401,12 @@ namespace iRacingTVController
 			sessionState = (SessionState) IRSDK.data.SessionState;
 
 			sessionTimeTotal = IRSDK.data.SessionTimeTotal;
-			sessionTimeRemaining = Math.Max( 0, IRSDK.data.SessionTimeRemain );
+			sessionTimeRemaining = Math.Max( 0, IRSDK.data.SessionTimeRemain + IRSDK.normalizedSession.greenFlagDropSessionTime );
+
+			if ( sessionTimeRemaining > sessionTimeTotal )
+			{
+				sessionTimeRemaining = sessionTimeTotal;
+			}
 
 			sessionLapsTotal = IRSDK.data.SessionLapsTotal;
 			sessionLapsRemaining = Math.Min( sessionLapsTotal, Math.Max( 0, IRSDK.data.SessionLapsRemain ) + 1 );

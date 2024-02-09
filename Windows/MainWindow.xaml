@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iRacingTVController"
         mc:Ignorable="d"
-        Title="iRacing-TV Controller v1.64"
+        Title="iRacing-TV Controller v1.66"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" ResizeMode="CanResizeWithGrip" Width="900" Height="765" MinWidth="900" MinHeight="765" Icon="/Assets/icon/iracing-tv.ico" KeyDown="Window_KeyDown">
     <Grid>
@@ -22,50 +22,80 @@
                     </Grid.RowDefinitions>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="90"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Label Content="Race Status" FontSize="10" FontWeight="Bold" />
-                        <Separator Margin="6,0,0,0" Grid.Column="1"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Race Status" FontSize="10" FontWeight="Bold" />
+                            <Separator Margin="6,0,12,0" Grid.Column="1"/>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="110"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Standings" FontSize="10" FontWeight="Bold" />
+                            <Separator Margin="6,0,0,0" Grid.Column="1"/>
+                        </Grid>
                     </Grid>
-                    <Grid Margin="0,6,0,0" Grid.Row="1">
+                    <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <StackPanel Width="90" Margin="0,0,3,0">
-                            <TextBox x:Name="ControlPanel_RaceStatus_SimFrame" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontFamily="Courier New" FontSize="11"/>
-                            <Label Content="Sim Frame" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
-                        </StackPanel>
-                        <StackPanel Width="120" Margin="3,0,0,0" Grid.Column="1">
-                            <TextBox x:Name="ControlPanel_RaceStatus_SessionName" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
-                            <Label Content="Session Name" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
-                        </StackPanel>
-                        <StackPanel Width="120" Margin="3,0,0,0" Grid.Column="2">
-                            <TextBox x:Name="ControlPanel_RaceStatus_SessionType" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
-                            <Label Content="Session Type" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
-                        </StackPanel>
-                        <StackPanel Width="120" Margin="3,0,0,0" Grid.Column="3">
-                            <TextBox x:Name="ControlPanel_RaceStatus_SessionState" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
-                            <Label Content="Session State" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
-                        </StackPanel>
-                        <StackPanel Width="60" Margin="3,0,3,0" Grid.Column="4">
-                            <TextBox x:Name="ControlPanel_RaceStatus_SimTime" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
-                            <Label Content="Sim Time" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
-                        </StackPanel>
-                        <StackPanel Width="60" Margin="3,0,3,0" Grid.Column="5">
-                            <TextBox x:Name="ControlPanel_RaceStatus_RemainingTime" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontFamily="Courier New" FontSize="11"/>
-                            <Label Content="Rem. Time" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
-                        </StackPanel>
-                        <StackPanel Width="60" Margin="3,0,3,0" Grid.Column="6">
-                            <TextBox x:Name="ControlPanel_RaceStatus_RemainingLaps" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontFamily="Courier New" FontSize="11"/>
-                            <Label Content="Rem. Laps" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
-                        </StackPanel>
+                        <Grid Margin="0,6,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Width="90" Margin="0,0,3,0">
+                                <TextBox x:Name="ControlPanel_RaceStatus_SimFrame" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontFamily="Courier New" FontSize="11"/>
+                                <Label Content="Sim Frame" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                            </StackPanel>
+                            <StackPanel Width="120" Margin="3,0,0,0" Grid.Column="1">
+                                <TextBox x:Name="ControlPanel_RaceStatus_SessionName" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
+                                <Label Content="Session Name" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                            </StackPanel>
+                            <StackPanel Width="120" Margin="3,0,0,0" Grid.Column="2">
+                                <TextBox x:Name="ControlPanel_RaceStatus_SessionType" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
+                                <Label Content="Session Type" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                            </StackPanel>
+                            <StackPanel Width="120" Margin="3,0,0,0" Grid.Column="3">
+                                <TextBox x:Name="ControlPanel_RaceStatus_SessionState" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
+                                <Label Content="Session State" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                            </StackPanel>
+                            <StackPanel Width="60" Margin="3,0,3,0" Grid.Column="4">
+                                <TextBox x:Name="ControlPanel_RaceStatus_SimTime" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontSize="11"/>
+                                <Label Content="Sim Time" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                            </StackPanel>
+                            <StackPanel Width="60" Margin="3,0,3,0" Grid.Column="5">
+                                <TextBox x:Name="ControlPanel_RaceStatus_RemainingTime" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontFamily="Courier New" FontSize="11"/>
+                                <Label Content="Rem. Time" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                            </StackPanel>
+                            <StackPanel Width="60" Margin="3,0,3,0" Grid.Column="6">
+                                <TextBox x:Name="ControlPanel_RaceStatus_RemainingLaps" Padding="3,0,3,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False" Height="17" FontFamily="Courier New" FontSize="11"/>
+                                <Label Content="Rem. Laps" FontSize="9" HorizontalAlignment="Center" Margin="0,-3,0,0" />
+                            </StackPanel>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="65"/>
+                                <ColumnDefinition Width="65"/>
+                                <ColumnDefinition Width="65"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="ControlPanel_Standings_Show" Content="Show" Height="25" Click="ControlPanel_Standings_Show_Button_Click"/>
+                            <Button x:Name="ControlPanel_Standings_PrevPage" Content="Prev Page" Height="25" Grid.Column="1" Click="ControlPanel_Standings_PrevPage_Button_Click"/>
+                            <Button x:Name="ControlPanel_Standings_NextPage" Content="Next Page" Height="25" Grid.Column="2" Click="ControlPanel_Standings_NextPage_Button_Click"/>
+                        </Grid>
                     </Grid>
                     <Grid Margin="0,6,0,0" Grid.Row="2">
                         <Grid.ColumnDefinitions>

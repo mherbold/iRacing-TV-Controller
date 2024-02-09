@@ -71,6 +71,7 @@ namespace iRacingTVController
 
 		[NonSerialized, XmlIgnore] float battleChyronTimer = 0;
 
+		[NonSerialized, XmlIgnore] public bool forceShowRaceResult = false;
 		[NonSerialized, XmlIgnore] public int raceResultPageCount = 0;
 		[NonSerialized, XmlIgnore] public int raceResultCurrentPage = 0;
 		[NonSerialized, XmlIgnore] float raceResultTimer = 0;
@@ -518,22 +519,6 @@ namespace iRacingTVController
 
 		public void UpdateRaceResult()
 		{
-			// don't show race result until it is time
-
-			if ( IRSDK.normalizedData.sessionState < SessionState.StateCoolDown )
-			{
-				raceResultCurrentPage = 0;
-				raceResultTimer = 0;
-
-				liveDataRaceResult.show = false;
-
-				return;
-			}
-
-			// run the timer
-
-			raceResultTimer += (float) IRSDK.normalizedData.sessionTimeDelta;
-
 			// figure out how many race result pages we have
 
 			raceResultPageCount = 0;
@@ -543,28 +528,54 @@ namespace iRacingTVController
 				raceResultPageCount += 1 + ( ( IRSDK.normalizedData.leaderboardClass[ i ].numDrivers - 1 ) / Settings.overlay.raceResultSlotCount );
 			}
 
-			// calculate total duration of race results (0 if manual)
+			// don't show race result until it is time
 
-			var totalDuration = raceResultPageCount * Settings.overlay.raceResultInterval;
-
-			// is it time to show the first page?
-
-			if ( raceResultTimer < Settings.overlay.raceResultStartTime )
+			if ( !forceShowRaceResult )
 			{
-				liveDataRaceResult.show = false;
+				if ( !IRSDK.normalizedSession.isInRaceSession || ( IRSDK.normalizedData.sessionState < SessionState.StateCoolDown ) )
+				{
+					raceResultCurrentPage = 0;
+					raceResultTimer = 0;
 
-				return;
-			}
+					liveDataRaceResult.show = false;
 
-			// are we done showing the race results?
+					return;
+				}
 
-			var timeOffset = raceResultTimer - Settings.overlay.raceResultStartTime;
+				// run the timer
 
-			if ( ( totalDuration > 0 ) && ( timeOffset > totalDuration ) )
-			{
-				liveDataRaceResult.show = false;
+				raceResultTimer += (float) IRSDK.normalizedData.sessionTimeDelta;
 
-				return;
+				// calculate total duration of race results (0 if manual)
+
+				var totalDuration = raceResultPageCount * Settings.overlay.raceResultInterval;
+
+				// is it time to show the first page?
+
+				if ( raceResultTimer < Settings.overlay.raceResultStartTime )
+				{
+					liveDataRaceResult.show = false;
+
+					return;
+				}
+
+				// are we done showing the race results?
+
+				var timeOffset = raceResultTimer - Settings.overlay.raceResultStartTime;
+
+				if ( ( totalDuration > 0 ) && ( timeOffset > totalDuration ) )
+				{
+					liveDataRaceResult.show = false;
+
+					return;
+				}
+
+				// figure out which page we are on
+
+				if ( totalDuration > 0 )
+				{
+					raceResultCurrentPage = (int) Math.Floor( timeOffset / Settings.overlay.raceResultInterval );
+				}
 			}
 
 			// set up page metadata
@@ -590,13 +601,6 @@ namespace iRacingTVController
 
 					pageIndex++;
 				}
-			}
-
-			// figure out which page we are on
-
-			if ( totalDuration > 0 )
-			{
-				raceResultCurrentPage = (int) Math.Floor( timeOffset / Settings.overlay.raceResultInterval );
 			}
 
 			// build the race result

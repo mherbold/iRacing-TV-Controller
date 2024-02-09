@@ -1407,6 +1407,34 @@ namespace iRacingTVController
 			}
 		}
 
+		private void ControlPanel_Standings_Show_Button_Click( object sender, EventArgs e )
+		{
+			LiveData.Instance.forceShowRaceResult = !LiveData.Instance.forceShowRaceResult;
+
+			ControlPanel_Standings_Show.Content = LiveData.Instance.forceShowRaceResult ? "Hide" : "Show";
+
+			if ( LiveData.Instance.forceShowRaceResult )
+			{
+				LiveData.Instance.raceResultCurrentPage = 0;
+			}
+		}
+
+		private void ControlPanel_Standings_PrevPage_Button_Click( object sender, EventArgs e )
+		{
+			if ( LiveData.Instance.raceResultCurrentPage > 0 )
+			{
+				LiveData.Instance.raceResultCurrentPage--;
+			}
+		}
+
+		private void ControlPanel_Standings_NextPage_Button_Click( object sender, EventArgs e )
+		{
+			if ( LiveData.Instance.raceResultCurrentPage < LiveData.Instance.raceResultPageCount - 1 )
+			{
+				LiveData.Instance.raceResultCurrentPage++;
+			}
+		}
+
 		private void ControlPanel_CameraControl_Enable_Button_Click( object sender, RoutedEventArgs e )
 		{
 			IRSDK.targetCamEnabled = !IRSDK.targetCamEnabled;

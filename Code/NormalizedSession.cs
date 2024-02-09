@@ -149,15 +149,13 @@ namespace iRacingTVController
 				isInQualifyingSession = ( sessionType == "Lone Qualify" );
 				isInRaceSession = !isInPracticeSession && !isInQualifyingSession;
 
-				if ( isReplay )
+				greenFlagDropSessionTime = 0;
+
+				if ( isReplay && isInRaceSession )
 				{
 					var sessionFlagsData = SessionFlagsPlayback.FindFirstGreenFlagDropInCurrentSession();
 
-					if ( sessionFlagsData == null )
-					{
-						greenFlagDropSessionTime = 0;
-					}
-					else
+					if ( sessionFlagsData != null )
 					{
 						greenFlagDropSessionTime = sessionFlagsData.SessionTime;
 					}

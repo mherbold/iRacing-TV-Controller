@@ -721,6 +721,7 @@ namespace iRacingTVController
 			Update( Overlay_General_Position_X, Overlay_General_Position_Y, Settings.overlay.position, Overlay_General_Position_Override, Settings.overlay.position_Overridden );
 			Update( Overlay_General_Size_W, Overlay_General_Size_H, Settings.overlay.size, Overlay_General_Size_Override, Settings.overlay.size_Overridden );
 			Update( Overlay_General_DriverCsvFilePath, Settings.overlay.driverCsvFilePath, Overlay_General_DriverCsvFilePath_Override, Settings.overlay.driverCsvFilePath_Overridden, Overlay_General_DriverCsvFilePath_Button );
+			Update( Overlay_General_StringsCsvFilePath, Settings.overlay.stringsCsvFilePath, Overlay_General_StringsCsvFilePath_Override, Settings.overlay.stringsCsvFilePath_Overridden, Overlay_General_StringsCsvFilePath_Button );
 
 			// overlay - fonts
 
@@ -2750,6 +2751,29 @@ namespace iRacingTVController
 			}
 		}
 
+		private void Overlay_General_StringsCsvFilePath_Button_Click( object sender, EventArgs e )
+		{
+			string currentFilePath = Overlay_General_StringsCsvFilePath.Text;
+
+			currentFilePath = Settings.GetFullPath( currentFilePath );
+
+			var openFileDialog = new OpenFileDialog()
+			{
+				Title = "Select a CSV File",
+				Filter = "CSV Files (*.csv)|*.csv|All files (*.*)|*.*",
+				InitialDirectory = ( currentFilePath == string.Empty ) ? Program.documentsFolder : Path.GetDirectoryName( currentFilePath ),
+				FileName = currentFilePath,
+				ValidateNames = true,
+				CheckPathExists = true,
+				CheckFileExists = true
+			};
+
+			if ( openFileDialog.ShowDialog() == true )
+			{
+				Overlay_General_StringsCsvFilePath.Text = Settings.GetRelativePath( openFileDialog.FileName );
+			}
+		}
+
 		private void Overlay_General_Update( object sender, EventArgs e )
 		{
 			if ( initializing == 0 )
@@ -2759,6 +2783,7 @@ namespace iRacingTVController
 				update |= UpdateOverlaySetting( ref Settings.overlayLocal.position_Overridden, Overlay_General_Position_Override, ref Settings.overlayLocal.position, Overlay_General_Position_X, Overlay_General_Position_Y );
 				update |= UpdateOverlaySetting( ref Settings.overlayLocal.size_Overridden, Overlay_General_Size_Override, ref Settings.overlayLocal.size, Overlay_General_Size_W, Overlay_General_Size_H );
 				update |= UpdateOverlaySetting( ref Settings.overlayLocal.driverCsvFilePath_Overridden, Overlay_General_DriverCsvFilePath_Override, ref Settings.overlayLocal.driverCsvFilePath, Overlay_General_DriverCsvFilePath );
+				update |= UpdateOverlaySetting( ref Settings.overlayLocal.stringsCsvFilePath_Overridden, Overlay_General_StringsCsvFilePath_Override, ref Settings.overlayLocal.stringsCsvFilePath, Overlay_General_StringsCsvFilePath );
 
 				if ( update )
 				{

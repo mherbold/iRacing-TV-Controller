@@ -59,9 +59,11 @@ namespace iRacingTVController
 			{
 				IncidentData? currentIncident = IncidentPlayback.GetCurrentIncidentData();
 
+				NormalizedCar? currentlyLookingAtCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( IRSDK.camCarIdx );
 				NormalizedCar? firstPlaceCar = null;
 				NormalizedCar? leadingOnTrackCar = null;
 				NormalizedCar? leadingPittedCar = null;
+				NormalizedCar? fastestInPitsCar = null;
 				NormalizedCar? hottestCar = null;
 				NormalizedCar? slowestOnTrackCar = null;
 				NormalizedCar? incidentCar = ( currentIncident != null ) ? IRSDK.normalizedData.FindNormalizedCarByCarIdx( currentIncident.CarIdx ) : null;
@@ -84,17 +86,19 @@ namespace iRacingTVController
 							leadingPittedCar = normalizedCar;
 						}
 
+						if ( normalizedCar.isOnPitRoad && ( normalizedCar.speedInMetersPerSecond >= 1 ) && ( ( fastestInPitsCar == null ) || ( normalizedCar.speedInMetersPerSecond > fastestInPitsCar.speedInMetersPerSecond ) ) )
+						{
+							fastestInPitsCar = normalizedCar;
+						}
+
 						if ( ( normalizedCar.heatTotal > 0 ) && ( ( hottestCar == null ) || ( normalizedCar.heatTotal > hottestCar.heatTotal ) ) )
 						{
 							hottestCar = normalizedCar;
 						}
 
-						if ( !normalizedCar.isOutOfCar )
+						if ( !normalizedCar.isOutOfCar && !normalizedCar.isOnPitRoad && ( normalizedCar.speedInMetersPerSecond < 15 ) && ( ( slowestOnTrackCar == null ) || ( normalizedCar.speedInMetersPerSecond < slowestOnTrackCar.speedInMetersPerSecond ) ) )
 						{
-							if ( ( slowestOnTrackCar == null ) || ( ( !normalizedCar.isOnPitRoad || ( normalizedCar.speedInMetersPerSecond > 2 ) ) && ( normalizedCar.speedInMetersPerSecond < slowestOnTrackCar.speedInMetersPerSecond ) ) )
-							{
-								slowestOnTrackCar = normalizedCar;
-							}
+							slowestOnTrackCar = normalizedCar;
 						}
 
 						if ( normalizedCar.isPreferredCar )
@@ -119,197 +123,244 @@ namespace iRacingTVController
 				var targetCamSlowSwitchEnabled = false;
 				var targetCamReason = "No matching rule, looking at the preferred or leading car.";
 
-				if ( Settings.director.rule1_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateCoolDown ) && ( firstPlaceCar != null ) && !firstPlaceCar.isOutOfCar ) )
+				if ( LiveData.Instance.liveDataIntro.show == true )
 				{
-					targetCamCarIdx = firstPlaceCar.carIdx;
-					targetCamType = Settings.director.rule1_Camera;
-					targetCamReason = "Rule 1: Post-race cool down";
-				}
-				else if ( Settings.director.rule2_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateRacing ) && Settings.director.preferredCarLockOnEnabled && ( preferredCar != null ) && ( ( preferredCar.heatTotal >= Settings.director.preferredCarLockOnMinimumHeat ) || ( ( preferredCar.normalizedCarBehind?.heatTotal ?? 0 ) >= Settings.director.preferredCarLockOnMinimumHeat ) ) ) )
-				{
-					if ( Settings.overlay.chyronShowDuringRace )
+					var normalizedCar = IRSDK.normalizedData.FindNormalizedCarByCarIdx( LiveData.Instance.introCarIdx );
+
+					if ( ( normalizedCar != null ) && !normalizedCar.isOutOfCar )
 					{
-						allowShowChyron = true;
-					}
-
-					targetCamCarIdx = preferredCar.carIdx;
-					targetCamType = Settings.director.rule2_Camera;
-					targetCamReason = "Rule 2: Preferred car lock-on";
-				}
-				else if ( Settings.director.rule3_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateCheckered ) ) )
-				{
-					var maxLapDistPctDelta = 120.0f / IRSDK.normalizedSession.trackLengthInMeters;
-					var minLapDistPct = 1.0 - maxLapDistPctDelta;
-					var maxLapDistPct = maxLapDistPctDelta;
-
-					var highestLapPosition = 0.0f;
-
-					foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardSortedNormalizedCars )
-					{
-						if ( normalizedCar.includeInLeaderboard && !normalizedCar.isOnPitRoad && !normalizedCar.isOutOfCar )
-						{
-							if ( ( normalizedCar.lapDistPct > minLapDistPct ) || ( normalizedCar.lapDistPct < maxLapDistPct ) )
-							{
-								if ( normalizedCar.lapPosition > highestLapPosition )
-								{
-									highestLapPosition = normalizedCar.lapPosition;
-
-									targetCamFastSwitchEnabled = true;
-									targetCamCarIdx = normalizedCar.carIdx;
-									targetCamType = Settings.director.rule3_Camera;
-									targetCamReason = "Rule 3: Checkered flag";
-
-									driverWasTalking = false;
-								}
-							}
-						}
+						targetCamCarIdx = LiveData.Instance.introCarIdx;
+						targetCamType = SettingsDirector.CameraType.Close;
+						targetCamFastSwitchEnabled = true;
+						targetCamReason = "Intro: Looking at the intro car";
 					}
 				}
-				else if ( Settings.director.rule4_Enabled && ( ( currentIncident != null ) && ( incidentCar != null ) ) )
+				else
 				{
-					targetCamFastSwitchEnabled = true;
-					targetCamCarIdx = currentIncident.CarIdx;
-					targetCamType = Settings.director.rule4_Camera;
-					targetCamReason = "Rule 4: Incident";
-
-					driverWasTalking = false;
-				}
-				else if ( Settings.director.rule5_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState >= SessionState.StateRacing ) && ( leadingOnTrackCar != null ) && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.GreenHeld | (uint) SessionFlags.StartReady | (uint) SessionFlags.StartSet | (uint) SessionFlags.StartGo ) ) != 0 ) ) )
-				{
-					targetCamFastSwitchEnabled = true;
-					targetCamCarIdx = leadingOnTrackCar.carIdx;
-					targetCamType = Settings.director.rule5_Camera;
-					targetCamReason = "Rule 5: Green flag is about to be shown or is waving";
-
-					IRSDK.cameraSwitchWaitTimeRemaining = 4;
-
-					driverWasTalking = false;
-				}
-				else if ( Settings.director.rule6_Enabled && ( talkingCar != null ) )
-				{
-					targetCamFastSwitchEnabled = true;
-					targetCamCarIdx = IRSDK.normalizedData.radioTransmitCarIdx;
-					targetCamType = Settings.director.rule6_Camera;
-					targetCamReason = "Rule 6: Driver is talking";
-
-					driverWasTalking = true;
-				}
-				else if ( driverWasTalking )
-				{
-					driverWasTalking = false;
-
-					if ( !isHolding )
+					if ( Settings.director.rule1_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateCoolDown ) && ( firstPlaceCar != null ) && !firstPlaceCar.isOutOfCar ) )
 					{
-						IRSDK.cameraSwitchWaitTimeRemaining = Settings.director.switchDelayRadioChatter;
+						targetCamCarIdx = firstPlaceCar.carIdx;
+						targetCamType = Settings.director.rule1_Camera;
+						targetCamReason = "Rule 1: Post-race cool down";
 					}
-				}
-				else if ( Settings.director.rule7_Enabled && ( IRSDK.normalizedSession.isInPracticeSession ) )
-				{
-					if ( randomCar != null )
-					{
-						if ( Settings.overlay.chyronShowDuringPractice )
-						{
-							allowShowChyron = true;
-						}
-
-						targetCamSlowSwitchEnabled = true;
-						targetCamCarIdx = randomCar.carIdx;
-						targetCamType = Settings.director.rule7_Camera;
-						targetCamReason = "Rule 7: Practice session";
-					}
-					else
-					{
-						targetCamCarIdx = IRSDK.normalizedData.paceCar?.carIdx ?? 0;
-						targetCamType = SettingsDirector.CameraType.Scenic;
-						targetCamReason = "Rule 7: Practice session (no cars on track)";
-					}
-				}
-				else if ( Settings.director.rule8_Enabled && ( IRSDK.normalizedSession.isInQualifyingSession ) )
-				{
-					if ( randomCar != null )
-					{
-						if ( Settings.overlay.chyronShowDuringQualifying )
-						{
-							allowShowChyron = true;
-						}
-
-						targetCamSlowSwitchEnabled = true;
-						targetCamCarIdx = randomCar.carIdx;
-						targetCamType = Settings.director.rule8_Camera;
-						targetCamReason = "Rule 8: Qualifying session";
-					}
-					else
-					{
-						targetCamCarIdx = IRSDK.normalizedData.paceCar?.carIdx ?? 0;
-						targetCamType = SettingsDirector.CameraType.Scenic;
-						targetCamReason = "Rule 8: Qualifying session (no cars on track)";
-					}
-				}
-				else if ( Settings.director.rule9_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) || ( IRSDK.normalizedData.paceCar != null ) ) && ( IRSDK.normalizedData.sessionState == SessionState.StateWarmup ) ) )
-				{
-					var normalizedCar = leadingOnTrackCar ?? leadingPittedCar ?? IRSDK.normalizedData.paceCar;
-
-					if ( normalizedCar != null )
-					{
-						targetCamCarIdx = normalizedCar.carIdx;
-						targetCamType = Settings.director.rule9_Camera;
-						targetCamReason = "Rule 9: Cars are warming up";
-					}
-				}
-				else if ( Settings.director.rule10_Enabled && ( ( ( IRSDK.normalizedData.paceCar != null ) && !IRSDK.normalizedData.paceCar.isOnPitRoad ) && ( IRSDK.normalizedData.sessionState == SessionState.StateParadeLaps ) ) )
-				{
-					targetCamCarIdx = IRSDK.normalizedData.paceCar.carIdx;
-					targetCamType = Settings.director.rule10_Camera;
-					targetCamReason = "Rule 10: Cars are doing parade laps";
-				}
-				else if ( Settings.director.rule11_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) || ( IRSDK.normalizedData.paceCar != null ) ) && ( IRSDK.normalizedData.sessionState == SessionState.StateGetInCar ) ) )
-				{
-					var normalizedCar = leadingOnTrackCar ?? leadingPittedCar ?? IRSDK.normalizedData.paceCar;
-
-					if ( normalizedCar != null )
-					{
-						targetCamCarIdx = normalizedCar.carIdx;
-						targetCamType = Settings.director.rule11_Camera;
-						targetCamReason = "Rule 11: Drivers are getting into their cars";
-					}
-				}
-				else if ( Settings.director.rule12_Enabled && ( ( ( slowestOnTrackCar != null ) || ( firstPlaceCar != null ) ) && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.CautionWaving ) ) != 0 ) ) )
-				{
-					var normalizedCar = slowestOnTrackCar ?? firstPlaceCar;
-
-					if ( normalizedCar != null )
-					{
-						if ( normalizedCar.speedInMetersPerSecond < 3 )
-						{
-							if ( Settings.overlay.chyronShowDuringRace )
-							{
-								allowShowChyron = true;
-							}
-						}
-
-						targetCamCarIdx = normalizedCar.carIdx;
-						targetCamType = Settings.director.rule12_Camera;
-						targetCamReason = "Rule 12: Caution flag is waving";
-					}
-				}
-				else if ( Settings.director.rule13_Enabled && ( ( IRSDK.normalizedData.paceCar != null ) && !IRSDK.normalizedData.paceCar.isOnPitRoad ) && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.OneLapToGreen ) ) != 0 ) && ( IRSDK.normalizedData.sessionState >= SessionState.StateParadeLaps ) )
-				{
-					targetCamCarIdx = IRSDK.normalizedData.paceCar.carIdx;
-					targetCamType = Settings.director.rule13_Camera;
-					targetCamReason = "Rule 13: One lap to green";
-				}
-				else if ( Settings.director.rule14_Enabled )
-				{
-					if ( hottestCar != null )
+					else if ( Settings.director.rule2_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateRacing ) && Settings.director.preferredCarLockOnEnabled && ( preferredCar != null ) && ( ( preferredCar.heatTotal >= Settings.director.preferredCarLockOnMinimumHeat ) || ( ( preferredCar.normalizedCarBehind?.heatTotal ?? 0 ) >= Settings.director.preferredCarLockOnMinimumHeat ) ) ) )
 					{
 						if ( Settings.overlay.chyronShowDuringRace )
 						{
 							allowShowChyron = true;
 						}
 
-						targetCamCarIdx = hottestCar.carIdx;
-						targetCamType = Settings.director.rule14_Camera;
-						targetCamReason = "Rule 14: Hottest car";
+						targetCamCarIdx = preferredCar.carIdx;
+						targetCamType = Settings.director.rule2_Camera;
+						targetCamReason = "Rule 2: Preferred car lock-on";
+					}
+					else if ( Settings.director.rule3_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState == SessionState.StateCheckered ) ) )
+					{
+						var maxLapDistPctDelta = 120.0f / IRSDK.normalizedSession.trackLengthInMeters;
+						var minLapDistPct = 1.0 - maxLapDistPctDelta;
+						var maxLapDistPct = maxLapDistPctDelta;
+
+						var highestLapPosition = 0.0f;
+
+						foreach ( var normalizedCar in IRSDK.normalizedData.leaderboardSortedNormalizedCars )
+						{
+							if ( normalizedCar.includeInLeaderboard && !normalizedCar.isOnPitRoad && !normalizedCar.isOutOfCar )
+							{
+								if ( ( normalizedCar.lapDistPct > minLapDistPct ) || ( normalizedCar.lapDistPct < maxLapDistPct ) )
+								{
+									if ( normalizedCar.lapPosition > highestLapPosition )
+									{
+										highestLapPosition = normalizedCar.lapPosition;
+
+										targetCamFastSwitchEnabled = true;
+										targetCamCarIdx = normalizedCar.carIdx;
+										targetCamType = Settings.director.rule3_Camera;
+										targetCamReason = "Rule 3: Checkered flag";
+
+										driverWasTalking = false;
+									}
+								}
+							}
+						}
+					}
+					else if ( Settings.director.rule4_Enabled && ( ( currentIncident != null ) && ( incidentCar != null ) ) )
+					{
+						targetCamFastSwitchEnabled = true;
+						targetCamCarIdx = currentIncident.CarIdx;
+						targetCamType = Settings.director.rule4_Camera;
+						targetCamReason = "Rule 4: Incident";
+
+						driverWasTalking = false;
+					}
+					else if ( Settings.director.rule5_Enabled && ( IRSDK.normalizedSession.isInRaceSession && ( IRSDK.normalizedData.sessionState >= SessionState.StateRacing ) && ( leadingOnTrackCar != null ) && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.GreenHeld | (uint) SessionFlags.StartReady | (uint) SessionFlags.StartSet | (uint) SessionFlags.StartGo ) ) != 0 ) ) )
+					{
+						targetCamFastSwitchEnabled = true;
+						targetCamCarIdx = leadingOnTrackCar.carIdx;
+						targetCamType = Settings.director.rule5_Camera;
+						targetCamReason = "Rule 5: Green flag is about to be shown or is waving";
+
+						IRSDK.cameraSwitchWaitTimeRemaining = 2;
+
+						driverWasTalking = false;
+					}
+					else if ( Settings.director.rule6_Enabled && ( talkingCar != null ) )
+					{
+						targetCamFastSwitchEnabled = true;
+						targetCamCarIdx = IRSDK.normalizedData.radioTransmitCarIdx;
+						targetCamType = Settings.director.rule6_Camera;
+						targetCamReason = "Rule 6: Driver is talking";
+
+						driverWasTalking = true;
+					}
+					else if ( driverWasTalking )
+					{
+						driverWasTalking = false;
+
+						if ( !isHolding )
+						{
+							IRSDK.cameraSwitchWaitTimeRemaining = Settings.director.switchDelayRadioChatter;
+						}
+					}
+					else if ( Settings.director.rule7_Enabled && ( IRSDK.normalizedSession.isInPracticeSession ) )
+					{
+						if ( randomCar != null )
+						{
+							if ( Settings.overlay.chyronShowDuringPractice )
+							{
+								allowShowChyron = true;
+							}
+
+							targetCamSlowSwitchEnabled = true;
+							targetCamCarIdx = randomCar.carIdx;
+							targetCamType = Settings.director.rule7_Camera;
+							targetCamReason = "Rule 7: Practice session";
+						}
+						else
+						{
+							targetCamCarIdx = IRSDK.normalizedData.paceCar?.carIdx ?? 0;
+							targetCamType = SettingsDirector.CameraType.Scenic;
+							targetCamReason = "Rule 7: Practice session (no cars on track)";
+						}
+					}
+					else if ( Settings.director.rule8_Enabled && ( IRSDK.normalizedSession.isInQualifyingSession ) )
+					{
+						if ( randomCar != null )
+						{
+							if ( Settings.overlay.chyronShowDuringQualifying )
+							{
+								allowShowChyron = true;
+							}
+
+							targetCamSlowSwitchEnabled = true;
+							targetCamCarIdx = randomCar.carIdx;
+							targetCamType = Settings.director.rule8_Camera;
+							targetCamReason = "Rule 8: Qualifying session";
+						}
+						else
+						{
+							targetCamCarIdx = IRSDK.normalizedData.paceCar?.carIdx ?? 0;
+							targetCamType = SettingsDirector.CameraType.Scenic;
+							targetCamReason = "Rule 8: Qualifying session (no cars on track)";
+						}
+					}
+					else if ( Settings.director.rule9_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) || ( IRSDK.normalizedData.paceCar != null ) ) && ( IRSDK.normalizedData.sessionState == SessionState.StateWarmup ) ) )
+					{
+						var normalizedCar = leadingOnTrackCar ?? leadingPittedCar ?? IRSDK.normalizedData.paceCar;
+
+						if ( normalizedCar != null )
+						{
+							targetCamCarIdx = normalizedCar.carIdx;
+							targetCamType = Settings.director.rule9_Camera;
+							targetCamReason = "Rule 9: Cars are warming up";
+						}
+					}
+					else if ( Settings.director.rule10_Enabled && ( ( ( IRSDK.normalizedData.paceCar != null ) && !IRSDK.normalizedData.paceCar.isOnPitRoad ) && ( IRSDK.normalizedData.sessionState == SessionState.StateParadeLaps ) ) )
+					{
+						targetCamFastSwitchEnabled = true;
+						targetCamCarIdx = IRSDK.normalizedData.paceCar.carIdx;
+						targetCamType = Settings.director.rule10_Camera;
+						targetCamReason = "Rule 10: Cars are doing parade laps";
+					}
+					else if ( Settings.director.rule11_Enabled && ( ( ( leadingOnTrackCar != null ) || ( leadingPittedCar != null ) || ( IRSDK.normalizedData.paceCar != null ) ) && ( IRSDK.normalizedData.sessionState == SessionState.StateGetInCar ) ) )
+					{
+						var normalizedCar = leadingOnTrackCar ?? leadingPittedCar ?? IRSDK.normalizedData.paceCar;
+
+						if ( normalizedCar != null )
+						{
+							targetCamCarIdx = normalizedCar.carIdx;
+							targetCamType = Settings.director.rule11_Camera;
+							targetCamReason = "Rule 11: Drivers are getting into their cars";
+						}
+					}
+					else if ( Settings.director.rule12_Enabled && ( firstPlaceCar != null ) && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.CautionWaving | (uint) SessionFlags.Caution ) ) != 0 ) && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.OneLapToGreen ) ) == 0 ) )
+					{
+						NormalizedCar? normalizedCar;
+
+						var wantFastSwitch = false;
+
+						if ( slowestOnTrackCar != null )
+						{
+							normalizedCar = slowestOnTrackCar;
+							targetCamType = SettingsDirector.CameraType.Medium;
+
+							if ( ( currentlyLookingAtCar != null ) && ( ( currentlyLookingAtCar.isOnPitRoad || currentlyLookingAtCar.wasOnPitRoad ) || ( currentlyLookingAtCar.speedInMetersPerSecond >= 15 ) ) )
+							{
+								wantFastSwitch = true;
+							}
+
+							if ( Settings.overlay.chyronShowDuringRace )
+							{
+								allowShowChyron = true;
+							}
+						}
+						else if ( fastestInPitsCar != null )
+						{
+							normalizedCar = fastestInPitsCar;
+							targetCamType = SettingsDirector.CameraType.Pits;
+
+							if ( ( currentlyLookingAtCar != null ) && !currentlyLookingAtCar.isOnPitRoad )
+							{
+								wantFastSwitch = true;
+							}
+						}
+						else
+						{
+							normalizedCar = firstPlaceCar;
+							targetCamType = Settings.director.rule12_Camera;
+
+							if ( ( currentlyLookingAtCar != null ) && !currentlyLookingAtCar.isOnPitRoad && currentlyLookingAtCar.wasOnPitRoad )
+							{
+								wantFastSwitch = true;
+							}
+						}
+
+						if ( wantFastSwitch && ( normalizedCar.carIdx != Director.targetCamCarIdx ) )
+						{
+							targetCamFastSwitchEnabled = true;
+						}
+
+						targetCamCarIdx = normalizedCar.carIdx;
+						targetCamReason = "Rule 12: Caution flag is waving";
+					}
+					else if ( Settings.director.rule13_Enabled && ( ( IRSDK.normalizedData.paceCar != null ) && !IRSDK.normalizedData.paceCar.isOnPitRoad ) && ( ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.OneLapToGreen ) ) != 0 ) && ( IRSDK.normalizedData.sessionState >= SessionState.StateParadeLaps ) )
+					{
+						targetCamCarIdx = IRSDK.normalizedData.paceCar.carIdx;
+						targetCamType = Settings.director.rule13_Camera;
+						targetCamReason = "Rule 13: One lap to green";
+					}
+					else if ( Settings.director.rule14_Enabled )
+					{
+						if ( hottestCar != null )
+						{
+							if ( Settings.overlay.chyronShowDuringRace )
+							{
+								allowShowChyron = true;
+							}
+
+							targetCamCarIdx = hottestCar.carIdx;
+							targetCamType = Settings.director.rule14_Camera;
+							targetCamReason = "Rule 14: Hottest car";
+						}
 					}
 				}
 

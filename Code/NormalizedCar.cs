@@ -506,7 +506,13 @@ namespace iRacingTVController
 
 						if ( !File.Exists( customCarTgaFilePath ) )
 						{
-							customCarTgaFilePath = string.Empty;
+							customCarTgaFilePath = $"{Settings.editor.iracingCustomPaintsDirectory}\\{driver.CarPath}\\car_team_{driver.TeamID}.tga";
+							showSimStampedNumber = 1;
+
+							if ( !File.Exists( customCarTgaFilePath ) )
+							{
+								customCarTgaFilePath = string.Empty;
+							}
 						}
 					}
 
@@ -514,7 +520,7 @@ namespace iRacingTVController
 
 					carTextureUrl = $"http://localhost:32034/pk_car.png?size=2&view=1&licCol={licColor}&club={driver.ClubID}&sponsors={driver.CarSponsor_1},{driver.CarSponsor_2}&numShow={showSimStampedNumber}&numPat={numberDesignMatch.Groups[ 1 ].Value}&numCol={numberDesignMatch.Groups[ 3 ].Value},{numberDesignMatch.Groups[ 4 ].Value},{numberDesignMatch.Groups[ 5 ].Value}&numSlnt={numberDesignMatch.Groups[ 2 ].Value}&number={carNumber}&carPath={carPath}&carPat={carDesignMatch.Groups[ 1 ].Value}&carCol={carDesignMatch.Groups[ 2 ].Value},{carDesignMatch.Groups[ 3 ].Value},{carDesignMatch.Groups[ 4 ].Value}&carRimType=2&carRimCol={carDesignMatch.Groups[ 5 ].Value}&carCustPaint={customCarTgaFilePath}";
 
-					// LogFile.Write( $"{displayedName}'s car texture URL = {carTextureUrl}\r\n" );
+					LogFile.Write( $"{displayedName}'s car texture URL = {carTextureUrl}\r\n" );
 				}
 
 				var helmetDesignMatch = Regex.Match( driver.HelmetDesignStr, @"(\d+),(.{6}),(.{6}),(.{6})" );

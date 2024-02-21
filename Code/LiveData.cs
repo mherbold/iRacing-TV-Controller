@@ -76,6 +76,8 @@ namespace iRacingTVController
 		[NonSerialized, XmlIgnore] public int raceResultCurrentPage = 0;
 		[NonSerialized, XmlIgnore] float raceResultTimer = 0;
 
+		[NonSerialized, XmlIgnore] public int introCarIdx = 0;
+
 		static LiveData()
 		{
 			Instance = new LiveData();
@@ -1017,6 +1019,20 @@ namespace iRacingTVController
 					{
 						liveDataIntro.show = true;
 
+						if ( IRSDK.normalizedData.numLeaderboardCars > 0 )
+						{
+							var timePerCar = Settings.overlay.introStartInterval / 2.0;
+							var currentTime = ( IRSDK.normalizedData.sessionTime - introStartTime ) - ( Settings.overlay.introInTime + ( Settings.overlay.introHoldTime - Settings.overlay.introStartInterval ) );
+							var driverIndex = Math.Max( 0, (int) Math.Round( currentTime / timePerCar ) );
+
+							if ( driverIndex < IRSDK.normalizedData.numLeaderboardCars )
+							{
+								var normalizedCar = IRSDK.normalizedData.classLeaderboardSortedNormalizedCars[ driverIndex ];
+
+								introCarIdx = normalizedCar.carIdx;
+							}
+						}
+
 						for ( var driverIndex = 0; driverIndex < liveDataIntro.liveDataIntroDrivers.Length; driverIndex++ )
 						{
 							var liveDataIntroDriver = liveDataIntro.liveDataIntroDrivers[ driverIndex ];
@@ -1026,10 +1042,10 @@ namespace iRacingTVController
 							if ( normalizedCar.includeInLeaderboard && ( normalizedCar.qualifyingPosition < MaxNumDrivers ) )
 							{
 								var rowNumber = Math.Floor( driverIndex / 2.0 );
-								var rowStartTime = ( ( ( driverIndex & 1 ) == 0 ) ? Settings.overlay.introLeftStartTime : Settings.overlay.introRightStartTime ) + rowNumber * Settings.overlay.introStartInterval;
-								var rowEndTime = rowStartTime + animationDuration;
+								var driverStartTime = ( ( ( driverIndex & 1 ) == 0 ) ? Settings.overlay.introLeftStartTime : Settings.overlay.introRightStartTime ) + rowNumber * Settings.overlay.introStartInterval;
+								var driverEndTime = driverStartTime + animationDuration;
 
-								liveDataIntroDriver.show = ( IRSDK.normalizedData.sessionTime >= rowStartTime ) && ( IRSDK.normalizedData.sessionTime < rowEndTime );
+								liveDataIntroDriver.show = ( IRSDK.normalizedData.sessionTime >= driverStartTime ) && ( IRSDK.normalizedData.sessionTime < driverEndTime );
 								liveDataIntroDriver.carIdx = normalizedCar.carIdx;
 								liveDataIntroDriver.textLayer1 = GetTextContent( out color, "IntroDriverTextLayer1", normalizedCar );
 								liveDataIntroDriver.textLayer2 = GetTextContent( out color, "IntroDriverTextLayer2", normalizedCar );
@@ -1900,6 +1916,19 @@ namespace iRacingTVController
 			}
 
 			return string.Empty;
+		}
+
+		public static string ReplaceString( string targetString )
+		{
+			if ( IRSDK.stringsCsvFile != null )
+			{
+				if ( IRSDK.stringsCsvFile.ContainsKey( targetString ) )
+				{
+					return IRSDK.stringsCsvFile[ targetString ];
+				}
+			}
+
+			return targetString;
 		}
 
 		public static string GetOrdinal( int number )

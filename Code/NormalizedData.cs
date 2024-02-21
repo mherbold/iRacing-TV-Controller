@@ -620,6 +620,9 @@ namespace iRacingTVController
 				leaderboardClass[ 0 ].name = classLeader.carClass?.Name ?? string.Empty;
 				leaderboardClass[ 0 ].shortName = classLeader.carClass?.ShortName ?? string.Empty;
 
+				leaderboardClass[ 0 ].name = LiveData.ReplaceString( leaderboardClass[ 0 ].name );
+				leaderboardClass[ 0 ].shortName = LiveData.ReplaceString( leaderboardClass[ 0 ].shortName );
+
 				numLeaderboardClasses = 1;
 
 				var displayedPosition = 1;
@@ -642,6 +645,9 @@ namespace iRacingTVController
 							leaderboardClass[ numLeaderboardClasses ].color = classLeader.classColor;
 							leaderboardClass[ numLeaderboardClasses ].name = classLeader.carClass?.Name ?? string.Empty;
 							leaderboardClass[ numLeaderboardClasses ].shortName = classLeader.carClass?.ShortName ?? string.Empty;
+
+							leaderboardClass[ numLeaderboardClasses ].name = LiveData.ReplaceString( leaderboardClass[ numLeaderboardClasses ].name );
+							leaderboardClass[ numLeaderboardClasses ].shortName = LiveData.ReplaceString( leaderboardClass[ numLeaderboardClasses ].shortName );
 
 							numLeaderboardClasses++;
 

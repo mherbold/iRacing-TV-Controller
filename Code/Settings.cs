@@ -732,10 +732,12 @@ namespace iRacingTVController
 				position = overlayLocal.position_Overridden ? overlayLocal.position : overlayGlobal.position,
 				size = overlayLocal.size_Overridden ? overlayLocal.size : overlayGlobal.size,
 				driverCsvFilePath = overlayLocal.driverCsvFilePath_Overridden ? overlayLocal.driverCsvFilePath : overlayGlobal.driverCsvFilePath,
+				stringsCsvFilePath = overlayLocal.stringsCsvFilePath_Overridden ? overlayLocal.stringsCsvFilePath : overlayGlobal.stringsCsvFilePath,
 
 				position_Overridden = overlayLocal.position_Overridden,
 				size_Overridden = overlayLocal.size_Overridden,
 				driverCsvFilePath_Overridden = overlayLocal.driverCsvFilePath_Overridden,
+				stringsCsvFilePath_Overridden = overlayLocal.stringsCsvFilePath_Overridden,
 
 				fontNames = new string[ SettingsOverlay.MaxNumFonts ] {
 					overlayLocal.fontNames_Overridden[ 0 ] ? overlayLocal.fontNames[ 0 ] : overlayGlobal.fontNames[ 0 ],

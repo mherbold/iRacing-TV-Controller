@@ -65,8 +65,13 @@ namespace iRacingTVController
 
 		public static string driverCsvFilePath = string.Empty;
 		public static Dictionary<int, IDictionary<string, object>>? driverCsvFile = null;
-		public static FileSystemWatcher? driverCsvFileWatcher = null;
 		public static bool driverCsvFileNeedsToBeReloaded = false;
+		public static FileSystemWatcher? driverCsvFileWatcher = null;
+
+		public static string stringsCsvFilePath = string.Empty;
+		public static Dictionary<string, string>? stringsCsvFile = null;
+		public static bool stringsCsvFileNeedsToBeReloaded = false;
+		public static FileSystemWatcher? stringsCsvFileWatcher = null;
 
 		public static void Update()
 		{
@@ -159,6 +164,43 @@ namespace iRacingTVController
 					}
 				}
 			}
+
+			if ( stringsCsvFilePath != Settings.overlayLocal.stringsCsvFilePath )
+			{
+				stringsCsvFilePath = Settings.overlayLocal.stringsCsvFilePath;
+				stringsCsvFile = null;
+				stringsCsvFileWatcher = null;
+				stringsCsvFileNeedsToBeReloaded = true;
+			}
+
+			if ( stringsCsvFileNeedsToBeReloaded )
+			{
+				stringsCsvFileNeedsToBeReloaded = false;
+
+				if ( stringsCsvFilePath != string.Empty )
+				{
+					ReadStringsCsvFileIntoDictionary();
+
+					var fullPath = Settings.GetFullPath( stringsCsvFilePath );
+
+					var directory = Path.GetDirectoryName( fullPath );
+					var fileName = Path.GetFileName( fullPath );
+
+					if ( directory != null )
+					{
+						stringsCsvFileWatcher = new()
+						{
+							Path = directory,
+							NotifyFilter = NotifyFilters.LastWrite,
+							Filter = fileName,
+							EnableRaisingEvents = true,
+							IncludeSubdirectories = false
+						};
+
+						stringsCsvFileWatcher.Changed += OnStringsCsvFileChanged;
+					}
+				}
+			}
 		}
 
 		private static void OnDriverCsvFileChanged( object sender, FileSystemEventArgs e )
@@ -199,6 +241,48 @@ namespace iRacingTVController
 				driverCsvFile = null;
 
 				MessageBox.Show( MainWindow.Instance, $"We could not load the driver CSV file '{driverCsvFilePath}'.\r\n\r\nThe error message is as follows:\r\n\r\n{exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
+			}
+		}
+
+		private static void OnStringsCsvFileChanged( object sender, FileSystemEventArgs e )
+		{
+			stringsCsvFileNeedsToBeReloaded = true;
+		}
+
+		private static void ReadStringsCsvFileIntoDictionary()
+		{
+			try
+			{
+				stringsCsvFile = new();
+
+				using var reader = new StreamReader( stringsCsvFilePath );
+				using var csv = new CsvReader( reader, CultureInfo.InvariantCulture );
+
+				var records = csv.GetRecords<dynamic>();
+
+				foreach ( IDictionary<string, object> dictionary in records )
+				{
+					if ( dictionary.ContainsKey( "Target" ) && dictionary.ContainsKey( "Replacement" ) )
+					{
+						var target = (string) dictionary[ "Target" ];
+						var replacement = (string) dictionary[ "Replacement" ];
+
+						if ( target != null && replacement != null )
+						{
+							stringsCsvFile.Add( target, replacement );
+						}
+					}
+					else
+					{
+						throw new Exception( "The 'Target' column or the 'Replacement' column does not exist!" );
+					}
+				}
+			}
+			catch ( Exception exception )
+			{
+				stringsCsvFile = null;
+
+				MessageBox.Show( MainWindow.Instance, $"We could not load the strings CSV file '{stringsCsvFilePath}'.\r\n\r\nThe error message is as follows:\r\n\r\n{exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
 			}
 		}
 

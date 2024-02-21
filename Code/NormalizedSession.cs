@@ -146,7 +146,7 @@ namespace iRacingTVController
 				sessionType = session.SessionType;
 
 				isInPracticeSession = ( sessionType == "Practice" ) || ( sessionType == "Warmup" );
-				isInQualifyingSession = ( sessionType == "Lone Qualify" );
+				isInQualifyingSession = ( sessionType == "Lone Qualify" ) || ( sessionType == "Open Qualify" );
 				isInRaceSession = !isInPracticeSession && !isInQualifyingSession;
 
 				greenFlagDropSessionTime = 0;

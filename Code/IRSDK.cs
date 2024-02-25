@@ -1,10 +1,12 @@
 ﻿
-using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Json;
+using System.Windows;
+using System;
 
 using irsdkSharp;
 using irsdkSharp.Enums;
@@ -13,11 +15,6 @@ using irsdkSharp.Serialization.Models.Data;
 using irsdkSharp.Serialization.Models.Session;
 
 using CsvHelper;
-using System.Globalization;
-using System.Diagnostics;
-using System.Reflection;
-using System.Dynamic;
-using System.Windows;
 
 namespace iRacingTVController
 {

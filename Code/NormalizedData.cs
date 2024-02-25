@@ -372,6 +372,19 @@ namespace iRacingTVController
 
 			displayIsMetric = IRSDK.data.DisplayUnits == 1;
 
+			isUnderCaution = ( sessionFlags & ( (uint) SessionFlags.CautionWaving | (uint) SessionFlags.Caution ) ) != 0;
+			isTalking = IRSDK.data.PushToTalk;
+
+			sessionState = (SessionState) IRSDK.data.SessionState;
+
+			sessionTimeTotal = IRSDK.data.SessionTimeTotal;
+			sessionTimeRemaining = Math.Max( 0, IRSDK.data.SessionTimeRemain + IRSDK.normalizedSession.greenFlagDropSessionTime );
+
+			if ( sessionTimeRemaining > sessionTimeTotal )
+			{
+				sessionTimeRemaining = sessionTimeTotal;
+			}
+
 			var lapsIsUnlimited = ( IRSDK.data.SessionLapsTotal == 32767 );
 			var timeIsUnlimited = ( IRSDK.data.SessionTimeTotal == 604800.0f );
 
@@ -388,24 +401,11 @@ namespace iRacingTVController
 					}
 				}
 
-				isInTimedRace = ( ( lowestEstLapTime * IRSDK.data.SessionLapsRemainEx ) > IRSDK.data.SessionTimeRemain );
+				isInTimedRace = ( ( lowestEstLapTime * IRSDK.data.SessionLapsRemainEx ) > sessionTimeRemaining );
 			}
 			else
-			{ 
-				isInTimedRace = lapsIsUnlimited;
-			}
-
-			isUnderCaution = ( sessionFlags & ( (uint) SessionFlags.CautionWaving | (uint) SessionFlags.Caution ) ) != 0;
-			isTalking = IRSDK.data.PushToTalk;
-
-			sessionState = (SessionState) IRSDK.data.SessionState;
-
-			sessionTimeTotal = IRSDK.data.SessionTimeTotal;
-			sessionTimeRemaining = Math.Max( 0, IRSDK.data.SessionTimeRemain + IRSDK.normalizedSession.greenFlagDropSessionTime );
-
-			if ( sessionTimeRemaining > sessionTimeTotal )
 			{
-				sessionTimeRemaining = sessionTimeTotal;
+				isInTimedRace = lapsIsUnlimited;
 			}
 
 			sessionLapsTotal = IRSDK.data.SessionLapsTotal;

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Xml.Serialization;
+
 using static iRacingTVController.Unity;
 
 namespace iRacingTVController

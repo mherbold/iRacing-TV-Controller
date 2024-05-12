@@ -63,11 +63,18 @@ namespace iRacingTVController
 
 				var deviceEnumerator = new MMDeviceEnumerator();
 
-				audioRenderDevice = deviceEnumerator.GetDevice( deviceId );
+				try
+				{
+					audioRenderDevice = deviceEnumerator.GetDevice( deviceId );
 
-				currentAudioRenderDeviceId = Settings.editor.editorPushToTalkAudioRenderDeviceId;
+					currentAudioRenderDeviceId = Settings.editor.editorPushToTalkAudioRenderDeviceId;
 
-				LogFile.Write( "Audio render device initialized.\r\n" );
+					LogFile.Write( "Audio render device initialized.\r\n" );
+				}
+				catch ( Exception )
+				{
+					LogFile.Write( "Previously used audio render device could not be found.\r\n" );
+				}
 			}
 			else
 			{

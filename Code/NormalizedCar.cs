@@ -67,6 +67,8 @@ namespace iRacingTVController
 		public float bestLapTimeLastFrame = 0;
 		public float qualifyingTime = 0;
 
+		public float[] qualifyingLapTimes = new float[ 4 ];
+
 		public float lapDistPctDelta = 0;
 		public float lapDistPct = 0;
 
@@ -200,6 +202,8 @@ namespace iRacingTVController
 			bestLapTime = 0;
 			bestLapTimeLastFrame = 0;
 			qualifyingTime = 0;
+
+			qualifyingLapTimes = new float[ 4 ];
 
 			lapDistPctDelta = 0;
 			lapDistPct = 0;
@@ -755,6 +759,14 @@ namespace iRacingTVController
 				else
 				{
 					lapPosition += lapDistPctDelta;
+				}
+
+				if ( IRSDK.normalizedSession.isInQualifyingSession )
+				{
+					if ( ( car.CarIdxLapCompleted >= 1 ) && ( car.CarIdxLapCompleted <= qualifyingLapTimes.Length ) )
+					{
+						qualifyingLapTimes[ car.CarIdxLapCompleted - 1 ] = car.CarIdxLastLapTime;
+					}
 				}
 			}
 

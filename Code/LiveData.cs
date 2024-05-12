@@ -1501,6 +1501,22 @@ namespace iRacingTVController
 
 					return ( normalizedCar?.displayedPosition >= 1 ) ? GetOrdinal( normalizedCar.displayedPosition ) : "";
 
+				case SettingsText.Content.Driver_QualifyLapTime_1:
+
+					return ( normalizedCar?.qualifyingLapTimes[ 0 ] > 0 ) ? $"{normalizedCar.qualifyingLapTimes[ 0 ]:0.000}" : "--.---";
+
+				case SettingsText.Content.Driver_QualifyLapTime_2:
+
+					return ( normalizedCar?.qualifyingLapTimes[ 1 ] > 0 ) ? $"{normalizedCar.qualifyingLapTimes[ 1 ]:0.000}" : "--.---";
+
+				case SettingsText.Content.Driver_QualifyLapTime_3:
+
+					return ( normalizedCar?.qualifyingLapTimes[ 2 ] > 0 ) ? $"{normalizedCar.qualifyingLapTimes[ 2 ]:0.000}" : "--.---";
+
+				case SettingsText.Content.Driver_QualifyLapTime_4:
+
+					return ( normalizedCar?.qualifyingLapTimes[ 3 ] > 0 ) ? $"{normalizedCar.qualifyingLapTimes[ 3 ]:0.000}" : "--.---";
+
 				case SettingsText.Content.Driver_QualifyPosition:
 
 					return ( normalizedCar?.qualifyingClassPosition >= 1 ) ? normalizedCar.qualifyingClassPosition.ToString() : "";

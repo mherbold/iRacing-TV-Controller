@@ -17,7 +17,7 @@ namespace iRacingTVController
 			FontD
 		};
 
-		public enum Content // last used = 51
+		public enum Content // last used = 55
 		{
 			None = 0,
 			Driver_CarNumber = 1,
@@ -50,6 +50,10 @@ namespace iRacingTVController
 			Driver_Position = 11,
 			Driver_Position_Ordinal = 34,
 			Driver_Position_WithP = 33,
+			Driver_QualifyLapTime_1 = 52,
+			Driver_QualifyLapTime_2 = 53,
+			Driver_QualifyLapTime_3 = 54,
+			Driver_QualifyLapTime_4 = 55,
 			Driver_QualifyPosition = 12,
 			Driver_QualifyPosition_Ordinal = 36,
 			Driver_QualifyPosition_WithP = 35,

@@ -722,10 +722,11 @@ namespace iRacingTVController
 			Update( Overlay_General_Size_W, Overlay_General_Size_H, Settings.overlay.size, Overlay_General_Size_Override, Settings.overlay.size_Overridden );
 			Update( Overlay_General_DriverCsvFilePath, Settings.overlay.driverCsvFilePath, Overlay_General_DriverCsvFilePath_Override, Settings.overlay.driverCsvFilePath_Overridden, Overlay_General_DriverCsvFilePath_Button );
 			Update( Overlay_General_StringsCsvFilePath, Settings.overlay.stringsCsvFilePath, Overlay_General_StringsCsvFilePath_Override, Settings.overlay.stringsCsvFilePath_Overridden, Overlay_General_StringsCsvFilePath_Button );
+            Update( Overlay_General_TrainerCsvFilePath, Settings.overlay.trainerCsvFilePath, Overlay_General_TrainerCsvFilePath_Override, Settings.overlay.trainerCsvFilePath_Overridden, Overlay_General_TrainerCsvFilePath_Button );
 
-			// overlay - fonts
+            // overlay - fonts
 
-			Update( Overlay_Font_FontA_Name, Settings.overlay.fontNames[ 0 ], Overlay_Font_FontA_Name_Override, Settings.overlay.fontNames_Overridden[ 0 ] );
+            Update( Overlay_Font_FontA_Name, Settings.overlay.fontNames[ 0 ], Overlay_Font_FontA_Name_Override, Settings.overlay.fontNames_Overridden[ 0 ] );
 			Update( Overlay_Font_FontB_Name, Settings.overlay.fontNames[ 1 ], Overlay_Font_FontB_Name_Override, Settings.overlay.fontNames_Overridden[ 1 ] );
 			Update( Overlay_Font_FontC_Name, Settings.overlay.fontNames[ 2 ], Overlay_Font_FontC_Name_Override, Settings.overlay.fontNames_Overridden[ 2 ] );
 			Update( Overlay_Font_FontD_Name, Settings.overlay.fontNames[ 3 ], Overlay_Font_FontD_Name_Override, Settings.overlay.fontNames_Overridden[ 3 ] );
@@ -881,8 +882,6 @@ namespace iRacingTVController
 
 			Update( Overlay_Trainer_Enable, Settings.overlay.trainerEnabled, Overlay_Trainer_Enable_Override, Settings.overlay.trainerEnabled_Overridden );
 			Update( Overlay_Trainer_Position_X, Overlay_Trainer_Position_Y, Settings.overlay.trainerPosition, Overlay_Trainer_Position_Override, Settings.overlay.trainerPosition_Overridden );
-			Update( Overlay_Trainer_Size_W, Overlay_Trainer_Size_H, Settings.overlay.trainerSize, Overlay_Trainer_Size_Override, Settings.overlay.trainerSize_Overridden );
-			Update( Overlay_Trainer_SpeedScale, Settings.overlay.trainerSpeedScale, Overlay_Trainer_SpeedScale_Override, Settings.overlay.trainerSpeedScale_Overridden );
 
 			// web page
 
@@ -2772,9 +2771,32 @@ namespace iRacingTVController
 			{
 				Overlay_General_StringsCsvFilePath.Text = Settings.GetRelativePath( openFileDialog.FileName );
 			}
-		}
+        }
 
-		private void Overlay_General_Update( object sender, EventArgs e )
+        private void Overlay_General_TrainerCsvFilePath_Button_Click(object sender, EventArgs e)
+        {
+            string currentFilePath = Overlay_General_TrainerCsvFilePath.Text;
+
+            currentFilePath = Settings.GetFullPath(currentFilePath);
+
+            var openFileDialog = new OpenFileDialog()
+            {
+                Title = "Select a CSV File",
+                Filter = "CSV Files (*.csv)|*.csv|All files (*.*)|*.*",
+                InitialDirectory = (currentFilePath == string.Empty) ? Program.documentsFolder : Path.GetDirectoryName(currentFilePath),
+                FileName = currentFilePath,
+                ValidateNames = true,
+                CheckPathExists = true,
+                CheckFileExists = true
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                Overlay_General_TrainerCsvFilePath.Text = Settings.GetRelativePath(openFileDialog.FileName);
+            }
+        }
+
+        private void Overlay_General_Update( object sender, EventArgs e )
 		{
 			if ( initializing == 0 )
 			{
@@ -2784,8 +2806,9 @@ namespace iRacingTVController
 				update |= UpdateOverlaySetting( ref Settings.overlayLocal.size_Overridden, Overlay_General_Size_Override, ref Settings.overlayLocal.size, Overlay_General_Size_W, Overlay_General_Size_H );
 				update |= UpdateOverlaySetting( ref Settings.overlayLocal.driverCsvFilePath_Overridden, Overlay_General_DriverCsvFilePath_Override, ref Settings.overlayLocal.driverCsvFilePath, Overlay_General_DriverCsvFilePath );
 				update |= UpdateOverlaySetting( ref Settings.overlayLocal.stringsCsvFilePath_Overridden, Overlay_General_StringsCsvFilePath_Override, ref Settings.overlayLocal.stringsCsvFilePath, Overlay_General_StringsCsvFilePath );
+                update |= UpdateOverlaySetting( ref Settings.overlayLocal.trainerCsvFilePath_Overridden, Overlay_General_TrainerCsvFilePath_Override, ref Settings.overlayLocal.trainerCsvFilePath, Overlay_General_TrainerCsvFilePath );
 
-				if ( update )
+                if ( update )
 				{
 					Update();
 				}
@@ -3832,8 +3855,6 @@ namespace iRacingTVController
 
 				update |= UpdateOverlaySetting( ref Settings.overlayLocal.trainerEnabled_Overridden, Overlay_Trainer_Enable_Override, ref Settings.overlayLocal.trainerEnabled, Overlay_Trainer_Enable );
 				update |= UpdateOverlaySetting( ref Settings.overlayLocal.trainerPosition_Overridden, Overlay_Trainer_Position_Override, ref Settings.overlayLocal.trainerPosition, Overlay_Trainer_Position_X, Overlay_Trainer_Position_Y );
-				update |= UpdateOverlaySetting( ref Settings.overlayLocal.trainerSize_Overridden, Overlay_Trainer_Size_Override, ref Settings.overlayLocal.trainerSize, Overlay_Trainer_Size_W, Overlay_Trainer_Size_H );
-				update |= UpdateOverlaySetting( ref Settings.overlayLocal.trainerSpeedScale_Overridden, Overlay_Trainer_SpeedScale_Override, ref Settings.overlayLocal.trainerSpeedScale, Overlay_Trainer_SpeedScale );
 
 				if ( update )
 				{

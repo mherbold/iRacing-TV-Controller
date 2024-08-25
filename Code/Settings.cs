@@ -528,6 +528,7 @@ namespace iRacingTVController
 				{ "Subtitles", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 35, alignment = TextAlignmentOptions.Center, tintColor = { r = 0.961f, g = 0.961f, b = 0.953f } } },
 				{ "TrackMapCarTextLayer1", new SettingsText() { fontIndex = SettingsText.FontIndex.None, fontSize = 21, alignment = TextAlignmentOptions.Top, position = { x = 0, y = -35 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f }, content = SettingsText.Content.Driver_CarNumber } },
 				{ "TrainerMessage", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 21, alignment = TextAlignmentOptions.TopLeft, position = { x = 10, y = 10 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
+				{ "TrainerCountdown", new SettingsText() { fontIndex = SettingsText.FontIndex.FontC, fontSize = 21, alignment = TextAlignmentOptions.Top, position = { x = 10, y = 10 }, tintColor = { r = 0.69f, g = 0.71f, b = 0.694f } } },
 				{ "VoiceOfTextLayer1", new SettingsText() { fontIndex = SettingsText.FontIndex.FontB, fontSize = 30, position = { x = 30, y = 10 }, tintColor = { r = 0.434f, g = 0.434f, b = 0.434f }, content = SettingsText.Content.Translation_VoiceOf } },
 				{ "VoiceOfTextLayer2", new SettingsText() { fontIndex = SettingsText.FontIndex.FontA, fontSize = 38, position = { x = 30, y = 41 }, tintColor = { r = 0.137f, g = 0.122f, b = 0.125f }, content = SettingsText.Content.Driver_Name } },
 			};
@@ -734,11 +735,13 @@ namespace iRacingTVController
 				size = overlayLocal.size_Overridden ? overlayLocal.size : overlayGlobal.size,
 				driverCsvFilePath = overlayLocal.driverCsvFilePath_Overridden ? overlayLocal.driverCsvFilePath : overlayGlobal.driverCsvFilePath,
 				stringsCsvFilePath = overlayLocal.stringsCsvFilePath_Overridden ? overlayLocal.stringsCsvFilePath : overlayGlobal.stringsCsvFilePath,
+				trainerCsvFilePath = overlayLocal.trainerCsvFilePath_Overridden ? overlayLocal.trainerCsvFilePath : overlayGlobal.trainerCsvFilePath,
 
 				position_Overridden = overlayLocal.position_Overridden,
 				size_Overridden = overlayLocal.size_Overridden,
 				driverCsvFilePath_Overridden = overlayLocal.driverCsvFilePath_Overridden,
 				stringsCsvFilePath_Overridden = overlayLocal.stringsCsvFilePath_Overridden,
+				trainerCsvFilePath_Overridden = overlayLocal.trainerCsvFilePath_Overridden,
 
 				fontNames = new string[ SettingsOverlay.MaxNumFonts ] {
 					overlayLocal.fontNames_Overridden[ 0 ] ? overlayLocal.fontNames[ 0 ] : overlayGlobal.fontNames[ 0 ],
@@ -950,13 +953,9 @@ namespace iRacingTVController
 
 				trainerEnabled = overlayLocal.trainerEnabled_Overridden ? overlayLocal.trainerEnabled : overlayGlobal.trainerEnabled,
 				trainerPosition = overlayLocal.trainerPosition_Overridden ? overlayLocal.trainerPosition : overlayGlobal.trainerPosition,
-				trainerSize = overlayLocal.trainerSize_Overridden ? overlayLocal.trainerSize : overlayGlobal.trainerSize,
-				trainerSpeedScale = overlayLocal.trainerSpeedScale_Overridden ? overlayLocal.trainerSpeedScale : overlayGlobal.trainerSpeedScale,
 
 				trainerEnabled_Overridden = overlayLocal.trainerEnabled_Overridden,
 				trainerPosition_Overridden = overlayLocal.trainerPosition_Overridden,
-				trainerSize_Overridden = overlayLocal.trainerSize_Overridden,
-				trainerSpeedScale_Overridden = overlayLocal.trainerSpeedScale_Overridden
 			};
 
 			foreach ( var item in overlayLocal.imageSettingsDataDictionary )

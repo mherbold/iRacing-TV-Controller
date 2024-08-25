@@ -479,7 +479,7 @@ namespace iRacingTVController
 
 					carNumberTextureUrl = $"http://localhost:32034/pk_number.png?size=64&view=0&number={carNumber}&numPat={pattern}&numCol={colorA},{colorB},{colorC}&numSlnt={slant}";
 
-					// LogFile.Write( $"{displayedName}'s car number texture URL = {carNumberTextureUrl}\r\n" );
+					LogFile.Write( $"{displayedName}'s car number texture URL = {carNumberTextureUrl}\r\n" );
 				}
 
 				var carDesignMatch = Regex.Match( driver.CarDesignStr, @"(\d+),(.{6}),(.{6}),(.{6})[,.]?(.{6})?" );
@@ -544,7 +544,7 @@ namespace iRacingTVController
 
 					helmetTextureUrl = $"http://localhost:32034/pk_helmet.png?size=7&hlmtPat={helmetDesignMatch.Groups[ 1 ].Value}&licCol={licColor}&hlmtCol={helmetDesignMatch.Groups[ 2 ].Value},{helmetDesignMatch.Groups[ 3 ].Value},{helmetDesignMatch.Groups[ 4 ].Value}&view=1&hlmtType={helmetType}&hlmtCustPaint={customHelmetTgaFileName}";
 
-					// LogFile.Write( $"{displayedName}'s helmet texture URL = {helmetTextureUrl}\r\n" );
+					LogFile.Write( $"{displayedName}'s helmet texture URL = {helmetTextureUrl}\r\n" );
 				}
 
 				var driverDesignMatch = Regex.Match( driver.SuitDesignStr, @"(\d+),(.{6}),(.{6}),(.{6})" );
@@ -565,7 +565,7 @@ namespace iRacingTVController
 
 					driverTextureUrl = $"http://localhost:32034/pk_body.png?size=1&view=2&bodyType={suitType}&suitPat={driverDesignMatch.Groups[ 1 ].Value}&suitCol={driverDesignMatch.Groups[ 2 ].Value},{driverDesignMatch.Groups[ 3 ].Value},{driverDesignMatch.Groups[ 4 ].Value}&hlmtType={helmetType}&hlmtPat={helmetDesignMatch.Groups[ 1 ].Value}&hlmtCol={helmetDesignMatch.Groups[ 2 ].Value},{helmetDesignMatch.Groups[ 3 ].Value},{helmetDesignMatch.Groups[ 4 ].Value}&faceType={faceType}&suitCustPaint={customSuitTgaFileName}";
 
-					// LogFile.Write( $"{displayedName}'s driver texture URL = {driverTextureUrl}\r\n" );
+					LogFile.Write( $"{displayedName}'s driver texture URL = {driverTextureUrl}\r\n" );
 				}
 
 				var memberIdTextureFileName = $"{Program.documentsFolder}MemberImages\\A_{driver.UserID}.png";

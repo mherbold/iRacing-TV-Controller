@@ -1206,9 +1206,8 @@ namespace iRacingTVController
 
 		public void UpdateTrainer()
 		{
-			liveDataTrainer.drawVectorList = Trainer.drawVectorList;
-
 			liveDataTrainer.message = Trainer.message;
+			liveDataTrainer.countdown = Trainer.countdown;
 		}
 
 		public void UpdateWebcamStreaming()
@@ -1305,6 +1304,10 @@ namespace iRacingTVController
 
 					return normalizedCar?.normalizedCarBehind?.userId.ToString() ?? "";
 
+				case SettingsText.Content.Driver_CarBehind_Rating:
+
+					return normalizedCar?.normalizedCarBehind?.iRating.ToString() ?? "";
+
 				case SettingsText.Content.Driver_CarInFront_CarNumber:
 
 					return ( normalizedCar?.normalizedCarInFront != null ) ? $"#{normalizedCar.normalizedCarInFront.carNumber}" : "";
@@ -1350,6 +1353,10 @@ namespace iRacingTVController
 				case SettingsText.Content.Driver_CarInFront_UserID:
 
 					return normalizedCar?.normalizedCarInFront?.userId.ToString() ?? "";
+
+				case SettingsText.Content.Driver_CarInFront_Rating:
+
+					return normalizedCar?.normalizedCarInFront?.iRating.ToString() ?? "";
 
 				case SettingsText.Content.Driver_FamilyName:
 

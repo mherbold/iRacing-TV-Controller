@@ -27,11 +27,13 @@ namespace iRacingTVController
 		public Vector2Int size = new( 1920, 1080 );
 		public string driverCsvFilePath = string.Empty;
 		public string stringsCsvFilePath = string.Empty;
+		public string trainerCsvFilePath = string.Empty;
 
 		public bool position_Overridden = false;
 		public bool size_Overridden = false;
 		public bool driverCsvFilePath_Overridden = false;
 		public bool stringsCsvFilePath_Overridden = false;
+		public bool trainerCsvFilePath_Overridden = false;
 
 		public string[] fontNames = new string[ MaxNumFonts ];
 		public string[] fontPaths = new string[ MaxNumFonts ];
@@ -226,13 +228,9 @@ namespace iRacingTVController
 
 		public bool trainerEnabled = false;
 		public Vector2 trainerPosition = new( 640, 540 );
-		public Vector2 trainerSize = new( 640, 128 );
-		public float trainerSpeedScale = 15;
 
 		public bool trainerEnabled_Overridden = false;
 		public bool trainerPosition_Overridden = false;
-		public bool trainerSize_Overridden = false;
-		public bool trainerSpeedScale_Overridden = false;
 
 		public SerializableDictionary<string, SettingsText> textSettingsDataDictionary = new();
 		public SerializableDictionary<string, SettingsImage> imageSettingsDataDictionary = new();

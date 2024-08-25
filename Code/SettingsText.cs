@@ -17,7 +17,7 @@ namespace iRacingTVController
 			FontD
 		};
 
-		public enum Content // last used = 55
+		public enum Content // last used = 57
 		{
 			None = 0,
 			Driver_CarNumber = 1,
@@ -28,6 +28,7 @@ namespace iRacingTVController
 			Driver_CarBehind_Name = 38,
 			Driver_CarBehind_Position = 42,
 			Driver_CarBehind_UserID = 48,
+			Driver_CarBehind_Rating = 57,
 			Driver_CarInFront_CarNumber = 41,
 			Driver_CarInFront_CsvProperty = 45,
 			[XmlEnum( Name = "Driver_GapTimeToCarInFront" )]
@@ -35,6 +36,7 @@ namespace iRacingTVController
 			Driver_CarInFront_Name = 39,
 			Driver_CarInFront_Position = 43,
 			Driver_CarInFront_UserID = 47,
+			Driver_CarInFront_Rating = 56,
 			Driver_CsvProperty = 37,
 			Driver_FamilyName = 2,
 			Driver_FullName = 51,

@@ -70,6 +70,11 @@ namespace iRacingTVController
 		public static bool stringsCsvFileNeedsToBeReloaded = false;
 		public static FileSystemWatcher? stringsCsvFileWatcher = null;
 
+		public static string trainerCsvFilePath = string.Empty;
+		public static Dictionary<int, IDictionary<string, object>>? trainerCsvFile = null;
+		public static bool trainerCsvFileNeedsToBeReloaded = false;
+		public static FileSystemWatcher? trainerCsvFileWatcher = null;
+
 		public static void Update()
 		{
 			isConnected = iRacingSdk.IsConnected();
@@ -198,6 +203,43 @@ namespace iRacingTVController
 					}
 				}
 			}
+
+			if ( trainerCsvFilePath != Settings.overlayLocal.trainerCsvFilePath )
+			{
+				trainerCsvFilePath = Settings.overlayLocal.trainerCsvFilePath;
+				trainerCsvFile = null;
+				trainerCsvFileWatcher = null;
+				trainerCsvFileNeedsToBeReloaded = true;
+			}
+
+			if ( trainerCsvFileNeedsToBeReloaded )
+			{
+				trainerCsvFileNeedsToBeReloaded = false;
+
+				if ( trainerCsvFilePath != string.Empty )
+				{
+					ReadTrainerCsvFileIntoDictionary();
+
+					var fullPath = Settings.GetFullPath( trainerCsvFilePath );
+
+					var directory = Path.GetDirectoryName( fullPath );
+					var fileName = Path.GetFileName( fullPath );
+
+					if ( directory != null )
+					{
+						trainerCsvFileWatcher = new()
+						{
+							Path = directory,
+							NotifyFilter = NotifyFilters.LastWrite,
+							Filter = fileName,
+							EnableRaisingEvents = true,
+							IncludeSubdirectories = false
+						};
+
+						trainerCsvFileWatcher.Changed += OnTrainerCsvFileChanged;
+					}
+				}
+			}
 		}
 
 		private static void OnDriverCsvFileChanged( object sender, FileSystemEventArgs e )
@@ -280,6 +322,47 @@ namespace iRacingTVController
 				stringsCsvFile = null;
 
 				MessageBox.Show( MainWindow.Instance, $"We could not load the strings CSV file '{stringsCsvFilePath}'.\r\n\r\nThe error message is as follows:\r\n\r\n{exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
+			}
+		}
+
+		private static void OnTrainerCsvFileChanged( object sender, FileSystemEventArgs e )
+		{
+			trainerCsvFileNeedsToBeReloaded = true;
+		}
+
+		private static void ReadTrainerCsvFileIntoDictionary()
+		{
+			try
+			{
+				trainerCsvFile = new();
+
+				using var reader = new StreamReader( trainerCsvFilePath );
+				using var csv = new CsvReader( reader, CultureInfo.InvariantCulture );
+
+				var records = csv.GetRecords<dynamic>();
+
+				foreach ( IDictionary<string, object> dictionary in records )
+				{
+					if ( dictionary.ContainsKey( "Distance" ) )
+					{
+						var distance = dictionary[ "Distance" ];
+
+						if ( distance != null )
+						{
+							trainerCsvFile.Add( int.Parse( (string) distance ), dictionary );
+						}
+					}
+					else
+					{
+						throw new Exception( "The 'Distance' column does not exist!" );
+					}
+				}
+			}
+			catch ( Exception exception )
+			{
+				trainerCsvFile = null;
+
+				MessageBox.Show( MainWindow.Instance, $"We could not load the trainer CSV file '{trainerCsvFilePath}'.\r\n\r\nThe error message is as follows:\r\n\r\n{exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
 			}
 		}
 
@@ -589,15 +672,16 @@ namespace iRacingTVController
 
 		public static void ReloadAiRoster()
 		{
+			aiRoster = null;
+
 			if ( Settings.editor.iracingCustomPaintsAiRosterFile == string.Empty )
 			{
-				aiRoster = null;
-			}
-			else
-			{
-				string aiRosterText = File.ReadAllText( Settings.editor.iracingCustomPaintsAiRosterFile );
+				if ( File.Exists( Settings.editor.iracingCustomPaintsAiRosterFile ) )
+				{
+					string aiRosterText = File.ReadAllText( Settings.editor.iracingCustomPaintsAiRosterFile );
 
-				aiRoster = JsonSerializer.Deserialize<AiRoster>( aiRosterText );
+					aiRoster = JsonSerializer.Deserialize<AiRoster>( aiRosterText );
+				}
 			}
 		}
 

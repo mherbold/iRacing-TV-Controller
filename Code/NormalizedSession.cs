@@ -26,6 +26,7 @@ namespace iRacingTVController
 
 		public int trackID = 0;
 		public float trackLengthInMeters = 0;
+		public float trackLengthInFeet = 0;
 		public string trackType = string.Empty;
 
 		public string seriesLogoTextureUrl = string.Empty;
@@ -65,6 +66,7 @@ namespace iRacingTVController
 
 			trackID = 0;
 			trackLengthInMeters = 0;
+			trackLengthInFeet = 0;
 			trackType = string.Empty;
 
 			seriesLogoTextureUrl = string.Empty;
@@ -103,6 +105,7 @@ namespace iRacingTVController
 				var trackLengthInKilometers = float.Parse( match.Groups[ 1 ].Value, CultureInfo.InvariantCulture.NumberFormat );
 
 				trackLengthInMeters = trackLengthInKilometers * 1000;
+				trackLengthInFeet = trackLengthInKilometers * 3280.84f;
 			}
 
 			trackType = IRSDK.session.WeekendInfo.TrackType;

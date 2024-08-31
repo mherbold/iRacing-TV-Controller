@@ -1,6 +1,6 @@
 [Setup]
 AppName=iRacing-TV
-AppVersion=1.71
+AppVersion=1.74
 AppCopyright=Created by Marvin Herbold
 AppPublisher=Marvin Herbold
 AppPublisherURL=https://herboldracing.com/iracing-tv
@@ -19,8 +19,8 @@ SetupIconFile="C:\Users\marvi\Documents\GitHub\iRacing-TV-Controller\Assets\icon
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}";
 
 [Files]
-Source: "C:\Users\marvi\Desktop\iRacing-TV Controller\*"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\marvi\Desktop\iRacing-TV Controller\Assets\*"; DestDir: "{userdocs}\iRacing-TV\Assets"; Flags: ignoreversion recursesubdirs
+Source: "C:\Users\marvi\OneDrive\Desktop\iRacing-TV Controller\*"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\marvi\OneDrive\Desktop\iRacing-TV Controller\Assets\*"; DestDir: "{userdocs}\iRacing-TV\Assets"; Flags: ignoreversion recursesubdirs
 Source: "C:\Users\marvi\Documents\GitHub\iRacing-TV-Unity\Build\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "C:\Users\marvi\Documents\GitHub\iRacing-TV-Unity\webserver.exe"; DestDir: "{app}"; Flags: ignoreversion
 

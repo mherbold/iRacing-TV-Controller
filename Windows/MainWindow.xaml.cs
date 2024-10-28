@@ -4025,7 +4025,7 @@ namespace iRacingTVController
 			return false;
 		}
 
-		private bool UpdateOverlaySetting<type>( ref bool overrideSetting, CheckBox overrideCheckbox, ref type value, ComboBox comboBoxInput, SortedDictionary<string, type> dictionary )
+		private bool UpdateOverlaySetting<someType>( ref bool overrideSetting, CheckBox overrideCheckbox, ref someType value, ComboBox comboBoxInput, SortedDictionary<string, someType> dictionary )
 		{
 			if ( overrideCheckbox.IsChecked != overrideSetting )
 			{
@@ -4071,7 +4071,7 @@ namespace iRacingTVController
 			return false;
 		}
 
-		private bool UpdateOverlaySetting<type>( ref bool overrideSetting, CheckBox overrideCheckbox, ref type value, ComboBox comboBoxInput )
+		private bool UpdateOverlaySetting<someType>( ref bool overrideSetting, CheckBox overrideCheckbox, ref someType value, ComboBox comboBoxInput )
 		{
 			if ( overrideCheckbox.IsChecked != overrideSetting )
 			{
@@ -4080,7 +4080,7 @@ namespace iRacingTVController
 				return true;
 			}
 
-			value = (type) comboBoxInput.SelectedItem;
+			value = (someType) comboBoxInput.SelectedItem;
 
 			return false;
 		}

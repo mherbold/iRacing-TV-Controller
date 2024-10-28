@@ -130,7 +130,7 @@ namespace iRacingTVController
 					if ( ( normalizedCar != null ) && !normalizedCar.isOutOfCar )
 					{
 						targetCamCarIdx = LiveData.Instance.introCarIdx;
-						targetCamType = SettingsDirector.CameraType.Close;
+						targetCamType = SettingsDirector.CameraType.Intro;
 						targetCamFastSwitchEnabled = true;
 						targetCamReason = "Intro: Looking at the intro car";
 					}

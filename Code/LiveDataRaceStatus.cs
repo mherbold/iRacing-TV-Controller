@@ -20,5 +20,7 @@ namespace iRacingTVController
 		[JsonInclude] public bool showGreenFlag = false;
 		[JsonInclude] public bool showYellowFlag = false;
 		[JsonInclude] public bool showCheckeredFlag = false;
+
+		[JsonInclude] public bool showOneToGreen = false;
 	}
 }

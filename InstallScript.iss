@@ -1,6 +1,6 @@
 [Setup]
 AppName=iRacing-TV
-AppVersion=1.74
+AppVersion=1.75
 AppCopyright=Created by Marvin Herbold
 AppPublisher=Marvin Herbold
 AppPublisherURL=https://herboldracing.com/iracing-tv
@@ -24,8 +24,8 @@ Source: "C:\Users\marvi\OneDrive\Desktop\iRacing-TV Controller\Assets\*"; DestDi
 Source: "C:\Users\marvi\Documents\GitHub\iRacing-TV-Unity\Build\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "C:\Users\marvi\Documents\GitHub\iRacing-TV-Unity\webserver.exe"; DestDir: "{app}"; Flags: ignoreversion
 
-Source: "C:\Users\marvi\Desktop\iRacing-TV Controller\Assets\fonts\RevolutionGothic_ExtraBold.otf"; DestDir: "{autofonts}"; FontInstall: "Revolution Gothic ExtraBold"; Flags: onlyifdoesntexist uninsneveruninstall fontisnttruetype
-Source: "C:\Users\marvi\Desktop\iRacing-TV Controller\Assets\fonts\RevolutionGothic_ExtraBold_It.otf"; DestDir: "{autofonts}"; FontInstall: "Revolution Gothic ExtraBold It"; Flags: onlyifdoesntexist uninsneveruninstall fontisnttruetype
+Source: "C:\Users\marvi\OneDrive\Desktop\iRacing-TV Controller\Assets\fonts\RevolutionGothic_ExtraBold.otf"; DestDir: "{autofonts}"; FontInstall: "Revolution Gothic ExtraBold"; Flags: onlyifdoesntexist uninsneveruninstall fontisnttruetype
+Source: "C:\Users\marvi\OneDrive\Desktop\iRacing-TV Controller\Assets\fonts\RevolutionGothic_ExtraBold_It.otf"; DestDir: "{autofonts}"; FontInstall: "Revolution Gothic ExtraBold It"; Flags: onlyifdoesntexist uninsneveruninstall fontisnttruetype
 
 [Dirs]
 Name: "{userdocs}\iRacing-TV"

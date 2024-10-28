@@ -269,6 +269,10 @@ namespace iRacingTVController
 					liveDataRaceStatus.showGreenFlag = true;
 				}
 			}
+
+			// one to green
+
+			liveDataRaceStatus.showOneToGreen = ( IRSDK.normalizedData.sessionFlags & ( (uint) SessionFlags.OneLapToGreen ) ) != 0;
 		}
 
 		public void UpdateLeaderboard( ref LiveDataLeaderboard[]? liveDataLeaderboards, bool splitLeaderboard )

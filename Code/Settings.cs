@@ -356,6 +356,7 @@ namespace iRacingTVController
 				{ "RaceStatusGreenFlagLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\race-status-green-flag-text.png" } },
 				{ "RaceStatusGreenLight", new SettingsImage(){ imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\race-status-light-green.png", position = { x = 280, y = 130 } } },
 				{ "RaceStatusLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.SeriesLogo, position = { x = 7, y = 7 }, size = { x = 305, y = 103 } } },
+				{ "RaceStatusOneToGreen", new SettingsImage() { imageType = SettingsImage.ImageType.None } },
 				{ "RaceStatusWhiteLight", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\race-status-light-white.png", position = { x = 280, y = 130 } } },
 				{ "RaceStatusYellowFlagLayer1", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\race-status-white-flag.png", size = { x = 319, y = 219 }, tintColor = { r = 1, g = 1, b = 0 }, frameSize = { x = 319, y = 219 }, frameCount = 35, animationSpeed = 24 } },
 				{ "RaceStatusYellowFlagLayer2", new SettingsImage() { imageType = SettingsImage.ImageType.ImageFile, filePath = Program.documentsFolder + "Assets\\default\\race-status-yellow-flag-text.png" } },
